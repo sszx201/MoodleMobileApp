@@ -1,12 +1,15 @@
 Ext.define('MoodleMobApp.Config', {
-    singleton : true,
+	singleton : true,
 
 	constructor: function(config) {
   		this.initConfig(config);
   		return this;
 	},
 
-    config : {
-        webServiceUrl : 'your moodle web service url'
-    }
+	config : {
+		moodleUrl : 'your moodle installation url'
+		aaiAuthUrl : '/auth/mobileaai/authenticate.php'
+		manualAuthUrl : '/auth/mobilemanual/authenticate.php'
+		webServiceUrl : '/webservice/rest/server.php'
+	}
 });

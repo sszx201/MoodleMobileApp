@@ -4,6 +4,7 @@ Ext.application({
     name: 'MoodleMobApp',
 
     requires: [
+        'MoodleMobApp.Config',
         'Ext.MessageBox',
 		'Ext.data.identifier.Uuid'
     ],
@@ -39,6 +40,8 @@ Ext.application({
         Ext.fly('appLoadingIndicator').destroy();
 		var settings_store = Ext.create('MoodleMobApp.store.Settings');
 		settings_store.load();
+
+		console.log(MoodleMobApp.Config.getWebServiceUrl());
 
 		if( settings_store.first().getData().usageagreement == false ) {
         	Ext.Viewport.add( Ext.create('MoodleMobApp.view.UsageAgreement') );

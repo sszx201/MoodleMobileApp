@@ -1,13 +1,13 @@
-Ext.define('iCorsi.store.Settings', {
+Ext.define('MoodleMobApp.store.Settings', {
     extend: 'Ext.data.Store',
 
 	requires: [
-		'iCorsi.model.Settings',
+		'MoodleMobApp.model.Settings',
 		'Ext.data.proxy.LocalStorage'
 		],
 
     config: {
-        model: 'iCorsi.model.Settings',
+        model: 'MoodleMobApp.model.Settings',
 		proxy: {
 			type: 'localstorage',	
 			id: 'settings'

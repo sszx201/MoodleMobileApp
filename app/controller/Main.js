@@ -1,4 +1,4 @@
-Ext.define('iCorsi.controller.Main', {
+Ext.define('MoodleMobApp.controller.Main', {
     extend: 'Ext.app.Controller',
     
     config: {

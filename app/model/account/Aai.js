@@ -1,4 +1,4 @@
-Ext.define('iCorsi.model.account.Aai', {
+Ext.define('MoodleMobApp.model.account.Aai', {
     extend: 'Ext.data.Model',
 	
     config: {

@@ -1,9 +1,9 @@
-Ext.define('iCorsi.controller.account.Manual', {
+Ext.define('MoodleMobApp.controller.account.Manual', {
     extend: 'Ext.app.Controller',
 
 	requires: [
-		'iCorsi.model.account.Manual',
-		'iCorsi.store.account.Manual'
+		'MoodleMobApp.model.account.Manual',
+		'MoodleMobApp.store.account.Manual'
 	],
    	
     config: {
@@ -24,25 +24,25 @@ Ext.define('iCorsi.controller.account.Manual', {
 
 	loadAccountData: function () {
 		var form = this.getForm();	
-		var account_store = Ext.create('iCorsi.store.account.Manual'); 
+		var account_store = Ext.create('MoodleMobApp.store.account.Manual'); 
 		account_store.load();
 		if(account_store.getCount() > 0) {
 			// Update the form with account data.
-			form.setRecord( Ext.create('iCorsi.model.account.Manual', account_store.first().getData()) );
+			form.setRecord( Ext.create('MoodleMobApp.model.account.Manual', account_store.first().getData()) );
 		}
 	},
 
 	saveAccountData: function () {
 		var form = this.getForm();	
 		// store account data
-		var account_store = Ext.create('iCorsi.store.account.Manual'); 
+		var account_store = Ext.create('MoodleMobApp.store.account.Manual'); 
 		account_store.load();
 		account_store.removeAll();
 		account_store.add(form.getValues());
 		account_store.sync();
 
 		// set user accounttype setting
-		var settings_store = Ext.create('iCorsi.store.Settings'); 
+		var settings_store = Ext.create('MoodleMobApp.store.Settings'); 
 		settings_store.load();
 		settings_store.data.first().getData().accounttype = 'manual';
 		settings_store.first().setDirty();

@@ -1,4 +1,4 @@
-Ext.define("iCorsi.view.account.Aai", {
+Ext.define("MoodleMobApp.view.account.Aai", {
     extend: 'Ext.form.Panel',
 	xtype: 'aaiaccount',
 	fullscreen: true,
@@ -9,7 +9,7 @@ Ext.define("iCorsi.view.account.Aai", {
         'Ext.field.Text',
         'Ext.field.Password',
         'Ext.field.Select',
-		'iCorsi.store.account.HomeOrgs'
+		'MoodleMobApp.store.account.HomeOrgs'
     ],
 	
     config: {
@@ -39,7 +39,7 @@ Ext.define("iCorsi.view.account.Aai", {
 						name: 'homeorganisation',
 						label: 'Home Organisation',
 						usePicker: false,
-						store: Ext.create('iCorsi.store.account.HomeOrgs'),
+						store: Ext.create('MoodleMobApp.store.account.HomeOrgs'),
 						displayField: 'name',
 						valueField: 'url'
 					},

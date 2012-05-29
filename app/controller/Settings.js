@@ -1,4 +1,4 @@
-Ext.define('iCorsi.controller.Settings', {
+Ext.define('MoodleMobApp.controller.Settings', {
     extend: 'Ext.app.Controller',
     
     config: {
@@ -13,11 +13,11 @@ Ext.define('iCorsi.controller.Settings', {
     init: function() {
 		// Check if db exists or not.
 		// Initialize if it does not exist.
-		var settings_store = Ext.create('iCorsi.store.Settings');
+		var settings_store = Ext.create('MoodleMobApp.store.Settings');
 		settings_store.load({
 			callback: function(records, operation, success) {
 				if( records.length == 0 ) { // initialize usersettings
-					var settings_init_data = Ext.create('iCorsi.model.Settings', {
+					var settings_init_data = Ext.create('MoodleMobApp.model.Settings', {
 						usageagreement: false,
 						accounttype: '',
 						storeaccount: false

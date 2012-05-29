@@ -1,4 +1,4 @@
-Ext.define("iCorsi.view.account.Manual", {
+Ext.define("MoodleMobApp.view.account.Manual", {
     extend: 'Ext.form.Panel',
 	xtype: 'manualaccount',
 	fullscreen: true,

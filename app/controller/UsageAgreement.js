@@ -1,4 +1,4 @@
-Ext.define('iCorsi.controller.UsageAgreement', {
+Ext.define('MoodleMobApp.controller.UsageAgreement', {
     extend: 'Ext.app.Controller',
     
     config: {
@@ -17,7 +17,7 @@ Ext.define('iCorsi.controller.UsageAgreement', {
     },
 
 	registerAgreement: function() {
-		var settings_store = Ext.create('iCorsi.store.Settings');
+		var settings_store = Ext.create('MoodleMobApp.store.Settings');
 		settings_store.load();
 		settings_store.data.first().getData().usageagreement = true;
 		settings_store.first().setDirty();

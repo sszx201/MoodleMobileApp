@@ -1,4 +1,4 @@
-Ext.define('iCorsi.model.account.HomeOrg', {
+Ext.define('MoodleMobApp.model.account.HomeOrg', {
     extend: 'Ext.data.Model',
 	
     config: {

@@ -1,4 +1,4 @@
-Ext.define('iCorsi.model.account.Manual', {
+Ext.define('MoodleMobApp.model.account.Manual', {
     extend: 'Ext.data.Model',
 	
     config: {

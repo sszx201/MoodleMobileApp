@@ -1,7 +1,7 @@
 Ext.application({
     models: ["Settings"],
 
-    name: 'iCorsi',
+    name: 'MoodleMobApp',
 
     requires: [
         'Ext.MessageBox',
@@ -9,19 +9,19 @@ Ext.application({
     ],
 	
     views: [
-		'iCorsi.view.Main',
-        'iCorsi.view.account.Aai',
-        'iCorsi.view.account.Manual',
-        'iCorsi.view.account.Choice'
+		'MoodleMobApp.view.Main',
+        'MoodleMobApp.view.account.Aai',
+        'MoodleMobApp.view.account.Manual',
+        'MoodleMobApp.view.account.Choice'
 	],
 
     controllers: [
-		"iCorsi.controller.Main",
-		"iCorsi.controller.account.Choice", 
-		"iCorsi.controller.UsageAgreement", 
-		"iCorsi.controller.Settings", 
-		'iCorsi.controller.account.Aai',
-		'iCorsi.controller.account.Manual'
+		"MoodleMobApp.controller.Main",
+		"MoodleMobApp.controller.account.Choice", 
+		"MoodleMobApp.controller.UsageAgreement", 
+		"MoodleMobApp.controller.Settings", 
+		'MoodleMobApp.controller.account.Aai',
+		'MoodleMobApp.controller.account.Manual'
 		],
 
     icon: {
@@ -37,21 +37,21 @@ Ext.application({
     launch: function() {
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
-		var settings_store = Ext.create('iCorsi.store.Settings');
+		var settings_store = Ext.create('MoodleMobApp.store.Settings');
 		settings_store.load();
 
 		if( settings_store.first().getData().usageagreement == false ) {
-        	Ext.Viewport.add( Ext.create('iCorsi.view.UsageAgreement') );
+        	Ext.Viewport.add( Ext.create('MoodleMobApp.view.UsageAgreement') );
 		} else if( settings_store.first().getData().accounttype == '' ) {
-        	Ext.Viewport.add(Ext.create('iCorsi.view.account.Choice'));
+        	Ext.Viewport.add(Ext.create('MoodleMobApp.view.account.Choice'));
 		} else {
-        	Ext.Viewport.add(Ext.create('iCorsi.view.Main'));
+        	Ext.Viewport.add(Ext.create('MoodleMobApp.view.Main'));
 		}
 
         // Initialize the main view
-		//var aai_account_form = Ext.create('iCorsi.view.account.Aai');
+		//var aai_account_form = Ext.create('MoodleMobApp.view.account.Aai');
         //Ext.Viewport.add( aai_account_form );
-		//var manual_account_form = Ext.create('iCorsi.view.account.Manual');
+		//var manual_account_form = Ext.create('MoodleMobApp.view.account.Manual');
         //Ext.Viewport.add( manual_account_form );
     },
 

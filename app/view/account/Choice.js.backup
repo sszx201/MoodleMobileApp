@@ -1,11 +1,11 @@
-Ext.define("iCorsi.view.account.Choice", {
+Ext.define("MoodleMobApp.view.account.Choice", {
     extend: 'Ext.tab.Panel',
 	xtype: 'accountchoice',
 
     requires: [
         'Ext.TitleBar',
-        'iCorsi.view.account.Aai',
-        'iCorsi.view.account.Manual',
+        'MoodleMobApp.view.account.Aai',
+        'MoodleMobApp.view.account.Manual',
     ],
     config: {
         tabBarPosition: 'top',

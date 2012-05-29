@@ -1,4 +1,4 @@
-Ext.define("iCorsi.view.UsageAgreement", {
+Ext.define("MoodleMobApp.view.UsageAgreement", {
     extend: 'Ext.Panel',
 	xtype: 'usageagreement',
 

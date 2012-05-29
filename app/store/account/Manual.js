@@ -1,13 +1,13 @@
-Ext.define('iCorsi.store.account.Manual', {
+Ext.define('MoodleMobApp.store.account.Manual', {
     extend: 'Ext.data.Store',
 
 	requires: [
-		'iCorsi.model.account.Manual',
+		'MoodleMobApp.model.account.Manual',
 		'Ext.data.proxy.LocalStorage'
 		],
 
     config: {
-        model: 'iCorsi.model.account.Manual',
+        model: 'MoodleMobApp.model.account.Manual',
 		proxy: {
 			type: 'localstorage',	
 			id: 'manualaccount'

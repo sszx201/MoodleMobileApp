@@ -1,4 +1,4 @@
-Ext.define("iCorsi.view.Main", {
+Ext.define("MoodleMobApp.view.Main", {
     extend: 'Ext.tab.Panel',
     requires: [
         'Ext.TitleBar',
@@ -11,7 +11,7 @@ Ext.define("iCorsi.view.Main", {
 
         items: [
             {
-                title: 'iCorsi home',
+                title: 'MoodleMobApp home',
                 iconCls: 'home',
 
                 styleHtmlContent: true,
@@ -21,7 +21,7 @@ Ext.define("iCorsi.view.Main", {
 					{
 						docked: 'top',
 						xtype: 'titlebar',
-						title: 'iCorsi Mobile app'
+						title: 'MoodleMobApp Mobile app'
                 	}
 				],
 

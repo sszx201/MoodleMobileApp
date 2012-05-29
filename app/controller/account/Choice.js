@@ -1,4 +1,4 @@
-Ext.define('iCorsi.controller.account.Choice', {
+Ext.define('MoodleMobApp.controller.account.Choice', {
     extend: 'Ext.app.Controller',
     
     config: {
@@ -22,7 +22,7 @@ Ext.define('iCorsi.controller.account.Choice', {
 
   	showTheActiveAccount: function() {
 		// set user accounttype setting
-		var settings_store = Ext.create('iCorsi.store.Settings'); 
+		var settings_store = Ext.create('MoodleMobApp.store.Settings'); 
 		settings_store.load();
 		if(settings_store.data.first().getData().accounttype === 'aai') {
 			this.getAccountChoicePanel().setActiveItem(0);

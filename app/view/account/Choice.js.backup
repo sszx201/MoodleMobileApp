@@ -1,0 +1,25 @@
+Ext.define("iCorsi.view.account.Choice", {
+    extend: 'Ext.tab.Panel',
+	xtype: 'accountchoice',
+
+    requires: [
+        'Ext.TitleBar',
+        'iCorsi.view.account.Aai',
+        'iCorsi.view.account.Manual',
+    ],
+    config: {
+        tabBarPosition: 'top',
+		
+        items: [
+            {
+                title: 'AAI/NetID account',
+                xtype: 'aaiaccount',
+            },
+			{
+                title: 'External User account',
+                xtype: 'manualaccount',
+            }
+
+        ]
+    }
+});

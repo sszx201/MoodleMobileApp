@@ -41,8 +41,6 @@ Ext.application({
 		var settings_store = Ext.create('MoodleMobApp.store.Settings');
 		settings_store.load();
 
-		console.log(MoodleMobApp.Config.getWebServiceUrl());
-
 		if( settings_store.first().getData().usageagreement == false ) {
         	Ext.Viewport.add( Ext.create('MoodleMobApp.view.UsageAgreement') );
 		} else if( settings_store.first().getData().accounttype == '' ) {

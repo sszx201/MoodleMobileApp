@@ -1,12 +1,15 @@
 Ext.define('MoodleMobApp.controller.account.Aai', {
     extend: 'Ext.app.Controller',
 
-	requires: [
-		'MoodleMobApp.model.account.Aai',
-		'MoodleMobApp.store.account.Aai'
-	],
-   	
     config: {
+		models: [
+			'MoodleMobApp.model.account.Aai',
+		],
+
+		stores: [
+			'MoodleMobApp.store.account.Aai',
+		],
+
         refs: {
 			form: '#aaiaccount_form',
 			save: '#aaiaccount_form button[action=save]'
@@ -60,6 +63,6 @@ Ext.define('MoodleMobApp.controller.account.Aai', {
             form.setMasked(false);
 			location.reload();
         }, 1000);
-	}
-    
+	},
+   
 });

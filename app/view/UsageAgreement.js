@@ -3,8 +3,12 @@ Ext.define("MoodleMobApp.view.UsageAgreement", {
 	xtype: 'usageagreement',
 
     requires: [
-        'Ext.TitleBar'
     ],
+
+ 	controllers: [
+        'MoodleMobApp.controller.UsageAgreement'
+    ],
+
     config: {
 		id: 'usageagreement_panel',
         styleHtmlContent: true,

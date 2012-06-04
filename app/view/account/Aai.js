@@ -9,9 +9,13 @@ Ext.define("MoodleMobApp.view.account.Aai", {
         'Ext.field.Text',
         'Ext.field.Password',
         'Ext.field.Select',
-		'MoodleMobApp.store.account.HomeOrgs'
+		'MoodleMobApp.store.account.HomeOrgs',
     ],
-	
+
+	controllers: [
+		'MoodleMobApp.controller.account.Aai'
+	],
+
     config: {
 		id: 'aaiaccount_form',
 		items: [

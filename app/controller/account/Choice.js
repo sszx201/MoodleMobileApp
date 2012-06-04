@@ -7,6 +7,7 @@ Ext.define('MoodleMobApp.controller.account.Choice', {
 			selectAaiButton: '#accountchoice_panel button[action=select_aai_account]',
 			selectManualButton: '#accountchoice_panel button[action=select_manual_account]'
         },
+
         control: {
 			accountChoicePanel: {
 				show: 'showTheActiveAccount'	

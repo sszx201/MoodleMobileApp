@@ -4,32 +4,36 @@ Ext.application({
 
 	requires: [
 		'MoodleMobApp.Config',
+		'Ext.MessageBox',
+		'Ext.TitleBar',
 		'Ext.data.identifier.Uuid',
 		'MoodleMobApp.store.account.HomeOrgs',
 	],
 
-	models: ["MoodleMobApp.model.Settings"],
+	models: [
+		"MoodleMobApp.model.Settings",
+	],
 
 	stores: [
 		'MoodleMobApp.store.Settings',
-		'MoodleMobApp.store.account.HomeOrgs',
 	],
 	
 	views: [
+		'MoodleMobApp.view.UsageAgreement',
+		'MoodleMobApp.view.account.Choice',
 		'MoodleMobApp.view.Main',
-		'MoodleMobApp.view.account.Aai',
-		'MoodleMobApp.view.account.Manual',
-		'MoodleMobApp.view.account.Choice'
+		'MoodleMobApp.view.course.Content',
 	],
 
 	controllers: [
-		"MoodleMobApp.controller.Main",
-		"MoodleMobApp.controller.account.Choice", 
-		"MoodleMobApp.controller.UsageAgreement", 
 		"MoodleMobApp.controller.Settings", 
+		"MoodleMobApp.controller.Main",
+		"MoodleMobApp.controller.UsageAgreement", 
+		"MoodleMobApp.controller.account.Choice", 
 		'MoodleMobApp.controller.account.Aai',
-		'MoodleMobApp.controller.account.Manual'
-		],
+		'MoodleMobApp.controller.account.Manual',
+		'MoodleMobApp.controller.course.Navigator',
+	],
 
 	icon: {
 		57: 'resources/icons/Icon.png',

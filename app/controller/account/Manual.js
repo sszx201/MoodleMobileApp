@@ -82,7 +82,6 @@ Ext.define('MoodleMobApp.controller.account.Manual', {
 			this.authenticate(function(){ console.log('Manual authentication completed; Course list refreshed;'); });
 		}
 	},
-
 	// The authentication function authenticates the user.
 	// When the user is authenticated a list of courses and 
 	// relative tokens is received. These data are then stored
@@ -110,7 +109,8 @@ Ext.define('MoodleMobApp.controller.account.Manual', {
 				// check if there are any exceptions 
 				if( this.first().raw.exception == undefined) {
 					// store data
-					var courses_store = Ext.create('MoodleMobApp.store.course.Courses');
+					//var courses_store = Ext.create('MoodleMobApp.store.course.Courses');
+					var courses_store = Ext.data.StoreManager.lookup('courses');
 					courses_store.load();
 					// add all new courses
 					this.each(
@@ -129,7 +129,6 @@ Ext.define('MoodleMobApp.controller.account.Manual', {
 					// write
 					courses_store.sync();
 				} else {
-					console.log(this.first().getData());
 					Ext.Msg.alert(
 						this.first().raw.exception,
 						this.first().raw.message

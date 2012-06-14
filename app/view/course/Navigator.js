@@ -6,10 +6,6 @@ Ext.define("MoodleMobApp.view.course.Navigator", {
 		'MoodleMobApp.view.course.List',
 	],
 
-	stores:[
-		'MoodleMobApp.store.course.Courses',
-	],
-
     config: {
 		id: 'course_navigator',
         items: [

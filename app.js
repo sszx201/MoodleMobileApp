@@ -8,6 +8,7 @@ Ext.application({
 		'Ext.TitleBar',
 		'Ext.data.identifier.Uuid',
 		'MoodleMobApp.store.account.HomeOrgs',
+		'MoodleMobApp.store.course.Courses',
 	],
 
 	models: [
@@ -46,10 +47,14 @@ Ext.application({
 	tabletStartupScreen: 'resources/loading/Homescreen~ipad.jpg',
 
 	launch: function() {
-		// Destroy the #appLoadingIndicator element
-		Ext.fly('appLoadingIndicator').destroy();
+		// load courses store
+		var courses_store = Ext.create('MoodleMobApp.store.course.Courses');
+		courses_store.load();
 		var settings_store = Ext.create('MoodleMobApp.store.Settings');
 		settings_store.load();
+
+		// Destroy the #appLoadingIndicator element
+		Ext.fly('appLoadingIndicator').destroy();
 
 		if( settings_store.first().getData().usageagreement == false ) {
 			Ext.Viewport.add( Ext.create('MoodleMobApp.view.UsageAgreement') );
@@ -58,12 +63,6 @@ Ext.application({
 		} else {
 			Ext.Viewport.add(Ext.create('MoodleMobApp.view.Main'));
 		}
-
-		// Initialize the main view
-		//var aai_account_form = Ext.create('MoodleMobApp.view.account.Aai');
-		//Ext.Viewport.add( aai_account_form );
-		//var manual_account_form = Ext.create('MoodleMobApp.view.account.Manual');
-		//Ext.Viewport.add( manual_account_form );
 	},
 
 	onUpdated: function() {

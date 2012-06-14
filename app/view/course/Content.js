@@ -9,10 +9,12 @@ Ext.define("MoodleMobApp.view.course.Content", {
        	title: 'Course Content', 
 		itemTpl: '{name}',
 		//store: Ext.create('MoodleMobApp.store.course.Courses'),
+		/*
 		data: [
 			{name: 'ciao'},
 			{name: 'miao'},
 		],
+		*/
 		onItemDisclosure: true,
     },
 });

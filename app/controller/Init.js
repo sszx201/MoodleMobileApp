@@ -1,4 +1,4 @@
-Ext.define('MoodleMobApp.controller.Settings', {
+Ext.define('MoodleMobApp.controller.Init', {
     extend: 'Ext.app.Controller',
     
     config: {
@@ -11,8 +11,7 @@ Ext.define('MoodleMobApp.controller.Settings', {
     },
     
     init: function() {
-		// Check if db exists or not.
-		// Initialize if it does not exist.
+		// create settings store
 		var settings_store = Ext.create('MoodleMobApp.store.Settings');
 		settings_store.load({
 			callback: function(records, operation, success) {
@@ -27,5 +26,9 @@ Ext.define('MoodleMobApp.controller.Settings', {
 				}
 			}
 		});
+
+		// create courses database
+		var courses_store = Ext.create('MoodleMobApp.store.course.Courses');
+		courses_store.load();
 	}
 });

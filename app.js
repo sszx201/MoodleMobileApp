@@ -27,7 +27,7 @@ Ext.application({
 	],
 
 	controllers: [
-		"MoodleMobApp.controller.Settings", 
+		"MoodleMobApp.controller.Init", 
 		"MoodleMobApp.controller.Main",
 		"MoodleMobApp.controller.UsageAgreement", 
 		"MoodleMobApp.controller.account.Choice", 
@@ -47,11 +47,8 @@ Ext.application({
 	tabletStartupScreen: 'resources/loading/Homescreen~ipad.jpg',
 
 	launch: function() {
-		// load courses store
-		var courses_store = Ext.create('MoodleMobApp.store.course.Courses');
-		courses_store.load();
-		var settings_store = Ext.create('MoodleMobApp.store.Settings');
-		settings_store.load();
+		// hook up stores
+		var settings_store = Ext.data.StoreManager.lookup('settings_store');
 
 		// Destroy the #appLoadingIndicator element
 		Ext.fly('appLoadingIndicator').destroy();

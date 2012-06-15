@@ -26,8 +26,7 @@ Ext.define('MoodleMobApp.controller.account.Manual', {
 
 	loadAccountData: function () {
 		var form = this.getForm();	
-		var account_store = Ext.create('MoodleMobApp.store.account.Manual'); 
-		account_store.load();
+		var account_store = Ext.data.StoreManager.lookup('manualaccount_store');
 		if(account_store.getCount() > 0) {
 			// Update the form with account data.
 			form.setRecord( Ext.create('MoodleMobApp.model.account.Manual', account_store.first().getData()) );
@@ -37,15 +36,13 @@ Ext.define('MoodleMobApp.controller.account.Manual', {
 	saveAccountData: function () {
 		var form = this.getForm();	
 		// store account data
-		var account_store = Ext.create('MoodleMobApp.store.account.Manual'); 
-		account_store.load();
+		var account_store = Ext.data.StoreManager.lookup('manualaccount_store');
 		account_store.removeAll();
 		account_store.add(form.getValues());
 		account_store.sync();
 
 		// set user accounttype setting
-		var settings_store = Ext.create('MoodleMobApp.store.Settings'); 
-		settings_store.load();
+		var settings_store = Ext.data.StoreManager.lookup('settings_store'); 
 		settings_store.data.first().getData().accounttype = 'manual';
 		settings_store.first().setDirty();
 		settings_store.sync();
@@ -66,8 +63,7 @@ Ext.define('MoodleMobApp.controller.account.Manual', {
 
 	// check if the Manual account is the one set
 	isActiveAccount: function () {
-		var settings_store = Ext.create('MoodleMobApp.store.Settings'); 
-		settings_store.load();
+		var settings_store = Ext.data.StoreManager.lookup('settings_store');
 		if ( settings_store.data.first().getData().accounttype == 'manual') {
 			return true;	
 		} else {
@@ -76,20 +72,23 @@ Ext.define('MoodleMobApp.controller.account.Manual', {
 	},
 
 	init: function(app) {
+		// create the account store
+		var account_store = Ext.create('MoodleMobApp.store.account.Manual'); 
+		account_store.load();
 		// if the account is the active one
 		// authenticate and get the course data
 		if( this.isActiveAccount() ) {
 			this.authenticate(function(){ console.log('Manual authentication completed; Course list refreshed;'); });
 		}
 	},
+
 	// The authentication function authenticates the user.
 	// When the user is authenticated a list of courses and 
 	// relative tokens is received. These data are then stored
 	// in the localestorage. If the server responds with
 	// an exception then an alert message is displayed.
 	authenticate: function(successCallbackFunction) {
-		var account_store = Ext.create('MoodleMobApp.store.account.Manual'); 
-		account_store.load();
+		var account_store = Ext.data.StoreManager.lookup('manualaccount_store');
 		var auth_url = MoodleMobApp.Config.getManualAuthUrl();
 			auth_url+= '?username='+account_store.first().getData().username;
 			auth_url+= '&password='+account_store.first().getData().password;
@@ -109,13 +108,17 @@ Ext.define('MoodleMobApp.controller.account.Manual', {
 				// check if there are any exceptions 
 				if( this.first().raw.exception == undefined) {
 					// store data
-					//var courses_store = Ext.create('MoodleMobApp.store.course.Courses');
 					var courses_store = Ext.data.StoreManager.lookup('courses');
-					courses_store.load();
 					// add all new courses
 					this.each(
 						function(item) {
-							courses_store.add( item.getData() );
+							var itemData = item.getData();
+							// check the modification time
+							if( courses_store.getById(itemData.id).getData().timemodified != itemData.timemodified ) {
+								console.log('course id: ' + itemData.id + ' has been modified');	
+								itemData.notify_modification = true;
+							}
+							courses_store.add( itemData );
 						}
 					);	
 					// prepare to write

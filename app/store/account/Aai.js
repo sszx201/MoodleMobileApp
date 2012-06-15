@@ -10,6 +10,7 @@ Ext.define('MoodleMobApp.store.account.Aai', {
 	],
 
     config: {
+		storeId: 'aaiaccount_store',
         model: 'MoodleMobApp.model.account.Aai',
 		proxy: {
 			type: 'localstorage',	

@@ -1,7 +1,7 @@
 Ext.define('MoodleMobApp.controller.account.Aai', {
-    extend: 'Ext.app.Controller',
+	extend: 'Ext.app.Controller',
 
-    config: {
+	config: {
 		models: [
 			'MoodleMobApp.model.account.Aai',
 		],
@@ -10,20 +10,20 @@ Ext.define('MoodleMobApp.controller.account.Aai', {
 			'MoodleMobApp.store.account.Aai',
 		],
 
-        refs: {
+		refs: {
 			form: '#aaiaccount_form',
 			save: '#aaiaccount_form button[action=save]'
-        },
+		},
 
-        control: {
+		control: {
 			form: {
 				initialize: 'loadAccountData'
 			},
    			save: {
 				tap: 'saveAccountData'
 			}	
-        }
-    },
+		}
+	},
 
 	loadAccountData: function () {
 		var form = this.getForm();	
@@ -48,18 +48,18 @@ Ext.define('MoodleMobApp.controller.account.Aai', {
 		settings_store.first().setDirty();
 		settings_store.sync();
 
-        // Mask the form
-        form.setMasked({
-            xtype: 'loadmask',
-            message: 'Saving...'
-        });
+		// Mask the form
+		form.setMasked({
+			xtype: 'loadmask',
+			message: 'Saving...'
+		});
 
-        // Put it inside a timeout so it feels like it is going to a server.
-        setTimeout(function() {
-            // Unmask the formpanel
-            form.setMasked(false);
+		// Put it inside a timeout so it feels like it is going to a server.
+		setTimeout(function() {
+			// Unmask the formpanel
+			form.setMasked(false);
 			location.reload();
-        }, 1000);
+		}, 1000);
 	},
 
  	// check if the AAI account is the one set

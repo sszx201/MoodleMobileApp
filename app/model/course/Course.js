@@ -5,8 +5,8 @@ Ext.define('MoodleMobApp.model.course.Course', {
 		fields: [
 			{name: 'id', type: 'int'},
 			{name: 'name', type: 'string'},
+			{name: 'hasnewcontent', type: 'boolean'},
 			{name: 'timemodified', type: 'string'},
-			{name: 'notify_modification', type: 'boolean'},
 			{name: 'token', type: 'string'}
 		]
 	}

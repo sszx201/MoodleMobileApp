@@ -4,6 +4,7 @@ Ext.application({
 
 	requires: [
 		'MoodleMobApp.Config',
+		'MoodleMobApp.WebService',
 		'Ext.MessageBox',
 		'Ext.TitleBar',
 		'Ext.data.identifier.Uuid',
@@ -33,6 +34,7 @@ Ext.application({
 		"MoodleMobApp.controller.account.Choice", 
 		'MoodleMobApp.controller.account.Aai',
 		'MoodleMobApp.controller.account.Manual',
+		'MoodleMobApp.controller.course.Course',
 		'MoodleMobApp.controller.course.Navigator',
 	],
 

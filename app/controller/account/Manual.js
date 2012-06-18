@@ -92,11 +92,16 @@ Ext.define('MoodleMobApp.controller.account.Manual', {
 		var auth_url = MoodleMobApp.Config.getManualAuthUrl();
 			auth_url+= '?username='+account_store.first().getData().username;
 			auth_url+= '&password='+account_store.first().getData().password;
+
 		var store = Ext.create('Ext.data.Store', {
 			model: 'MoodleMobApp.model.course.Course',
 			proxy: {
 				type: 'ajax',
 				url : auth_url, 
+				pageParam: false,
+				startParam: false,
+				limitParam: false,
+				noCache: false,
 				reader: {
 					type: 'json'
 				}
@@ -107,29 +112,25 @@ Ext.define('MoodleMobApp.controller.account.Manual', {
 			callback: function(records, operation, success) {
 				// check if there are any exceptions 
 				if( this.first().raw.exception == undefined) {
-					// store data
 					var courses_store = Ext.data.StoreManager.lookup('courses');
+					// purge old content
+					courses_store.removeAll();
 					// add all new courses
 					this.each(
 						function(item) {
-							var itemData = item.getData();
-							// check the modification time
-							if( courses_store.getById(itemData.id).getData().timemodified != itemData.timemodified ) {
-								console.log('course id: ' + itemData.id + ' has been modified');	
-								itemData.notify_modification = true;
-							}
-							courses_store.add( itemData );
+							courses_store.add( item.getData() );
 						}
-					);	
+					);
 					// prepare to write
 					courses_store.each(
 						function() { 
 							this.setDirty();
 						}
 					);
+
 					// call the successCallbackFunction when data have been written
 					courses_store.addListener('write', successCallbackFunction);
-					// write
+					// store data
 					courses_store.sync();
 				} else {
 					Ext.Msg.alert(

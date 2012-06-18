@@ -1,11 +1,11 @@
 Ext.define('MoodleMobApp.model.account.Manual', {
-    extend: 'Ext.data.Model',
+	extend: 'Ext.data.Model',
 	
-    config: {
+	config: {
 		identifier: 'uuid',
-        fields: [ 
-            {name: 'username', type: 'string'},
-            {name: 'password', type: 'string'}
-        ]
-    }
+		fields: [ 
+			{name: 'username', type: 'string'},
+			{name: 'password', type: 'string'}
+		]
+	}
 });

@@ -1,16 +1,16 @@
 Ext.define('MoodleMobApp.controller.Init', {
-    extend: 'Ext.app.Controller',
-    
-    config: {
-        refs: {
-            
-        },
-        control: {
-            
-        }
-    },
-    
-    init: function() {
+	extend: 'Ext.app.Controller',
+	
+	config: {
+		refs: {
+			
+		},
+		control: {
+			
+		}
+	},
+	
+	init: function() {
 		// create settings store
 		var settings_store = Ext.create('MoodleMobApp.store.Settings');
 		settings_store.load({

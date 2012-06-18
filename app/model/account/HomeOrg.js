@@ -1,11 +1,11 @@
 Ext.define('MoodleMobApp.model.account.HomeOrg', {
-    extend: 'Ext.data.Model',
+	extend: 'Ext.data.Model',
 	
-    config: {
+	config: {
 		identifier: 'uuid',
-        fields: [ 
-            {name: 'name', type: 'string'},
-            {name: 'url', type: 'string'}
-        ]
-    }
+		fields: [ 
+			{name: 'name', type: 'string'},
+			{name: 'url', type: 'string'}
+		]
+	}
 });

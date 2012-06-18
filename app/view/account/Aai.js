@@ -1,22 +1,22 @@
 Ext.define("MoodleMobApp.view.account.Aai", {
-    extend: 'Ext.form.Panel',
+	extend: 'Ext.form.Panel',
 	xtype: 'aaiaccount',
 	fullscreen: true,
 	
-    requires: [
-        'Ext.TitleBar',
-        'Ext.form.FieldSet',
-        'Ext.field.Text',
-        'Ext.field.Password',
-        'Ext.field.Select',
+	requires: [
+		'Ext.TitleBar',
+		'Ext.form.FieldSet',
+		'Ext.field.Text',
+		'Ext.field.Password',
+		'Ext.field.Select',
 		'MoodleMobApp.store.account.HomeOrgs',
-    ],
+	],
 
 	controllers: [
 		'MoodleMobApp.controller.account.Aai'
 	],
 
-    config: {
+	config: {
 		id: 'aaiaccount_form',
 		items: [
 			{
@@ -57,5 +57,5 @@ Ext.define("MoodleMobApp.view.account.Aai", {
 				]
 			}
 		]
-    }
+	}
 });

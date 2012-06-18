@@ -1,13 +1,13 @@
 Ext.define('MoodleMobApp.store.account.HomeOrgs', {
-    extend: 'Ext.data.Store',
+	extend: 'Ext.data.Store',
 
 	requires: [
 		'MoodleMobApp.model.account.HomeOrg'
 	],
 
-    config: {
+	config: {
 		storeId: 'homeorganisations_store',
-        model: 'MoodleMobApp.model.account.HomeOrg',
+		model: 'MoodleMobApp.model.account.HomeOrg',
 		autoLoad: true,
 		proxy: {
 			type: 'ajax',	
@@ -16,5 +16,5 @@ Ext.define('MoodleMobApp.store.account.HomeOrgs', {
 				type: 'json'
 			}
 		}
-    }
+	}
 });

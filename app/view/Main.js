@@ -1,27 +1,27 @@
 Ext.define("MoodleMobApp.view.Main", {
-    extend: 'Ext.tab.Panel',
+	extend: 'Ext.tab.Panel',
 
-    requires: [
+	requires: [
 		'MoodleMobApp.view.course.Navigator',
 		'MoodleMobApp.view.course.List',
-    ],
+	],
 
-    config: {
-        tabBarPosition: 'bottom',
+	config: {
+		tabBarPosition: 'bottom',
 
-        items: [
-            {
-                title: 'Courses',
-                iconCls: 'home',
-				xtype: 'coursenavigator'
-            },
+		items: [
 			{
-                title: 'Account Settings',
-                iconCls: 'user',
+				title: 'Courses',
+				iconCls: 'home',
+				xtype: 'coursenavigator'
+			},
+			{
+				title: 'Account Settings',
+				iconCls: 'user',
 				xtype: 'accountchoice',
 				
-            }
+			}
 
-        ]
-    }
+		]
+	}
 });

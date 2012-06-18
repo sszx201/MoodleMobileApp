@@ -1,14 +1,14 @@
 Ext.define('MoodleMobApp.controller.account.Choice', {
-    extend: 'Ext.app.Controller',
-    
-    config: {
-        refs: {
+	extend: 'Ext.app.Controller',
+	
+	config: {
+		refs: {
 			accountChoicePanel: '#accountchoice_panel',
 			selectAaiButton: '#accountchoice_panel button[action=select_aai_account]',
 			selectManualButton: '#accountchoice_panel button[action=select_manual_account]'
-        },
+		},
 
-        control: {
+		control: {
 			accountChoicePanel: {
 				show: 'showTheActiveAccount'	
 			},
@@ -18,8 +18,8 @@ Ext.define('MoodleMobApp.controller.account.Choice', {
 			selectManualButton: {
 				tap: 'showManualAccountForm'
 			},
-        }
-    },
+		}
+	},
 
   	showTheActiveAccount: function() {
 		// set user accounttype setting

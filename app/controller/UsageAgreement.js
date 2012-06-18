@@ -1,20 +1,20 @@
 Ext.define('MoodleMobApp.controller.UsageAgreement', {
-    extend: 'Ext.app.Controller',
-    
-    config: {
-        refs: {
+	extend: 'Ext.app.Controller',
+	
+	config: {
+		refs: {
 			agree: '#usageagreement_panel button[action=agree]',
 			disagree: '#usageagreement_panel button[action=disagree]'
-        },
-        control: {
-           agree:  {
+		},
+		control: {
+		   agree:  {
 				tap: 'registerAgreement'
 		   },
 		   disagree: {
 		   		tap: 'registerDisagreement'
 		  }
-        }
-    },
+		}
+	},
 
 	registerAgreement: function() {
 		var settings_store = Ext.create('MoodleMobApp.store.Settings');
@@ -28,5 +28,5 @@ Ext.define('MoodleMobApp.controller.UsageAgreement', {
 	registerDisagreement: function() {
 		console.log('user disagreed');
 	},
-    
+	
 });

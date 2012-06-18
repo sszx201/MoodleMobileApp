@@ -1,14 +1,14 @@
 Ext.define("MoodleMobApp.view.account.Choice", {
-    extend: 'Ext.Panel',
+	extend: 'Ext.Panel',
 	xtype: 'accountchoice',
 
-    requires: [
-        'Ext.TitleBar',
-        'MoodleMobApp.view.account.Aai',
-        'MoodleMobApp.view.account.Manual',
-    ],
+	requires: [
+		'Ext.TitleBar',
+		'MoodleMobApp.view.account.Aai',
+		'MoodleMobApp.view.account.Manual',
+	],
 
-    config: {
+	config: {
 		id: 'accountchoice_panel',
 
 		layout: {
@@ -18,7 +18,7 @@ Ext.define("MoodleMobApp.view.account.Choice", {
 				direction: "left"
 			}
 		},
-        items: [
+		items: [
 			{
 				xtype: 'toolbar',
 				docked: 'top',
@@ -39,15 +39,15 @@ Ext.define("MoodleMobApp.view.account.Choice", {
 
 				]
 			},
-            {
-                title: 'AAI/NetID account',
-                xtype: 'aaiaccount',
-            },
 			{
-                title: 'External User account',
-                xtype: 'manualaccount',
-            }
+				title: 'AAI/NetID account',
+				xtype: 'aaiaccount',
+			},
+			{
+				title: 'External User account',
+				xtype: 'manualaccount',
+			}
 
-        ]
-    }
+		]
+	}
 });

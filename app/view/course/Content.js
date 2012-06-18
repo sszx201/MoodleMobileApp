@@ -1,12 +1,12 @@
 Ext.define("MoodleMobApp.view.course.Content", {
-    extend: 'Ext.List',
+	extend: 'Ext.List',
 	xtype: 'coursecontent',
 
 	//stores: [ 'MoodleMobApp.store.course.Courses' ],
 
-    config: {
+	config: {
 		id: 'course_content',
-       	title: 'Course Content', 
+	   	title: 'Course Content', 
 		itemTpl: '{name}',
 		//store: Ext.create('MoodleMobApp.store.course.Courses'),
 		/*
@@ -16,5 +16,5 @@ Ext.define("MoodleMobApp.view.course.Content", {
 		],
 		*/
 		onItemDisclosure: true,
-    },
+	},
 });

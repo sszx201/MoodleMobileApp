@@ -1,13 +1,13 @@
 Ext.define('MoodleMobApp.model.account.Aai', {
-    extend: 'Ext.data.Model',
+	extend: 'Ext.data.Model',
 	
-    config: {
+	config: {
 		identifier: 'uuid',
-        fields: [ 
-            {name: 'username', type: 'string'},
-            {name: 'password', type: 'string'},
-            {name: 'homeorganisation', type: 'string'}
-        ]
-    }
+		fields: [ 
+			{name: 'username', type: 'string'},
+			{name: 'password', type: 'string'},
+			{name: 'homeorganisation', type: 'string'}
+		]
+	}
 
 });

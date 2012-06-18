@@ -1,16 +1,16 @@
 Ext.define("MoodleMobApp.view.account.Manual", {
-    extend: 'Ext.form.Panel',
+	extend: 'Ext.form.Panel',
 	xtype: 'manualaccount',
 	fullscreen: true,
 	
-    requires: [
-        'Ext.TitleBar',
-        'Ext.form.FieldSet',
-        'Ext.field.Text',
-        'Ext.field.Password'
-    ],
+	requires: [
+		'Ext.TitleBar',
+		'Ext.form.FieldSet',
+		'Ext.field.Text',
+		'Ext.field.Password'
+	],
 	
-    config: {
+	config: {
 		id: 'manualaccount_form',
 		items: [
 			{
@@ -42,5 +42,5 @@ Ext.define("MoodleMobApp.view.account.Manual", {
 				]
 			}
 		]
-    }
+	}
 });

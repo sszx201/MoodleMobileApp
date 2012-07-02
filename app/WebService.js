@@ -13,11 +13,11 @@ Ext.define('MoodleMobApp.WebService', {
 	//************************************	
 	// Generic webservice request function
 	//************************************	
-	request: function(wstoken, wsfunction, params) {
+	request: function(wstoken, wsfunction, params, rmodel) {
 		var query = MoodleMobApp.Config.getWebServiceUrl() + '?wstoken=' + wstoken + '&wsfunction=' + wsfunction + '&' + params + '&moodlewsrestformat=json'; 
 
 		var content_store = Ext.create('Ext.data.Store', {
-			model: 'MoodleMobApp.model.course.Content',
+			model: rmodel,
 			proxy: {
 				type: 'ajax',
 				url: query,
@@ -35,7 +35,8 @@ Ext.define('MoodleMobApp.WebService', {
 		return content_store.load({
 			callback: function(records, operation, success) {
 				// check if there are any exceptions 
-				if( this.first().raw.exception == undefined) {
+				// if empty or no errors return the store
+				if( this.first() == undefined || this.first().raw.exception == undefined ) {
 					return this;
 				} else {
 					Ext.Msg.alert(
@@ -48,9 +49,17 @@ Ext.define('MoodleMobApp.WebService', {
 	},
 		
 	//*****************************	
-	// Wrappers
+	// Web Service Request Wrappers
 	//*****************************	
 	getCourseModules: function(course) {
-		return this.request(course.token, 'local_uniappws_get_course_modules', 'id='+course.id);
+		var course_modules_store = this.request(course.token, 'local_uniappws_course_get_course_modules', 'courseid='+course.id, 'MoodleMobApp.model.course.ModuleList');
+		course_modules_store.setGroupField('modname');
+		return course_modules_store;
+	},
+
+	getForumDiscussions: function(course_token, forum) {
+		var forum_discussions_store = this.request(course_token, 'local_uniappws_forum_get_forum_discussions', 'forumid='+forum.instanceid, 'MoodleMobApp.model.course.forum.Discussion');
+		return forum_discussions_store;
 	}
+
 });

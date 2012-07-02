@@ -111,7 +111,12 @@ Ext.define('MoodleMobApp.controller.account.Manual', {
 		store.load({
 			callback: function(records, operation, success) {
 				// check if there are any exceptions 
-				if( this.first().raw.exception == undefined) {
+				if(this.first() == undefined){
+					Ext.Msg.alert(
+						'Manual Authentication Failed',
+						'The manual Authentication has failed.'
+					);
+				} else if( this.first().raw.exception == undefined) {
 					var courses_store = Ext.data.StoreManager.lookup('courses');
 					// purge old content
 					courses_store.removeAll();
@@ -121,6 +126,7 @@ Ext.define('MoodleMobApp.controller.account.Manual', {
 							courses_store.add( item.getData() );
 						}
 					);
+
 					// prepare to write
 					courses_store.each(
 						function() { 

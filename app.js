@@ -24,7 +24,7 @@ Ext.application({
 		'MoodleMobApp.view.UsageAgreement',
 		'MoodleMobApp.view.account.Choice',
 		'MoodleMobApp.view.Main',
-		'MoodleMobApp.view.course.Content',
+		'MoodleMobApp.view.course.ModuleList',
 	],
 
 	controllers: [
@@ -34,7 +34,6 @@ Ext.application({
 		"MoodleMobApp.controller.account.Choice", 
 		'MoodleMobApp.controller.account.Aai',
 		'MoodleMobApp.controller.account.Manual',
-		'MoodleMobApp.controller.course.Course',
 		'MoodleMobApp.controller.course.Navigator',
 	],
 

@@ -3,7 +3,7 @@ Ext.define("MoodleMobApp.view.course.forum.DiscussionList", {
 	xtype: 'forumdiscussionlist',
 
 	config: {
-		id: 'forum_discussions_list',
+		id: 'forum_discussion_list',
 	   	title: 'List of discussions', 
 		itemTpl: '{name}',
 		onItemDisclosure: true,

@@ -35,10 +35,7 @@ Ext.define('MoodleMobApp.WebService', {
 		return content_store.load({
 			callback: function(records, operation, success) {
 				// check if there are any exceptions 
-				// if empty or no errors return the store
-				if( this.first() == undefined || this.first().raw.exception == undefined ) {
-					return this;
-				} else {
+				if( this.first() != undefined && this.first().raw.exception != undefined ) {
 					Ext.Msg.alert(
 						this.first().raw.exception,
 						this.first().raw.message
@@ -52,14 +49,33 @@ Ext.define('MoodleMobApp.WebService', {
 	// Web Service Request Wrappers
 	//*****************************	
 	getCourseModules: function(course) {
-		var course_modules_store = this.request(course.token, 'local_uniappws_course_get_course_modules', 'courseid='+course.id, 'MoodleMobApp.model.course.ModuleList');
+		var course_modules_store = this.request(
+					course.token, 
+					'local_uniappws_course_get_course_modules',
+					'courseid='+course.id,
+					'MoodleMobApp.model.course.ModuleList'
+		);
 		course_modules_store.setGroupField('modname');
 		return course_modules_store;
 	},
 
 	getForumDiscussions: function(course_token, forum) {
-		var forum_discussions_store = this.request(course_token, 'local_uniappws_forum_get_forum_discussions', 'forumid='+forum.instanceid, 'MoodleMobApp.model.course.forum.Discussion');
+		var forum_discussions_store = this.request(
+					course_token,
+					'local_uniappws_forum_get_forum_discussions',
+					'forumid='+forum.instanceid,
+					'MoodleMobApp.model.course.forum.Discussion'
+		);
 		return forum_discussions_store;
+	},
+	
+	getDiscussionPosts: function(course_token, discussion) {
+		var discussion_posts_store = this.request(
+					course_token,
+					'local_uniappws_forum_get_posts_by_discussionid',
+					'discid='+discussion.id,
+					'MoodleMobApp.model.course.forum.Post'
+		);
+		return discussion_posts_store;
 	}
-
 });

@@ -4,22 +4,31 @@ Ext.define('MoodleMobApp.controller.course.Navigator', {
 	config: {
 		models: [
 			'MoodleMobApp.model.course.ModuleList',
-			'MoodleMobApp.model.course.forum.Discussion'	
+			'MoodleMobApp.model.course.forum.Discussion',
+			'MoodleMobApp.model.course.forum.Post'
 		],
+
 		views: [
 			'MoodleMobApp.view.course.ModuleList',
-			'MoodleMobApp.view.course.forum.DiscussionList'	
+			'MoodleMobApp.view.course.forum.DiscussionList',
+			'MoodleMobApp.view.course.forum.PostList',
 		],
 
 		refs: {
 			navigator: '#course_navigator',
 			course: '#course_list',
-			module: '#module_list'
+			module: '#module_list',
+			discussion: '#forum_discussion_list',
+			postlist: '#discussion_post_list',
 		},
 
 		control: {
+			// generic controls
 			course: { select: 'selectCourse' },
-			module: { select: 'selectModule' }
+			module: { select: 'selectModule' },
+			// specific controls
+			discussion: { select: 'selectDiscussion' },
+			postlist: { itemtap: 'selectPost'}
 		}
 	},
 
@@ -53,4 +62,33 @@ Ext.define('MoodleMobApp.controller.course.Navigator', {
 		});
 	},
 
+	selectDiscussion: function(view, record) {
+		var discussion_posts_store = MoodleMobApp.WebService.getDiscussionPosts(this.course_token, record.raw);
+		// display posts
+		var self = this;
+		discussion_posts_store.addListener('load', function(){
+			self.indentPosts(this);
+			self.getNavigator().push({
+				xtype: 'discussionpostlist',	
+				store: this
+			});
+		});
+		
+	},
+	
+	indentPosts: function(store){
+		if( store.data.getCount() > 0 ) {
+			// set root post depth to 0
+			store.data.getAt(0).data.indentation = 0;
+			for(var i=1; i < store.data.getCount(); ++i) {
+				var parent_indentation = store.getById(store.data.getAt(i).data.parent).data.indentation;
+				store.data.getAt(i).data.indentation = parent_indentation + 1;
+			}
+		}
+	},
+
+	selectPost: function(view, record) {
+		console.log(view);	
+		console.log(record);	
+	}
 });

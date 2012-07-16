@@ -9678,3 +9678,34 @@ input[type="search"]::-webkit-search-cancel-button {
     -webkit-transform: rotate(330deg);
   }
 }
+
+/*
+ *
+ * Custom css
+ *
+ * */
+.post_subject {
+	font-weight: bold;
+}
+
+.post_depth_0 {}
+
+.post_depth_1 {
+	padding-left: 15px;
+}
+
+.post_depth_2 {
+	padding-left: 30px;
+}
+
+.post_depth_3 {
+	padding-left: 45px;
+}
+
+.post_depth_4 {
+	padding-left: 60px;
+}
+
+.post_depth_5 {
+	padding-left: 75px;
+}

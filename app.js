@@ -10,6 +10,8 @@ Ext.application({
 		'Ext.data.identifier.Uuid',
 		'MoodleMobApp.store.account.HomeOrgs',
 		'MoodleMobApp.store.course.Courses',
+		'MoodleMobApp.store.course.EnrolledUsers',
+		'MoodleMobApp.store.Users',
 	],
 
 	models: [

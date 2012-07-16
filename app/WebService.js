@@ -77,5 +77,16 @@ Ext.define('MoodleMobApp.WebService', {
 					'MoodleMobApp.model.course.forum.Post'
 		);
 		return discussion_posts_store;
-	}
+	},
+
+	getEnrolledUsers: function(course_token, courseid) {
+		var enrolled_users_store = this.request(
+					course_token,
+					'local_uniappws_user_get_users_by_courseid',
+					'courseid='+courseid,
+					'MoodleMobApp.model.User'
+		);
+		return enrolled_users_store;
+	},
+
 });

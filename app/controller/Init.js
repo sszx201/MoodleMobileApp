@@ -27,8 +27,16 @@ Ext.define('MoodleMobApp.controller.Init', {
 			}
 		});
 
-		// create courses database
+		// create courses store
 		var courses_store = Ext.create('MoodleMobApp.store.course.Courses');
 		courses_store.load();
+
+		// create enrolledusers store
+		var enrolled_users_store = Ext.create('MoodleMobApp.store.course.EnrolledUsers');
+		enrolled_users_store.load();
+
+		// create users store
+		var users_store = Ext.create('MoodleMobApp.store.Users');
+		users_store.load();
 	}
 });

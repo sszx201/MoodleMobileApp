@@ -5,6 +5,6 @@ Ext.define("MoodleMobApp.view.course.forum.PostList", {
 	config: {
 		id: 'discussion_post_list',
 	   	title: 'List of Posts', 
-		itemTpl: '<div class="post_depth_{indentation}"><div class="post_subject">{subject}</div><div class="post_message">{message}</div></div>',
+		itemTpl: '<div class="post_depth_{indentation}"><div class="post_user_avatar"><img src="{avatar}" /></div><div class="post_user_info">{firstname} {lastname}</div><div class="post_subject">{subject}</div><div class="post_message">{message}</div></div>',
 	},
 });

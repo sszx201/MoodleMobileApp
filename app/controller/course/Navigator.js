@@ -102,7 +102,7 @@ Ext.define('MoodleMobApp.controller.course.Navigator', {
 		// display posts
 		var self = this;
 		discussion_posts_store.addListener('load', function(){
-			self.indentPosts(this);
+			self.formatPosts(this);
 			self.getNavigator().push({
 				xtype: 'discussionpostlist',	
 				store: this
@@ -111,14 +111,24 @@ Ext.define('MoodleMobApp.controller.course.Navigator', {
 		
 	},
 	
-	indentPosts: function(store){
+	formatPosts: function(store){
 		if( store.data.getCount() > 0 ) {
+			// add indentation values
 			// set root post depth to 0
 			store.data.getAt(0).data.indentation = 0;
 			for(var i=1; i < store.data.getCount(); ++i) {
 				var parent_indentation = store.getById(store.data.getAt(i).data.parent).data.indentation;
 				store.data.getAt(i).data.indentation = parent_indentation + 1;
 			}
+			// hook up the users store
+			var users_store = Ext.data.StoreManager.lookup('users');
+			// add user info
+			store.each(function(record){
+				var user = users_store.getById(record.data.userid);
+				record.data.firstname=user.data.firstname;
+				record.data.lastname=user.data.lastname;
+				record.data.avatar=user.data.avatar;
+			});
 		}
 	},
 

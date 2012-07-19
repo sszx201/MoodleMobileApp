@@ -1,4 +1,4 @@
-Ext.define('MoodleMobApp.controller.account.Choice', {
+Ext.define('MoodleMobApp.controller.AccountChoice', {
 	extend: 'Ext.app.Controller',
 	
 	config: {

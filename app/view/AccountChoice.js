@@ -1,11 +1,11 @@
-Ext.define("MoodleMobApp.view.account.Choice", {
+Ext.define("MoodleMobApp.view.AccountChoice", {
 	extend: 'Ext.Panel',
 	xtype: 'accountchoice',
 
 	requires: [
 		'Ext.TitleBar',
-		'MoodleMobApp.view.account.Aai',
-		'MoodleMobApp.view.account.Manual',
+		'MoodleMobApp.view.AaiAccount',
+		'MoodleMobApp.view.ManualAccount',
 	],
 
 	config: {

@@ -1,4 +1,4 @@
-Ext.define('MoodleMobApp.model.account.Manual', {
+Ext.define('MoodleMobApp.model.ManualAccount', {
 	extend: 'Ext.data.Model',
 	
 	config: {

@@ -1,4 +1,4 @@
-Ext.define('MoodleMobApp.model.account.Aai', {
+Ext.define('MoodleMobApp.model.AaiAccount', {
 	extend: 'Ext.data.Model',
 	
 	config: {

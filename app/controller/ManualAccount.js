@@ -1,11 +1,11 @@
-Ext.define('MoodleMobApp.controller.account.Manual', {
+Ext.define('MoodleMobApp.controller.ManualAccount', {
 	extend: 'Ext.app.Controller',
 
 	requires: [
-		'MoodleMobApp.model.account.Manual',
-		'MoodleMobApp.store.account.Manual',
-		'MoodleMobApp.model.course.Course',
-		'MoodleMobApp.store.course.Courses',
+		'MoodleMobApp.model.ManualAccount',
+		'MoodleMobApp.store.ManualAccount',
+		'MoodleMobApp.model.Course',
+		'MoodleMobApp.store.Courses',
 	],
    	
 	config: {
@@ -29,7 +29,7 @@ Ext.define('MoodleMobApp.controller.account.Manual', {
 		var account_store = Ext.data.StoreManager.lookup('manualaccount_store');
 		if(account_store.getCount() > 0) {
 			// Update the form with account data.
-			form.setRecord( Ext.create('MoodleMobApp.model.account.Manual', account_store.first().getData()) );
+			form.setRecord( Ext.create('MoodleMobApp.model.ManualAccount', account_store.first().getData()) );
 		}
 	},
 
@@ -73,7 +73,7 @@ Ext.define('MoodleMobApp.controller.account.Manual', {
 
 	init: function(app) {
 		// create the account store
-		var account_store = Ext.create('MoodleMobApp.store.account.Manual'); 
+		var account_store = Ext.create('MoodleMobApp.store.ManualAccount'); 
 		account_store.load();
 		// if the account is the active one
 		// authenticate and get the course data
@@ -94,7 +94,7 @@ Ext.define('MoodleMobApp.controller.account.Manual', {
 			auth_url+= '&password='+account_store.first().getData().password;
 
 		var store = Ext.create('Ext.data.Store', {
-			model: 'MoodleMobApp.model.course.Course',
+			model: 'MoodleMobApp.model.Course',
 			proxy: {
 				type: 'ajax',
 				url : auth_url, 

@@ -1,4 +1,4 @@
-Ext.define("MoodleMobApp.view.account.Aai", {
+Ext.define("MoodleMobApp.view.AaiAccount", {
 	extend: 'Ext.form.Panel',
 	xtype: 'aaiaccount',
 	fullscreen: true,
@@ -9,11 +9,11 @@ Ext.define("MoodleMobApp.view.account.Aai", {
 		'Ext.field.Text',
 		'Ext.field.Password',
 		'Ext.field.Select',
-		'MoodleMobApp.store.account.HomeOrgs',
+		'MoodleMobApp.store.HomeOrgs',
 	],
 
 	controllers: [
-		'MoodleMobApp.controller.account.Aai'
+		'MoodleMobApp.controller.AaiAccount'
 	],
 
 	config: {
@@ -43,7 +43,7 @@ Ext.define("MoodleMobApp.view.account.Aai", {
 						name: 'homeorganisation',
 						label: 'Home Organisation',
 						usePicker: false,
-						store: Ext.create('MoodleMobApp.store.account.HomeOrgs'),
+						store: Ext.create('MoodleMobApp.store.HomeOrgs'),
 						displayField: 'name',
 						valueField: 'url'
 					},

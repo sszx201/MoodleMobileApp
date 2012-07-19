@@ -1,14 +1,14 @@
-Ext.define('MoodleMobApp.store.course.Courses', {
+Ext.define('MoodleMobApp.store.Courses', {
 	extend: 'Ext.data.Store',
 
 	requires: [
-		'MoodleMobApp.model.course.Course',
+		'MoodleMobApp.model.Course',
 		'Ext.data.proxy.LocalStorage'
 		],
 
 	config: {
 		storeId: 'courses',
-		model: 'MoodleMobApp.model.course.Course',
+		model: 'MoodleMobApp.model.Course',
 		autoLoad: true,
 		proxy : {
 			id: 'course',

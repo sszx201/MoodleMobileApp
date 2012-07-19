@@ -28,11 +28,11 @@ Ext.define('MoodleMobApp.controller.Init', {
 		});
 
 		// create courses store
-		var courses_store = Ext.create('MoodleMobApp.store.course.Courses');
+		var courses_store = Ext.create('MoodleMobApp.store.Courses');
 		courses_store.load();
 
 		// create enrolledusers store
-		var enrolled_users_store = Ext.create('MoodleMobApp.store.course.EnrolledUsers');
+		var enrolled_users_store = Ext.create('MoodleMobApp.store.EnrolledUsers');
 		enrolled_users_store.load();
 
 		// create users store

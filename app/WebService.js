@@ -13,8 +13,11 @@ Ext.define('MoodleMobApp.WebService', {
 	//************************************	
 	// Generic webservice request function
 	//************************************	
-	request: function(wstoken, wsfunction, params, rmodel) {
-		var query = MoodleMobApp.Config.getWebServiceUrl() + '?wstoken=' + wstoken + '&wsfunction=' + wsfunction + '&' + params + '&moodlewsrestformat=json'; 
+	request: function(wsfunction, params, rmodel) {
+		var query = MoodleMobApp.Config.getWebServiceUrl() +
+					'?wstoken=' + MoodleMobApp.Session.getCourseToken() +
+					'&wsfunction=' + wsfunction + '&' +
+					params + '&moodlewsrestformat=json';
 
 		var content_store = Ext.create('Ext.data.Store', {
 			model: rmodel,
@@ -50,38 +53,34 @@ Ext.define('MoodleMobApp.WebService', {
 	//*****************************	
 	getCourseModules: function(course) {
 		var course_modules_store = this.request(
-					course.token, 
 					'local_uniappws_course_get_course_modules',
 					'courseid='+course.id,
-					'MoodleMobApp.model.course.ModuleList'
+					'MoodleMobApp.model.ModuleList'
 		);
 		course_modules_store.setGroupField('modname');
 		return course_modules_store;
 	},
 
-	getForumDiscussions: function(course_token, forum) {
+	getForumDiscussions: function(forum) {
 		var forum_discussions_store = this.request(
-					course_token,
 					'local_uniappws_forum_get_forum_discussions',
 					'forumid='+forum.instanceid,
-					'MoodleMobApp.model.course.forum.Discussion'
+					'MoodleMobApp.model.ForumDiscussion'
 		);
 		return forum_discussions_store;
 	},
 	
-	getDiscussionPosts: function(course_token, discussion) {
+	getDiscussionPosts: function(discussion) {
 		var discussion_posts_store = this.request(
-					course_token,
 					'local_uniappws_forum_get_posts_by_discussionid',
 					'discid='+discussion.id,
-					'MoodleMobApp.model.course.forum.Post'
+					'MoodleMobApp.model.ForumPost'
 		);
 		return discussion_posts_store;
 	},
 
-	getEnrolledUsers: function(course_token, courseid) {
+	getEnrolledUsers: function(courseid) {
 		var enrolled_users_store = this.request(
-					course_token,
 					'local_uniappws_user_get_users_by_courseid',
 					'courseid='+courseid,
 					'MoodleMobApp.model.User'

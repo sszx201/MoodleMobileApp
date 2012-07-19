@@ -1,4 +1,4 @@
-Ext.define("MoodleMobApp.view.account.Manual", {
+Ext.define("MoodleMobApp.view.ManualAccount", {
 	extend: 'Ext.form.Panel',
 	xtype: 'manualaccount',
 	fullscreen: true,

@@ -1,4 +1,4 @@
-Ext.define("MoodleMobApp.view.course.ModuleList", {
+Ext.define("MoodleMobApp.view.ModuleList", {
 	extend: 'Ext.List',
 	xtype: 'modulelist',
 

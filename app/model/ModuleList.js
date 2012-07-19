@@ -1,4 +1,4 @@
-Ext.define('MoodleMobApp.model.course.ModuleList', {
+Ext.define('MoodleMobApp.model.ModuleList', {
 	extend: 'Ext.data.Model',
 	
 	config: {

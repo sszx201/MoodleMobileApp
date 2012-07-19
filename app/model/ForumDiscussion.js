@@ -1,4 +1,4 @@
-Ext.define('MoodleMobApp.model.course.forum.Discussion', {
+Ext.define('MoodleMobApp.model.ForumDiscussion', {
 	extend: 'Ext.data.Model',
 	
 	config: {

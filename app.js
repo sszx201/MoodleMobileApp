@@ -4,13 +4,14 @@ Ext.application({
 
 	requires: [
 		'MoodleMobApp.Config',
+		'MoodleMobApp.Session',
 		'MoodleMobApp.WebService',
 		'Ext.MessageBox',
 		'Ext.TitleBar',
 		'Ext.data.identifier.Uuid',
-		'MoodleMobApp.store.account.HomeOrgs',
-		'MoodleMobApp.store.course.Courses',
-		'MoodleMobApp.store.course.EnrolledUsers',
+		'MoodleMobApp.store.HomeOrgs',
+		'MoodleMobApp.store.Courses',
+		'MoodleMobApp.store.EnrolledUsers',
 		'MoodleMobApp.store.Users',
 	],
 
@@ -24,19 +25,20 @@ Ext.application({
 	
 	views: [
 		'MoodleMobApp.view.UsageAgreement',
-		'MoodleMobApp.view.account.Choice',
+		'MoodleMobApp.view.AccountChoice',
 		'MoodleMobApp.view.Main',
-		'MoodleMobApp.view.course.ModuleList',
+		'MoodleMobApp.view.ModuleList',
 	],
 
 	controllers: [
 		"MoodleMobApp.controller.Init", 
 		"MoodleMobApp.controller.Main",
 		"MoodleMobApp.controller.UsageAgreement", 
-		"MoodleMobApp.controller.account.Choice", 
-		'MoodleMobApp.controller.account.Aai',
-		'MoodleMobApp.controller.account.Manual',
-		'MoodleMobApp.controller.course.Navigator',
+		"MoodleMobApp.controller.AccountChoice", 
+		'MoodleMobApp.controller.AaiAccount',
+		'MoodleMobApp.controller.ManualAccount',
+		'MoodleMobApp.controller.CourseNavigator',
+		'MoodleMobApp.controller.Forum',
 	],
 
 	icon: {
@@ -59,7 +61,7 @@ Ext.application({
 		if( settings_store.first().getData().usageagreement == false ) {
 			Ext.Viewport.add( Ext.create('MoodleMobApp.view.UsageAgreement') );
 		} else if( settings_store.first().getData().accounttype == '' ) {
-			Ext.Viewport.add(Ext.create('MoodleMobApp.view.account.Choice'));
+			Ext.Viewport.add(Ext.create('MoodleMobApp.view.AccountChoice'));
 		} else {
 			Ext.Viewport.add(Ext.create('MoodleMobApp.view.Main'));
 		}

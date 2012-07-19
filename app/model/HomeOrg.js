@@ -1,4 +1,4 @@
-Ext.define('MoodleMobApp.model.account.HomeOrg', {
+Ext.define('MoodleMobApp.model.HomeOrg', {
 	extend: 'Ext.data.Model',
 	
 	config: {

@@ -1,9 +1,9 @@
-Ext.define("MoodleMobApp.view.course.Navigator", {
+Ext.define("MoodleMobApp.view.CourseNavigator", {
 	extend: 'Ext.navigation.View',
 	xtype: 'coursenavigator',
 	
 	views:[
-		'MoodleMobApp.view.course.List',
+		'MoodleMobApp.view.CourseList',
 	],
 
 	config: {

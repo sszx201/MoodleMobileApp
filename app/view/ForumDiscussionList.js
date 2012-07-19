@@ -1,4 +1,4 @@
-Ext.define("MoodleMobApp.view.course.forum.DiscussionList", {
+Ext.define("MoodleMobApp.view.ForumDiscussionList", {
 	extend: 'Ext.List',
 	xtype: 'forumdiscussionlist',
 
@@ -6,6 +6,7 @@ Ext.define("MoodleMobApp.view.course.forum.DiscussionList", {
 		id: 'forum_discussion_list',
 	   	title: 'List of discussions', 
 		itemTpl: '{name}',
+		emptyText: 'No discussions available in this forum.',
 		onItemDisclosure: true,
 	},
 });

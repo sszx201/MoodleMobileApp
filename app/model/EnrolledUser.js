@@ -1,4 +1,4 @@
-Ext.define('MoodleMobApp.model.course.EnrolledUser', {
+Ext.define('MoodleMobApp.model.EnrolledUser', {
 	extend: 'Ext.data.Model',
 	
 	config: {

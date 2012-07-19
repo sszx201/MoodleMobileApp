@@ -1,13 +1,13 @@
-Ext.define('MoodleMobApp.controller.account.Aai', {
+Ext.define('MoodleMobApp.controller.AaiAccount', {
 	extend: 'Ext.app.Controller',
 
 	config: {
 		models: [
-			'MoodleMobApp.model.account.Aai',
+			'MoodleMobApp.model.AaiAccount',
 		],
 
 		stores: [
-			'MoodleMobApp.store.account.Aai',
+			'MoodleMobApp.store.AaiAccount',
 		],
 
 		refs: {
@@ -30,7 +30,7 @@ Ext.define('MoodleMobApp.controller.account.Aai', {
 		var account_store = Ext.data.StoreManager.lookup('aaiaccount_store');
 		if(account_store.getCount() > 0) {
 			// Update the form with account data.
-			form.setRecord( Ext.create('MoodleMobApp.model.account.Aai', account_store.first().getData()) );
+			form.setRecord( Ext.create('MoodleMobApp.model.AaiAccount', account_store.first().getData()) );
 		}
 	},
 
@@ -74,7 +74,7 @@ Ext.define('MoodleMobApp.controller.account.Aai', {
 
 	init: function(app) {
 		// create the account store
-		var account_store = Ext.create('MoodleMobApp.store.account.Aai'); 
+		var account_store = Ext.create('MoodleMobApp.store.AaiAccount'); 
 		account_store.load();
 		// if the account is the active one
 		// authenticate and get the course data

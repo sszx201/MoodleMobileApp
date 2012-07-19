@@ -1,4 +1,4 @@
-Ext.define('MoodleMobApp.store.account.Aai', {
+Ext.define('MoodleMobApp.store.AaiAccount', {
 	extend: 'Ext.data.Store',
 
 	requires: [
@@ -6,12 +6,12 @@ Ext.define('MoodleMobApp.store.account.Aai', {
 	],
 
 	models: [
-		'MoodleMobApp.model.account.Aai',
+		'MoodleMobApp.model.AaiAccount',
 	],
 
 	config: {
 		storeId: 'aaiaccount_store',
-		model: 'MoodleMobApp.model.account.Aai',
+		model: 'MoodleMobApp.model.AaiAccount',
 		proxy: {
 			type: 'localstorage',	
 			id: 'aaiaccount'

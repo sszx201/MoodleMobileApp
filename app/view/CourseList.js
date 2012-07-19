@@ -1,9 +1,9 @@
-Ext.define("MoodleMobApp.view.course.List", {
+Ext.define("MoodleMobApp.view.CourseList", {
 	extend: 'Ext.List',
 	xtype: 'courselist',
 
-	requires: [ 'MoodleMobApp.store.course.Courses' ],
-	stores: [ 'MoodleMobApp.store.course.Courses' ],
+	requires: [ 'MoodleMobApp.store.Courses' ],
+	stores: [ 'MoodleMobApp.store.Courses' ],
 
 	config: {
 		id: 'course_list',

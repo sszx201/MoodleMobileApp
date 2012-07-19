@@ -8,6 +8,7 @@ Ext.define('MoodleMobApp.Session', {
 
 	config : {
 		courseToken : '',
+		username : '',
 	}
 	
 });

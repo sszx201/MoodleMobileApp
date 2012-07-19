@@ -89,9 +89,11 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 	// an exception then an alert message is displayed.
 	authenticate: function(successCallbackFunction) {
 		var account_store = Ext.data.StoreManager.lookup('manualaccount_store');
+		var username = account_store.first().getData().username;
+		var password = account_store.first().getData().password;
 		var auth_url = MoodleMobApp.Config.getManualAuthUrl();
-			auth_url+= '?username='+account_store.first().getData().username;
-			auth_url+= '&password='+account_store.first().getData().password;
+			auth_url+= '?username='+username;
+			auth_url+= '&password='+password;
 
 		var store = Ext.create('Ext.data.Store', {
 			model: 'MoodleMobApp.model.Course',
@@ -117,6 +119,9 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 						'The manual Authentication has failed.'
 					);
 				} else if( this.first().raw.exception == undefined) {
+					// store the username in the Session
+					MoodleMobApp.Session.setUsername(username);
+					// process courses
 					var courses_store = Ext.data.StoreManager.lookup('courses');
 					// purge old content
 					courses_store.removeAll();

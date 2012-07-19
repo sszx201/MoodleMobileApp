@@ -92,9 +92,11 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 	authenticate: function(successCallbackFunction) {
 		// hook up the account store
 		var account_store = Ext.data.StoreManager.lookup('aaiaccount_store');
+		var username = account_store.first().getData().username;
+		var password = account_store.first().getData().password;
 		var auth_url = MoodleMobApp.Config.getAaiAuthUrl();
-			auth_url+= '?username='+account_store.first().getData().username;
-			auth_url+= '&password='+account_store.first().getData().password;
+			auth_url+= '?username='+username;
+			auth_url+= '&password='+password;
 			auth_url+= '&idp='+account_store.first().getData().homeorganisation;
 		var store = Ext.create('Ext.data.Store', {
 			model: 'MoodleMobApp.model.course.Course',
@@ -111,6 +113,8 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 			callback: function(records, operation, success) {
 				// check if there are any exceptions 
 				if( this.first().raw.exception == undefined) {
+					// store the username in the Session
+					MoodleMobApp.Session.setUsername(username);
 					// hook up the courses store
 					var courses_store = Ext.data.StoreManager.lookup('courses');
 					// add all new courses

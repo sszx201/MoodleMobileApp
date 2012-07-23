@@ -3,12 +3,13 @@ Ext.application({
 	name: 'MoodleMobApp',
 
 	requires: [
+		'Ext.MessageBox',
+		'Ext.TitleBar',
+		'Ext.Img',
+		'Ext.data.identifier.Uuid',
 		'MoodleMobApp.Config',
 		'MoodleMobApp.Session',
 		'MoodleMobApp.WebService',
-		'Ext.MessageBox',
-		'Ext.TitleBar',
-		'Ext.data.identifier.Uuid',
 		'MoodleMobApp.store.HomeOrgs',
 		'MoodleMobApp.store.Courses',
 		'MoodleMobApp.store.EnrolledUsers',

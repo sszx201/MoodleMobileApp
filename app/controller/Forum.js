@@ -12,13 +12,15 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			'MoodleMobApp.view.ModuleList',
 			'MoodleMobApp.view.ForumDiscussionList',
 			'MoodleMobApp.view.ForumPostList',
+			'MoodleMobApp.view.ForumPost',
 		],
 
 		refs: {
 			navigator: '#course_navigator',
 			module: '#module_list',
 			discussion: '#forum_discussion_list',
-			postlist: '#discussion_post_list',
+			//postList: '#forum_post_list',
+			//replyButton: '.x-post-reply-button',
 		},
 
 		control: {
@@ -26,7 +28,8 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			module: { select: 'selectModule' },
 			// specific controls
 			discussion: { select: 'selectDiscussion' },
-			postlist: { itemtap: 'selectPost'},
+			//postlist: { itemtap: 'selectPost'},
+			replyButton: { tap: 'replyToPost'},
 		}
 	},
 
@@ -52,7 +55,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		discussion_posts_store.addListener('load', function(){
 			self.formatPosts(this);
 			self.getNavigator().push({
-				xtype: 'discussionpostlist',	
+				xtype: 'forumpostlist',	
 				store: this
 			});
 		});
@@ -80,9 +83,12 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		}
 	},
 
-	selectPost: function(view, record) {
+	/*
+	replyToPost: function(view, record) {
+		console.log('replying to the post; yaay');
 		console.log(view);	
 		console.log(record);	
 	},
+	*/
 
 });

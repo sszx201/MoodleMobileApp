@@ -9684,42 +9684,52 @@ input[type="search"]::-webkit-search-cancel-button {
  * Custom css
  *
  * */
-.post_subject {
+
+.forum-post {
+	margin-bottom: 10px;
+}
+
+.forum-post-selected {
+	background-color: white;
+}
+
+.x-post-avatar { }
+
+.x-post-firstname {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.x-post-lastname { }
+
+.x-post-subject {
 	font-weight: bold;
-}
-
-.post_user_avatar {
-	float: left;
-}
-
-.post_user_info {
-	float: left;
-	padding-left: 10px;
 	padding-top: 10px;
 }
 
-.post_subject {
-	clear: both;
+.x-post-message {
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
-.post_depth_0 {}
+.post-indentation-0 {}
 
-.post_depth_1 {
+.post-indentation-1 {
 	padding-left: 15px;
 }
 
-.post_depth_2 {
+.post-indentation-2 {
 	padding-left: 30px;
 }
 
-.post_depth_3 {
+.post-indentation-3 {
 	padding-left: 45px;
 }
 
-.post_depth_4 {
+.post-indentation-4 {
 	padding-left: 60px;
 }
 
-.post_depth_5 {
+.post-indentation-5 {
 	padding-left: 75px;
 }

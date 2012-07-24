@@ -11,7 +11,7 @@ Ext.define('MoodleMobApp.store.HomeOrgs', {
 		autoLoad: true,
 		proxy: {
 			type: 'ajax',	
-			url: 'http://localhost/moodle22/auth/mobileaai/get_idps.php',
+			url: MoodleMobApp.Config.getHomeOrgsUrl(),
 			reader: {
 				type: 'json'
 			}

@@ -99,10 +99,14 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 			auth_url+= '&password='+password;
 			auth_url+= '&idp='+account_store.first().getData().homeorganisation;
 		var store = Ext.create('Ext.data.Store', {
-			model: 'MoodleMobApp.model.course.Course',
+			model: 'MoodleMobApp.model.Course',
 			proxy: {
 				type: 'ajax',
 				url : auth_url, 
+				pageParam: false,
+				startParam: false,
+				limitParam: false,
+				noCache: false,
 				reader: {
 					type: 'json'
 				}

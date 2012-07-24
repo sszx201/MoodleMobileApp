@@ -73,8 +73,10 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			}
 			// hook up the users store
 			var users_store = Ext.data.StoreManager.lookup('users');
+			Ext.us=users_store;
 			// add user info
 			store.each(function(record){
+				console.log(record.data.userid);
 				var user = users_store.getById(record.data.userid);
 				record.data.firstname=user.data.firstname;
 				record.data.lastname=user.data.lastname;

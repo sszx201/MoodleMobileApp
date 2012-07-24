@@ -70,7 +70,7 @@ Ext.define('MoodleMobApp.WebService', {
 		return forum_discussions_store;
 	},
 	
-	getDiscussionPosts: function(discussion) {
+	getPostsByDiscussion: function(discussion) {
 		var discussion_posts_store = this.request(
 					'local_uniappws_forum_get_posts_by_discussionid',
 					'discid='+discussion.id,
@@ -86,6 +86,15 @@ Ext.define('MoodleMobApp.WebService', {
 					'MoodleMobApp.model.User'
 		);
 		return enrolled_users_store;
+	},
+
+	getUserById: function(userid) {
+		var user_store = this.request(
+					'local_uniappws_user_get_user_by_id',
+					'userid='+userid,
+					'MoodleMobApp.model.User'
+		);
+		return user_store;
 	},
 
 });

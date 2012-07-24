@@ -49,21 +49,52 @@ Ext.define('MoodleMobApp.controller.Forum', {
 	},
 
 	selectDiscussion: function(view, record) {
-		var discussion_posts_store = MoodleMobApp.WebService.getDiscussionPosts(record.raw);
+		var discussion_posts_store = MoodleMobApp.WebService.getPostsByDiscussion(record.raw);
+		// check for new users
+		discussion_posts_store.on(
+			'load', 
+			function(){ this.checkForNewUsers(discussion_posts_store); },
+			this,
+			{single: true},
+			'current'
+ 		);
+
 		// display posts
-		var self = this;
-		discussion_posts_store.addListener('load', function(){
-			self.formatPosts(this);
-			self.getNavigator().push({
-				xtype: 'forumpostlist',	
-				store: this
-			});
-		});
-		
+		discussion_posts_store.on(
+			'load', 
+			function(){
+				this.formatPosts(discussion_posts_store);
+				this.getNavigator().push({
+					xtype: 'forumpostlist',	
+					store: discussion_posts_store
+				});
+			},
+			this,
+			{single: true, delay: 300},
+			'after'
+ 		);
+	},
+
+	checkForNewUsers: function(store){
+		if( store.data.getCount() > 0 ) {
+			// hook up the users store
+			var users_store = Ext.data.StoreManager.lookup('users');
+
+			// chech if there are new users and add them to the users_store
+			store.each(function(record){
+				var user = users_store.getById(record.data.userid);
+				if(user == undefined) {
+					this.getApplication().getController('User').addToStore(record.data.userid);
+				}
+			}, this);
+		}
 	},
 	
 	formatPosts: function(store){
 		if( store.data.getCount() > 0 ) {
+			// hook up the users store
+			var users_store = Ext.data.StoreManager.lookup('users');
+
 			// add indentation values
 			// set root post depth to 0
 			store.data.getAt(0).data.indentation = 0;
@@ -71,26 +102,17 @@ Ext.define('MoodleMobApp.controller.Forum', {
 				var parent_indentation = store.getById(store.data.getAt(i).data.parent).data.indentation;
 				store.data.getAt(i).data.indentation = parent_indentation + 1;
 			}
-			// hook up the users store
-			var users_store = Ext.data.StoreManager.lookup('users');
-			Ext.us=users_store;
+
 			// add user info
 			store.each(function(record){
-				console.log(record.data.userid);
 				var user = users_store.getById(record.data.userid);
-				record.data.firstname=user.data.firstname;
-				record.data.lastname=user.data.lastname;
-				record.data.avatar=user.data.avatar;
+				if( user != null) {
+					record.data.firstname=user.data.firstname;
+					record.data.lastname=user.data.lastname;
+					record.data.avatar=user.data.avatar;
+				}
 			});
 		}
 	},
-
-	/*
-	replyToPost: function(view, record) {
-		console.log('replying to the post; yaay');
-		console.log(view);	
-		console.log(record);	
-	},
-	*/
 
 });

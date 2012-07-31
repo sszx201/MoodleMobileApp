@@ -9685,6 +9685,11 @@ input[type="search"]::-webkit-search-cancel-button {
  *
  * */
 
+/*
+ *
+ * Forum related classes
+ *
+ * */
 .forum-post {
 	margin-bottom: 10px;
 }
@@ -9732,4 +9737,63 @@ input[type="search"]::-webkit-search-cancel-button {
 
 .post-indentation-5 {
 	padding-left: 75px;
+}
+
+.parent-post-user-info {
+	clear: both;
+}
+
+.parent-post-user-avatar,
+.parent-post-user-firstname,
+.parent-post-user-lastname {
+	float: left;
+}
+
+.parent-post {
+	background-color: white;
+	padding: 10px;
+}
+
+.parent-post-user-firstname {
+	padding-left: 7px;
+	padding-top: 10px;
+}
+
+.parent-post-user-lastname {
+	padding-left: 7px;
+	padding-top: 10px;
+}
+
+.parent-post-content {
+
+}
+
+.parent-post-subject {
+	clear:both;
+}
+
+.parent-post-subject-label,
+.parent-post-subject-content {
+	float: left;
+}
+
+.parent-post-subject-label {
+	font-weight: bold;
+	padding-right: 10px;
+}
+
+.parent-post-subject-content {
+
+}
+
+.parent-post-message {
+	clear:both;
+}
+
+.parent-post-message-label {
+	font-weight: bold;
+}
+
+.parent-post-message-content {
+
 }

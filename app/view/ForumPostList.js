@@ -10,14 +10,7 @@ Ext.define("MoodleMobApp.view.ForumPostList", {
 		emptyText: 'No posts available in this discussion.',
 		useComponents: true,
 		defaultType: 'forumpost',
-		/*
-		itemTpl: '<div class="post_depth_{indentation}">'+
-					'<div class="post_user_avatar"><img src="{avatar}" /></div>'+
-					'<div class="post_user_info">{firstname} {lastname}</div>'+
-					'<div class="post_subject">{subject}</div>'+
-					'<div class="post_message">{message}</div>'+
-				'</div>',
-		*/
+
 		listeners: {
 			itemsingletap: function (dataview, index, target, record, e) {
 				if(typeof dataview.selectedItem == 'undefined') {

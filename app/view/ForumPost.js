@@ -45,13 +45,12 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 		replyButton: {
 			cls: 'x-post-reply-button',
 			text: 'reply',
+			action: 'postreply',
 			docked: 'bottom',
 			ui: 'confirm',
 			hidden: true,
 			listeners: {
 				tap: function () {
-					Ext.b = this;
-					console.log('ready');
 				}
 			},
 		},

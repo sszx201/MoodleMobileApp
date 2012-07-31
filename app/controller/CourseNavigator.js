@@ -12,25 +12,31 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 
 		refs: {
 			navigator: '#course_navigator',
-			course: '#course_list',
+			courseList: '#course_list',
+			moduleList: '#module_list',
 		},
 
 		control: {
-			course: { select: 'selectCourse' },
+			courseList: { itemtap: 'selectCourse' },
 		}
 	},
 
-	selectCourse: function (view, record) {
+	selectCourse: function(view, index, target, record) {
 		var course_data = record.getData();
 		// set the course token
 		MoodleMobApp.Session.setCourseToken(course_data.token);
 		// request course modules
 		var course_modules_store = MoodleMobApp.WebService.getCourseModules(course_data);
 		// display modules
-		this.getNavigator().push({
-			xtype: 'modulelist',	
-			store: course_modules_store
-		});
+		if(typeof this.getModuleList() == 'object') {
+			this.getModuleList().setStore(course_modules_store);
+			this.getNavigator().push(this.getModuleList());
+		} else {
+			this.getNavigator().push({
+				xtype: 'modulelist',	
+				store: course_modules_store
+			});
+		}
 		
 		var course_users_store = MoodleMobApp.WebService.getEnrolledUsers(course_data.id);
 		// hook up the user releated stores

@@ -69,7 +69,7 @@ Ext.define('MoodleMobApp.WebService', {
 		);
 		return forum_discussions_store;
 	},
-	
+
 	getPostsByDiscussion: function(discussion) {
 		var discussion_posts_store = this.request(
 					'local_uniappws_forum_get_posts_by_discussionid',
@@ -78,6 +78,16 @@ Ext.define('MoodleMobApp.WebService', {
 		);
 		return discussion_posts_store;
 	},
+
+	createForumPost: function(post) {
+		var params = 'parentid='+post.id+'&subject='+post.subject+'&message='+post.reply;
+		var result_store = this.request( 'local_uniappws_forum_create_post',
+					params,
+					'MoodleMobApp.model.ForumCreatePostResponse'
+		);
+		return result_store;
+	},
+	
 
 	getEnrolledUsers: function(courseid) {
 		var enrolled_users_store = this.request(

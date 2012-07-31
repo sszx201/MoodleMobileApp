@@ -5,7 +5,8 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		models: [
 			'MoodleMobApp.model.ModuleList',
 			'MoodleMobApp.model.ForumDiscussion',
-			'MoodleMobApp.model.ForumPost'
+			'MoodleMobApp.model.ForumPost',
+			'MoodleMobApp.model.ForumCreatePostResponse'
 		],
 
 		views: [
@@ -13,27 +14,34 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			'MoodleMobApp.view.ForumDiscussionList',
 			'MoodleMobApp.view.ForumPostList',
 			'MoodleMobApp.view.ForumPost',
+			'MoodleMobApp.view.ForumPostReply',
 		],
 
 		refs: {
 			navigator: '#course_navigator',
 			module: '#module_list',
 			discussion: '#forum_discussion_list',
-			//postList: '#forum_post_list',
-			//replyButton: '.x-post-reply-button',
+			postList: '#forum_post_list',
+			postReplyButton: 'button[action=postreply]',
+			replyForm: '#forum_post_reply_form',
+			saveReplyButton: 'button[action=savereply]',
 		},
 
 		control: {
 			// generic controls
-			module: { select: 'selectModule' },
+			module: { itemtap: 'selectModule' },
 			// specific controls
-			discussion: { select: 'selectDiscussion' },
-			//postlist: { itemtap: 'selectPost'},
-			replyButton: { tap: 'replyToPost'},
+			discussion: { itemtap: 'selectDiscussion' },
+			postReplyButton: { tap: 'replyToPost' },
+			saveReplyButton: { tap: 'saveReplyToPost' },
 		}
 	},
 
-	selectModule: function (view, record) {
+	init: function(){
+		Ext.f=this;	
+	},
+
+	selectModule: function(view, index, target, record) {
 		if(record.raw.modname === 'forum'){
 			this.selectForum(record.raw);
 		}
@@ -42,18 +50,27 @@ Ext.define('MoodleMobApp.controller.Forum', {
 	selectForum: function(forum) {
 		var forum_discussions_store = MoodleMobApp.WebService.getForumDiscussions(forum);
 		// display discussions
-		this.getNavigator().push({
-			xtype: 'forumdiscussionlist',	
-			store: forum_discussions_store
-		});
+		if(typeof this.getDiscussion() == 'object') {
+			this.getDiscussion().setStore(forum_discussions_store);
+			this.getNavigator().push(this.getDiscussion());
+		} else {
+			this.getNavigator().push({
+				xtype: 'forumdiscussionlist',	
+				store: forum_discussions_store
+			});
+		}
 	},
 
-	selectDiscussion: function(view, record) {
+	selectDiscussion: function(view, index, target, record) {
+		this.currentDiscussion = record;
 		var discussion_posts_store = MoodleMobApp.WebService.getPostsByDiscussion(record.raw);
 		// check for new users
 		discussion_posts_store.on(
 			'load', 
-			function(){ this.checkForNewUsers(discussion_posts_store); },
+			function(){ 
+				this.checkForNewUsers(discussion_posts_store);
+				this.formatPosts(discussion_posts_store);
+			},
 			this,
 			{single: true},
 			'current'
@@ -63,11 +80,15 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		discussion_posts_store.on(
 			'load', 
 			function(){
-				this.formatPosts(discussion_posts_store);
-				this.getNavigator().push({
-					xtype: 'forumpostlist',	
-					store: discussion_posts_store
-				});
+				if(typeof this.getPostList() == 'object'){
+					this.getPostList().setStore(discussion_posts_store);
+					this.getNavigator().push(this.getPostList());
+				} else { 
+					this.getNavigator().push({
+						xtype: 'forumpostlist',	
+						store: discussion_posts_store
+					});
+				}
 			},
 			this,
 			{single: true, delay: 300},
@@ -115,4 +136,31 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		}
 	},
 
+	replyToPost: function(btn){
+		Ext.f=this;
+		var parentRecord = btn.getParent().getRecord();
+		// remove the previous forum_post_reply_form view
+		// if exists
+		if(typeof this.getReplyForm() == 'object'){
+			this.getNavigator().pop();
+		}
+		this.getNavigator().push({
+			xtype: 'forumpostreply',
+			record: parentRecord,
+		});
+	},
+
+	saveReplyToPost: function(btn){
+		var form = this.getReplyForm();
+		var create_post_result_store = MoodleMobApp.WebService.createForumPost(form.getValues());
+		// refresh the discussion content
+		create_post_result_store.on(
+			'load', 
+			function(){
+				this.selectDiscussion(this, this.currentDiscussion);
+			},
+			this,
+			{single: true}
+ 		);
+	}
 });

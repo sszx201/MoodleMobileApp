@@ -9692,6 +9692,8 @@ input[type="search"]::-webkit-search-cancel-button {
  * */
 .forum-post {
 	margin-bottom: 10px;
+	border: 1px solid #dedede;
+	padding: 5px;
 }
 
 .forum-post-selected {
@@ -9717,83 +9719,28 @@ input[type="search"]::-webkit-search-cancel-button {
 	padding-bottom: 10px;
 }
 
-.post-indentation-0 {}
+.x-post-indentation-0 {}
 
-.post-indentation-1 {
-	padding-left: 15px;
+.x-post-indentation-1 {
+	margin-left: 15px;
 }
 
-.post-indentation-2 {
-	padding-left: 30px;
+.x-post-indentation-2 {
+	margin-left: 30px;
 }
 
-.post-indentation-3 {
-	padding-left: 45px;
+.x-post-indentation-3 {
+	margin-left: 45px;
 }
 
-.post-indentation-4 {
-	padding-left: 60px;
+.x-post-indentation-4 {
+	margin-left: 60px;
 }
 
-.post-indentation-5 {
-	padding-left: 75px;
+.x-post-indentation-5 {
+	margin-left: 75px;
 }
 
-.parent-post-user-info {
-	clear: both;
-}
-
-.parent-post-user-avatar,
-.parent-post-user-firstname,
-.parent-post-user-lastname {
-	float: left;
-}
-
-.parent-post {
-	background-color: white;
-	padding: 10px;
-}
-
-.parent-post-user-firstname {
-	padding-left: 7px;
+.x-post-attachment-list {
 	padding-top: 10px;
-}
-
-.parent-post-user-lastname {
-	padding-left: 7px;
-	padding-top: 10px;
-}
-
-.parent-post-content {
-
-}
-
-.parent-post-subject {
-	clear:both;
-}
-
-.parent-post-subject-label,
-.parent-post-subject-content {
-	float: left;
-}
-
-.parent-post-subject-label {
-	font-weight: bold;
-	padding-right: 10px;
-}
-
-.parent-post-subject-content {
-
-}
-
-.parent-post-message {
-	clear:both;
-}
-
-.parent-post-message-label {
-	font-weight: bold;
-}
-
-.parent-post-message-content {
-
 }

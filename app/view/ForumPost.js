@@ -71,10 +71,29 @@ Ext.define("MoodleMobApp.view.ForumPost", {
         },
 
 		listeners: {
-			initialize: function(){
-				this.addCls('post-indentation-'+this.getRecord().get('indentation'));	
-			},
+			updatedata: function(){
+				this.addCls('x-post-indentation-'+this.getRecord().get('indentation'));	
+				// process attachments
+				if(this.getRecord().getData().attachments.length > 0) {
+					var message = this.getMessage().getHtml();
+					var attachment_list = '<ul class="x-post-attachment-list">';
+					var attachments = this.getRecord().getData().attachments;
+					for(var i=0; i < attachments.length; ++i) {
+						attachment_list +=  '<li class="x-post-attachment-entry">'+
+												'<a class="x-post-attachment-file" href="'+attachments[i].url+'">'+
+													attachments[i].filename+
+												'</a>'+
+												'  '+
+												'<span class="x-post-attachment-size">'+
+													attachments[i].filesize+'&nbsp;KB'+
+												'</span>'+
+											'</li>';
+					}
+					attachment_list += '</ul>';
 
+					this.getMessage().setHtml(message+attachment_list);
+				}
+			},
 
 		}
 	},

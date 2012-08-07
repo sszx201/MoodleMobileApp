@@ -3,14 +3,12 @@ Ext.define('MoodleMobApp.controller.Forum', {
 
 	config: {
 		models: [
-			'MoodleMobApp.model.ModuleList',
 			'MoodleMobApp.model.ForumDiscussion',
 			'MoodleMobApp.model.ForumPost',
 			'MoodleMobApp.model.ForumCreatePostResponse'
 		],
 
 		views: [
-			'MoodleMobApp.view.ModuleList',
 			'MoodleMobApp.view.ForumDiscussionList',
 			'MoodleMobApp.view.ForumPostList',
 			'MoodleMobApp.view.ForumPost',
@@ -32,13 +30,14 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			module: { itemtap: 'selectModule' },
 			// specific controls
 			discussion: { itemtap: 'selectDiscussion' },
+			replyForm: { deactivate: 'replyToPostCancelled' },
 			postReplyButton: { tap: 'replyToPost' },
 			saveReplyButton: { tap: 'saveReplyToPost' },
 		}
 	},
 
 	init: function(){
-		Ext.f=this;	
+		Ext.f = this;
 	},
 
 	selectModule: function(view, index, target, record) {
@@ -136,21 +135,23 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		}
 	},
 
-	replyToPost: function(btn){
-		Ext.f=this;
-		var parentRecord = btn.getParent().getRecord();
+	replyToPost: function(button){
+		var parentRecord = button.getParent().getRecord();
 		// remove the previous forum_post_reply_form view
 		// if exists
-		if(typeof this.getReplyForm() == 'object'){
-			this.getNavigator().pop();
+		//if(typeof this.getReplyForm() == 'object'){ this.getNavigator().pop(); }
+		if(typeof this.getReplyForm() == 'object'){ 
+			this.getReplyForm().setRecord(parentRecord);
+			this.getNavigator().push(this.getReplyForm());
+		} else {
+			this.getNavigator().push({
+				xtype: 'forumpostreply',
+				record: parentRecord,
+			});
 		}
-		this.getNavigator().push({
-			xtype: 'forumpostreply',
-			record: parentRecord,
-		});
 	},
 
-	saveReplyToPost: function(btn){
+	saveReplyToPost: function(button){
 		var form = this.getReplyForm();
 		var create_post_result_store = MoodleMobApp.WebService.createForumPost(form.getValues());
 		// refresh the discussion content
@@ -162,5 +163,10 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			this,
 			{single: true}
  		);
+	},
+
+	replyToPostCancelled: function() {
+		// remove the view from the navigator
+		this.getNavigator().pop();
 	}
 });

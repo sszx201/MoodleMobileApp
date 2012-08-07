@@ -107,4 +107,22 @@ Ext.define('MoodleMobApp.WebService', {
 		return user_store;
 	},
 
+	submitOnlineAssignment: function(record) {
+		var params = 'assigid='+record.instanceid+'&data='+record.submission;
+		var submission_response_store = this.request(
+					'local_uniappws_assign_submit_online',
+					params,
+					'MoodleMobApp.model.SubmissionResponse'
+		);
+		return submission_response_store;
+	},
+
+	getAssignmentSubmission: function(assignid) {
+		var submission_store = this.request(
+					'local_uniappws_assign_get_submission_by_assignid',
+					'assignid='+assignid,
+					'MoodleMobApp.model.User'
+		);
+		return user_store;
+	},
 });

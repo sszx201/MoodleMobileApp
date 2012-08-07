@@ -40,6 +40,7 @@ Ext.application({
 		'MoodleMobApp.controller.AaiAccount',
 		'MoodleMobApp.controller.ManualAccount',
 		'MoodleMobApp.controller.CourseNavigator',
+		'MoodleMobApp.controller.Assignment',
 		'MoodleMobApp.controller.Forum',
 	],
 

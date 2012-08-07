@@ -9744,3 +9744,16 @@ input[type="search"]::-webkit-search-cancel-button {
 .x-post-attachment-list {
 	padding-top: 10px;
 }
+
+/*
+ *
+ * Assignment related classes
+ *
+ * */
+
+.assignment-intro {
+	background-color: white;
+	padding: 5px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}

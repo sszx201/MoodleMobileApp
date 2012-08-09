@@ -35,6 +35,7 @@ Ext.application({
 		"MoodleMobApp.controller.UsageAgreement", 
 		"MoodleMobApp.controller.User", 
 		"MoodleMobApp.controller.AccountChoice", 
+		'MoodleMobApp.controller.Account',
 		'MoodleMobApp.controller.AaiAccount',
 		'MoodleMobApp.controller.ManualAccount',
 		'MoodleMobApp.controller.CourseNavigator',

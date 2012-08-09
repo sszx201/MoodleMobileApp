@@ -1,9 +1,8 @@
 Ext.define('MoodleMobApp.controller.ManualAccount', {
-	extend: 'Ext.app.Controller',
+	extend: 'MoodleMobApp.controller.Account',
 
 	requires: [
 		'MoodleMobApp.model.ManualAccount',
-		'MoodleMobApp.model.Course',
 	],
    	
 	config: {
@@ -73,90 +72,16 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 		// if the account is the active one
 		// authenticate and get the course data
 		if( this.isActiveAccount() ) {
-			this.authenticate();
+			var account_store = Ext.data.StoreManager.lookup('manualaccount_store');
+
+			var parameters = new Object();
+			parameters.username = account_store.first().getData().username;
+			parameters.password = account_store.first().getData().password;
+
+			var auth_url = MoodleMobApp.Config.getManualAuthUrl();
+
+			this.authenticate(auth_url, parameters);
 		}
-	},
-
-	// The authentication function authenticates the user.
-	// When the user is authenticated a list of courses and 
-	// relative tokens is received. These data are then stored
-	// in the localestorage. If the server responds with
-	// an exception then an alert message is displayed.
-	authenticate: function() {
-		var account_store = Ext.data.StoreManager.lookup('manualaccount_store');
-		var username = account_store.first().getData().username;
-		var password = account_store.first().getData().password;
-		var auth_url = MoodleMobApp.Config.getManualAuthUrl();
-			auth_url+= '?username='+username;
-			auth_url+= '&password='+password;
-
-		var store = Ext.create('Ext.data.Store', {
-			model: 'MoodleMobApp.model.Course',
-			proxy: {
-				type: 'ajax',
-				url : auth_url, 
-				pageParam: false,
-				startParam: false,
-				limitParam: false,
-				noCache: false,
-				reader: {
-					type: 'json'
-				}
-			}
-		});
-
-		store.load({
-			callback: function(records, operation, success) {
-				// check if there are any exceptions 
-				if(this.first() == undefined){
-					Ext.Msg.alert(
-						'Manual Authentication Failed',
-						'The manual Authentication has failed.'
-					);
-				} else if( this.first().raw.exception == undefined) {
-					// store the username in the Session
-					MoodleMobApp.Session.setUsername(username);
-					// process courses
-					var courses_store = Ext.data.StoreManager.lookup('courses');
-
-					// remove courses the user is not enrolled in anymore
-					courses_store.each(
-						function(entry) {
-							// refering as store because this has changed
-							if(this.getById(entry.getData().id) === null) {
-								courses_store.remove( entry );
-							}
-						}, this
-					);
-
-					// update local courses store
-					this.each(
-						function(entry) {
-							if(courses_store.getById(entry.getData().id) === null) {
-								courses_store.add( entry.getData() );
-							} else {
-								courses_store.getById(entry.getData().id).setData(entry.getData());
-							}
-						}
-					);
-
-					// prepare to write
-					courses_store.each(
-						function() { 
-							this.setDirty();
-						}
-					);
-
-					// store data
-					courses_store.sync();
-				} else {
-					Ext.Msg.alert(
-						this.first().raw.exception,
-						this.first().raw.message
-					);
-				}
-			}
-		});
 	},
 
 });

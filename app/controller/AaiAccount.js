@@ -1,10 +1,9 @@
 Ext.define('MoodleMobApp.controller.AaiAccount', {
-	extend: 'Ext.app.Controller',
+	extend: 'MoodleMobApp.controller.Account',
 
 	config: {
 		models: [
 			'MoodleMobApp.model.AaiAccount',
-			'MoodleMobApp.model.Course',
 		],
 
 		refs: {
@@ -74,76 +73,17 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 		// authenticate and get the course data
 		if( this.isActiveAccount() ) {
 			// create the account store
-			this.authenticate(function(){ console.log('Aai authentication completed; Course list refreshed;'); });
+			var account_store = Ext.data.StoreManager.lookup('aaiaccount_store');
+
+			var parameters = new Object();
+			parameters.username = account_store.first().getData().username;
+			parameters.password = account_store.first().getData().password;
+			parameters.idp = account_store.first().getData().homeorganisation;
+
+			var auth_url = MoodleMobApp.Config.getAaiAuthUrl();
+
+			this.authenticate(auth_url, parameters);
 		}
 	},
-
-	// The authentication function authenticates the user.
-	// When the user is authenticated a list of courses and 
-	// relative tokens is received. These data are then stored
-	// in the localestorage. If the server responds with
-	// an exception then an alert message is displayed.
-	authenticate: function(successCallbackFunction) {
-		// hook up the account store
-		var account_store = Ext.data.StoreManager.lookup('aaiaccount_store');
-		var username = account_store.first().getData().username;
-		var password = account_store.first().getData().password;
-		var auth_url = MoodleMobApp.Config.getAaiAuthUrl();
-			auth_url+= '?username='+username;
-			auth_url+= '&password='+password;
-			auth_url+= '&idp='+account_store.first().getData().homeorganisation;
-		var store = Ext.create('Ext.data.Store', {
-			model: 'MoodleMobApp.model.Course',
-			proxy: {
-				type: 'ajax',
-				url : auth_url, 
-				pageParam: false,
-				startParam: false,
-				limitParam: false,
-				noCache: false,
-				reader: {
-					type: 'json'
-				}
-			}
-		});
-
-		store.load({
-			callback: function(records, operation, success) {
-				// check if there are any exceptions 
-				if( this.first().raw.exception == undefined) {
-					// store the username in the Session
-					MoodleMobApp.Session.setUsername(username);
-					// hook up the courses store
-					var courses_store = Ext.data.StoreManager.lookup('courses');
-					// add all new courses
-					this.each(
-						function(item) {
-							var itemData = item.getData();
-							// check the modification time
-							if( courses_store.getById(itemData.id).getData().timemodified != itemData.timemodified ) {
-								console.log('course id: ' + itemData.id + ' has been modified');	
-								itemData.notify_modification = true;
-							}
-							courses_store.add( itemData );
-						}
-					);	
-					// prepare to write
-					courses_store.each(
-						function() { 
-							this.setDirty();
-						}
-					);
-					// call the successCallbackFunction when data have been written
-					courses_store.addListener('write', successCallbackFunction);
-					// write
-					courses_store.sync();
-				} else {
-					Ext.Msg.alert(
-						this.first().raw.exception,
-						this.first().raw.message
-					);
-				}
-			}
-		});
-	}  
+  
 });

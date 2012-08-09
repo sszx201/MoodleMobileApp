@@ -1,9 +1,7 @@
 Ext.define("MoodleMobApp.view.ForumPostList", {
 	extend: 'Ext.DataView',
 	xtype: 'forumpostlist',
-	requires: [
-		'Ext.data.Store'	
-	],
+	requires: [ ],
 	config: {
 		id: 'forum_post_list',
 	   	title: 'List of Posts', 

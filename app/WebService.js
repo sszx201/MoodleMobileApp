@@ -53,12 +53,25 @@ Ext.define('MoodleMobApp.WebService', {
 	//*****************************	
 	getCourseModules: function(course) {
 		var course_modules_store = this.request(
-					'local_uniappws_course_get_course_modules',
+					'local_uniappws_course_get_course_modules_count',
 					'courseid='+course.id,
 					'MoodleMobApp.model.ModuleList'
 		);
 		course_modules_store.setGroupField('modname');
 		return course_modules_store;
+	},
+
+	getCourseModulesCount: function(courseid) {
+		// prepare the parameters
+		var params = new Array();
+		Ext.each(courseid, function(value) { params.push('courseid[]='+value); });
+		
+		var course_modules_count_store = this.request(
+					'local_uniappws_course_get_course_modules_count',
+					params.join('&'),
+					'MoodleMobApp.model.ModulesCount'
+		);
+		return course_modules_count_store;
 	},
 
 	getForumDiscussions: function(forum) {

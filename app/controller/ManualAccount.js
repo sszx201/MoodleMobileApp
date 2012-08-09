@@ -78,7 +78,7 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 		// if the account is the active one
 		// authenticate and get the course data
 		if( this.isActiveAccount() ) {
-			this.authenticate(function(){ console.log('Manual authentication completed; Course list refreshed;'); });
+			this.authenticate();
 		}
 	},
 
@@ -87,7 +87,7 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 	// relative tokens is received. These data are then stored
 	// in the localestorage. If the server responds with
 	// an exception then an alert message is displayed.
-	authenticate: function(successCallbackFunction) {
+	authenticate: function() {
 		var account_store = Ext.data.StoreManager.lookup('manualaccount_store');
 		var username = account_store.first().getData().username;
 		var password = account_store.first().getData().password;
@@ -123,12 +123,25 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 					MoodleMobApp.Session.setUsername(username);
 					// process courses
 					var courses_store = Ext.data.StoreManager.lookup('courses');
-					// purge old content
-					courses_store.removeAll();
-					// add all new courses
+
+					// remove courses the user is not enrolled in anymore
+					courses_store.each(
+						function(entry) {
+							// refering as store because this has changed
+							if(this.getById(entry.getData().id) === null) {
+								courses_store.remove( entry );
+							}
+						}, this
+					);
+
+					// update local courses store
 					this.each(
-						function(item) {
-							courses_store.add( item.getData() );
+						function(entry) {
+							if(courses_store.getById(entry.getData().id) === null) {
+								courses_store.add( entry.getData() );
+							} else {
+								courses_store.getById(entry.getData().id).setData(entry.getData());
+							}
 						}
 					);
 
@@ -139,8 +152,6 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 						}
 					);
 
-					// call the successCallbackFunction when data have been written
-					courses_store.addListener('write', successCallbackFunction);
 					// store data
 					courses_store.sync();
 				} else {
@@ -151,6 +162,6 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 				}
 			}
 		});
-	}
-	
+	},
+
 });

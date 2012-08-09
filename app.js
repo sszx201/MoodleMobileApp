@@ -28,7 +28,8 @@ Ext.application({
 		'MoodleMobApp.view.UsageAgreement',
 		'MoodleMobApp.view.AccountChoice',
 		'MoodleMobApp.view.Main',
-		'MoodleMobApp.view.ModuleList',
+		'MoodleMobApp.view.Course',
+		'MoodleMobApp.view.CourseList',
 	],
 
 	controllers: [

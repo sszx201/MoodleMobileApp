@@ -1,5 +1,5 @@
 Ext.define("MoodleMobApp.view.CourseList", {
-	extend: 'Ext.List',
+	extend: 'Ext.DataView',
 	xtype: 'courselist',
 
 	requires: [ 'MoodleMobApp.store.Courses' ],
@@ -10,6 +10,8 @@ Ext.define("MoodleMobApp.view.CourseList", {
 	   	title: 'Course List', 
 		itemTpl: '{name}',
 		store: 'courses',
-		onItemDisclosure: true,
+		emptyText: 'No posts available in this discussion.',
+		useComponents: true,
+		defaultType: 'course',
 	},
 });

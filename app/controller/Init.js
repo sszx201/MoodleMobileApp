@@ -39,4 +39,5 @@ Ext.define('MoodleMobApp.controller.Init', {
 		var users_store = Ext.create('MoodleMobApp.store.Users');
 		users_store.load();
 	}
+
 });

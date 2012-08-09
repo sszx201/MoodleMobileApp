@@ -1,12 +1,13 @@
 Ext.define("MoodleMobApp.view.ModuleList", {
-	extend: 'Ext.List',
+	extend: 'Ext.DataView',
 	xtype: 'modulelist',
 
 	config: {
 		id: 'module_list',
 	   	title: 'List of modules', 
 		grouped: true,
-		itemTpl: '{name}',
-		onItemDisclosure: true,
+		emptyText: 'No posts available in this discussion.',
+		useComponents: true,
+		defaultType: 'module',
 	},
 });

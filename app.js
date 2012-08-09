@@ -11,9 +11,6 @@ Ext.application({
 		'MoodleMobApp.Session',
 		'MoodleMobApp.WebService',
 		'MoodleMobApp.store.HomeOrgs',
-		'MoodleMobApp.store.Courses',
-		'MoodleMobApp.store.EnrolledUsers',
-		'MoodleMobApp.store.Users',
 	],
 
 	models: [

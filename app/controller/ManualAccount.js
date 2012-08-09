@@ -3,9 +3,7 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 
 	requires: [
 		'MoodleMobApp.model.ManualAccount',
-		'MoodleMobApp.store.ManualAccount',
 		'MoodleMobApp.model.Course',
-		'MoodleMobApp.store.Courses',
 	],
    	
 	config: {
@@ -72,9 +70,6 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 	},
 
 	init: function(app) {
-		// create the account store
-		var account_store = Ext.create('MoodleMobApp.store.ManualAccount'); 
-		account_store.load();
 		// if the account is the active one
 		// authenticate and get the course data
 		if( this.isActiveAccount() ) {

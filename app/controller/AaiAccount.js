@@ -4,10 +4,7 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 	config: {
 		models: [
 			'MoodleMobApp.model.AaiAccount',
-		],
-
-		stores: [
-			'MoodleMobApp.store.AaiAccount',
+			'MoodleMobApp.model.Course',
 		],
 
 		refs: {
@@ -73,9 +70,6 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 	},
 
 	init: function(app) {
-		// create the account store
-		var account_store = Ext.create('MoodleMobApp.store.AaiAccount'); 
-		account_store.load();
 		// if the account is the active one
 		// authenticate and get the course data
 		if( this.isActiveAccount() ) {

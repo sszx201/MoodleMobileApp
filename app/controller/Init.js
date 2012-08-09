@@ -2,6 +2,18 @@ Ext.define('MoodleMobApp.controller.Init', {
 	extend: 'Ext.app.Controller',
 	
 	config: {
+		models: [
+			'MoodleMobApp.model.Settings',
+		],
+
+		stores: [
+			'MoodleMobApp.store.Settings',
+			'MoodleMobApp.store.Courses',
+			'MoodleMobApp.store.EnrolledUsers',
+			'MoodleMobApp.store.Users',
+			'MoodleMobApp.store.ManualAccount',
+			'MoodleMobApp.store.AaiAccount',
+		],
 		refs: {
 			
 		},
@@ -26,7 +38,7 @@ Ext.define('MoodleMobApp.controller.Init', {
 				}
 			}
 		});
-
+		
 		// create courses store
 		var courses_store = Ext.create('MoodleMobApp.store.Courses');
 		courses_store.load();
@@ -38,6 +50,14 @@ Ext.define('MoodleMobApp.controller.Init', {
 		// create users store
 		var users_store = Ext.create('MoodleMobApp.store.Users');
 		users_store.load();
+
+		// create the manual account store
+		var manual_account_store = Ext.create('MoodleMobApp.store.ManualAccount'); 
+		manual_account_store.load();
+
+		// create the AAI account store
+		var aai_account_store = Ext.create('MoodleMobApp.store.AaiAccount'); 
+		aai_account_store.load();
 	}
 
 });

@@ -23,8 +23,7 @@ Ext.define('MoodleMobApp.controller.AccountChoice', {
 
   	showTheActiveAccount: function() {
 		// set user accounttype setting
-		var settings_store = Ext.create('MoodleMobApp.store.Settings'); 
-		settings_store.load();
+		var settings_store = Ext.data.StoreManager.lookup('settings_store');
 		if(settings_store.data.first().getData().accounttype === 'aai') {
 			this.getAccountChoicePanel().setActiveItem(0);
 			this.getSelectAaiButton().setBadgeText('active');

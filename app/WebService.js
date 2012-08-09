@@ -53,7 +53,7 @@ Ext.define('MoodleMobApp.WebService', {
 	//*****************************	
 	getCourseModules: function(course) {
 		var course_modules_store = this.request(
-					'local_uniappws_course_get_course_modules_count',
+					'local_uniappws_course_get_course_modules',
 					'courseid='+course.id,
 					'MoodleMobApp.model.ModuleList'
 		);

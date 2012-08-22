@@ -43,6 +43,10 @@ Ext.define("MoodleMobApp.view.OnlineAssignment", {
 					},
 					{
 						xtype: 'hiddenfield',	
+						name: 'id',
+					},
+					{
+						xtype: 'hiddenfield',	
 						name: 'instanceid',
 					},
 					{

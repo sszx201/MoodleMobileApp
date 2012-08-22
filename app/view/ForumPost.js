@@ -74,7 +74,7 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 			updatedata: function(){
 				this.addCls('x-post-indentation-'+this.getRecord().get('indentation'));	
 				// process attachments
-				if(this.getRecord().getData().attachments.length > 0) {
+				if(this.getRecord().get('attachments') != null && this.getRecord().get('attachments').length > 0) {
 					var message = this.getMessage().getHtml();
 					var attachment_list = '<ul class="x-post-attachment-list">';
 					var attachments = this.getRecord().getData().attachments;

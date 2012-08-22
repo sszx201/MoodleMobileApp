@@ -9,7 +9,9 @@ Ext.define('MoodleMobApp.model.ForumDiscussion', {
 			{name: 'firstpost', type: 'int'},
 			{name: 'userid', type: 'int'},
 			{name: 'groupid', type: 'int'},
-			{name: 'timemodified', type: 'string'}
+			{name: 'timemodified', type: 'string'},
+			{name: 'isnew', type: 'boolean'},
+			{name: 'isupdated', type: 'boolean'}
 		]
 	}
 });

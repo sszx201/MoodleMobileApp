@@ -24,10 +24,10 @@ Ext.define('MoodleMobApp.controller.AccountChoice', {
   	showTheActiveAccount: function() {
 		// set user accounttype setting
 		var settings_store = Ext.data.StoreManager.lookup('settings_store');
-		if(settings_store.data.first().getData().accounttype === 'aai') {
+		if(settings_store.data.first().get('accounttype') === 'aai') {
 			this.getAccountChoicePanel().setActiveItem(0);
 			this.getSelectAaiButton().setBadgeText('active');
-		} else if(settings_store.data.first().getData().accounttype === 'manual') {
+		} else if(settings_store.data.first().get('accounttype') === 'manual') {
 			this.getAccountChoicePanel().setActiveItem(1);
 			this.getSelectManualButton().setBadgeText('active');
 		}

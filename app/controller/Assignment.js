@@ -4,6 +4,8 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 	config: {
 		models: [
 			'MoodleMobApp.model.AssignmentSubmission',
+			'MoodleMobApp.model.SubmissionResponse',
+			'MoodleMobApp.model.OnlineAssignmentSubmission',
 		],
 
 		views: [
@@ -36,7 +38,6 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 	},
 
 	selectAssignment: function(assignment) {
-		console.log(assignment);
 		// display discussions
 		switch(assignment.raw.type) {
 			case 'online':
@@ -59,7 +60,14 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 	},
 
 	selectOnlineAssignment: function(assignment) {
-		// display discussions
+		// display assignment
+
+		var online_assignment_submissions_store = Ext.data.StoreManager.lookup('onlineassignmentsubmissions');
+		var previous_submission_record = online_assignment_submissions_store.getById(assignment.get('id'));
+		if(previous_submission_record != null){
+			assignment.set('submission', previous_submission_record.get('submission'))
+		}
+
 		if(typeof this.getOnlineAssignment() == 'object') {
 			this.getOnlineAssignment().setRecord(assignment);
 			this.getNavigator().push(this.getOnlineAssignment());
@@ -72,12 +80,17 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 	},
 	
 	submitOnlineAssignment: function(button) {
-		var submission_status_store = MoodleMobApp.WebService.submitOnlineAssignment(this.getOnlineAssignment().getValues());
+		var submission_data = this.getOnlineAssignment().getValues();
+		var token = MoodleMobApp.Session.getCourseToken();
+		var submission_status_store = MoodleMobApp.WebService.submitOnlineAssignment(submission_data, token);
 		// refresh the discussion content
 		submission_status_store.on(
 			'load', 
-			function(){
-				this.backToTheCourseModulesList();
+			function(status_store){
+				if(status_store.first().get('subid') != null){
+					this.storeTheOnlineSubmission(submission_data);
+					this.backToTheCourseModulesList();
+				}
 			},
 			this,
 			{single: true}
@@ -86,6 +99,20 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 
 	submitOnlineAssignmentCancelled: function() {
 		this.backToTheCourseModulesList();
+	},
+
+	storeTheOnlineSubmission: function(data){
+		var online_assignment_submissions_store = Ext.data.StoreManager.lookup('onlineassignmentsubmissions');
+		if(online_assignment_submissions_store.find('id', data.id) == -1){
+			var submission_record = Ext.create('MoodleMobApp.model.OnlineAssignmentSubmission', data);
+			submission_record.setDirty();
+			online_assignment_submissions_store.add(submission_record);
+		} else {
+			online_assignment_submissions_store.getById(data.id).setData(data);
+			online_assignment_submissions_store.getById(data.id).setDirty();
+		}
+
+		online_assignment_submissions_store.sync()
 	},
 
 	backToTheCourseModulesList: function() {

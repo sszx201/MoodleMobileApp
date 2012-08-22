@@ -1,12 +1,12 @@
 Ext.define("MoodleMobApp.view.ForumDiscussionList", {
-	extend: 'Ext.List',
+	extend: 'Ext.DataView',
 	xtype: 'forumdiscussionlist',
 
 	config: {
 		id: 'forum_discussion_list',
 	   	title: 'List of discussions', 
-		itemTpl: '{name}',
 		emptyText: 'No discussions available in this forum.',
-		onItemDisclosure: true,
+		useComponents: true,
+		defaultType: 'forumdiscussion',
 	},
 });

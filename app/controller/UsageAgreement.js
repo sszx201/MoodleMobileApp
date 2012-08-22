@@ -19,7 +19,7 @@ Ext.define('MoodleMobApp.controller.UsageAgreement', {
 	registerAgreement: function() {
 		var settings_store = Ext.create('MoodleMobApp.store.Settings');
 		settings_store.load();
-		settings_store.data.first().getData().usageagreement = true;
+		settings_store.data.first().set('usageagreement', true);
 		settings_store.first().setDirty();
 		settings_store.sync();
 		location.reload();

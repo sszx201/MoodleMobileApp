@@ -40,7 +40,7 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 
 		// set user accounttype setting
 		var settings_store = Ext.data.StoreManager.lookup('settings_store'); 
-		settings_store.data.first().getData().accounttype = 'aai';
+		settings_store.data.first().set('accounttype', 'aai');
 		settings_store.first().setDirty();
 		settings_store.sync();
 
@@ -61,7 +61,7 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
  	// check if the AAI account is the one set
 	isActiveAccount: function () {
 		var settings_store = Ext.data.StoreManager.lookup('settings_store'); 
-		if ( settings_store.data.first().getData().accounttype == 'aai') {
+		if ( settings_store.data.first().get('accounttype') == 'aai') {
 			return true;	
 		} else {
 			return false;	
@@ -76,9 +76,9 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 			var account_store = Ext.data.StoreManager.lookup('aaiaccount_store');
 
 			var parameters = new Object();
-			parameters.username = account_store.first().getData().username;
-			parameters.password = account_store.first().getData().password;
-			parameters.idp = account_store.first().getData().homeorganisation;
+			parameters.username = account_store.first().get('username');
+			parameters.password = account_store.first().get('password');
+			parameters.idp = account_store.first().get('homeorganisation');
 
 			var auth_url = MoodleMobApp.Config.getAaiAuthUrl();
 

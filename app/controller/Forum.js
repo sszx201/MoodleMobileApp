@@ -7,18 +7,19 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			'MoodleMobApp.model.ForumPost',
 			'MoodleMobApp.model.ForumCreatePostResponse'
 		],
-
 		views: [
 			'MoodleMobApp.view.ForumDiscussionList',
+			'MoodleMobApp.view.ForumDiscussion',
 			'MoodleMobApp.view.ForumPostList',
 			'MoodleMobApp.view.ForumPost',
 			'MoodleMobApp.view.ForumPostReply',
 		],
 
+
 		refs: {
 			navigator: '#course_navigator',
 			module: '#module_list',
-			discussion: '#forum_discussion_list',
+			discussionList: '#forum_discussion_list',
 			postList: '#forum_post_list',
 			postReplyButton: 'button[action=postreply]',
 			replyForm: '#forum_post_reply_form',
@@ -29,7 +30,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			// generic controls
 			module: { itemtap: 'selectModule' },
 			// specific controls
-			discussion: { itemtap: 'selectDiscussion' },
+			discussionList: { itemtap: 'selectDiscussion' },
 			replyForm: { deactivate: 'replyToPostCancelled' },
 			postReplyButton: { tap: 'replyToPost' },
 			saveReplyButton: { tap: 'saveReplyToPost' },
@@ -42,16 +43,24 @@ Ext.define('MoodleMobApp.controller.Forum', {
 
 	selectModule: function(view, index, target, record) {
 		if(record.raw.modname === 'forum'){
-			this.selectForum(record.raw);
+			this.selectForum(record.getData());
 		}
 	},
 
 	selectForum: function(forum) {
-		var forum_discussions_store = MoodleMobApp.WebService.getForumDiscussions(forum);
+		var forum_discussions_store = Ext.data.StoreManager.lookup('forumdiscussions');
+
+		// filter discussions
+		forum_discussions_store.clearFilter();
+		forum_discussions_store.filterBy(
+			function(record) {
+				return record.get('forum') === forum.instanceid;
+			}
+		);
+
 		// display discussions
-		if(typeof this.getDiscussion() == 'object') {
-			this.getDiscussion().setStore(forum_discussions_store);
-			this.getNavigator().push(this.getDiscussion());
+		if(typeof this.getDiscussionList() == 'object') {
+			this.getNavigator().push(this.getDiscussionList());
 		} else {
 			this.getNavigator().push({
 				xtype: 'forumdiscussionlist',	
@@ -61,8 +70,17 @@ Ext.define('MoodleMobApp.controller.Forum', {
 	},
 
 	selectDiscussion: function(view, index, target, record) {
-		this.currentDiscussion = record;
-		var discussion_posts_store = MoodleMobApp.WebService.getPostsByDiscussion(record.raw);
+		var forum_posts_store = Ext.data.StoreManager.lookup('forumposts');
+		var discussionid = record.get('id');
+		// filter discussions
+		forum_posts_store.clearFilter();
+		forum_posts_store.filterBy(
+			function(post) {
+				return post.get('discussion') === discussionid;
+			}
+		);
+
+		/*
 		// check for new users
 		discussion_posts_store.on(
 			'load', 
@@ -74,72 +92,23 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			{single: true},
 			'current'
  		);
+		*/
 
-		// display posts
-		discussion_posts_store.on(
-			'load', 
-			function(){
-				if(typeof this.getPostList() == 'object'){
-					this.getPostList().setStore(discussion_posts_store);
-					this.getNavigator().push(this.getPostList());
-				} else { 
-					this.getNavigator().push({
-						xtype: 'forumpostlist',	
-						store: discussion_posts_store
-					});
-				}
-			},
-			this,
-			{single: true, delay: 300},
-			'after'
- 		);
-	},
-
-	checkForNewUsers: function(store){
-		if( store.data.getCount() > 0 ) {
-			// hook up the users store
-			var users_store = Ext.data.StoreManager.lookup('users');
-
-			// chech if there are new users and add them to the users_store
-			store.each(function(record){
-				var user = users_store.getById(record.data.userid);
-				if(user == undefined) {
-					this.getApplication().getController('User').addToStore(record.data.userid);
-				}
-			}, this);
-		}
-	},
-	
-	formatPosts: function(store){
-		if( store.data.getCount() > 0 ) {
-			// hook up the users store
-			var users_store = Ext.data.StoreManager.lookup('users');
-
-			// add indentation values
-			// set root post depth to 0
-			store.data.getAt(0).data.indentation = 0;
-			for(var i=1; i < store.data.getCount(); ++i) {
-				var parent_indentation = store.getById(store.data.getAt(i).data.parent).data.indentation;
-				store.data.getAt(i).data.indentation = parent_indentation + 1;
-			}
-
-			// add user info
-			store.each(function(record){
-				var user = users_store.getById(record.data.userid);
-				if( user != null) {
-					record.data.firstname=user.data.firstname;
-					record.data.lastname=user.data.lastname;
-					record.data.avatar=user.data.avatar;
-				}
+		if(typeof this.getPostList() == 'object'){
+			this.getPostList().setStore(forum_posts_store);
+			this.getNavigator().push(this.getPostList());
+		} else { 
+			this.getNavigator().push({
+				xtype: 'forumpostlist',	
+				store: forum_posts_store
 			});
 		}
-	},
+	},	
 
 	replyToPost: function(button){
 		var parentRecord = button.getParent().getRecord();
 		// remove the previous forum_post_reply_form view
 		// if exists
-		//if(typeof this.getReplyForm() == 'object'){ this.getNavigator().pop(); }
 		if(typeof this.getReplyForm() == 'object'){ 
 			this.getReplyForm().setRecord(parentRecord);
 			this.getNavigator().push(this.getReplyForm());

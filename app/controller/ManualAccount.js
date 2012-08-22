@@ -40,7 +40,7 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 
 		// set user accounttype setting
 		var settings_store = Ext.data.StoreManager.lookup('settings_store'); 
-		settings_store.data.first().getData().accounttype = 'manual';
+		settings_store.data.first().set('accounttype', 'manual');
 		settings_store.first().setDirty();
 		settings_store.sync();
 
@@ -61,7 +61,7 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 	// check if the Manual account is the one set
 	isActiveAccount: function () {
 		var settings_store = Ext.data.StoreManager.lookup('settings_store');
-		if ( settings_store.data.first().getData().accounttype == 'manual') {
+		if(settings_store.data.first().get('accounttype') == 'manual') {
 			return true;	
 		} else {
 			return false;	
@@ -71,12 +71,12 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 	init: function(app) {
 		// if the account is the active one
 		// authenticate and get the course data
-		if( this.isActiveAccount() ) {
+		if(this.isActiveAccount()) {
 			var account_store = Ext.data.StoreManager.lookup('manualaccount_store');
 
 			var parameters = new Object();
-			parameters.username = account_store.first().getData().username;
-			parameters.password = account_store.first().getData().password;
+			parameters.username = account_store.first().get('username');
+			parameters.password = account_store.first().get('password');
 
 			var auth_url = MoodleMobApp.Config.getManualAuthUrl();
 

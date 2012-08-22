@@ -6,6 +6,7 @@ Ext.define('MoodleMobApp.model.ForumPost', {
 			{name: 'id', type: 'int'},
 			{name: 'parent', type: 'int'},
 			{name: 'userid', type: 'int'},
+			{name: 'discussion', type: 'int'},
 			{name: 'modified', type: 'string'},
 			{name: 'subject', type: 'string'},
 			{name: 'message', type: 'string'},

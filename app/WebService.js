@@ -121,15 +121,15 @@ Ext.define('MoodleMobApp.WebService', {
 	},
 	
 
-	getEnrolledUsers: function(course) {
+	getEnroledUsers: function(course) {
 		// set parameters
 		var params = new Object();
 		params.wsfunction = 'local_uniappws_user_get_users_by_courseid';
 		params.wstoken = course.token;
 		params.courseid = course.id;
 		// request
-		var enrolled_users_store = this.request(params, 'MoodleMobApp.model.User');
-		return enrolled_users_store;
+		var enroled_users_store = this.request(params, 'MoodleMobApp.model.User');
+		return enroled_users_store;
 	},
 
 	getUserById: function(userid, token) {

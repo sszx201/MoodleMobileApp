@@ -45,7 +45,6 @@ Ext.define('MoodleMobApp.controller.Account', {
 			}
 		});
 
-		store.load(); 
 
 		store.on('load',
 			function(records, operation, success) {
@@ -58,37 +57,32 @@ Ext.define('MoodleMobApp.controller.Account', {
 				} else if( this.first().raw.exception == undefined) {
 					// store the username in the Session
 					MoodleMobApp.Session.setUsername(parameters.username);
-					
-					// update local courses store
-					this.each(
-						function(course) {
-							if(courses_store.find('id', course.get('id')) == -1) {
-								course.set('isnew', true);
-								course.set('updated', false);
-								courses_store.add(course);
-							} else if(courses_store.getById(course.get('id')).get('timemodified') != course.raw.timemodified) {
-								course.set('isnew', false);
-								course.set('updated', true);
-								courses_store.getById(course.get('id')).setData(course.getData());
-								courses_store.getById(course.get('id')).setDirty();
-							} else { // update the token
-								course.set('isnew', false);
-								course.set('updated', false);
-								courses_store.getById(course.get('id')).setData(course.getData());
-								courses_store.getById(course.get('id')).setDirty();
-							}
-						}
-					);
 
-					// remove courses the user is not enrolled in anymore
-					courses_store.each(
-						function(course) {
-							// refering as store because this has changed
-							if(this.find('id', course.get('id')) == -1) {
-								courses_store.remove(course);
-							}
-						}, this
-					);
+					var courses_number = courses_store.getCount();
+
+					if(courses_number == 0) {
+						this.each(function(course) {
+								course.set('isnew', true);
+								courses_store.add(course);
+						});
+					} else {
+						this.each(function(course) {
+								if(courses_store.find('id', course.get('id')) == -1) {
+									course.set('isnew', true);
+								} else {
+									course.set('isnew', false);
+								}
+						});
+						
+						// remove old entries
+						courses_store.removeAll();
+						courses_store.getProxy().clear();
+
+						this.each(function(course) {
+							course.setDirty();
+							courses_store.add(course);
+						});
+					}
 
 					// store data
 					courses_store.sync();
@@ -102,5 +96,7 @@ Ext.define('MoodleMobApp.controller.Account', {
 			'',
 			{single: true}
 		);
+
+		store.load(); 
 	},
 });

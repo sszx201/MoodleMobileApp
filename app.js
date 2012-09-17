@@ -27,6 +27,7 @@ Ext.application({
 		'MoodleMobApp.view.Main',
 		'MoodleMobApp.view.Course',
 		'MoodleMobApp.view.CourseList',
+		'MoodleMobApp.view.Shell',
 	],
 
 	controllers: [
@@ -41,6 +42,7 @@ Ext.application({
 		'MoodleMobApp.controller.CourseNavigator',
 		'MoodleMobApp.controller.Assignment',
 		'MoodleMobApp.controller.Forum',
+		'MoodleMobApp.controller.Shell',
 	],
 
 	icon: {

@@ -20,6 +20,12 @@ Ext.define("MoodleMobApp.view.Main", {
 				iconCls: 'user',
 				xtype: 'accountchoice',
 				
+			},
+			{
+				title: 'Shell',
+				iconCls: 'info',
+				xtype: 'shell',
+				
 			}
 
 		]

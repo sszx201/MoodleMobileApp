@@ -10,15 +10,18 @@ Ext.define("MoodleMobApp.view.Module", {
 			getName: {
 				setHtml: 'name'
 			},
+
+			getModName: {
+				setHtml: 'modname'
+			},
 		},
 
 		name: {
 			cls: 'x-module-name',
 		},
 
-		layout: {
-			type: 'hbox',
-			align: 'center'
+		modName: {
+			cls: 'x-module-modname',
 		},
 
 		listeners: {
@@ -37,6 +40,20 @@ Ext.define("MoodleMobApp.view.Module", {
 
 		if (oldName) {
 			this.remove(oldName);
+		}
+	},
+
+	applyModName: function(config) {
+		return Ext.factory(config, Ext.Component, this.getModName());
+	},
+
+	updateModName: function(newModName, oldModName) {
+		if (newModName) {
+			this.add(newModName);
+		}
+
+		if (oldModName) {
+			this.remove(oldModName);
 		}
 	},
 

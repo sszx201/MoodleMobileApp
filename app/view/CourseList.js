@@ -8,9 +8,8 @@ Ext.define("MoodleMobApp.view.CourseList", {
 	config: {
 		id: 'course_list',
 	   	title: 'Course List', 
-		itemTpl: '{name}',
 		store: 'courses',
-		emptyText: 'No posts available in this discussion.',
+		emptyText: 'No courses available.',
 		useComponents: true,
 		defaultType: 'course',
 	},

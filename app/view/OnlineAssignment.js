@@ -21,7 +21,7 @@ Ext.define("MoodleMobApp.view.OnlineAssignment", {
 				// display the parent post
 				var data = this.getRecord().getData();
 				// prepare the html
-				var intro_html = '<div class="x-form-fieldset-title x-docked-top">Intro</div>'+ 
+				var intro_html = '<div class="x-form-fieldset-title x-docked-top">'+data.name+'</div>'+ 
 									'<div class="assignment-intro">'+ data.intro + '</div>';
 				// inject html
 				this.getItems().first().setHtml(intro_html);

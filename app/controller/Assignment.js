@@ -10,6 +10,7 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 
 		views: [
 			'MoodleMobApp.view.OnlineAssignment',
+			'MoodleMobApp.view.OfflineAssignment',
 		],
 
 		refs: {
@@ -17,6 +18,7 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 			moduleList: '#module_list',
 			onlineAssignment: '#online_assignment_form',
 			onlineAssignmentSubmit: '#online_assignment_form button[action=submit]',
+			offlineAssignment: '#offline_assignment_form',
 		},
 
 		control: {
@@ -42,6 +44,10 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 		switch(assignment.raw.type) {
 			case 'online':
 				this.selectOnlineAssignment(assignment);
+			break;
+
+			case 'offline':
+				this.selectOfflineAssignment(assignment);
 			break;
 
 			case 'uploadsingle':
@@ -115,9 +121,22 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 		online_assignment_submissions_store.sync()
 	},
 
+	selectOfflineAssignment: function(assignment) {
+		// display assignment
+		if(typeof this.getOfflineAssignment() == 'object') {
+			this.getOfflineAssignment().setRecord(assignment);
+			this.getNavigator().push(this.getOfflineAssignment());
+		} else {
+			this.getNavigator().push({
+				xtype: 'offlineassignment',
+				record: assignment
+			});
+		}
+	},
+
 	backToTheCourseModulesList: function() {
 		// remove the view from the navigator
 		this.getNavigator().pop();
-	}
+	},
 
 });

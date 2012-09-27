@@ -9,6 +9,8 @@ Ext.define('MoodleMobApp.store.Settings', {
 	config: {
 		storeId: 'settings_store',
 		model: 'MoodleMobApp.model.Settings',
+		autoLoad: true,
+		//autoSync: true,
 		proxy: {
 			type: 'localstorage',	
 			id: 'settings'

@@ -10,7 +10,7 @@ Ext.define('MoodleMobApp.store.ForumPosts', {
 		storeId: 'forumposts',
 		model: 'MoodleMobApp.model.ForumPost',
 		autoLoad: true,
-		autoSync: true,
+		//autoSync: true,
 		proxy : {
 			id: 'forumpost',
 			type: 'localstorage',

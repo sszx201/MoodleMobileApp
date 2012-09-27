@@ -9687,17 +9687,19 @@ input[type="search"]::-webkit-search-cancel-button {
 
 /*
  *
- * Forum related classes
+ * User interface; Lists
  *
  * */
 .x-course,
-.x-module {
+.x-module,
+.x-folder-entry {
 	padding: 5px;
 	border-bottom: 1px solid #dedede;
 }
 
 .x-course-module-status,
-.x-module-modname {
+.x-module-modname,
+.x-folder-entry-mime {
 	text-align: right;
 	color: gray;
 	font-size: small;

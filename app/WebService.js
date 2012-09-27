@@ -162,8 +162,21 @@ Ext.define('MoodleMobApp.WebService', {
 		params.wstoken = token;
 		params.assigid = assignid;
 		// request
-		var submission_store = this.request(params, 'MoodleMobApp.model.User');
-		return user_store;
+		var submission_store = this.request(params, 'MoodleMobApp.model.AssignmentSubmission');
+		return submission_store;
 	},
+
+	getFolder: function(folder, token) {
+		// set parameters
+		var params = new Object();
+		params.wsfunction = 'local_uniappws_folder_get_folder_by_id';
+		params.wstoken = token;
+		params.folderid = folder.instanceid;
+		// request
+		var folder_content_store = this.request(params, 'MoodleMobApp.model.Folder');
+		return folder_content_store;
+	},
+
+
 
 });

@@ -9,6 +9,8 @@ Ext.define('MoodleMobApp.store.ManualAccount', {
 	config: {
 		storeId: 'manualaccount_store',
 		model: 'MoodleMobApp.model.ManualAccount',
+		autoLoad: true,
+		//autoSync: true,
 		proxy: {
 			type: 'localstorage',	
 			id: 'manualaccount'

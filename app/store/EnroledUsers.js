@@ -11,7 +11,7 @@ Ext.define('MoodleMobApp.store.EnroledUsers', {
 		model: 'MoodleMobApp.model.EnroledUser',
 		groupField: 'courseid',
 		autoLoad: true,
-		autoSync: true,
+		//autoSync: true,
 		proxy : {
 			id: 'enroleduser',
 			type: 'localstorage',

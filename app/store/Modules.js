@@ -10,7 +10,7 @@ Ext.define('MoodleMobApp.store.Modules', {
 		storeId: 'modules',
 		model: 'MoodleMobApp.model.Module',
 		autoLoad: true,
-		autoSync: true,
+		//autoSync: true,
 		proxy : {
 			id: 'module',
 			type: 'localstorage',

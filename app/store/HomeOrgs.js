@@ -9,6 +9,7 @@ Ext.define('MoodleMobApp.store.HomeOrgs', {
 		storeId: 'homeorganisations_store',
 		model: 'MoodleMobApp.model.HomeOrg',
 		autoLoad: true,
+		//autoSync: true,
 		proxy: {
 			type: 'ajax',	
 			url: MoodleMobApp.Config.getHomeOrgsUrl(),

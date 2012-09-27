@@ -55,7 +55,7 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 			break;
 
 			case 'upload':
-				console.log('upload shitload');
+				console.log('multi upload');
 			break;
 
 			default:

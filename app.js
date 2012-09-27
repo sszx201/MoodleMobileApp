@@ -10,6 +10,7 @@ Ext.application({
 		'MoodleMobApp.Config',
 		'MoodleMobApp.Session',
 		'MoodleMobApp.WebService',
+		'MoodleMobApp.util.Link',
 		'MoodleMobApp.store.HomeOrgs',
 	],
 
@@ -42,6 +43,7 @@ Ext.application({
 		'MoodleMobApp.controller.CourseNavigator',
 		'MoodleMobApp.controller.Assignment',
 		'MoodleMobApp.controller.Forum',
+		'MoodleMobApp.controller.Folder',
 		'MoodleMobApp.controller.Shell',
 	],
 

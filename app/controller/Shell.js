@@ -42,6 +42,7 @@ Ext.define('MoodleMobApp.controller.Shell', {
 		this.clearEnroledUsers();
 		this.clearForumDiscussions();
 		this.clearForumPosts();
+		this.clearFolders();
 	},
 
 	clearCourses: function() {
@@ -72,6 +73,11 @@ Ext.define('MoodleMobApp.controller.Shell', {
 	clearForumPosts: function() {
 		Ext.data.StoreManager.lookup('forumposts').removeAll();
 		Ext.data.StoreManager.lookup('forumposts').getProxy().clear();
+	},
+
+	clearFolders: function() {
+		Ext.data.StoreManager.lookup('folders').removeAll();
+		Ext.data.StoreManager.lookup('folders').getProxy().clear();
 	},
 
 });

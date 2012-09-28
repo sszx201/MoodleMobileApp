@@ -55,23 +55,24 @@ Ext.define('MoodleMobApp.controller.Main', {
 								this.users_store.add(record);
 								users_store_to_sync = true;
 								// -log-
-								MoodleMobApp.log('New user; username: '+record.get('username')+'; id: '+record.get('id'));
+								MoodleMobApp.log('|I| New user; username: '+record.get('username')+'; id: '+record.get('id'));
 							} else if(typeof current_user == 'object' && current_user.get('timemodified') != record.get('timemodified')){
 								this.users_store.getById(record.get('id')).setData(record.getData());
 								this.users_store.getById(record.get('id')).setDirty();
 								users_store_to_sync = true;
 								// -log-
-								MoodleMobApp.log('Updating user: '+record.get('username'));
+								MoodleMobApp.log('|I| Updating user: '+record.get('username'));
 							}
 						}, this);	
 
 						this.enroled_users_store.sync();
 
 						if(users_store_to_sync) {
-							this.users_store.on('write', this.updateDataStores, this, {single:true});
+							MoodleMobApp.log('|I| users_store is to sync');
+							this.users_store.on('write', this.updateDataStores(course), this, {single:true});
 							this.users_store.sync();
 						} else {
-							this.updateDataStores();
+							this.updateDataStores(course);
 						}
 						
 					}
@@ -82,77 +83,74 @@ Ext.define('MoodleMobApp.controller.Main', {
 		}, this);
 	},
 
-	updateDataStores: function(){
+	updateDataStores: function(course){
 		// -log-
-		MoodleMobApp.log('UPDATING DATA STORES');
+		MoodleMobApp.log('UPDATING DATA STORES FOR COURSE: ' + course.get('name') + '; ID: ' + course.get('id'));
 		// update modules
-		this.courses_store.each(function(course) {
-			MoodleMobApp.WebService.getCourseModules(course.getData()).on(
-				'load', 
-				function(mstore){
-					// check if this is a new course
-					var courseid = mstore.first().get('courseid');
-					var is_new_course = this.courses_store.getById(courseid).get('isnew');
-					var store_to_sync = false;	
+		MoodleMobApp.WebService.getCourseModules(course.getData()).on(
+			'load', 
+			function(mstore){
+				// check if this is a new course
+				var courseid = course.get('id');
+				var is_new_course = course.get('isnew');
+				var store_to_sync = false;	
 
-					// remove from the cache the modules that have been
-					// deleted from the course
-					this.modules_store.queryBy(
-						function(record, id){
-							if(record.get('courseid') == courseid) { return true; }
-						}).each(
-							function(record){
-								// if the record is not in the 
-								if(mstore.findExact('id', record.get('id')) == -1){
-									store_to_sync = true;
-									this.modules_store.remove(record);
-								}
-							});
-
-					// add/update new module entries
-					mstore.each(function(module){
-						// check if the moodle entry exists in the store
-						if(this.modules_store.findExact('id', module.get('id')) == -1) {
-							// don't set 'new' flag in the module entries of the new courses
-							// avoid having new courses with all modules show as new
-							if(is_new_course) {
-								module.set('isnew', false);	
-							} else {
-								module.set('isnew', true);	
+				// remove from the cache the modules that have been
+				// deleted from the course
+				this.modules_store.queryBy(
+					function(record, id){
+						if(record.get('courseid') == courseid) { return true; }
+					}).each(
+						function(record){
+							// if the record is not in the 
+							if(mstore.findExact('id', record.get('id')) == -1){
+								store_to_sync = true;
+								this.modules_store.remove(record);
 							}
-							module.set('isupdated', false);	
-							this.modules_store.add(module);
-							store_to_sync = true;
-							// -log-
-							MoodleMobApp.log('New module '+module.get('modname')+'; type:'+module.get('type')+'; name: '+module.get('name')+'; id: '+module.get('name'));
-						} else if(this.modules_store.getById(module.get('id')).get('timemodified') != module.get('timemodified')) { // check if updated
+						});
+
+				// add/update new module entries
+				mstore.each(function(module){
+					// check if the moodle entry exists in the store
+					if(this.modules_store.findExact('id', module.get('id')) == -1) {
+						// don't set 'new' flag in the module entries of the new courses
+						// avoid having new courses with all modules show as new
+						if(is_new_course) {
 							module.set('isnew', false);	
-							module.set('isupdated', true);
-							this.modules_store.getById(module.get('id')).setDirty();
-							this.modules_store.getById(module.get('id')).setData(module.getData());
-							store_to_sync = true;
-							// -log-
-							MoodleMobApp.log('Updating module '+module.get('modname')+'; type:'+module.get('type')+'; name: '+module.get('name')+'; id: '+module.get('id'));
+						} else {
+							module.set('isnew', true);	
 						}
-					}, this);	
-					
-					if(store_to_sync) { // sync the updating process with the modules_store
-						this.modules_store.on('write', function() { this.updateCourseModulesCounter(courseid); }, this, {single:true});
-						this.modules_store.on('write', function() { this.updateForumDiscussionsStore(courseid); }, this, {single:true});	
-						this.modules_store.on('write', function() { this.updateFoldersStore(courseid); }, this, {single:true});	
-						// sync
-						this.modules_store.sync();
-					} else { // no syncronisation needed; proceed with other updates
-						this.updateCourseModulesCounter(courseid);
-						this.updateForumDiscussionsStore(courseid);
-						this.updateFoldersStore(courseid);
+						module.set('isupdated', false);	
+						this.modules_store.add(module);
+						store_to_sync = true;
+						// -log-
+						MoodleMobApp.log('|I| New module '+module.get('modname')+'; type:'+module.get('type')+'; name: '+module.get('name')+'; id: '+module.get('id'));
+					} else if(this.modules_store.getById(module.get('id')).get('timemodified') != module.get('timemodified')) { // check if updated
+						module.set('isnew', false);	
+						module.set('isupdated', true);
+						this.modules_store.getById(module.get('id')).setDirty();
+						this.modules_store.getById(module.get('id')).setData(module.getData());
+						store_to_sync = true;
+						// -log-
+						MoodleMobApp.log('|I| Updating module '+module.get('modname')+'; type:'+module.get('type')+'; name: '+module.get('name')+'; id: '+module.get('id'));
 					}
-				},
-				this,
-				{single: true}
-			);
-		}, this);
-		
+				}, this);	
+				
+				if(store_to_sync) { // sync the updating process with the modules_store
+					this.modules_store.on('write', this.updateCourseModulesCounter(courseid), this, {single:true});
+					this.modules_store.on('write', this.updateForumDiscussionsStore(courseid), this, {single:true});	
+					this.modules_store.on('write', this.updateFoldersStore(courseid), this, {single:true});	
+					// sync
+					this.modules_store.sync();
+				} else { // no syncronisation needed; proceed with other updates
+					this.updateCourseModulesCounter(courseid);
+					this.updateForumDiscussionsStore(courseid);
+					this.updateFoldersStore(courseid);
+				}
+			},
+			this,
+			{single: true}
+		);
 	},
 
 	updateCourseModulesCounter: function(courseid) {
@@ -256,11 +254,11 @@ Ext.define('MoodleMobApp.controller.Main', {
 
 		
 					if(store_to_sync) { // sync the updating process with the modules_store
-						this.forum_discussions_store.on('write', function() { this.updateForumPostsStore(forum.get('instanceid'), course.get('token')); }, this, {single:true});
+						this.forum_discussions_store.on('write', this.updateForumPostsStore(forum.get('instanceid'), course.get('token')), this, {single:true});
 						// write the forum discussions store
 						this.forum_discussions_store.sync();
 					} else { // no syncronisation needed; proceed with other updates
-						this.updateForumPostsStore(forum.get('id'), course.get('token'));
+						this.updateForumPostsStore(forum.get('instanceid'), course.get('token'));
 					}
 
 				},
@@ -295,10 +293,11 @@ Ext.define('MoodleMobApp.controller.Main', {
 								post.set('isnew', true);	
 							}
 							post.set('isupdated', false);	
+							post.setDirty();
 							this.forum_posts_store.add(post);
 							store_to_sync = true;
 							// -log-
-							MoodleMobApp.log('New forum post: '+post.get('id')+' in discussion: '+discussion.get('id'));
+							MoodleMobApp.log('|I| New forum post: '+post.get('id')+' in discussion: '+discussion.get('id'));
 						// check if the discussion has been updated or not
 						} else if(this.forum_posts_store.getById(post.get('id')).get('modified') != post.get('modified')) {
 							post.set('isupdated', true);	
@@ -306,7 +305,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 							this.forum_posts_store.getById(post.get('id')).setDirty();
 							store_to_sync = true;
 							// -log-
-							MoodleMobApp.log('Updating forum post:'+post.get('id')+' in discussion: '+discussion.get('id'));
+							MoodleMobApp.log('|I| Updating forum post:'+post.get('id')+' in discussion: '+discussion.get('id'));
 						}	
 					}, this);
 
@@ -320,18 +319,16 @@ Ext.define('MoodleMobApp.controller.Main', {
 								// if the record is not in the 
 								if(posts.findExact('id', record.get('id')) == -1) { 
 									this.forum_posts_store.remove(record);
-									MoodleMobApp.log('Removing forum post:'+record.get('id')+' from discussion: '+discussion.get('id'));
+									MoodleMobApp.log('|I| Removing forum post:'+record.get('id')+' from discussion: '+discussion.get('id'));
 								}
 							});
 					
 					// wait for the store to sync before formating the posts
 					if(store_to_sync){
-						console.log('AAAAA store to sync; check users for discussion:' + discussion.get('id'));
-						this.forum_posts_store.on('write', function(){ console.log('AAAAAAAAAAAaaaaaaaaaaaaAAAAAAAAAA'); this.checkForNewUsers(discussion.get('id'), token);}, this, {single:true});	
+						this.forum_posts_store.on('write', this.checkForNewUsers(discussion.get('id'), token), this, {single:true});	
 						// write the forum discussions store
 						this.forum_posts_store.sync();
 					} else {
-						console.log('BBBBB store to sync; check users for discussion:' + discussion.get('id'));
 						this.checkForNewUsers(discussion.get('id'), token);
 					}
 				},
@@ -355,7 +352,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 							if(user == undefined && added_users.indexOf(post.get('userid')) == -1) { // avoid adding twice the same user
 								// keep track of added users
 								// -log-
-								MoodleMobApp.log('Found new user: ' + post.get('userid'));
+								MoodleMobApp.log('|I| Found new user: ' + post.get('userid'));
 								added_users.push(post.get('userid'));
 								this.storeUser(post.get('userid'), token);
 							}			

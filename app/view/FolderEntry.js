@@ -29,7 +29,21 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 		},
 
 		listeners: {
-			updatedata: function(){ },
+			updatedata: function() {
+				this.addIcons();
+			},
+		}
+	},
+
+
+	addIcons: function(){
+		console.log('adding icons');
+		this.removeCls('x-subfolder-icon');
+		this.removeCls('x-file-icon');
+		if(this.getRecord().get('mime') == 'inode/directory'){
+			this.addCls('x-subfolder-icon');
+		} else {
+			this.addCls('x-file-icon');
 		}
 	},
 

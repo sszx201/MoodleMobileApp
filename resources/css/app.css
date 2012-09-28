@@ -9698,7 +9698,8 @@ input[type="search"]::-webkit-search-cancel-button {
 	border-bottom: 1px solid #dedede;
 }
 
-.x-module{
+.x-module,
+.x-folder-entry {
 	padding-top: 10px;
 	padding-left: 35px;
 }
@@ -9710,8 +9711,16 @@ input[type="search"]::-webkit-search-cancel-button {
 	background-position-y: 5px;
 }
 
-.x-module-icon-folder {
+.x-module-icon-folder,
+.x-subfolder-icon {
 	background:url('../images/folder.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
+.x-file-icon {
+	background:url('../images/file.png');
 	background-repeat: no-repeat;
 	background-position-x: 0px;
 	background-position-y: 5px;

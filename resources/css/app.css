@@ -9692,7 +9692,8 @@ input[type="search"]::-webkit-search-cancel-button {
  * */
 .x-course,
 .x-module,
-.x-folder-entry {
+.x-folder-entry,
+.x-forum-discussion {
 	padding: 5px;
 	border-bottom: 1px solid #dedede;
 }
@@ -9709,6 +9710,12 @@ input[type="search"]::-webkit-search-cancel-button {
  * Forum related classes
  *
  * */
+
+.x-forum-discussion {
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
 .forum-post {
 	margin-bottom: 10px;
 	border: 1px solid #dedede;

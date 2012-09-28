@@ -3,7 +3,7 @@ Ext.define("MoodleMobApp.view.ForumDiscussion", {
 	xtype: 'forumdiscussion',
 
 	config: {
-		cls: 'x-module',
+		cls: 'x-forum-discussion',
 
 		// map records to the DataItem
 		dataMap: {
@@ -13,7 +13,7 @@ Ext.define("MoodleMobApp.view.ForumDiscussion", {
 		},
 
 		name: {
-			cls: 'x-module-name',
+			cls: 'x-forum-discussion-name',
 		},
 
 		layout: {

@@ -5,7 +5,9 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 	config: {
 		cls: 'x-folder-entry',
 
-		//html: '<a href="http://thumbs2.modthesims.info/img/6/4/3/3/1/8/MTS_Sango_91-857161-Chii.jpg">{name}</b>',
+		
+		//html: '<a href="http://mobile.icorsi.ch/pluginfile.php/45/mod_folder/content/1/second%20sub%20folder/pdf_sample.pdf">pdf</b>',
+		//html: '<a href="http://mobile.icorsi.ch/pluginfile.php/45/mod_folder/content/1/boa.jpg?forcedownload=1">pdf</b>',
 
 		// map records to the DataItem
 		dataMap: {

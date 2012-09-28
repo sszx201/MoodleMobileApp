@@ -98,10 +98,31 @@ Ext.define('MoodleMobApp.controller.Folder', {
 		} else if(entry.get('type') == 'file'){
 			MoodleMobApp.log(' >>>>>> downloading file: '+entry.get('url'));
 			//window.open( entry.get('url'), "_blank");
+			//window.open('http://mobile.icorsi.ch/pluginfile.php/45/mod_folder/content/1/boa.jpg', "_blank");
+			this.downloadFile();
 		}
 		
 	},
 
+	downloadFile: function() {
+		var fileTransfer = new FileTransfer();
+		var uri = encodeURI("http://mobile.icorsi.ch/pluginfile.php/45/mod_folder/content/1/boa.jpg");
+		var filePath = 'boa.jpg';
+
+		fileTransfer.download(
+			uri,
+			filePath,
+			function(entry) {
+				console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% download complete: " + entry.fullPath);
+			},
+			function(error) {
+				console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% download error source " + error.source);
+				console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% download error target " + error.target);
+				console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% upload error code" + error.code);
+			}
+		);
+    },
+   
 	addUpperFolderEntry: function(currentFolder){
 		this.folders_store = Ext.data.StoreManager.lookup('folders');
 		var position = this.folders_store.findExact('name', '..');

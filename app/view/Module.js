@@ -25,8 +25,12 @@ Ext.define("MoodleMobApp.view.Module", {
 		},
 
 		listeners: {
-			updatedata: function(){ },
+			painted: function(){ },
 		}
+	},
+
+	initialize: function(){
+		this.addCls('x-module-icon-'+this.getRecord().get('modname'));
 	},
 
 	applyName: function(config) {

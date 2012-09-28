@@ -9698,6 +9698,39 @@ input[type="search"]::-webkit-search-cancel-button {
 	border-bottom: 1px solid #dedede;
 }
 
+.x-module{
+	padding-top: 10px;
+	padding-left: 35px;
+}
+
+.x-module-icon-assignment {
+	background:url('../images/assignment.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
+.x-module-icon-folder {
+	background:url('../images/folder.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
+.x-module-icon-forum {
+	background:url('../images/forum.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
+.x-module-icon-resource {
+	background:url('../images/resource.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
 .x-course-module-status,
 .x-module-modname,
 .x-folder-entry-mime {

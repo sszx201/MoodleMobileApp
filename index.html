@@ -64,7 +64,32 @@
             }
         }
     </style>
+    <script id="cordova" type="text/javascript" src="cordova-2.1.0.js"></script>
+<script type="text/javascript">
+<!--
+// Wait for Cordova to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
 
+    // Cordova is ready
+    //
+    function onDeviceReady() {
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
+    }
+
+    function onFileSystemSuccess(fileSystem) {
+		window.fileSystem = fileSystem;
+		console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%LOADED');
+        console.log(fileSystem.name);
+        console.log(fileSystem.root.name);
+    }
+
+    function fail(evt) {
+		console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%FAILED');
+        console.log(evt.target.error.code);
+    }
+// -->
+</script>
     <script id="microloader" type="text/javascript" src="sdk/microloader/development.js"></script>
 </head>
 <body>

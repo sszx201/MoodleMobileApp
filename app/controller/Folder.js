@@ -96,18 +96,26 @@ Ext.define('MoodleMobApp.controller.Folder', {
 			);
 			this.getNavigator().push(this.getFolder());
 		} else if(entry.get('type') == 'file'){
-			MoodleMobApp.log(' >>>>>> downloading file: '+entry.get('url'));
+			//MoodleMobApp.log(' >>>>>> downloading file: '+entry.get('url'));
+			//location.href = 'http://mobile.icorsi.ch/pluginfile.php/45/mod_folder/content/1/boa.jpg';
 			//window.open( entry.get('url'), "_blank");
+			//window.open( entry.get('url') );
 			//window.open('http://mobile.icorsi.ch/pluginfile.php/45/mod_folder/content/1/boa.jpg', "_blank");
 			this.downloadFile();
+			//location.href = entry.get('url');
+			//location.href = 'http://mobile.icorsi.ch/pluginfile.php/45/mod_folder/content/1/first%20sub%20folder/favicon.ico';
+			//location.href = 'http://mobile.icorsi.ch/pluginfile.php/45/mod_folder/content/1/boa.jpg';
+			//location.href = 'http://news.stareastasia.com/wp-content/uploads/2007/11/kwon-boa-pic-0008.jpg';
+			//location.href = 'https://raw.github.com/phonegap/phonegap/2dbbdabce35cca44aae575867cbed972437fa676/README.md';
+			//location.href = 'http://cran.r-project.org/doc/manuals/R-intro.pdf';
 		}
 		
 	},
 
 	downloadFile: function() {
 		var fileTransfer = new FileTransfer();
-		var uri = encodeURI("http://mobile.icorsi.ch/pluginfile.php/45/mod_folder/content/1/boa.jpg");
-		var filePath = 'boa.jpg';
+		var uri = encodeURI("http://news.stareastasia.com/wp-content/uploads/2007/11/kwon-boa-pic-0008.jpg");
+		var filePath = 'file://sdcard/boa.jpg';
 
 		fileTransfer.download(
 			uri,

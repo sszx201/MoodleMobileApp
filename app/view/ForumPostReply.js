@@ -57,18 +57,26 @@ Ext.define("MoodleMobApp.view.ForumPostReply", {
 				title: 'Your reply',
 				items: [	
 					{
-						xtype: 'textfield',	
+						xtype: 'textfield',
 						name: 'subject',
 						label: 'Subject',
 					},
 					{
-						xtype: 'textareafield',	
+						xtype: 'textareafield',
 						name: 'reply',
 						label: 'Message',
 					},
 					{
-						xtype: 'hiddenfield',	
+						xtype: 'hiddenfield',
 						name: 'id',
+					},
+					{
+						xtype: 'hiddenfield',
+						name: 'discussion',
+					},
+					{
+						xtype: 'hiddenfield',
+						name: 'indentation',
 					},
 					{
 						xtype: 'button',

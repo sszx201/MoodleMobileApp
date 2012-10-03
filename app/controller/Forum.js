@@ -122,12 +122,15 @@ Ext.define('MoodleMobApp.controller.Forum', {
 
 	saveReplyToPost: function(button){
 		var form = this.getReplyForm();
-		var create_post_result_store = MoodleMobApp.WebService.createForumPost(form.getValues());
+		console.log(form.getValues());
+		var create_post_result_store = MoodleMobApp.WebService.createForumPost(form.getValues(), MoodleMobApp.Session.getCourseToken());
 		// refresh the discussion content
 		create_post_result_store.on(
 			'load', 
-			function(){
-				this.selectDiscussion(this, this.currentDiscussion);
+			function(store, records){
+				//this.backToDiscussion(this);
+				console.log(store);
+				console.log(records);
 			},
 			this,
 			{single: true}

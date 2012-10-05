@@ -75,10 +75,6 @@ Ext.define("MoodleMobApp.view.ForumPostReply", {
 						name: 'discussion',
 					},
 					{
-						xtype: 'hiddenfield',
-						name: 'indentation',
-					},
-					{
 						xtype: 'button',
 						text: 'Save',
 						ui: 'confirm',

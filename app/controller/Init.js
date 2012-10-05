@@ -48,17 +48,14 @@ Ext.define('MoodleMobApp.controller.Init', {
 		// create the manual account store
 		var manual_account_store = Ext.create('MoodleMobApp.store.ManualAccount'); 
 		manual_account_store.load();
-		MoodleMobApp.manual_account_store = manual_account_store;
 
 		// create the AAI account store
 		var aai_account_store = Ext.create('MoodleMobApp.store.AaiAccount'); 
 		aai_account_store.load();
-		MoodleMobApp.aai_account_store = aai_account_store;
 
 		// create users store
 		var users_store = Ext.create('MoodleMobApp.store.Users');
 		users_store.load();
-		MoodleMobApp.users_store = users_store;
 		// -log-
 		users_store.on(
 			'write',
@@ -72,7 +69,6 @@ Ext.define('MoodleMobApp.controller.Init', {
 		// create enroledusers store
 		var enroled_users_store = Ext.create('MoodleMobApp.store.EnroledUsers');
 		enroled_users_store.load();
-		MoodleMobApp.enroled_users_store = enroled_users_store;
 		// -log-
 		enroled_users_store.on(
 			'write',
@@ -100,7 +96,6 @@ Ext.define('MoodleMobApp.controller.Init', {
 		// create modules store
 		var modules_store = Ext.create('MoodleMobApp.store.Modules');
 		modules_store.load();
-		MoodleMobApp.modules_store = modules_store;
 		// -log-
 		modules_store.on(
 			'write',
@@ -114,7 +109,6 @@ Ext.define('MoodleMobApp.controller.Init', {
 		// create forumdiscussions store
 		var forum_discussions_store = Ext.create('MoodleMobApp.store.ForumDiscussions');
 		forum_discussions_store.load();
-		MoodleMobApp.forum_discussions_store = forum_discussions_store;
 		// -log-
 		forum_discussions_store.on(
 			'write',
@@ -128,7 +122,6 @@ Ext.define('MoodleMobApp.controller.Init', {
 		// create forumposts store
 		var forum_posts_store = Ext.create('MoodleMobApp.store.ForumPosts');
 		forum_posts_store.load();
-		MoodleMobApp.forum_posts_store = forum_posts_store;
 		// -log-
 		forum_posts_store.on(
 			'write',
@@ -142,13 +135,11 @@ Ext.define('MoodleMobApp.controller.Init', {
 		// create onlineassingnments store
 		var online_assignment_submissions_store = Ext.create('MoodleMobApp.store.OnlineAssignmentSubmissions');
 		online_assignment_submissions_store.load();
-		MoodleMobApp.online_assignment_submissions_store = online_assignment_submissions_store;
 
 
 		// create folders store
 		var folders_store = Ext.create('MoodleMobApp.store.Folders');
 		folders_store.load();
-		MoodleMobApp.folders_store = folders_store;
 		// -log-
 		folders_store.on(
 			'write',
@@ -163,5 +154,4 @@ Ext.define('MoodleMobApp.controller.Init', {
 				});
 			});
 	}
-
 });

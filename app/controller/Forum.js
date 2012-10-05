@@ -38,6 +38,8 @@ Ext.define('MoodleMobApp.controller.Forum', {
 	},
 
 	init: function(){
+		this.forum_discussions_store = Ext.data.StoreManager.lookup('forumdiscussions');
+		this.forum_posts_store = Ext.data.StoreManager.lookup('forumposts');
 		Ext.f = this;
 	},
 
@@ -48,11 +50,9 @@ Ext.define('MoodleMobApp.controller.Forum', {
 	},
 
 	selectForum: function(forum) {
-		var forum_discussions_store = Ext.data.StoreManager.lookup('forumdiscussions');
-
 		// filter discussions
-		forum_discussions_store.clearFilter();
-		forum_discussions_store.filterBy(
+		this.forum_discussions_store.clearFilter();
+		this.forum_discussions_store.filterBy(
 			function(record) {
 				return record.get('forum') === forum.instanceid;
 			}
@@ -64,43 +64,28 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		} else {
 			this.getNavigator().push({
 				xtype: 'forumdiscussionlist',	
-				store: forum_discussions_store
+				store: this.forum_discussions_store
 			});
 		}
 	},
 
 	selectDiscussion: function(view, index, target, record) {
-		var forum_posts_store = Ext.data.StoreManager.lookup('forumposts');
 		var discussionid = record.get('id');
 		// filter discussions
-		forum_posts_store.clearFilter();
-		forum_posts_store.filterBy(
+		this.forum_posts_store.clearFilter();
+		this.forum_posts_store.filterBy(
 			function(post) {
 				return post.get('discussion') === discussionid;
 			}
 		);
 
-		/*
-		// check for new users
-		discussion_posts_store.on(
-			'load', 
-			function(){ 
-				this.checkForNewUsers(discussion_posts_store);
-				this.formatPosts(discussion_posts_store);
-			},
-			this,
-			{single: true},
-			'current'
- 		);
-		*/
-
 		if(typeof this.getPostList() == 'object'){
-			this.getPostList().setStore(forum_posts_store);
+			this.getPostList().setStore(this.forum_posts_store);
 			this.getNavigator().push(this.getPostList());
 		} else { 
 			this.getNavigator().push({
 				xtype: 'forumpostlist',	
-				store: forum_posts_store
+				store: this.forum_posts_store
 			});
 		}
 	},	
@@ -121,16 +106,30 @@ Ext.define('MoodleMobApp.controller.Forum', {
 	},
 
 	saveReplyToPost: function(button){
-		var form = this.getReplyForm();
-		console.log(form.getValues());
-		var create_post_result_store = MoodleMobApp.WebService.createForumPost(form.getValues(), MoodleMobApp.Session.getCourseToken());
+		var formData = this.getReplyForm().getValues();
+		var token = MoodleMobApp.Session.getCourseToken();
+		var create_post_result_store = MoodleMobApp.WebService.createForumPost(formData, token);
 		// refresh the discussion content
 		create_post_result_store.on(
 			'load', 
 			function(store, records){
-				//this.backToDiscussion(this);
-				console.log(store);
-				console.log(records);
+				if( store.first().raw.exception == undefined) {
+					this.forum_posts_store.on(
+						'write',
+						function(){
+							this.getNavigator().pop();
+						},
+						this,
+						{single:true}
+					);
+				var discussion = this.forum_discussions_store.getById(formData.discussion);
+				this.getApplication().getController('Main').updateForumPostsStore(discussion, token);
+				} else {
+					Ext.Msg.alert(
+						store.first().raw.exception,
+						store.first().raw.message
+					);
+				}
 			},
 			this,
 			{single: true}
@@ -141,4 +140,5 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		// remove the view from the navigator
 		this.getNavigator().pop();
 	}
+
 });

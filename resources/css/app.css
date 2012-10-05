@@ -9809,8 +9809,28 @@ input[type="search"]::-webkit-search-cancel-button {
 	margin-left: 75px;
 }
 
+.x-post-indentation-6 {
+	margin-left: 90px;
+}
+
+.x-post-indentation-7 {
+	margin-left: 105px;
+}
+
+.x-post-indentation-8 {
+	margin-left: 120px;
+}
+
+.x-post-indentation-9 {
+	margin-left: 135px;
+}
+
+.x-post-indentation-10 {
+	margin-left: 150px;
+}
+
 .x-post-attachment-list {
-	padding-top: 10px;
+	padding-top: 165px;
 }
 
 /*

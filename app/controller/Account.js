@@ -47,7 +47,7 @@ Ext.define('MoodleMobApp.controller.Account', {
 
 
 		store.on('load',
-			function(records, operation, success) {
+			function(store, records, success) {
 				// check if there are any exceptions 
 				if(this.first() == undefined){
 					Ext.Msg.alert(

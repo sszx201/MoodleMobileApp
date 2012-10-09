@@ -15,7 +15,6 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			'MoodleMobApp.view.ForumPostReply',
 		],
 
-
 		refs: {
 			navigator: '#course_navigator',
 			module: '#module_list',
@@ -71,24 +70,53 @@ Ext.define('MoodleMobApp.controller.Forum', {
 
 	selectDiscussion: function(view, index, target, record) {
 		var discussionid = record.get('id');
-		// filter discussions
+		// filter discussions / restrict the range
 		this.forum_posts_store.clearFilter();
 		this.forum_posts_store.filterBy(
 			function(post) {
 				return post.get('discussion') === discussionid;
 			}
 		);
+	
+		// pre sort
+		this.forum_posts_store.sort([
+			{
+				property: 'parent',
+				direction: 'ASC',
+			},
+			{
+				property: 'creation',
+				direction: 'ASC',
+			}
+		]);
+		
+		this.posts = Ext.create('Ext.data.Store', {model: 'MoodleMobApp.model.ForumPost'});
+		this.posts.removeAll();
+		var root = this.forum_posts_store.first();
+		// append and sort posts
+		this.appendPosts(root);
 
 		if(typeof this.getPostList() == 'object'){
-			this.getPostList().setStore(this.forum_posts_store);
+			this.getPostList().setStore(this.posts);
 			this.getNavigator().push(this.getPostList());
 		} else { 
 			this.getNavigator().push({
 				xtype: 'forumpostlist',	
-				store: this.forum_posts_store
+				store: this.posts
 			});
 		}
-	},	
+	},
+
+	appendPosts: function(node){
+		if(this.posts.findExact('id', node.get('id')) == -1){
+			this.posts.add(node);
+		}
+		var subnodes = this.forum_posts_store.queryBy(function(record){
+			return record.get('parent') == node.get('id');
+		});
+
+		subnodes.each(function(subnode){ this.appendPosts(subnode); }, this);
+	},
 
 	replyToPost: function(button){
 		var parentRecord = button.getParent().getRecord();
@@ -122,8 +150,8 @@ Ext.define('MoodleMobApp.controller.Forum', {
 						this,
 						{single:true}
 					);
-				var discussion = this.forum_discussions_store.getById(formData.discussion);
-				this.getApplication().getController('Main').updateForumPostsStore(discussion, token);
+					var discussion = this.forum_discussions_store.getById(formData.discussion);
+					this.getApplication().getController('Main').updateForumPostsStore(discussion, token);
 				} else {
 					Ext.Msg.alert(
 						store.first().raw.exception,

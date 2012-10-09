@@ -14,6 +14,6 @@ Ext.define('MoodleMobApp.store.ForumPosts', {
 		proxy : {
 			id: 'forumpost',
 			type: 'localstorage',
-		}
+		},
 	}
 });

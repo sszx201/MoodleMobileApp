@@ -70,7 +70,7 @@ Ext.define("MoodleMobApp.view.ForumPost", {
             align: 'center'
         },
 
-		listeners: {
+		listeners: {	
 			updatedata: function(){
 				this.setCls('forum-post x-post-indentation-'+this.getRecord().get('indentation'));	
 				// process attachments

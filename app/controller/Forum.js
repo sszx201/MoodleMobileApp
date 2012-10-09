@@ -43,6 +43,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 	},
 
 	selectModule: function(view, index, target, record) {
+		console.log(record);
 		if(record.raw.modname === 'forum'){
 			this.selectForum(record.getData());
 		}

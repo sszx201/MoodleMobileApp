@@ -25,12 +25,35 @@ Ext.define("MoodleMobApp.view.Module", {
 		},
 
 		listeners: {
-			painted: function(){ },
+			painted: function(){
+				this.formatElement();
+			},
+			tap: function(){
+				updateNotifications();
+			}
 		}
 	},
 
-	initialize: function(){
-		this.addCls('x-module-icon-'+this.getRecord().get('modname'));
+	formatElement: function(){
+		var classes = 'x-module';
+			classes+= ' x-module-icon-'+this.getRecord().get('modname'); 
+		this.setCls(classes);
+
+		if(this.getRecord().get('isnew') == true) {
+			var notification = this.getModName().getHtml();
+			notification += ' | <span class="x-module-new">new</span>';
+			this.getModName().setHtml(notification);
+		}
+
+		if(this.getRecord().get('isupdated') == true) {
+			var notification = this.getModName().getHtml();
+			notification += ' | <span class="x-module-updated">updated</span>';
+			this.getModName().setHtml(notification);
+		}
+	},
+
+	updateNotifications: function(){
+		
 	},
 
 	applyName: function(config) {

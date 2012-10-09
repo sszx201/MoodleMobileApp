@@ -10,7 +10,7 @@ Ext.define('MoodleMobApp.controller.Shell', {
    			clear_courses: 'button[action=clear_courses_db]',
    			clear_modules: 'button[action=clear_modules_db]',
    			clear_users: 'button[action=clear_users_db]',
-   			clear_enroled_users: 'button[action=clear_enroled_users_db]',
+   			clear_enrolled_users: 'button[action=clear_enrolled_users_db]',
    			clear_forum_discussions: 'button[action=clear_forum_discussions_db]',
    			clear_forum_posts: 'button[action=clear_forum_posts_db]',
 		},
@@ -20,7 +20,7 @@ Ext.define('MoodleMobApp.controller.Shell', {
 			clear_courses: { tap: 'clearCourses' },
 			clear_modules: { tap: 'clearModules' },
 			clear_users: { tap: 'clearUsers' },
-			clear_enroled_users: { tap: 'clearEnroledUsers' },
+			clear_enrolled_users: { tap: 'clearEnrolledUsers' },
 			clear_forum_dicussions: { tap: 'clearForumDiscussions' },
 			clear_forum_posts: { tap: 'clearForumPosts' },
 		}
@@ -39,7 +39,7 @@ Ext.define('MoodleMobApp.controller.Shell', {
 		this.clearCourses();
 		this.clearModules();
 		this.clearUsers();
-		this.clearEnroledUsers();
+		this.clearEnrolledUsers();
 		this.clearForumDiscussions();
 		this.clearForumPosts();
 		this.clearFolders();
@@ -60,9 +60,9 @@ Ext.define('MoodleMobApp.controller.Shell', {
 		Ext.data.StoreManager.lookup('users').getProxy().clear();
 	},
 
-	clearEnroledUsers: function() {
-		Ext.data.StoreManager.lookup('enroledusers').removeAll();
-		Ext.data.StoreManager.lookup('enroledusers').getProxy().clear();
+	clearEnrolledUsers: function() {
+		Ext.data.StoreManager.lookup('enrolledusers').removeAll();
+		Ext.data.StoreManager.lookup('enrolledusers').getProxy().clear();
 	},
 
 	clearForumDiscussions: function() {

@@ -11,7 +11,7 @@ Ext.define('MoodleMobApp.controller.Init', {
 			'MoodleMobApp.store.ManualAccount',
 			'MoodleMobApp.store.AaiAccount',
 			'MoodleMobApp.store.Users',
-			'MoodleMobApp.store.EnroledUsers',
+			'MoodleMobApp.store.EnrolledUsers',
 			'MoodleMobApp.store.Courses',
 			'MoodleMobApp.store.Modules',
 			'MoodleMobApp.store.ForumDiscussions',
@@ -66,16 +66,16 @@ Ext.define('MoodleMobApp.controller.Init', {
 				});
 			});
 
-		// create enroledusers store
-		var enroled_users_store = Ext.create('MoodleMobApp.store.EnroledUsers');
-		enroled_users_store.load();
+		// create enrolledusers store
+		var enrolled_users_store = Ext.create('MoodleMobApp.store.EnrolledUsers');
+		enrolled_users_store.load();
 		// -log-
-		enroled_users_store.on(
+		enrolled_users_store.on(
 			'write',
 			function(store, operation) { 
-				MoodleMobApp.log('=> enroled_users_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
+				MoodleMobApp.log('=> enrolled_users_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
 				Ext.iterate(operation.getRecords(), function(record){
-					MoodleMobApp.log(' --> Enroled user: '+record.get('userid')+' in course '+record.get('courseid'));
+					MoodleMobApp.log(' --> Enrolled user: '+record.get('userid')+' in course '+record.get('courseid'));
 				});
 			});
 	

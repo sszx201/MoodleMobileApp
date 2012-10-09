@@ -19,7 +19,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 		this.folders_store = Ext.data.StoreManager.lookup('folders');
 		// user stores
 		this.users_store = Ext.data.StoreManager.lookup('users');
-		this.enroled_users_store = Ext.data.StoreManager.lookup('enroledusers');
+		this.enrolled_users_store = Ext.data.StoreManager.lookup('enrolledusers');
 		// set listener for updating the course module stats
 		this.courses_store.on('write', this.updateAllStores, this, {single:true});
 		Ext.m = this;
@@ -31,7 +31,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 
 	updateUsersStores: function(course) {
 
-		MoodleMobApp.WebService.getEnroledUsers(course.getData()).on(
+		MoodleMobApp.WebService.getEnrolledUsers(course.getData()).on(
 			'load',
 			function(store) {
 				// -log-
@@ -39,14 +39,14 @@ Ext.define('MoodleMobApp.controller.Main', {
 				if(store.getCount() > 0){
 					var users_store_to_sync = false;
 					
-					// update the list of enroled users for the current course
-					var course_group = this.enroled_users_store.getGroups(course.get('id').toString());
+					// update the list of enrolled users for the current course
+					var course_group = this.enrolled_users_store.getGroups(course.get('id').toString());
 					if(typeof course_group == 'object') {
-						this.enroled_users_store.remove(course_group.children);
+						this.enrolled_users_store.remove(course_group.children);
 					}
 					
 					store.each(function(record){
-						this.enroled_users_store.add({'courseid': course.get('id'), 'userid': record.get('id')});
+						this.enrolled_users_store.add({'courseid': course.get('id'), 'userid': record.get('id')});
 						// if this user is not in the store add it 
 						// else 
 						// if a previous entry of this user exists and has been modified
@@ -67,7 +67,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 						}
 					}, this);	
 
-					this.enroled_users_store.sync();
+					this.enrolled_users_store.sync();
 
 					if(users_store_to_sync) {
 						MoodleMobApp.log('|I| users_store is to sync');

@@ -1,19 +1,19 @@
-Ext.define('MoodleMobApp.store.EnroledUsers', {
+Ext.define('MoodleMobApp.store.EnrolledUsers', {
 	extend: 'Ext.data.Store',
 
 	requires: [
-		'MoodleMobApp.model.EnroledUser',
+		'MoodleMobApp.model.EnrolledUser',
 		'Ext.data.proxy.LocalStorage'
 		],
 
 	config: {
-		storeId: 'enroledusers',
-		model: 'MoodleMobApp.model.EnroledUser',
+		storeId: 'enrolledusers',
+		model: 'MoodleMobApp.model.EnrolledUser',
 		groupField: 'courseid',
 		autoLoad: true,
 		//autoSync: true,
 		proxy : {
-			id: 'enroleduser',
+			id: 'enrolleduser',
 			type: 'localstorage',
 		}
 	}

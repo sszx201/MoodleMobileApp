@@ -71,9 +71,9 @@ Ext.define("MoodleMobApp.view.Shell", {
 					},
 					{
 						xtype: 'button',
-						text: 'Clear enroled users db',
+						text: 'Clear enrolled users db',
 						ui: 'confirm',
-						action: 'clear_enroled_users_db',	
+						action: 'clear_enrolled_users_db',	
 					},
 					{
 						xtype: 'button',

@@ -85,6 +85,8 @@ Ext.define('MoodleMobApp.controller.Main', {
 	},
 
 	updateDataStores: function(course){
+		var mstore = MoodleMobApp.WebService.getCourseModules(course.getData());
+		
 		// update modules
 		MoodleMobApp.WebService.getCourseModules(course.getData()).on(
 			'load', 
@@ -108,7 +110,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 								store_to_sync = true;
 								this.modules_store.remove(record);
 							}
-						});
+						}, this);
 
 				// add/update new module entries
 				mstore.each(function(module){
@@ -138,13 +140,13 @@ Ext.define('MoodleMobApp.controller.Main', {
 				}, this);	
 				
 				if(store_to_sync) { // sync the updating process with the modules_store
-					this.modules_store.on('write', this.updateCourseModulesCounter(course), this, {single:true});
+					this.modules_store.on('write', this.updateCourseModulesStats(course), this, {single:true});
 					this.modules_store.on('write', this.updateForumDiscussionsStore(course), this, {single:true});	
 					this.modules_store.on('write', this.updateFoldersStore(course), this, {single:true});	
 					// sync
 					this.modules_store.sync();
 				} else { // no syncronisation needed; proceed with other updates
-					this.updateCourseModulesCounter(course);
+					this.updateCourseModulesStats(course);
 					this.updateForumDiscussionsStore(course);
 					this.updateFoldersStore(course);
 				}
@@ -154,7 +156,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 		);
 	},
 
-	updateCourseModulesCounter: function(course) {
+	updateCourseModulesStats: function(course) {
 		var courseid = course.get('id');
 		// -log-
 		MoodleMobApp.log('UPDATING MODULES STATUS FOR COURSE: '+courseid);

@@ -28,9 +28,6 @@ Ext.define("MoodleMobApp.view.Module", {
 			painted: function(){
 				this.formatElement();
 			},
-			tap: function(){
-				updateNotifications();
-			}
 		}
 	},
 
@@ -40,20 +37,16 @@ Ext.define("MoodleMobApp.view.Module", {
 		this.setCls(classes);
 
 		if(this.getRecord().get('isnew') == true) {
-			var notification = this.getModName().getHtml();
+			var notification = this.getRecord().get('modname');
 			notification += ' | <span class="x-module-new">new</span>';
 			this.getModName().setHtml(notification);
 		}
 
 		if(this.getRecord().get('isupdated') == true) {
-			var notification = this.getModName().getHtml();
+			var notification = this.getRecord().get('modname');
 			notification += ' | <span class="x-module-updated">updated</span>';
 			this.getModName().setHtml(notification);
 		}
-	},
-
-	updateNotifications: function(){
-		
 	},
 
 	applyName: function(config) {

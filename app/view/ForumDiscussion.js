@@ -10,20 +10,39 @@ Ext.define("MoodleMobApp.view.ForumDiscussion", {
 			getName: {
 				setHtml: 'name'
 			},
+
+			getStat: {
+				setHtml: ''
+			},
 		},
 
 		name: {
 			cls: 'x-forum-discussion-name',
 		},
 
-		layout: {
-			type: 'hbox',
-			align: 'center'
+		stat: {
+			cls: 'x-forum-discussion-stat',
 		},
 
 		listeners: {
-			updatedata: function(){ },
+			painted: function(){
+				this.formatElement();
+			},
 		}
+	},
+
+	formatElement: function(){
+		var notification = '';
+
+		if(this.getRecord().get('isnew') == true) {
+			notification = ' <span class="x-module-new">new</span>';
+		}
+
+		if(this.getRecord().get('isupdated') == true) {
+			notification = ' <span class="x-module-updated">updated</span>';
+		}
+
+		this.getStat().setHtml(notification);
 	},
 
 	applyName: function(config) {
@@ -37,6 +56,20 @@ Ext.define("MoodleMobApp.view.ForumDiscussion", {
 
 		if (oldName) {
 			this.remove(oldName);
+		}
+	},
+
+	applyStat: function(config) {
+		return Ext.factory(config, Ext.Component, this.getStat());
+	},
+
+	updateStat: function(newStat, oldStat) {
+		if (newStat) {
+			this.add(newStat);
+		}
+
+		if (oldStat) {
+			this.remove(oldStat);
 		}
 	},
 

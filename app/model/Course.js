@@ -3,7 +3,7 @@ Ext.define('MoodleMobApp.model.Course', {
 		
 	config: {
 		fields: [
-			{name: 'id', type: 'int'},
+			{name: 'id', type: 'auto'},
 			{name: 'name', type: 'string'},
 			{name: 'timemodified', type: 'int'},
 			{name: 'token', type: 'string'},

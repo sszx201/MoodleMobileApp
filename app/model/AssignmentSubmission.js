@@ -3,7 +3,7 @@ Ext.define('MoodleMobApp.model.AssignmentSubmission', {
 	
 	config: {
 		fields: [
-			{name: 'id', type: 'int'},
+			{name: 'id', type: 'auto'},
 			{name: 'assignment', type: 'int'},
 			{name: 'userid', type: 'int'},
 			{name: 'data1', type: 'string'},

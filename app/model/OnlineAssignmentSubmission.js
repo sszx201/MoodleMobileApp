@@ -4,7 +4,7 @@ Ext.define('MoodleMobApp.model.OnlineAssignmentSubmission', {
 	config: {
 		fields: [
 			{
-				name: 'id', type: 'int',
+				name: 'id', type: 'auto',
 				name: 'submission', type: 'string',
 			}
 		]

@@ -114,8 +114,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 
 				// add/update new module entries
 				mstore.each(function(module){
+					var index = this.modules_store.findExact('id', module.get('id'));
 					// check if the moodle entry exists in the store
-					if(this.modules_store.findExact('id', module.get('id')) == -1) {
+					if(index == -1) {
 						// don't set 'new' flag in the module entries of the new courses
 						// avoid having new courses with all modules show as new
 						if(is_new_course) {
@@ -128,11 +129,12 @@ Ext.define('MoodleMobApp.controller.Main', {
 						store_to_sync = true;
 						// -log-
 						MoodleMobApp.log('|I| New module '+module.get('modname')+'; type:'+module.get('type')+'; name: '+module.get('name')+'; id: '+module.get('id'));
-					} else if(this.modules_store.getById(module.get('id')).get('timemodified') != module.get('timemodified')) { // check if updated
-						module.set('isnew', false);	
-						module.set('isupdated', true);
-						this.modules_store.getById(module.get('id')).setDirty();
-						this.modules_store.getById(module.get('id')).setData(module.getData());
+					} else if(this.modules_store.getAt(index).get('timemodified') != module.get('timemodified')) { // check if updated
+						this.modules_store.getAt(index).set('name', module.get('name'));
+						this.modules_store.getAt(index).set('intro', module.get('intro'));
+						this.modules_store.getAt(index).set('timemodified', module.get('timemodified'));
+						this.modules_store.getAt(index).set('isnew', false);
+						this.modules_store.getAt(index).set('isupdated', true);
 						store_to_sync = true;
 						// -log-
 						MoodleMobApp.log('|I| Updating module '+module.get('modname')+'; type:'+module.get('type')+'; name: '+module.get('name')+'; id: '+module.get('id'));
@@ -201,7 +203,6 @@ Ext.define('MoodleMobApp.controller.Main', {
 
 		// write the stat
 		this.courses_store.getById(courseid).set('modulestatus', modstat)
-		this.courses_store.getById(courseid).setDirty();
 		this.courses_store.sync();
 	},
 
@@ -234,8 +235,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 					var is_new_course = course.get('isnew');
 					var store_to_sync = false;
 					discussions.each(function(discussion) {
+						var index = this.forum_discussions_store.findExact('id', discussion.get('id'));
 						// if this discussion is new then add
-						if(this.forum_discussions_store.findExact('id', discussion.get('id') ) == -1) {
+						if(index == -1) {
 							// don't set 'new' flag in the module entries of the new courses
 							// avoid having new courses with all modules marked as new
 							if(is_new_course) {
@@ -248,10 +250,12 @@ Ext.define('MoodleMobApp.controller.Main', {
 							this.forum_discussions_store.add(discussion);
 							store_to_sync = true;
 						// check if the discussion has been updated or not
-						} else if(this.forum_discussions_store.getById(discussion.get('id')).get('timemodified') != discussion.get('timemodified')) {
-							discussion.setDirty();
-							discussion.set('isupdated', true);	
-							this.forum_discussions_store.getById(discussion.get('id')).setData(discussion.getData());
+						} else if(this.forum_discussions_store.getAt(index).get('timemodified') != discussion.get('timemodified')) {
+							this.forum_discussions_store.getAt(index).set('name', discussion.get('name'));
+							this.forum_discussions_store.getAt(index).set('groupid', discussion.get('groupid'));
+							this.forum_discussions_store.getAt(index).set('timemodified', discussion.get('timemodified'));
+							this.forum_discussions_store.getAt(index).set('isnew', false);
+							this.forum_discussions_store.getAt(index).set('isupdated', true);
 							store_to_sync = true;
 						}
 						this.updateForumPostsStore(discussion, course.get('token'));
@@ -279,8 +283,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 				var store_to_sync = false;
 				var is_new_discussion = discussion.get('isnew');
 				posts.each(function(post) {
+					var index = this.forum_posts_store.findExact('id', post.get('id'));
 					// if this post is new then add
-					if(this.forum_posts_store.findExact('id', post.get('id') ) == -1) {
+					if(index == -1) {
 						// don't set 'new' flag in the module entries of the new courses
 						// avoid having new courses with all modules marked as new
 						if(is_new_discussion) {
@@ -295,10 +300,13 @@ Ext.define('MoodleMobApp.controller.Main', {
 						// -log-
 						MoodleMobApp.log('|I| New forum post: '+post.get('id')+' in discussion: '+discussionid);
 					// check if the discussion has been updated or not
-					} else if(this.forum_posts_store.getById(post.get('id')).get('modified') != post.get('modified')) {
-						post.set('isupdated', true);	
-						this.forum_posts_store.getById(post.get('id')).setData(post.getData());
-						this.forum_posts_store.getById(post.get('id')).setDirty();
+					} else if(this.forum_posts_store.getAt(index).get('modified') != post.get('modified')) {
+						this.forum_posts_store.getAt(index).set('subject', post.get('subject'));
+						this.forum_posts_store.getAt(index).set('message', post.get('message'));
+						this.forum_posts_store.getAt(index).set('modified', post.get('modified'));
+						this.forum_posts_store.getAt(index).set('attachments', post.get('attachments'));
+						this.forum_posts_store.getAt(index).set('isnew', false);
+						this.forum_posts_store.getAt(index).set('isupdated', true);
 						store_to_sync = true;
 						// -log-
 						MoodleMobApp.log('|I| Updating forum post:'+post.get('id')+' in discussion: '+discussionid);
@@ -399,7 +407,8 @@ Ext.define('MoodleMobApp.controller.Main', {
 						// set the root post depth to 0
 						post.set('indentation', 0);
 					} else {
-						var parent_indentation = this.forum_posts_store.getById(parentid).get('indentation');
+						var parent_position = this.forum_posts_store.findExact('id', parentid);
+						var parent_indentation = this.forum_posts_store.getAt(parent_position).get('indentation');
 						post.set('indentation', parent_indentation + 1);
 					}
 

@@ -57,12 +57,12 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 	selectModule: function(view, index, target, record) {
 		var update_stats = false;
 		target.getModName().setHtml(target.getRecord().get('modname'));
-		if(target.getRecord().get('isnew') == true) {
-			target.getRecord().set('isnew', false);
+		if(record.get('isnew') == true) {
+			record.set('isnew', false);
 			update_stats = true;
 		}
-		if(target.getRecord().get('isupdated') == true) {
-			target.getRecord().set('isupdated', false);
+		if(record.get('isupdated') == true) {
+			record.set('isupdated', false);
 			update_stats = true;
 		}
 

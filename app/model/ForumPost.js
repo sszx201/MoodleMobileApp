@@ -2,7 +2,11 @@ Ext.define('MoodleMobApp.model.ForumPost', {
 	extend: 'Ext.data.Model',
 	
 	config: {
+		idProperty: 'localid',
+		identifier: 'uuid',
+
 		fields: [
+			{name: 'localid', type: 'auto'},
 			{name: 'id', type: 'int'},
 			{name: 'parent', type: 'int'},
 			{name: 'userid', type: 'int'},

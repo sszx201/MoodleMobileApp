@@ -69,6 +69,23 @@ Ext.define('MoodleMobApp.controller.Forum', {
 	},
 
 	selectDiscussion: function(view, index, target, record) {
+		// update the status
+		update_status = false;
+		if(record.get('isnew') == true) {
+			record.set('isnew', false);
+			update_status = true;
+		}
+
+		if(record.get('isupdated') == true) {
+			record.set('isupdated', false);
+			update_status = true;
+		}
+
+		if(update_status) {
+			target.getStat().setHtml('');
+			this.forum_discussions_store.sync();
+		}
+
 		var discussionid = record.get('id');
 		// filter discussions / restrict the range
 		this.forum_posts_store.clearFilter();

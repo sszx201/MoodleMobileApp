@@ -9742,6 +9742,7 @@ input[type="search"]::-webkit-search-cancel-button {
 
 .x-course-module-status,
 .x-module-modname,
+.x-forum-discussion-stat,
 .x-folder-entry-mime {
 	text-align: right;
 	color: gray;
@@ -9755,7 +9756,6 @@ input[type="search"]::-webkit-search-cancel-button {
 
 .x-forum-discussion {
 	padding-top: 15px;
-	padding-bottom: 15px;
 }
 
 .forum-post {

@@ -45,7 +45,8 @@ Ext.define("MoodleMobApp.view.AaiAccount", {
 						usePicker: false,
 						store: Ext.create('MoodleMobApp.store.HomeOrgs'),
 						displayField: 'name',
-						valueField: 'url'
+						valueField: 'url',
+						value: 'https://login2.usi.ch/idp/shibboleth'
 					},
 					{
 						xtype: 'button',

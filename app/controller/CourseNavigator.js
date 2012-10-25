@@ -19,13 +19,13 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		},
 
 		control: {
+			navigator:  { pop: 'clearStoreFilters' },
 			courseList: { itemtap: 'selectCourse' },
 			moduleList: { itemtap: 'selectModule' },
 		}
 	},
 
 	init: function(){
-		this.modules_store = Ext.data.StoreManager.lookup('modules');
 		this.current_course = null;
 	},
 
@@ -35,8 +35,8 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		// set the course token inside the session
 		MoodleMobApp.Session.setCourseToken(course_data.token);
 		// filter modules
-		this.modules_store.clearFilter();
-		this.modules_store.filterBy(
+		MoodleMobApp.Session.getModulesStore().clearFilter();
+		MoodleMobApp.Session.getModulesStore().filterBy(
 			function(record) { 
 				return parseInt(record.get('courseid')) == parseInt(course_data.id)
 			}
@@ -48,7 +48,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		} else {
 			this.getNavigator().push({
 				xtype: 'modulelist',	
-				store: this.modules_store
+				store: MoodleMobApp.Session.getModulesStore()
 			});
 		}
 		
@@ -57,19 +57,40 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 	selectModule: function(view, index, target, record) {
 		var update_stats = false;
 		target.getModName().setHtml(target.getRecord().get('modname'));
+
 		if(record.get('isnew') == true) {
 			record.set('isnew', false);
 			update_stats = true;
 		}
+
 		if(record.get('isupdated') == true) {
 			record.set('isupdated', false);
 			update_stats = true;
 		}
-
+		
 		if(update_stats){
-			this.modules_store.sync();
+			MoodleMobApp.Session.getModulesStore().sync();
 			this.getApplication().getController('Main').updateCourseModulesStats(this.selected_course);
 		}
 	},
+
+	clearStoreFilters: function(controller, view, opts) {
+		switch(view.getId()){
+			case 'module_list':
+				MoodleMobApp.Session.getModulesStore().clearFilter();
+				break;
+			case 'forum_discussions_list':
+				MoodleMobApp.Session.getForumDiscussionsStore().clearFilter();
+				break;
+			case 'offline_assignment_form':
+				MoodleMobApp.Session.getOfflineAssignmentSubmissionsStore().clearFilter();
+				break;
+			case 'folder':
+				MoodleMobApp.Session.getFoldersStore().clearFilter();
+				break;
+			default:
+				console.log('no instructions on how to clear stores for view: '+view.getId());
+		}
+	}
 
 });

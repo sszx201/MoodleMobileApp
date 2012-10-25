@@ -44,14 +44,17 @@ Ext.define('MoodleMobApp.controller.Init', {
 				}
 			}
 		});
+		MoodleMobApp.Session.setSettingsStore(settings_store);
 
 		// create the manual account store
 		var manual_account_store = Ext.create('MoodleMobApp.store.ManualAccount'); 
 		manual_account_store.load();
+		MoodleMobApp.Session.setManualAccountStore(manual_account_store);
 
 		// create the AAI account store
 		var aai_account_store = Ext.create('MoodleMobApp.store.AaiAccount'); 
 		aai_account_store.load();
+		MoodleMobApp.Session.setAaiAccountStore(aai_account_store);
 
 		// create users store
 		var users_store = Ext.create('MoodleMobApp.store.Users');
@@ -65,6 +68,7 @@ Ext.define('MoodleMobApp.controller.Init', {
 					MoodleMobApp.log(' --> User: '+record.get('username')+'; id: '+record.get('id'));
 				});
 			});
+		MoodleMobApp.Session.setUsersStore(users_store);
 
 		// create enrolledusers store
 		var enrolled_users_store = Ext.create('MoodleMobApp.store.EnrolledUsers');
@@ -78,6 +82,7 @@ Ext.define('MoodleMobApp.controller.Init', {
 					MoodleMobApp.log(' --> Enrolled user: '+record.get('userid')+' in course '+record.get('courseid'));
 				});
 			});
+		MoodleMobApp.Session.setEnrolledUsersStore(enrolled_users_store);
 	
 		// create courses store
 		var courses_store = Ext.create('MoodleMobApp.store.Courses');
@@ -92,6 +97,7 @@ Ext.define('MoodleMobApp.controller.Init', {
 					MoodleMobApp.log(' --> Course: '+record.get('name')+'; id: '+record.get('id'));
 				});
 			});
+		MoodleMobApp.Session.setCoursesStore(courses_store);
 
 		// create modules store
 		var modules_store = Ext.create('MoodleMobApp.store.Modules');
@@ -105,6 +111,7 @@ Ext.define('MoodleMobApp.controller.Init', {
 					MoodleMobApp.log(' --> Module: '+record.get('name')+'; id: '+record.get('id'));
 				});
 			});
+		MoodleMobApp.Session.setModulesStore(modules_store);
 
 		// create forumdiscussions store
 		var forum_discussions_store = Ext.create('MoodleMobApp.store.ForumDiscussions');
@@ -118,6 +125,7 @@ Ext.define('MoodleMobApp.controller.Init', {
 					MoodleMobApp.log(' --> Discussion: '+record.get('name')+'; id: '+record.get('id'));
 				});
 			});
+		MoodleMobApp.Session.setForumDiscussionsStore(forum_discussions_store);
 
 		// create forumposts store
 		var forum_posts_store = Ext.create('MoodleMobApp.store.ForumPosts');
@@ -131,10 +139,12 @@ Ext.define('MoodleMobApp.controller.Init', {
 					MoodleMobApp.log(' --> Post: '+record.get('id')+'; discussion: '+record.get('discussion'));
 				});
 			});
+		MoodleMobApp.Session.setForumPostsStore(forum_posts_store);
 
 		// create onlineassingnments store
 		var online_assignment_submissions_store = Ext.create('MoodleMobApp.store.OnlineAssignmentSubmissions');
 		online_assignment_submissions_store.load();
+		MoodleMobApp.Session.setOnlineAssignmentSubmissionsStore(online_assignment_submissions_store);
 
 
 		// create folders store
@@ -153,5 +163,6 @@ Ext.define('MoodleMobApp.controller.Init', {
 					}
 				});
 			});
+		MoodleMobApp.Session.setFoldersStore(folders_store);
 	}
 });

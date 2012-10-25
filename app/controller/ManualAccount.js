@@ -23,26 +23,23 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 
 	loadAccountData: function () {
 		var form = this.getForm();	
-		var account_store = Ext.data.StoreManager.lookup('manualaccount_store');
-		if(account_store.getCount() > 0) {
+		if(MoodleMobApp.Session.getManualAccountStore().getCount() > 0) {
 			// Update the form with account data.
-			form.setRecord( Ext.create('MoodleMobApp.model.ManualAccount', account_store.first().getData()) );
+			form.setRecord( Ext.create('MoodleMobApp.model.ManualAccount', MoodleMobApp.Session.getManualAccountStore().first().getData()) );
 		}
 	},
 
 	saveAccountData: function () {
 		var form = this.getForm();	
 		// store account data
-		var account_store = Ext.data.StoreManager.lookup('manualaccount_store');
-		account_store.removeAll();
-		account_store.add(form.getValues());
-		account_store.sync();
+		MoodleMobApp.Session.getManualAccountStore().removeAll();
+		MoodleMobApp.Session.getManualAccountStore().add(form.getValues());
+		MoodleMobApp.Session.getManualAccountStore().sync();
 
 		// set user accounttype setting
-		var settings_store = Ext.data.StoreManager.lookup('settings_store'); 
-		settings_store.data.first().set('accounttype', 'manual');
-		settings_store.first().setDirty();
-		settings_store.sync();
+		MoodleMobApp.Session.getSettingsStore().data.first().set('accounttype', 'manual');
+		MoodleMobApp.Session.getSettingsStore().first().setDirty();
+		MoodleMobApp.Session.getSettingsStore().sync();
 
 		// Mask the form
 		form.setMasked({
@@ -60,8 +57,7 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 
 	// check if the Manual account is the one set
 	isActiveAccount: function () {
-		var settings_store = Ext.data.StoreManager.lookup('settings_store');
-		if(settings_store.data.first().get('accounttype') == 'manual') {
+		if(MoodleMobApp.Session.getSettingsStore().data.first().get('accounttype') == 'manual') {
 			return true;	
 		} else {
 			return false;	
@@ -72,11 +68,10 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 		// if the account is the active one
 		// authenticate and get the course data
 		if(this.isActiveAccount()) {
-			var account_store = Ext.data.StoreManager.lookup('manualaccount_store');
 
 			var parameters = new Object();
-			parameters.username = account_store.first().get('username');
-			parameters.password = account_store.first().get('password');
+			parameters.username = MoodleMobApp.Session.getManualAccountStore().first().get('username');
+			parameters.password = MoodleMobApp.Session.getManualAccountStore().first().get('password');
 
 			var auth_url = MoodleMobApp.Config.getManualAuthUrl();
 

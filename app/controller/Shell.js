@@ -46,38 +46,37 @@ Ext.define('MoodleMobApp.controller.Shell', {
 	},
 
 	clearCourses: function() {
-		Ext.data.StoreManager.lookup('courses').removeAll();
-		Ext.data.StoreManager.lookup('courses').getProxy().clear();
+		MoodleMobApp.Session.getCoursesStore().removeAll();
+		MoodleMobApp.Session.getCoursesStore().getProxy().clear();
 	},
 
 	clearModules: function() {
-		Ext.data.StoreManager.lookup('modules').removeAll();
-		Ext.data.StoreManager.lookup('modules').getProxy().clear();
+		MoodleMobApp.Session.getModulesStore().removeAll();
+		MoodleMobApp.Session.getModulesStore().getProxy().clear();
 	},
 
 	clearUsers: function() {
-		Ext.data.StoreManager.lookup('users').removeAll();
-		Ext.data.StoreManager.lookup('users').getProxy().clear();
+		MoodleMobApp.Session.getUsersStore().removeAll();
+		MoodleMobApp.Session.getUsersStore().getProxy().clear();
 	},
 
 	clearEnrolledUsers: function() {
-		Ext.data.StoreManager.lookup('enrolledusers').removeAll();
-		Ext.data.StoreManager.lookup('enrolledusers').getProxy().clear();
+		MoodleMobApp.Session.getEnrolledUsersStore().removeAll();
+		MoodleMobApp.Session.getEnrolledUsersStore().getProxy().clear();
 	},
 
 	clearForumDiscussions: function() {
-		Ext.data.StoreManager.lookup('forumdiscussions').removeAll();
-		Ext.data.StoreManager.lookup('forumdiscussions').getProxy().clear();
+		MoodleMobApp.Session.getForumDiscussionsStore().removeAll();
+		MoodleMobApp.Session.getForumDiscussionsStore().getProxy().clear();
 	},
 
 	clearForumPosts: function() {
-		Ext.data.StoreManager.lookup('forumposts').removeAll();
-		Ext.data.StoreManager.lookup('forumposts').getProxy().clear();
+		MoodleMobApp.Session.getForumPostsStore().removeAll();
+		MoodleMobApp.Session.getForumPostsStore().getProxy().clear();
 	},
 
 	clearFolders: function() {
-		Ext.data.StoreManager.lookup('folders').removeAll();
-		Ext.data.StoreManager.lookup('folders').getProxy().clear();
+		MoodleMobApp.Session.getFoldersStore().removeAll();
+		MoodleMobApp.Session.getFoldersStore().getProxy().clear();
 	},
-
 });

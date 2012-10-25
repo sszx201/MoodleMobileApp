@@ -96,6 +96,20 @@ Ext.define('MoodleMobApp.WebService', {
 		return forum_discussions_store;
 	},
 
+	createDiscussion: function(post, token) {
+		// set parameters
+		var params = new Object();
+		params.discussion = Array()
+		params.wsfunction = 'local_uniappws_forum_create_discussion';
+		params.wstoken = token;
+		params['discussion[forumid]'] = post.forumid;
+		params['discussion[name]'] = post.name;
+		params['discussion[intro]'] = post.intro;
+		// request
+		var result_store = this.request(params, 'MoodleMobApp.model.ForumCreatePostResponse');
+		return result_store;
+	},
+
 	getPostsByDiscussion: function(discussion, token) {
 		// set parameters
 		var params = new Object();

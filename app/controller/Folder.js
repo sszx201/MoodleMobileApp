@@ -23,7 +23,6 @@ Ext.define('MoodleMobApp.controller.Folder', {
 	},
 
 	init: function(){
-		this.folders_store = Ext.data.StoreManager.lookup('folders');
 	},
 
 	selectModule: function(view, index, target, record) {
@@ -34,8 +33,8 @@ Ext.define('MoodleMobApp.controller.Folder', {
 
 	selectFolder: function(folder) {
 		// filter discussions
-		this.folders_store.clearFilter();
-		this.folders_store.filterBy(
+		MoodleMobApp.Session.getFoldersStore().clearFilter();
+		MoodleMobApp.Session.getFoldersStore().filterBy(
 			function(record) {
 				return (record.get('rootid') === folder.instanceid) && (record.get('parent') == '/') && (record.get('name') != '/');
 			}
@@ -48,28 +47,28 @@ Ext.define('MoodleMobApp.controller.Folder', {
 		} else {
 			this.getNavigator().push({
 				xtype: 'folder',	
-				store: this.folders_store
+				store: MoodleMobApp.Session.getFoldersStore()
 			});
 		}
 	},
 
 	selectFolderEntry: function(view, index, target, entry) {
 		if(entry.get('name') == '..') { // up dir
-			this.folders_store.clearFilter();
+			MoodleMobApp.Session.getFoldersStore().clearFilter();
 			// get the parent folder
-			var parent_folder_position = this.folders_store.findBy(
+			var parent_folder_position = MoodleMobApp.Session.getFoldersStore().findBy(
 				function(record){
 					return record.get('name') == entry.get('parent') && record.get('rootid') == entry.get('rootid');
 				}
 			);
-			var parent_folder = this.folders_store.getAt(parent_folder_position);
+			var parent_folder = MoodleMobApp.Session.getFoldersStore().getAt(parent_folder_position);
 			// get the parent of the parent folder
-			var parent_parent_folder_position = this.folders_store.findBy(
+			var parent_parent_folder_position = MoodleMobApp.Session.getFoldersStore().findBy(
 				function(record){
 					return record.get('name') == parent_folder.get('parent') && record.get('rootid') == parent_folder.get('rootid');
 				}
 			);
-			var parent_parent_folder = this.folders_store.getAt(parent_parent_folder_position);
+			var parent_parent_folder = MoodleMobApp.Session.getFoldersStore().getAt(parent_parent_folder_position);
 			if(parent_parent_folder.get('name') != '/') {
 				// add the upper folder reference
 				this.addUpperFolderEntry(parent_parent_folder);
@@ -77,7 +76,7 @@ Ext.define('MoodleMobApp.controller.Folder', {
 
 			// sort and filter folders
 			this.sortFolder();
-			this.folders_store.filterBy(
+			MoodleMobApp.Session.getFoldersStore().filterBy(
 				function(record) {
 					return (record.get('rootid') === parent_folder.get('rootid')) && (record.get('parent') == parent_folder.get('parent') && (record.get('name') != '/'));
 				}	
@@ -86,10 +85,10 @@ Ext.define('MoodleMobApp.controller.Folder', {
 			this.getNavigator().push(this.getFolder());
 
 		} else if(entry.get('type') == 'dir') { // subdir
-			this.folders_store.clearFilter();
+			MoodleMobApp.Session.getFoldersStore().clearFilter();
 			this.sortFolder();
 			this.addUpperFolderEntry(entry);
-			this.folders_store.filterBy(
+			MoodleMobApp.Session.getFoldersStore().filterBy(
 				function(record) {
 					return (record.get('rootid') === entry.get('rootid')) && (record.get('parent') == entry.get('name'));
 				}	
@@ -132,10 +131,9 @@ Ext.define('MoodleMobApp.controller.Folder', {
     },
    
 	addUpperFolderEntry: function(currentFolder){
-		this.folders_store = Ext.data.StoreManager.lookup('folders');
-		var position = this.folders_store.findExact('name', '..');
+		var position = MoodleMobApp.Session.getFoldersStore().findExact('name', '..');
 		if(position != -1){
-			var upper_folder_entry = this.folders_store.getAt(position);
+			var upper_folder_entry = MoodleMobApp.Session.getFoldersStore().getAt(position);
 			upper_folder_entry.set('rootid', currentFolder.get('rootid'));
 			upper_folder_entry.set('parent', currentFolder.get('name'));
 		} else {
@@ -148,12 +146,12 @@ Ext.define('MoodleMobApp.controller.Folder', {
 				'type': currentFolder.get('type'),
 			};
 			var upper_folder_entry = Ext.create('MoodleMobApp.model.Folder', upper_folder_model);
-			this.folders_store.add(upper_folder_entry);
+			MoodleMobApp.Session.getFoldersStore().add(upper_folder_entry);
 		}
 	},
 
 	sortFolder: function(){
-		this.folders_store.sort([{property: 'type'}, {property: 'name'}]);
+		MoodleMobApp.Session.getFoldersStore().sort([{property: 'type'}, {property: 'name'}]);
 	}
 
 });

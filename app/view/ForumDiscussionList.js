@@ -8,5 +8,15 @@ Ext.define("MoodleMobApp.view.ForumDiscussionList", {
 		emptyText: 'No discussions available in this forum.',
 		useComponents: true,
 		defaultType: 'forumdiscussion',
+		items: [
+			{
+				xtype: 'button',
+				text: 'New Discussion',
+				docked: 'top',
+				ui: 'confirm',
+				action: 'adddiscussion',
+				hidden: true,
+			}
+		]
 	},
 });

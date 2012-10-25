@@ -34,14 +34,14 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 	},
 
 	selectModule: function(view, index, target, record) {
-		if(record.raw.modname === 'assignment'){
+		if(record.get('modname') === 'assignment'){
 			this.selectAssignment(record);
 		}
 	},
 
 	selectAssignment: function(assignment) {
 		// display discussions
-		switch(assignment.raw.type) {
+		switch(assignment.get('type')) {
 			case 'online':
 				this.selectOnlineAssignment(assignment);
 			break;
@@ -67,9 +67,7 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 
 	selectOnlineAssignment: function(assignment) {
 		// display assignment
-
-		var online_assignment_submissions_store = Ext.data.StoreManager.lookup('onlineassignmentsubmissions');
-		var previous_submission_record = online_assignment_submissions_store.getById(assignment.get('id'));
+		var previous_submission_record = MoodleMobApp.Session.getOnlineAssignmentSubmissionsStore().getById(assignment.get('id'));
 		if(previous_submission_record != null){
 			assignment.set('submission', previous_submission_record.get('submission'))
 		}
@@ -108,17 +106,16 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 	},
 
 	storeTheOnlineSubmission: function(data){
-		var online_assignment_submissions_store = Ext.data.StoreManager.lookup('onlineassignmentsubmissions');
-		if(online_assignment_submissions_store.find('id', data.id) == -1){
+		if(MoodleMobApp.Session.getOnlineAssignmentSubmissionsStore().find('id', data.id) == -1){
 			var submission_record = Ext.create('MoodleMobApp.model.OnlineAssignmentSubmission', data);
 			submission_record.setDirty();
-			online_assignment_submissions_store.add(submission_record);
+			MoodleMobApp.Session.getOnlineAssignmentSubmissionsStore().add(submission_record);
 		} else {
-			online_assignment_submissions_store.getById(data.id).setData(data);
-			online_assignment_submissions_store.getById(data.id).setDirty();
+			MoodleMobApp.Session.getOnlineAssignmentSubmissionsStore().getById(data.id).setData(data);
+			MoodleMobApp.Session.getOnlineAssignmentSubmissionsStore().getById(data.id).setDirty();
 		}
 
-		online_assignment_submissions_store.sync()
+		MoodleMobApp.Session.getOnlineAssignmentSubmissionsStore().sync()
 	},
 
 	selectOfflineAssignment: function(assignment) {

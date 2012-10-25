@@ -5,11 +5,14 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		models: [
 			'MoodleMobApp.model.ForumDiscussion',
 			'MoodleMobApp.model.ForumPost',
+			'MoodleMobApp.model.ForumCreateDiscussionResponse',
 			'MoodleMobApp.model.ForumCreatePostResponse'
 		],
+
 		views: [
 			'MoodleMobApp.view.ForumDiscussionList',
 			'MoodleMobApp.view.ForumDiscussion',
+			'MoodleMobApp.view.ForumDiscussionEdit',
 			'MoodleMobApp.view.ForumPostList',
 			'MoodleMobApp.view.ForumPost',
 			'MoodleMobApp.view.ForumPostReply',
@@ -19,6 +22,9 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			navigator: '#course_navigator',
 			module: '#module_list',
 			discussionList: '#forum_discussion_list',
+			editDiscussionForm: '#forum_discussion_edit_form',
+			saveDiscussionButton: 'button[action=savediscussion]',
+			addDiscussionButton: 'button[action=adddiscussion]',
 			postList: '#forum_post_list',
 			postReplyButton: 'button[action=postreply]',
 			replyForm: '#forum_post_reply_form',
@@ -29,7 +35,9 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			// generic controls
 			module: { itemtap: 'selectModule' },
 			// specific controls
-			discussionList: { itemtap: 'selectDiscussion' },
+			discussionList: { itemtap: 'selectDiscussion', },
+			addDiscussionButton: { tap: 'editDiscussion' },
+			saveDiscussionButton: { tap: 'saveDiscussion' },
 			replyForm: { deactivate: 'replyToPostCancelled' },
 			postReplyButton: { tap: 'replyToPost' },
 			saveReplyButton: { tap: 'saveReplyToPost' },
@@ -37,35 +45,121 @@ Ext.define('MoodleMobApp.controller.Forum', {
 	},
 
 	init: function(){
-		this.forum_discussions_store = Ext.data.StoreManager.lookup('forumdiscussions');
-		this.forum_posts_store = Ext.data.StoreManager.lookup('forumposts');
 		Ext.f = this;
 	},
 
 	selectModule: function(view, index, target, record) {
-		if(record.raw.modname === 'forum'){
+		if(record.get('modname') === 'forum'){
 			this.selectForum(record.getData());
 		}
 	},
 
 	selectForum: function(forum) {
-		// filter discussions
-		this.forum_discussions_store.clearFilter();
-		this.forum_discussions_store.filterBy(
-			function(record) {
-				return record.get('forum') === forum.instanceid;
-			}
-		);
-
+		this.selected_forum = forum;
+		this.filterForumDiscussions();	
+		
 		// display discussions
 		if(typeof this.getDiscussionList() == 'object') {
 			this.getNavigator().push(this.getDiscussionList());
 		} else {
 			this.getNavigator().push({
 				xtype: 'forumdiscussionlist',	
-				store: this.forum_discussions_store
+				store: MoodleMobApp.Session.getForumDiscussionsStore()
 			});
 		}
+		this.checkIfEditable();
+	},
+
+	filterForumDiscussions: function(){
+		// filter discussions
+		MoodleMobApp.Session.getForumDiscussionsStore().clearFilter();
+		MoodleMobApp.Session.getForumDiscussionsStore().filterBy(
+			function(record) {
+				return record.get('forum') === this.selected_forum.instanceid;
+			},
+			this
+		);
+	},
+
+	checkIfEditable: function() {
+		switch(this.selected_forum.type){
+			case 'general':	
+				this.getAddDiscussionButton().setHidden(false);
+				break;
+			case 'eachuser':
+				// get user data
+				var index = MoodleMobApp.Session.getUsersStore().findExact('username', MoodleMobApp.Session.getUsername());
+				var user = MoodleMobApp.Session.getUsersStore().getAt(index).getData();
+				// check if a discussion has been created 
+				var index = MoodleMobApp.Session.getForumDiscussionsStore().findBy(function(record){
+					return record.get('forum') == this.selected_forum.instanceid && record.get('userid') == user.id;
+				}, this);
+				// if the discussion has not been created yet then show the button
+				if(index == -1) {
+					this.getAddDiscussionButton().setHidden(false);
+				} else {
+					this.getAddDiscussionButton().setHidden(true);
+				}
+				break;
+			default:
+				this.getAddDiscussionButton().setHidden(true);
+		}
+	},
+
+	editDiscussion: function(button){
+		if(typeof this.getEditDiscussionForm() == 'object'){ 
+			this.getNavigator().push(this.getEditDiscussionForm());
+		} else {
+			this.getNavigator().push({
+				xtype: 'forumdiscussionedit',
+			});
+		}
+	},
+
+	saveDiscussion: function(button) {
+		var formData = this.getEditDiscussionForm().getValues();
+		// set the forumid
+		formData.forumid = this.selected_forum.instanceid;
+		var token = MoodleMobApp.Session.getCourseToken();
+		var create_discussion_result_store = MoodleMobApp.WebService.createDiscussion(formData, token);
+		create_discussion_result_store.on(
+			'load', 
+			function(store, records){
+				if( store.first().raw.exception == undefined) {
+
+					MoodleMobApp.Session.getForumDiscussionsStore().on(
+						'refresh',
+						function(){
+							var course = MoodleMobApp.Session.getCoursesStore().getById(this.selected_forum.courseid);
+							this.getApplication().getController('Main').updateForumDiscussionsStore(course);
+						},
+						this,
+						{single:true}
+					);
+
+					MoodleMobApp.Session.getForumDiscussionsStore().on(
+						'write',
+						function(){
+							this.checkIfEditable();
+							this.getNavigator().pop();
+							this.filterForumDiscussions();
+						},
+						this,
+						{single:true}
+					);
+					// clearFilters triggers the refresh event and starts the update
+					// of the forum discussions store
+					MoodleMobApp.Session.getForumDiscussionsStore().clearFilter();
+				} else {
+					Ext.Msg.alert(
+						store.first().raw.exception,
+						store.first().raw.message
+					);
+				}
+			},
+			this,
+			{single: true}
+ 		);
 	},
 
 	selectDiscussion: function(view, index, target, record) {
@@ -83,20 +177,20 @@ Ext.define('MoodleMobApp.controller.Forum', {
 
 		if(update_status) {
 			target.getStat().setHtml('');
-			this.forum_discussions_store.sync();
+			MoodleMobApp.Session.getForumDiscussionsStore().sync();
 		}
 
 		var discussionid = record.get('id');
 		// filter discussions / restrict the range
-		this.forum_posts_store.clearFilter();
-		this.forum_posts_store.filterBy(
+		MoodleMobApp.Session.getForumPostsStore().clearFilter();
+		MoodleMobApp.Session.getForumPostsStore().filterBy(
 			function(post) {
 				return post.get('discussion') === discussionid;
 			}
 		);
 	
 		// pre sort
-		this.forum_posts_store.sort([
+		MoodleMobApp.Session.getForumPostsStore().sort([
 			{
 				property: 'parent',
 				direction: 'ASC',
@@ -109,7 +203,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		
 		this.posts = Ext.create('Ext.data.Store', {model: 'MoodleMobApp.model.ForumPost'});
 		this.posts.removeAll();
-		var root = this.forum_posts_store.first();
+		var root = MoodleMobApp.Session.getForumPostsStore().first();
 		// append and sort posts
 		this.appendPosts(root);
 
@@ -128,7 +222,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		if(this.posts.findExact('id', node.get('id')) == -1){
 			this.posts.add(node);
 		}
-		var subnodes = this.forum_posts_store.queryBy(function(record){
+		var subnodes = MoodleMobApp.Session.getForumPostsStore().queryBy(function(record){
 			return record.get('parent') == node.get('id');
 		});
 
@@ -159,7 +253,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			'load', 
 			function(store, records){
 				if( store.first().raw.exception == undefined) {
-					this.forum_posts_store.on(
+					MoodleMobApp.Session.getForumPostsStore().on(
 						'write',
 						function(){
 							this.getNavigator().pop();
@@ -167,7 +261,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 						this,
 						{single:true}
 					);
-					var discussion = this.forum_discussions_store.getById(formData.discussion);
+					var discussion = MoodleMobApp.Session.getForumDiscussionsStore().getById(formData.discussion);
 					this.getApplication().getController('Main').updateForumPostsStore(discussion, token);
 				} else {
 					Ext.Msg.alert(

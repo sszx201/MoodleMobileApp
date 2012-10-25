@@ -17,11 +17,9 @@ Ext.define('MoodleMobApp.controller.UsageAgreement', {
 	},
 
 	registerAgreement: function() {
-		var settings_store = Ext.create('MoodleMobApp.store.Settings');
-		settings_store.load();
-		settings_store.data.first().set('usageagreement', true);
-		settings_store.first().setDirty();
-		settings_store.sync();
+		MoodleMobApp.Session.getSettingsStore().load();
+		MoodleMobApp.Session.getSettingsStore().first().set('usageagreement', true);
+		MoodleMobApp.Session.getSettingsStore().sync();
 		location.reload();
 	},
 

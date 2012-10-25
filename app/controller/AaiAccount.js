@@ -22,27 +22,23 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 	},
 
 	loadAccountData: function () {
-		var form = this.getForm();	
-		var account_store = Ext.data.StoreManager.lookup('aaiaccount_store');
-		if(account_store.getCount() > 0) {
+		if(MoodleMobApp.Session.getAaiAccountStore().getCount() > 0) {
+			var form = this.getForm();	
 			// Update the form with account data.
-			form.setRecord( Ext.create('MoodleMobApp.model.AaiAccount', account_store.first().getData()) );
+			form.setRecord( Ext.create('MoodleMobApp.model.AaiAccount', MoodleMobApp.Session.getAaiAccountStore().first().getData()) );
 		}
 	},
 
 	saveAccountData: function () {
 		var form = this.getForm();	
 		// store account data
-		var account_store = Ext.data.StoreManager.lookup('aaiaccount_store');
-		account_store.removeAll();
-		account_store.add(form.getValues());
-		account_store.sync();
+		MoodleMobApp.Session.getAaiAccountStore().removeAll();
+		MoodleMobApp.Session.getAaiAccountStore().add(form.getValues());
+		MoodleMobApp.Session.getAaiAccountStore().sync();
 
 		// set user accounttype setting
-		var settings_store = Ext.data.StoreManager.lookup('settings_store'); 
-		settings_store.data.first().set('accounttype', 'aai');
-		settings_store.first().setDirty();
-		settings_store.sync();
+		MoodleMobApp.Session.getSettingsStore().first().set('accounttype', 'aai');
+		MoodleMobApp.Session.getSettingsStore().sync();
 
 		// Mask the form
 		form.setMasked({
@@ -60,8 +56,7 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 
  	// check if the AAI account is the one set
 	isActiveAccount: function () {
-		var settings_store = Ext.data.StoreManager.lookup('settings_store'); 
-		if ( settings_store.data.first().get('accounttype') == 'aai') {
+		if(MoodleMobApp.Session.getSettingsStore().first().get('accounttype') == 'aai') {
 			return true;	
 		} else {
 			return false;	
@@ -72,13 +67,10 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 		// if the account is the active one
 		// authenticate and get the course data
 		if( this.isActiveAccount() ) {
-			// create the account store
-			var account_store = Ext.data.StoreManager.lookup('aaiaccount_store');
-
 			var parameters = new Object();
-			parameters.username = account_store.first().get('username');
-			parameters.password = account_store.first().get('password');
-			parameters.idp = account_store.first().get('homeorganisation');
+			parameters.username = MoodleMobApp.Session.getAaiAccountStore().first().get('username');
+			parameters.password = MoodleMobApp.Session.getAaiAccountStore().first().get('password');
+			parameters.idp = MoodleMobApp.Session.getAaiAccountStore().first().get('homeorganisation');
 
 			var auth_url = MoodleMobApp.Config.getAaiAuthUrl();
 

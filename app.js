@@ -58,15 +58,12 @@ Ext.application({
 	tabletStartupScreen: 'resources/loading/Homescreen~ipad.jpg',
 
 	launch: function() {
-		// hook up stores
-		var settings_store = Ext.data.StoreManager.lookup('settings_store');
-
 		// Destroy the #appLoadingIndicator element
 		Ext.fly('appLoadingIndicator').destroy();
 
-		if( settings_store.first().getData().usageagreement == false ) {
+		if( MoodleMobApp.Session.getSettingsStore().first().getData().usageagreement == false ) {
 			Ext.Viewport.add( Ext.create('MoodleMobApp.view.UsageAgreement') );
-		} else if( settings_store.first().getData().accounttype == '' ) {
+		} else if( MoodleMobApp.Session.getSettingsStore().first().getData().accounttype == '' ) {
 			Ext.Viewport.add(Ext.create('MoodleMobApp.view.AccountChoice'));
 		} else {
 			Ext.Viewport.add(Ext.create('MoodleMobApp.view.Main'));

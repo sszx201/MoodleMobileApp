@@ -21,8 +21,6 @@ Ext.define('MoodleMobApp.controller.Account', {
 	// an exception then an alert message is displayed.
 	authenticate: function(auth_url, parameters) {
 		
-		var courses_store = Ext.data.StoreManager.lookup('courses');
-
 		var url_encoded_params = '?';
 		Ext.iterate(parameters, function(key, value){
 			url_encoded_params += key+'='+value+'&';	
@@ -58,16 +56,16 @@ Ext.define('MoodleMobApp.controller.Account', {
 					// store the username in the Session
 					MoodleMobApp.Session.setUsername(parameters.username);
 
-					var courses_number = courses_store.getCount();
+					var courses_number = MoodleMobApp.Session.getCoursesStore().getCount();
 
 					if(courses_number == 0) {
 						this.each(function(course) {
 								course.set('isnew', true);
-								courses_store.add(course);
+								MoodleMobApp.Session.getCoursesStore().add(course);
 						});
 					} else {
 						this.each(function(course) {
-								if(courses_store.find('id', course.get('id')) == -1) {
+								if(MoodleMobApp.Session.getCoursesStore().find('id', course.get('id')) == -1) {
 									course.set('isnew', true);
 								} else {
 									course.set('isnew', false);
@@ -75,17 +73,17 @@ Ext.define('MoodleMobApp.controller.Account', {
 						});
 						
 						// remove old entries
-						courses_store.removeAll();
-						courses_store.getProxy().clear();
+						MoodleMobApp.Session.getCoursesStore().removeAll();
+						MoodleMobApp.Session.getCoursesStore().getProxy().clear();
 
 						this.each(function(course) {
 							course.setDirty();
-							courses_store.add(course);
+							MoodleMobApp.Session.getCoursesStore().add(course);
 						});
 					}
 
 					// store data
-					courses_store.sync();
+					MoodleMobApp.Session.getCoursesStore().sync();
 				} else {
 					Ext.Msg.alert(
 						this.first().raw.exception,

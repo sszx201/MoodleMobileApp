@@ -9698,6 +9698,13 @@ input[type="search"]::-webkit-search-cancel-button {
 	border-bottom: 1px solid #dedede;
 }
 
+.x-module-section {
+	background-color: white;
+	padding-top: 10px;
+	padding-left: 3px;
+	border-bottom: 2px solid #dedede;
+}
+
 .x-module,
 .x-folder-entry {
 	padding-top: 10px;

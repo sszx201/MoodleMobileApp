@@ -30,10 +30,9 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 	},
 
 	selectCourse: function(view, index, target, record) {
-		this.selected_course = record;
 		var course_data = record.getData();
 		// set the course token inside the session
-		MoodleMobApp.Session.setCourseToken(course_data.token);
+		MoodleMobApp.Session.setCourse(record);
 		// filter modules
 		MoodleMobApp.Session.getModulesStore().clearFilter();
 		MoodleMobApp.Session.getModulesStore().filterBy(
@@ -70,7 +69,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		
 		if(update_stats){
 			MoodleMobApp.Session.getModulesStore().sync();
-			this.getApplication().getController('Main').updateCourseModulesStats(this.selected_course);
+			this.getApplication().getController('Main').updateCourseModulesStats(MoodleMobApp.Session.getCourse());
 		}
 	},
 

@@ -7,8 +7,8 @@ Ext.define('MoodleMobApp.Session', {
 	},
 
 	config : {
-		courseToken : '',
-		username : '',
+		username: '',
+		course: null,
 		settingsStore: null,
 		usersStore: null,
 		enrolledUsersStore: null,

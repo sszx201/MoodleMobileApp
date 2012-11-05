@@ -5,6 +5,8 @@ Ext.define('MoodleMobApp.model.Course', {
 		fields: [
 			{name: 'id', type: 'auto'},
 			{name: 'name', type: 'string'},
+			{name: 'format', type: 'string'},
+			{name: 'startdate', type: 'int'},
 			{name: 'timemodified', type: 'int'},
 			{name: 'token', type: 'string'},
 			{name: 'modules', type: 'int', defaultValue: 0},

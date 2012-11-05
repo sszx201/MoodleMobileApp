@@ -8,5 +8,39 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 		emptyText: 'No posts available in this discussion.',
 		useComponents: true,
 		defaultType: 'module',
+		grouped: true,
+		listeners: {
+			painted: function(){
+				this.addSectionLabels();
+			},
+		}
 	},
+
+	addSectionLabels: function(){
+		var course_format = MoodleMobApp.Session.getCourse().get('format');
+		var course_start_date = MoodleMobApp.Session.getCourse().get('startdate')*1000; //
+		var week = 6*24*3600*1000; // in miliseconds
+		var date_format = 'd M';
+		// remove old sections labels
+		Ext.select('.x-module-section').each(function(section_label){
+			section_label.destroy();
+		});
+		// add section labels
+		var number_of_sections = 50;
+		for(var i=1; i < number_of_sections; ++i){
+			var element = Ext.select('.x-module-section-'+i).first();
+			if(element == null) {
+				break;
+			} else {
+				if(course_format == 'weeks') {
+					var begin_day = new Date(course_start_date + week*(i-1));
+					var end_day = new Date(course_start_date + week*i);
+					var label = Ext.Date.format(begin_day, date_format) + ' - ' + Ext.Date.format(end_day, date_format);
+					Ext.DomHelper.insertBefore(element, '<div class="x-module-section">'+label+'</div>');
+				} else {
+					Ext.DomHelper.insertBefore(element, '<div class="x-module-section">section '+i+'</div>');
+				}
+			}
+		}
+	}
 });

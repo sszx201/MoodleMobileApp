@@ -13,6 +13,8 @@ Ext.define('MoodleMobApp.controller.Shell', {
    			clear_enrolled_users: 'button[action=clear_enrolled_users_db]',
    			clear_forum_discussions: 'button[action=clear_forum_discussions_db]',
    			clear_forum_posts: 'button[action=clear_forum_posts_db]',
+   			test_child_browser: 'button[action=test_child_browser]',
+   			test_web_intent: 'button[action=test_web_intent]',
 		},
 		control: {
 			run:{ tap: 'runCode' },
@@ -23,6 +25,8 @@ Ext.define('MoodleMobApp.controller.Shell', {
 			clear_enrolled_users: { tap: 'clearEnrolledUsers' },
 			clear_forum_dicussions: { tap: 'clearForumDiscussions' },
 			clear_forum_posts: { tap: 'clearForumPosts' },
+			test_child_browser: { tap: 'testChildBrowser' },
+			test_web_intent: { tap: 'fireIntent' },
 		}
 	},
 
@@ -79,4 +83,32 @@ Ext.define('MoodleMobApp.controller.Shell', {
 		MoodleMobApp.Session.getFoldersStore().removeAll();
 		MoodleMobApp.Session.getFoldersStore().getProxy().clear();
 	},
+
+	testChildBrowser: function(){
+		console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||');
+		console.log('testing the CHILD BROWSER');
+		console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||');
+		//var url = 'http://www.vim.org/scripts/download_script.php?src_id=14208';
+		//var url = 'https://mft.ti.ch/esempio_lista_semplificata.zip';
+		//var url = 'http://www.gradsch.ohio-state.edu/Depo/ETD_Tutorial/lesson2.pdf';
+		var url = 'file://sdcard/boa.jpg';
+		window.plugins.childBrowser.showWebPage(url, { showLocationBar: true });
+
+	},
+
+	fireIntent: function() {
+		var furl = 'file://sdcard/boa.jpg';
+		//var furl = 'http://www.gradsch.ohio-state.edu/Depo/ETD_Tutorial/lesson2.pdf';
+		window.plugins.webintent.startActivity(
+			{
+    			action: WebIntent.ACTION_VIEW,
+				type: 'image/jpeg',
+    			url: furl,
+  			}, 
+			function () {}, 
+			function () {
+    			alert('Failed to open URL via Android Intent');
+  			});
+	}
+
 });

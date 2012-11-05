@@ -120,7 +120,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		var formData = this.getEditDiscussionForm().getValues();
 		// set the forumid
 		formData.forumid = this.selected_forum.instanceid;
-		var token = MoodleMobApp.Session.getCourseToken();
+		var token = MoodleMobApp.Session.getCourse().get('token');
 		var create_discussion_result_store = MoodleMobApp.WebService.createDiscussion(formData, token);
 		create_discussion_result_store.on(
 			'load', 
@@ -246,7 +246,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 
 	saveReplyToPost: function(button){
 		var formData = this.getReplyForm().getValues();
-		var token = MoodleMobApp.Session.getCourseToken();
+		var token = MoodleMobApp.Session.getCourse().get('token');
 		var create_post_result_store = MoodleMobApp.WebService.createForumPost(formData, token);
 		// refresh the discussion content
 		create_post_result_store.on(

@@ -34,6 +34,7 @@ Ext.define("MoodleMobApp.view.Module", {
 	formatElement: function(){
 		var classes = 'x-module';
 			classes+= ' x-module-icon-'+this.getRecord().get('modname'); 
+			classes+= ' x-module-section-'+this.getRecord().get('section'); 
 		this.setCls(classes);
 
 		if(this.getRecord().get('isnew') == true) {

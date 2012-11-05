@@ -87,8 +87,18 @@ Ext.define("MoodleMobApp.view.Shell", {
 						ui: 'confirm',
 						action: 'clear_forum_posts_db',	
 					},
-
-
+					{
+						xtype: 'button',
+						text: 'Test Child Browser',
+						ui: 'confirm',
+						action: 'test_child_browser',	
+					},
+					{
+						xtype: 'button',
+						text: 'Test WebIntent',
+						ui: 'confirm',
+						action: 'test_web_intent',	
+					},
 				]
 			}
 		]

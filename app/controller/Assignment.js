@@ -85,7 +85,7 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 	
 	submitOnlineAssignment: function(button) {
 		var submission_data = this.getOnlineAssignment().getValues();
-		var token = MoodleMobApp.Session.getCourseToken();
+		var token = MoodleMobApp.Session.getCourse().get('token');
 		var submission_status_store = MoodleMobApp.WebService.submitOnlineAssignment(submission_data, token);
 		// refresh the discussion content
 		submission_status_store.on(

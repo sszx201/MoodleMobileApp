@@ -1,27 +1,30 @@
+//<debug>
+Ext.Loader.setPath({
+    'Ext': 'touch/src',
+    'MoodleMobApp': 'app'
+});
+//</debug>
+
 Ext.application({
+    name: 'MoodleMobApp',
 
-	name: 'MoodleMobApp',
-
-	requires: [
-		'Ext.MessageBox',
+    requires: [
+        'Ext.MessageBox',
 		'Ext.TitleBar',
 		'Ext.Img',
 		'Ext.data.identifier.Uuid',
 		'MoodleMobApp.Config',
 		'MoodleMobApp.Session',
 		'MoodleMobApp.WebService',
-		'MoodleMobApp.util.Link',
 		'MoodleMobApp.store.HomeOrgs',
-	],
+    ],
 
 	models: [
 		"MoodleMobApp.model.Settings",
+		"MoodleMobApp.model.AaiAccount",
+		"MoodleMobApp.model.ManualAccount",
 	],
 
-	stores: [
-		'MoodleMobApp.store.Settings',
-	],
-	
 	views: [
 		'MoodleMobApp.view.UsageAgreement',
 		'MoodleMobApp.view.AccountChoice',
@@ -32,11 +35,11 @@ Ext.application({
 	],
 
 	controllers: [
-		"MoodleMobApp.controller.Init", 
-		"MoodleMobApp.controller.Main",
-		"MoodleMobApp.controller.UsageAgreement", 
-		"MoodleMobApp.controller.User", 
-		"MoodleMobApp.controller.AccountChoice", 
+		'MoodleMobApp.controller.Init',
+		'MoodleMobApp.controller.Main',
+		'MoodleMobApp.controller.UsageAgreement', 
+		'MoodleMobApp.controller.User', 
+		'MoodleMobApp.controller.AccountChoice', 
 		'MoodleMobApp.controller.Account',
 		'MoodleMobApp.controller.AaiAccount',
 		'MoodleMobApp.controller.ManualAccount',
@@ -47,18 +50,26 @@ Ext.application({
 		'MoodleMobApp.controller.Shell',
 	],
 
-	icon: {
-		57: 'resources/icons/Icon.png',
-		72: 'resources/icons/Icon~ipad.png',
-		114: 'resources/icons/Icon@2x.png',
-		144: 'resources/icons/Icon~ipad@2x.png'
-	},
+    icon: {
+        '57': 'resources/icons/Icon.png',
+        '72': 'resources/icons/Icon~ipad.png',
+        '114': 'resources/icons/Icon@2x.png',
+        '144': 'resources/icons/Icon~ipad@2x.png'
+    },
 
-	phoneStartupScreen: 'resources/loading/Homescreen.jpg',
-	tabletStartupScreen: 'resources/loading/Homescreen~ipad.jpg',
+    isIconPrecomposed: true,
 
-	launch: function() {
-		// Destroy the #appLoadingIndicator element
+    startupImage: {
+        '320x460': 'resources/startup/320x460.jpg',
+        '640x920': 'resources/startup/640x920.png',
+        '768x1004': 'resources/startup/768x1004.png',
+        '748x1024': 'resources/startup/748x1024.png',
+        '1536x2008': 'resources/startup/1536x2008.png',
+        '1496x2048': 'resources/startup/1496x2048.png'
+    },
+
+    launch: function() {
+        // Destroy the #appLoadingIndicator element
 		Ext.fly('appLoadingIndicator').destroy();
 
 		if( MoodleMobApp.Session.getSettingsStore().first().getData().usageagreement == false ) {
@@ -68,19 +79,19 @@ Ext.application({
 		} else {
 			Ext.Viewport.add(Ext.create('MoodleMobApp.view.Main'));
 		}
-	},
+    },
 
-	onUpdated: function() {
-		Ext.Msg.confirm(
-			"Application Update",
-			"This application has just successfully been updated to the latest version. Reload now?",
-			function(buttonId) {
-				if (buttonId === 'yes') {
-					window.location.reload();
-				}
-			}
-		);
-	},
+    onUpdated: function() {
+        Ext.Msg.confirm(
+            "Application Update",
+            "This application has just successfully been updated to the latest version. Reload now?",
+            function(buttonId) {
+                if (buttonId === 'yes') {
+                    window.location.reload();
+                }
+            }
+        );
+    },
 
 	openFile: function(path, mimetype){
 		window.plugins.webintent.startActivity(
@@ -94,4 +105,5 @@ Ext.application({
 				Ext.Msg.alert('File Error', 'Failed to open:'+path+' via Android Intent');
   			});
 	}
+
 });

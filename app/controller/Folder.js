@@ -114,7 +114,7 @@ Ext.define('MoodleMobApp.controller.Folder', {
 	downloadFile: function() {
 		var fileTransfer = new FileTransfer();
 		var uri = encodeURI("http://news.stareastasia.com/wp-content/uploads/2007/11/kwon-boa-pic-0008.jpg");
-		var filePath = 'file://sdcard/boa.jpg';
+		var filePath = 'file:///sdcard/boa.jpg';
 
 		fileTransfer.download(
 			uri,

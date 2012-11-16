@@ -27,7 +27,6 @@ Ext.define("MoodleMobApp.view.Main", {
 				xtype: 'shell',
 				
 			}
-
 		]
 	}
 });

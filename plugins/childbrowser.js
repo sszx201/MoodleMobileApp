@@ -88,6 +88,7 @@ ChildBrowser.prototype.install = function(){
 if(!window.plugins) {
     window.plugins = {};
 }
+
 if (!window.plugins.childBrowser) {
     window.plugins.childBrowser = new ChildBrowser();
 }

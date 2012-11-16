@@ -97,12 +97,13 @@ Ext.define('MoodleMobApp.controller.Shell', {
 	},
 
 	fireIntent: function() {
-		var furl = 'file://sdcard/boa.jpg';
+		//var furl = 'file:///sdcard/boa.jpg';
+		var furl = 'file:///sdcard/download/usi_menu_mensa.pdf';
 		//var furl = 'http://www.gradsch.ohio-state.edu/Depo/ETD_Tutorial/lesson2.pdf';
 		window.plugins.webintent.startActivity(
 			{
     			action: WebIntent.ACTION_VIEW,
-				type: 'image/jpeg',
+				type: 'application/pdf',
     			url: furl,
   			}, 
 			function () {}, 

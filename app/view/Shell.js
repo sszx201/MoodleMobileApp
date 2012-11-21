@@ -47,58 +47,11 @@ Ext.define("MoodleMobApp.view.Shell", {
 					},
 					{
 						xtype: 'button',
-						text: 'Clear all',
+						text: 'Clear Databases',
 						ui: 'confirm',
 						action: 'clear_all_db',	
 					},
-					{
-						xtype: 'button',
-						text: 'Clear courses db',
-						ui: 'confirm',
-						action: 'clear_courses_db',	
-					},
-					{
-						xtype: 'button',
-						text: 'Clear modules db',
-						ui: 'confirm',
-						action: 'clear_modules_db',	
-					},
-					{
-						xtype: 'button',
-						text: 'Clear users db',
-						ui: 'confirm',
-						action: 'clear_users_db',	
-					},
-					{
-						xtype: 'button',
-						text: 'Clear enrolled users db',
-						ui: 'confirm',
-						action: 'clear_enrolled_users_db',	
-					},
-					{
-						xtype: 'button',
-						text: 'Clear forum discussions db',
-						ui: 'confirm',
-						action: 'clear_forum_discussions_db',	
-					},
-					{
-						xtype: 'button',
-						text: 'Clear forum posts db',
-						ui: 'confirm',
-						action: 'clear_forum_posts_db',	
-					},
-					{
-						xtype: 'button',
-						text: 'Test Child Browser',
-						ui: 'confirm',
-						action: 'test_child_browser',	
-					},
-					{
-						xtype: 'button',
-						text: 'Test WebIntent',
-						ui: 'confirm',
-						action: 'test_web_intent',	
-					},
+
 				]
 			}
 		]

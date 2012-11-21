@@ -191,6 +191,50 @@ Ext.define('MoodleMobApp.WebService', {
 		return folder_content_store;
 	},
 
+	getFile: function(file, dir, callBackFunc, token) {
+		var params = new Object();
+		// add response format
+		params.moodlewsrestformat = 'json';
+		params.wsfunction = 'local_uniappws_files_get_file';
+		params.wstoken = token;
+		params.fileid = file.fileid;
+		// prepare the parameters
+		var url_encoded_params = '?';
+		Ext.iterate(params, function(key, value){
+			url_encoded_params += key+'='+value+'&';
+		});
+		// remove the last & char
+		url_encoded_params = url_encoded_params.slice(0,-1);
+		// build the url
+		var url = MoodleMobApp.Config.getWebServiceUrl() + url_encoded_params;
+		// success function
+		var successFunc = function(result) {
+			if(result.progress == 100 && result.status == 1) {
+				callBackFunc();
+			}
+			console.log(JSON.stringify(result));
+		};
+		// fail function
+		var failFunc = function(){
+			Ext.Msg.alert(
+				'File download error',
+				'Failed to download the file: ' + file.name
+			);
+		};
+		// get the file
+		window.plugins.downloader.downloadFile(url, {'overwrite': true}, successFunc, failFunc, file.name, dir);
+	},
+
+	getResource: function(resource, token) {
+		// set parameters
+		var params = new Object();
+		params.wsfunction = 'local_uniappws_resource_get_resource';
+		params.wstoken = token;
+		params.resourceid = resource.instanceid;
+		// request
+		var resource_content_store = this.request(params, 'MoodleMobApp.model.Resource');
+		return resource_content_store;
+	},
 
 
 });

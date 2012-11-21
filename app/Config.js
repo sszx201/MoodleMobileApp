@@ -18,5 +18,9 @@ Ext.define('MoodleMobApp.Config', {
 		homeOrgsUrl : '/auth/mobileaai/get_idps.php',
 		manualAuthUrl : '/auth/mobilemanual/authenticate.php',
 		webServiceUrl : '/webservice/rest/server.php',
+		//paths
+		fileCacheDir: 'iCorsi',
+		//system
+		memoryStorage: 'iCorsi',
 	}
 });

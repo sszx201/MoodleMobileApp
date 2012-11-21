@@ -14,6 +14,7 @@ Ext.define('MoodleMobApp.controller.Init', {
 			'MoodleMobApp.store.EnrolledUsers',
 			'MoodleMobApp.store.Courses',
 			'MoodleMobApp.store.Modules',
+			'MoodleMobApp.store.Resources',
 			'MoodleMobApp.store.ForumDiscussions',
 			'MoodleMobApp.store.ForumPosts',
 			'MoodleMobApp.store.OnlineAssignmentSubmissions',
@@ -112,6 +113,20 @@ Ext.define('MoodleMobApp.controller.Init', {
 				});
 			});
 		MoodleMobApp.Session.setModulesStore(modules_store);
+
+		// create resources store
+		var resources_store = Ext.create('MoodleMobApp.store.Resources');
+		resources_store.load();
+		// -log-
+		resources_store.on(
+			'write',
+			function(store, operation) {
+				MoodleMobApp.log('=> resources_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
+				Ext.iterate(operation.getRecords(), function(record){
+					MoodleMobApp.log(' --> Resource: '+record.get('name')+'; id: '+record.get('id'));
+				});
+			});
+		MoodleMobApp.Session.setResourcesStore(resources_store);
 
 		// create forumdiscussions store
 		var forum_discussions_store = Ext.create('MoodleMobApp.store.ForumDiscussions');

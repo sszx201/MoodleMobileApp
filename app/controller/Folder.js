@@ -95,41 +95,19 @@ Ext.define('MoodleMobApp.controller.Folder', {
 			);
 			this.getNavigator().push(this.getFolder());
 		} else if(entry.get('type') == 'file'){
-			//MoodleMobApp.log(' >>>>>> downloading file: '+entry.get('url'));
-			//location.href = 'http://mobile.icorsi.ch/pluginfile.php/45/mod_folder/content/1/boa.jpg';
-			//window.open( entry.get('url'), "_blank");
-			//window.open( entry.get('url') );
-			//window.open('http://mobile.icorsi.ch/pluginfile.php/45/mod_folder/content/1/boa.jpg', "_blank");
-			this.downloadFile();
-			//location.href = entry.get('url');
-			//location.href = 'http://mobile.icorsi.ch/pluginfile.php/45/mod_folder/content/1/first%20sub%20folder/favicon.ico';
-			//location.href = 'http://mobile.icorsi.ch/pluginfile.php/45/mod_folder/content/1/boa.jpg';
-			//location.href = 'http://news.stareastasia.com/wp-content/uploads/2007/11/kwon-boa-pic-0008.jpg';
-			//location.href = 'https://raw.github.com/phonegap/phonegap/2dbbdabce35cca44aae575867cbed972437fa676/README.md';
-			//location.href = 'http://cran.r-project.org/doc/manuals/R-intro.pdf';
+			var token = MoodleMobApp.Session.getCourse().get('token');
+			var file = entry.getData();
+
+			var callBackFunc = function() {
+				var filePath = '/'+MoodleMobApp.Config.getFileCacheDir()+'/'+entry.get('name');
+				MoodleMobApp.app.openFile(filePath, entry.get('mime'));
+			};
+
+			MoodleMobApp.WebService.getFile(file, MoodleMobApp.Config.getFileCacheDir(), callBackFunc, token);
 		}
 		
 	},
 
-	downloadFile: function() {
-		var fileTransfer = new FileTransfer();
-		var uri = encodeURI("http://news.stareastasia.com/wp-content/uploads/2007/11/kwon-boa-pic-0008.jpg");
-		var filePath = 'file:///sdcard/boa.jpg';
-
-		fileTransfer.download(
-			uri,
-			filePath,
-			function(entry) {
-				console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% download complete: " + entry.fullPath);
-			},
-			function(error) {
-				console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% download error source " + error.source);
-				console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% download error target " + error.target);
-				console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% upload error code" + error.code);
-			}
-		);
-    },
-   
 	addUpperFolderEntry: function(currentFolder){
 		var position = MoodleMobApp.Session.getFoldersStore().findExact('name', '..');
 		if(position != -1){

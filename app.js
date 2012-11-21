@@ -47,6 +47,7 @@ Ext.application({
 		'MoodleMobApp.controller.Assignment',
 		'MoodleMobApp.controller.Forum',
 		'MoodleMobApp.controller.Folder',
+		'MoodleMobApp.controller.Resource',
 		'MoodleMobApp.controller.Shell',
 	],
 
@@ -94,16 +95,17 @@ Ext.application({
     },
 
 	openFile: function(path, mimetype){
+		var protocol = 'file:///';
+		var store = 'sdcard'
 		window.plugins.webintent.startActivity(
 			{
-    			action: WebIntent.ACTION_VIEW,
+				action: WebIntent.ACTION_VIEW,
 				type: mimetype,
-    			url: path,
+				url: protocol+store+path,
   			}, 
 			function () {}, 
 			function () {
 				Ext.Msg.alert('File Error', 'Failed to open:'+path+' via Android Intent');
   			});
-	}
-
+	},
 });

@@ -136,12 +136,14 @@ Ext.define('MoodleMobApp.controller.Main', {
 					MoodleMobApp.Session.getModulesStore().on('write', this.updateCourseModulesStats(course), this, {single:true});
 					MoodleMobApp.Session.getModulesStore().on('write', this.updateForumDiscussionsStore(course), this, {single:true});	
 					MoodleMobApp.Session.getModulesStore().on('write', this.updateFoldersStore(course), this, {single:true});	
+					MoodleMobApp.Session.getModulesStore().on('write', this.updateResourcesStore(course), this, {single:true});
 					// sync
 					MoodleMobApp.Session.getModulesStore().sync();
 				} else { // no syncronisation needed; proceed with other updates
 					this.updateCourseModulesStats(course);
 					this.updateForumDiscussionsStore(course);
 					this.updateFoldersStore(course);
+					this.updateResourcesStore(course);
 				}
 			},
 			this,
@@ -434,13 +436,43 @@ Ext.define('MoodleMobApp.controller.Main', {
 					// remove old entries
 					MoodleMobApp.Session.getFoldersStore().remove(old_entries.all);
 
-					folders_content.each(function(content) {
-						MoodleMobApp.Session.getFoldersStore().add(content);
+					folders_content.each(function(entry) {
+						MoodleMobApp.Session.getFoldersStore().add(entry);
 					}, this);
 
 					MoodleMobApp.Session.getFoldersStore().sync();
 				},
 				this, 
+				{single: true}
+			);
+		}, this);
+	},
+
+	updateResourcesStore: function (course) {
+		var courseid = course.get('id');
+		// -log-
+		MoodleMobApp.log('UPDATING RESOURCES STORE FOR COURSE: '+courseid);
+
+		MoodleMobApp.Session.getModulesStore().queryBy(function(record, id){
+			if(record.get('modname') == 'resource' && record.get('courseid') == courseid) {
+				return true;
+			}
+		}).each(function(resource) {
+			MoodleMobApp.WebService.getResource(resource.getData(), course.get('token')).on(
+				'load',
+				function(response) {
+					var previous_record = MoodleMobApp.Session.getResourcesStore().findRecord('id', response.first().get('id'));
+
+					if(previous_record == null) { // add the new resource; this resource has not been recorded previously
+						response.first().setDirty();
+						MoodleMobApp.Session.getResourcesStore().add(response.first());
+					} else if(previous_record.get('timemodified') != response.first().get('timemodified')) { // resource modified; drop the old one
+						MoodleMobApp.Session.getResourcesStore().remove(previous_record);
+						response.first().setDirty();
+						MoodleMobApp.Session.getResourcesStore().add(response.first());
+					}
+				},
+				this,
 				{single: true}
 			);
 		}, this);

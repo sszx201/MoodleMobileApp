@@ -19,14 +19,6 @@ Ext.define('MoodleMobApp.controller.Shell', {
 		control: {
 			run:{ tap: 'runCode' },
 			clear_all: { tap: 'clearAll' },
-			clear_courses: { tap: 'clearCourses' },
-			clear_modules: { tap: 'clearModules' },
-			clear_users: { tap: 'clearUsers' },
-			clear_enrolled_users: { tap: 'clearEnrolledUsers' },
-			clear_forum_dicussions: { tap: 'clearForumDiscussions' },
-			clear_forum_posts: { tap: 'clearForumPosts' },
-			test_child_browser: { tap: 'testChildBrowser' },
-			test_web_intent: { tap: 'fireIntent' },
 		}
 	},
 
@@ -47,6 +39,7 @@ Ext.define('MoodleMobApp.controller.Shell', {
 		this.clearForumDiscussions();
 		this.clearForumPosts();
 		this.clearFolders();
+		this.clearResources();
 	},
 
 	clearCourses: function() {
@@ -84,32 +77,8 @@ Ext.define('MoodleMobApp.controller.Shell', {
 		MoodleMobApp.Session.getFoldersStore().getProxy().clear();
 	},
 
-	testChildBrowser: function(){
-		console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||');
-		console.log('testing the CHILD BROWSER');
-		console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||');
-		//var url = 'http://www.vim.org/scripts/download_script.php?src_id=14208';
-		//var url = 'https://mft.ti.ch/esempio_lista_semplificata.zip';
-		//var url = 'http://www.gradsch.ohio-state.edu/Depo/ETD_Tutorial/lesson2.pdf';
-		var url = 'file://sdcard/boa.jpg';
-		window.plugins.childBrowser.showWebPage(url, { showLocationBar: true });
-
+	clearResources: function() {
+		MoodleMobApp.Session.getResourcesStore().removeAll();
+		MoodleMobApp.Session.getResourcesStore().getProxy().clear();
 	},
-
-	fireIntent: function() {
-		//var furl = 'file:///sdcard/boa.jpg';
-		var furl = 'file:///sdcard/download/usi_menu_mensa.pdf';
-		//var furl = 'http://www.gradsch.ohio-state.edu/Depo/ETD_Tutorial/lesson2.pdf';
-		window.plugins.webintent.startActivity(
-			{
-    			action: WebIntent.ACTION_VIEW,
-				type: 'application/pdf',
-    			url: furl,
-  			}, 
-			function () {}, 
-			function () {
-    			alert('Failed to open URL via Android Intent');
-  			});
-	}
-
 });

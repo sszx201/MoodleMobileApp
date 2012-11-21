@@ -11,9 +11,18 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 		grouped: true,
 		listeners: {
 			painted: function(){
-				this.addSectionLabels();
+				this.dropSectionLabels();
+				// wait 100ms for the classes to load
+				Ext.defer(this.addSectionLabels, 100, this);
 			},
 		}
+	},
+
+	dropSectionLabels: function(){
+		// remove old sections labels
+		Ext.select('.x-module-section').each(function(section_label){
+			section_label.destroy();
+		});
 	},
 
 	addSectionLabels: function(){
@@ -21,14 +30,13 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 		var course_start_date = MoodleMobApp.Session.getCourse().get('startdate')*1000; //
 		var week = 6*24*3600*1000; // in miliseconds
 		var date_format = 'd M';
-		// remove old sections labels
-		Ext.select('.x-module-section').each(function(section_label){
-			section_label.destroy();
-		});
+		
 		// add section labels
 		var number_of_sections = 50;
 		for(var i=1; i < number_of_sections; ++i){
 			var element = Ext.select('.x-module-section-'+i).first();
+			console.log('.x-module-section-'+i);
+			console.log(element);
 			if(element == null) {
 				break;
 			} else {

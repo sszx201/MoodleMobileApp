@@ -108,4 +108,47 @@ Ext.application({
 				Ext.Msg.alert('File Error', 'Failed to open:'+path+' via Android Intent');
   			});
 	},
+
+
+	// file is an object such as:
+	// {"name": "filename", "id": "file id number", "mime":"mime/type"}
+	getFile: function(file) {
+		var token = MoodleMobApp.Session.getCourse().get('token');
+		var dir = MoodleMobApp.Config.getFileCacheDir();
+
+		// success function
+		var successFunc = function(result) {
+			// download mask code
+			if(
+				Ext.Viewport.getActiveItem().getMasked() == null || 
+				Ext.Viewport.getActiveItem().getMasked().isHidden() && result.progress < 100
+			) { // init mask
+				Ext.Viewport.getActiveItem().setMasked({
+					xtype: 'loadmask',
+					message: result.progress+' %'
+				});
+			} else if(result.progress < 100){ // update the progress
+				Ext.Viewport.getActiveItem().getMasked().setMessage(result.progress+' %');
+			} else { // remove the mask
+				Ext.Viewport.getActiveItem().setMasked(false);
+			}
+
+			if(result.progress == 100 && result.status == 1) {
+				var filePath = '/'+MoodleMobApp.Config.getFileCacheDir()+'/'+file.name;
+				MoodleMobApp.app.openFile(filePath, file.mime);
+			}
+
+			console.log(JSON.stringify(result));
+		};
+
+		// fail function
+		var failFunc = function(){
+			Ext.Msg.alert(
+				'File download error',
+				'Failed to download the file: ' + file.name
+			);
+		};
+
+		MoodleMobApp.WebService.getFile(file, dir, successFunc, failFunc, token);
+	}
 });

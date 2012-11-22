@@ -7,6 +7,7 @@ Ext.define('MoodleMobApp.model.Folder', {
 			{name: 'rootid', type: 'int'},
 			{name: 'parent', type: 'string'},
 			{name: 'name', type: 'string'},
+			{name: 'fileid', type: 'int'},
 			{name: 'size', type: 'int'},
 			{name: 'mime', type: 'string'},
 			{name: 'type', type: 'string'},

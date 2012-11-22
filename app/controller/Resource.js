@@ -24,19 +24,12 @@ Ext.define('MoodleMobApp.controller.Resource', {
 	},
 
 	getFile: function(module){
-		var token = MoodleMobApp.Session.getCourse().get('token');
 		var resource = MoodleMobApp.Session.getResourcesStore().findRecord('id', module.get('instanceid'));
-
-		var callBackFunc = function() {
-			var filePath = '/'+MoodleMobApp.Config.getFileCacheDir()+'/'+resource.get('filename');
-			MoodleMobApp.app.openFile(filePath, resource.get('filemime'));
-		};
-
 		var file = {
 			'name': resource.get('filename'),
-			'fileid': resource.get('fileid')
+			'fileid': resource.get('fileid'),
+			'mime': resource.get('filemime'),
 		};
-
-		MoodleMobApp.WebService.getFile(file, MoodleMobApp.Config.getFileCacheDir(), callBackFunc, token);
+		MoodleMobApp.app.getFile(file);
 	}
 });

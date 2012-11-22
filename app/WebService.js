@@ -191,7 +191,7 @@ Ext.define('MoodleMobApp.WebService', {
 		return folder_content_store;
 	},
 
-	getFile: function(file, dir, callBackFunc, token) {
+	getFile: function(file, dir, successFunc, failFunc, token) {
 		var params = new Object();
 		// add response format
 		params.moodlewsrestformat = 'json';
@@ -207,20 +207,6 @@ Ext.define('MoodleMobApp.WebService', {
 		url_encoded_params = url_encoded_params.slice(0,-1);
 		// build the url
 		var url = MoodleMobApp.Config.getWebServiceUrl() + url_encoded_params;
-		// success function
-		var successFunc = function(result) {
-			if(result.progress == 100 && result.status == 1) {
-				callBackFunc();
-			}
-			console.log(JSON.stringify(result));
-		};
-		// fail function
-		var failFunc = function(){
-			Ext.Msg.alert(
-				'File download error',
-				'Failed to download the file: ' + file.name
-			);
-		};
 		// get the file
 		window.plugins.downloader.downloadFile(url, {'overwrite': true}, successFunc, failFunc, file.name, dir);
 	},

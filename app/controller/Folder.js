@@ -95,15 +95,8 @@ Ext.define('MoodleMobApp.controller.Folder', {
 			);
 			this.getNavigator().push(this.getFolder());
 		} else if(entry.get('type') == 'file'){
-			var token = MoodleMobApp.Session.getCourse().get('token');
 			var file = entry.getData();
-
-			var callBackFunc = function() {
-				var filePath = '/'+MoodleMobApp.Config.getFileCacheDir()+'/'+entry.get('name');
-				MoodleMobApp.app.openFile(filePath, entry.get('mime'));
-			};
-
-			MoodleMobApp.WebService.getFile(file, MoodleMobApp.Config.getFileCacheDir(), callBackFunc, token);
+			MoodleMobApp.app.getFile(file);
 		}
 		
 	},

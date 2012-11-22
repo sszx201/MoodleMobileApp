@@ -13,7 +13,7 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 			painted: function(){
 				this.dropSectionLabels();
 				// wait 100ms for the classes to load
-				Ext.defer(this.addSectionLabels, 100, this);
+				Ext.defer(this.addSectionLabels, 250, this);
 			},
 		}
 	},
@@ -35,8 +35,6 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 		var number_of_sections = 50;
 		for(var i=1; i < number_of_sections; ++i){
 			var element = Ext.select('.x-module-section-'+i).first();
-			console.log('.x-module-section-'+i);
-			console.log(element);
 			if(element == null) {
 				break;
 			} else {

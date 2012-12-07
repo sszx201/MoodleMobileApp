@@ -249,6 +249,17 @@ Ext.define('MoodleMobApp.controller.Forum', {
 
 	saveReplyToPost: function(button){
 		var formData = this.getReplyForm().getValues();
+		// check data
+		if(formData.subject == "") {
+			Ext.Msg.alert("Subject empty", "The Subject field cannot be empty. Please fill in.");
+			return;
+		}
+
+		if(formData.reply == "") {
+			Ext.Msg.alert("Message empty", "The Message field cannot be empty. Please fill in.");
+			return;
+		}
+
 		var token = MoodleMobApp.Session.getCourse().get('token');
 		var create_post_result_store = MoodleMobApp.WebService.createForumPost(formData, token);
 		// refresh the discussion content

@@ -22,5 +22,7 @@ Ext.define('MoodleMobApp.Config', {
 		fileCacheDir: 'iCorsi',
 		//system
 		memoryStorage: 'iCorsi',
+		// debuging
+		verbose: false
 	}
 });

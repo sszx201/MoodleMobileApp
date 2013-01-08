@@ -26,7 +26,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 			'load',
 			function(store) {
 				// -log-
-				MoodleMobApp.log('UPDATING USER STORES FOR THE COURSE: '+course.get('id'));
+				if(MoodleMobApp.Config.getVerbose()) {
+					MoodleMobApp.log('UPDATING USER STORES FOR THE COURSE: '+course.get('id'));
+				}
 				if(store.getCount() > 0){
 					var users_store_to_sync = false;
 					
@@ -48,20 +50,26 @@ Ext.define('MoodleMobApp.controller.Main', {
 							MoodleMobApp.Session.getUsersStore().add(record);
 							users_store_to_sync = true;
 							// -log-
-							MoodleMobApp.log('|I| New user; username: '+record.get('username')+'; id: '+record.get('id'));
+							if(MoodleMobApp.Config.getVerbose()) {
+								MoodleMobApp.log('|I| New user; username: '+record.get('username')+'; id: '+record.get('id'));
+							}
 						} else if(typeof current_user == 'object' && current_user.get('timemodified') != record.get('timemodified')){
 							MoodleMobApp.Session.getUsersStore().getById(record.get('id')).setData(record.getData());
 							MoodleMobApp.Session.getUsersStore().getById(record.get('id')).setDirty();
 							users_store_to_sync = true;
 							// -log-
-							MoodleMobApp.log('|I| Updating user: '+record.get('username'));
+							if(MoodleMobApp.Config.getVerbose()) {
+								MoodleMobApp.log('|I| Updating user: '+record.get('username'));
+							}
 						}
 					}, this);	
 
 					MoodleMobApp.Session.getEnrolledUsersStore().sync();
 
 					if(users_store_to_sync) {
-						MoodleMobApp.log('|I| users_store is to sync');
+						if(MoodleMobApp.Config.getVerbose()) {
+							MoodleMobApp.log('|I| users_store is to sync');
+						}
 						MoodleMobApp.Session.getUsersStore().on('write', this.updateDataStores(course), this, {single:true});
 						MoodleMobApp.Session.getUsersStore().sync();
 					} else {
@@ -83,7 +91,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 			'load', 
 			function(mstore){
 				// -log-
-				MoodleMobApp.log('UPDATING DATA STORES FOR COURSE: ' + course.get('name') + '; ID: ' + course.get('id'));
+				if(MoodleMobApp.Config.getVerbose()) {
+					MoodleMobApp.log('UPDATING DATA STORES FOR COURSE: ' + course.get('name') + '; ID: ' + course.get('id'));
+				}
 				// check if this is a new course
 				var courseid = course.get('id');
 				var is_new_course = course.get('isnew');
@@ -119,7 +129,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 						MoodleMobApp.Session.getModulesStore().add(module);
 						store_to_sync = true;
 						// -log-
-						MoodleMobApp.log('|I| New module '+module.get('modname')+'; type:'+module.get('type')+'; name: '+module.get('name')+'; id: '+module.get('id'));
+						if(MoodleMobApp.Config.getVerbose()) {
+							MoodleMobApp.log('|I| New module '+module.get('modname')+'; type:'+module.get('type')+'; name: '+module.get('name')+'; id: '+module.get('id'));
+						}
 					} else if(MoodleMobApp.Session.getModulesStore().getAt(index).get('timemodified') != module.get('timemodified')) { // check if updated
 						MoodleMobApp.Session.getModulesStore().getAt(index).set('name', module.get('name'));
 						MoodleMobApp.Session.getModulesStore().getAt(index).set('intro', module.get('intro'));
@@ -128,7 +140,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 						MoodleMobApp.Session.getModulesStore().getAt(index).set('isupdated', true);
 						store_to_sync = true;
 						// -log-
-						MoodleMobApp.log('|I| Updating module '+module.get('modname')+'; type:'+module.get('type')+'; name: '+module.get('name')+'; id: '+module.get('id'));
+						if(MoodleMobApp.Config.getVerbose()) {
+							MoodleMobApp.log('|I| Updating module '+module.get('modname')+'; type:'+module.get('type')+'; name: '+module.get('name')+'; id: '+module.get('id'));
+						}
 					}
 				}, this);	
 				
@@ -156,7 +170,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 	updateCourseModulesStats: function(course) {
 		var courseid = course.get('id');
 		// -log-
-		MoodleMobApp.log('UPDATING MODULES STATUS FOR COURSE: '+courseid);
+		if(MoodleMobApp.Config.getVerbose()) {
+			MoodleMobApp.log('UPDATING MODULES STATUS FOR COURSE: '+courseid);
+		}
 
 		// count modules
 		var all_modules = MoodleMobApp.Session.getModulesStore().queryBy(function(record, id) {
@@ -188,13 +204,15 @@ Ext.define('MoodleMobApp.controller.Main', {
 		}
 		
 		// -log-
-		MoodleMobApp.Session.getCoursesStore().on(
-			'write',
-			function(store, operation){
-				MoodleMobApp.log(' --> Course '+courseid+'; modules status info updated to "'+modstat+'"');
-			},
-			this,
-			{single:true});
+		if(MoodleMobApp.Config.getVerbose()) {
+			MoodleMobApp.Session.getCoursesStore().on(
+				'write',
+				function(store, operation){
+					MoodleMobApp.log(' --> Course '+courseid+'; modules status info updated to "'+modstat+'"');
+				},
+				this,
+				{single:true});
+		}
 
 		// write the stat
 		MoodleMobApp.Session.getCoursesStore().getById(courseid).set('modulestatus', modstat)
@@ -204,7 +222,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 	updateForumDiscussionsStore: function (course) {
 		var courseid = course.get('id');
 		// -log-
-		MoodleMobApp.log('UPDATING FORUM DISCUSSIONS STORE FOR COURSE: '+courseid);
+		if(MoodleMobApp.Config.getVerbose()) {
+			MoodleMobApp.log('UPDATING FORUM DISCUSSIONS STORE FOR COURSE: '+courseid);
+		}
 
 		MoodleMobApp.Session.getModulesStore().queryBy(function(record, id){
 			if(record.get('modname') == 'forum' && record.get('courseid') == courseid) {
@@ -273,7 +293,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 			'load',
 			function(posts) {
 				// -log-
-				MoodleMobApp.log('UPDATING POSTS STORE FOR DISCUSSION: '+discussionid);
+				if(MoodleMobApp.Config.getVerbose()) {
+					MoodleMobApp.log('UPDATING POSTS STORE FOR DISCUSSION: '+discussionid);
+				}
 				var store_to_sync = false;
 				var is_new_discussion = discussion.get('isnew');
 				posts.each(function(post) {
@@ -291,7 +313,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 						MoodleMobApp.Session.getForumPostsStore().add(post);
 						store_to_sync = true;
 						// -log-
-						MoodleMobApp.log('|I| New forum post: '+post.get('id')+' in discussion: '+discussionid);
+						if(MoodleMobApp.Config.getVerbose()) {
+							MoodleMobApp.log('|I| New forum post: '+post.get('id')+' in discussion: '+discussionid);
+						}
 					// check if the discussion has been updated or not
 					} else if(MoodleMobApp.Session.getForumPostsStore().getAt(index).get('modified') != post.get('modified')) {
 						MoodleMobApp.Session.getForumPostsStore().getAt(index).set('subject', post.get('subject'));
@@ -302,7 +326,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 						MoodleMobApp.Session.getForumPostsStore().getAt(index).set('isupdated', true);
 						store_to_sync = true;
 						// -log-
-						MoodleMobApp.log('|I| Updating forum post:'+post.get('id')+' in discussion: '+discussionid);
+						if(MoodleMobApp.Config.getVerbose()) {
+							MoodleMobApp.log('|I| Updating forum post:'+post.get('id')+' in discussion: '+discussionid);
+						}
 					}	
 				}, this);
 
@@ -316,7 +342,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 							// if the record is not in the 
 							if(posts.findExact('id', record.get('id')) == -1) { 
 								MoodleMobApp.Session.getForumPostsStore().remove(record);
-								MoodleMobApp.log('|I| Removing forum post:'+record.get('id')+' from discussion: '+discussionid);
+								if(MoodleMobApp.Config.getVerbose()) {
+									MoodleMobApp.log('|I| Removing forum post:'+record.get('id')+' from discussion: '+discussionid);
+								}
 							}
 						});
 				
@@ -336,7 +364,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 
 	checkForNewUsers: function(discussionid, token){
 		// -log-
-		MoodleMobApp.log('CHECKING FOR NEW USERS IN THE DISCUSSION: '+discussionid);
+		if(MoodleMobApp.Config.getVerbose()) {
+			MoodleMobApp.log('CHECKING FOR NEW USERS IN THE DISCUSSION: '+discussionid);
+		}
 
 		var added_users = new Array();
 		MoodleMobApp.Session.getForumPostsStore().queryBy(
@@ -348,7 +378,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 							if(user == undefined && added_users.indexOf(post.get('userid')) == -1) { // avoid adding twice the same user
 								// keep track of added users
 								// -log-
-								MoodleMobApp.log('|I| Found new user: ' + post.get('userid'));
+								if(MoodleMobApp.Config.getVerbose()) {
+									MoodleMobApp.log('|I| Found new user: ' + post.get('userid'));
+								}
 								added_users.push(post.get('userid'));
 								this.storeUser(post.get('userid'), token);
 							}			
@@ -362,7 +394,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 	// function adds the new user to the users store
 	storeUser: function(userid, token){
 		// -log-
-		MoodleMobApp.log('STORING USER: '+userid);
+		if(MoodleMobApp.Config.getVerbose()) {
+			MoodleMobApp.log('STORING USER: '+userid);
+		}
 
 		var new_user_store = MoodleMobApp.WebService.getUserById(userid, token);
 		new_user_store.on(
@@ -388,7 +422,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 
 	formatPosts: function(discussionid){
 		// -log-
-		MoodleMobApp.log('FORMATING POSTS FOR DISCUSSION: '+discussionid);
+		if(MoodleMobApp.Config.getVerbose()) {
+			MoodleMobApp.log('FORMATING POSTS FOR DISCUSSION: '+discussionid);
+		}
 
 		MoodleMobApp.Session.getForumPostsStore().queryBy(
 			function(record, id){
@@ -418,7 +454,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 	updateFoldersStore: function (course) {
 		var courseid = course.get('id');
 		// -log-
-		MoodleMobApp.log('UPDATING FOLDERS STORE FOR COURSE: '+courseid);
+		if(MoodleMobApp.Config.getVerbose()) {
+			MoodleMobApp.log('UPDATING FOLDERS STORE FOR COURSE: '+courseid);
+		}
 
 		MoodleMobApp.Session.getModulesStore().queryBy(function(record, id){
 			if(record.get('modname') == 'folder' && record.get('courseid') == courseid) {
@@ -453,7 +491,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 	updateResourcesStore: function (course) {
 		var courseid = course.get('id');
 		// -log-
-		MoodleMobApp.log('UPDATING RESOURCES STORE FOR COURSE: '+courseid);
+		if(MoodleMobApp.Config.getVerbose()) {
+			MoodleMobApp.log('UPDATING RESOURCES STORE FOR COURSE: '+courseid);
+		}
 
 		MoodleMobApp.Session.getModulesStore().queryBy(function(record, id){
 			if(record.get('modname') == 'resource' && record.get('courseid') == courseid) {
@@ -483,7 +523,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 	updateUrlStore: function (course) {
 		var courseid = course.get('id');
 		// -log-
-		MoodleMobApp.log('UPDATING URL STORE FOR COURSE: '+courseid);
+		if(MoodleMobApp.Config.getVerbose()) {
+			MoodleMobApp.log('UPDATING URL STORE FOR COURSE: '+courseid);
+		}
 
 		MoodleMobApp.Session.getModulesStore().queryBy(function(record, id){
 			if(record.get('modname') == 'url' && record.get('courseid') == courseid) {

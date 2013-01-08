@@ -137,6 +137,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 					MoodleMobApp.Session.getModulesStore().on('write', this.updateForumDiscussionsStore(course), this, {single:true});	
 					MoodleMobApp.Session.getModulesStore().on('write', this.updateFoldersStore(course), this, {single:true});	
 					MoodleMobApp.Session.getModulesStore().on('write', this.updateResourcesStore(course), this, {single:true});
+					MoodleMobApp.Session.getModulesStore().on('write', this.updateUrlStore(course), this, {single:true});
 					// sync
 					MoodleMobApp.Session.getModulesStore().sync();
 				} else { // no syncronisation needed; proceed with other updates
@@ -144,6 +145,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 					this.updateForumDiscussionsStore(course);
 					this.updateFoldersStore(course);
 					this.updateResourcesStore(course);
+					this.updateUrlStore(course);
 				}
 			},
 			this,
@@ -470,6 +472,36 @@ Ext.define('MoodleMobApp.controller.Main', {
 						MoodleMobApp.Session.getResourcesStore().remove(previous_record);
 						response.first().setDirty();
 						MoodleMobApp.Session.getResourcesStore().add(response.first());
+					}
+				},
+				this,
+				{single: true}
+			);
+		}, this);
+	},
+
+	updateUrlStore: function (course) {
+		var courseid = course.get('id');
+		// -log-
+		MoodleMobApp.log('UPDATING URL STORE FOR COURSE: '+courseid);
+
+		MoodleMobApp.Session.getModulesStore().queryBy(function(record, id){
+			if(record.get('modname') == 'url' && record.get('courseid') == courseid) {
+				return true;
+			}
+		}).each(function(url) {
+			MoodleMobApp.WebService.getUrl(url.getData(), course.get('token')).on(
+				'load',
+				function(response) {
+					var previous_record = MoodleMobApp.Session.getUrlStore().findRecord('id', response.first().get('id'));
+
+					if(previous_record == null) { // add the new url; this url has not been recorded previously
+						response.first().setDirty();
+						MoodleMobApp.Session.getUrlStore().add(response.first());
+					} else if(previous_record.get('timemodified') != response.first().get('timemodified')) { // url modified; drop the old one
+						MoodleMobApp.Session.getUrlStore().remove(previous_record);
+						response.first().setDirty();
+						MoodleMobApp.Session.getUrlStore().add(response.first());
 					}
 				},
 				this,

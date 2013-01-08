@@ -222,5 +222,16 @@ Ext.define('MoodleMobApp.WebService', {
 		return resource_content_store;
 	},
 
+	getUrl: function(resource, token) {
+		// set parameters
+		var params = new Object();
+		params.wsfunction = 'local_uniappws_url_get_url';
+		params.wstoken = token;
+		params.urlid = resource.instanceid;
+		// request
+		var url_content_store = this.request(params, 'MoodleMobApp.model.Url');
+		return url_content_store;
+	}
+
 
 });

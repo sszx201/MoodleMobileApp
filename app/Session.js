@@ -17,6 +17,7 @@ Ext.define('MoodleMobApp.Session', {
 		coursesStore: null,
 		modulesStore: null,
 		resourcesStore: null,
+		urlStore: null,
 		forumDiscussionsStore: null,
 		forumPostsStore: null,
 		onlineAssignmentSubmissionsStore: null,

@@ -48,6 +48,7 @@ Ext.application({
 		'MoodleMobApp.controller.Forum',
 		'MoodleMobApp.controller.Folder',
 		'MoodleMobApp.controller.Resource',
+		'MoodleMobApp.controller.Url',
 		'MoodleMobApp.controller.Shell',
 	],
 
@@ -150,5 +151,24 @@ Ext.application({
 		};
 
 		MoodleMobApp.WebService.getFile(file, dir, successFunc, failFunc, token);
-	}
+	},
+
+	openURL: function(urladdr){
+
+		/*
+		if(MoodleMobApp.Config.getVerbose()) {
+			console.log('===> Opening URL: '+urladdr);
+		}
+		*/
+		window.plugins.webintent.startActivity(
+			{
+				action: WebIntent.ACTION_VIEW,
+				url: urladdr,
+  			}, 
+			function () {}, 
+			function () {
+				Ext.Msg.alert('URL Error', 'Failed to open:'+path+' via Android Intent');
+  			});
+	},
+
 });

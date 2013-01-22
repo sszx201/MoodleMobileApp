@@ -21,7 +21,7 @@ Ext.define("MoodleMobApp.view.AccountChoice", {
 		items: [
 			{
 				xtype: 'toolbar',
-				docked: 'top',
+				docked: 'bottom',
 				items: [
 					{
 						xtype: 'spacer'
@@ -36,7 +36,9 @@ Ext.define("MoodleMobApp.view.AccountChoice", {
 						text: 'External user account',
 						action: 'select_manual_account',
 					},
-
+					{
+						xtype: 'spacer'
+					},
 				]
 			},
 			{

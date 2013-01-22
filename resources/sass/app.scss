@@ -1,3 +1,5 @@
+$base-color: #F90;
+
 @import 'sencha-touch/default/all';
 
 // You may remove any of the following modules that you
@@ -12,8 +14,176 @@
 @include sencha-indexbar;
 @include sencha-list;
 @include sencha-layout;
-@include sencha-carousel;
+//@include sencha-carousel;
 @include sencha-form;
 @include sencha-msgbox;
 
 // Your custom code goes here...
+.x-course,
+.x-module,
+.x-folder-entry,
+.x-forum-discussion {
+	padding: 5px;
+	border-bottom: 1px solid #dedede;
+}
+
+.x-module-section {
+	background-color: white;
+	padding-top: 10px;
+	padding-left: 3px;
+	border-bottom: 2px solid #dedede;
+}
+
+.x-module,
+.x-folder-entry {
+	padding-top: 10px;
+	padding-left: 35px;
+}
+
+.x-module-icon-assignment {
+	background:url('../images/assignment.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
+.x-module-icon-folder,
+.x-subfolder-icon {
+	background:url('../images/folder.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
+.x-file-icon {
+	background:url('../images/file_general.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
+.x-module-icon-forum {
+	background:url('../images/forum.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
+.x-module-icon-resource {
+	background:url('../images/resource.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
+.x-module-icon-url {
+	background:url('../images/resource.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
+.x-course-module-status,
+.x-module-modname,
+.x-forum-discussion-stat,
+.x-folder-entry-mime {
+	text-align: right;
+	color: gray;
+	font-size: small;
+}
+/*
+ *
+ * Forum related classes
+ *
+ * */
+
+.x-forum-discussion {
+	padding-top: 15px;
+}
+
+.forum-post {
+	margin-bottom: 10px;
+	border: 1px solid #dedede;
+	padding: 5px;
+}
+
+.forum-post-selected {
+	background-color: white;
+}
+
+.x-post-avatar { }
+
+.x-post-firstname {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.x-post-lastname { }
+
+.x-post-subject {
+	font-weight: bold;
+	padding-top: 10px;
+}
+
+.x-post-message {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.x-post-indentation-0 {}
+
+.x-post-indentation-1 {
+	margin-left: 15px;
+}
+
+.x-post-indentation-2 {
+	margin-left: 30px;
+}
+
+.x-post-indentation-3 {
+	margin-left: 45px;
+}
+
+.x-post-indentation-4 {
+	margin-left: 60px;
+}
+
+.x-post-indentation-5 {
+	margin-left: 75px;
+}
+
+.x-post-indentation-6 {
+	margin-left: 90px;
+}
+
+.x-post-indentation-7 {
+	margin-left: 105px;
+}
+
+.x-post-indentation-8 {
+	margin-left: 120px;
+}
+
+.x-post-indentation-9 {
+	margin-left: 135px;
+}
+
+.x-post-indentation-10 {
+	margin-left: 150px;
+}
+
+.x-post-attachment-list {
+	padding-top: 15px;
+}
+
+/*
+ *
+ * Assignment related classes
+ *
+ * */
+.assignment-intro {
+	background-color: white;
+	padding: 5px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}

@@ -10534,7 +10534,25 @@ input[type="search"]::-webkit-search-cancel-button {
   border: 0.1em solid rgba(255, 153, 0, 0.9);
 }
 
-/* line 25, ../sass/app.scss */
+/* line 20, ../../touch/resources/themes/stylesheets/sencha-touch/default/_mixins.scss */
+.x-tab .x-button-icon.usi_home,
+.x-button .x-button-icon.x-icon-mask.usi_home {
+  -webkit-mask-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAiJJREFUeNrs2+9RwjAUAPD0HR+5gw3ECWQERoAJygKcuAEj9HQAcQJxA9igTKBsQE+/1/cw3PU42qY0LyZpcpcr1kfML/+INUZ5nosupZ5K0M9LNMTLHPO0cPuIedtf5InqD5PlrGRZlNb0NZZxNAWO6npYVnKL+aEk5A0rPFfEXitnj3liCg0KMfMKLKUYMeMWjUb3tjLGCvCwTYzCCDGKBs7CFbFG0WAJ1hgaLMIaQYNlWHY0WIhlRYOlWDa0LjAHlgWtC7xmwmpH6wIPDGyStKBBuJVao10Dt0a7CG6FdhV8M9pl8E1o18GN0T6AG6FBYbs49QkNhvfG/46u6uHEMWwRnTQCYwvR3jh2eE7H0lAP9gBbiQZPsaVo8Bh7FQ0Sm3iKLaKTYg8/Cv/TyRh9P4sRXj9FN9I99Bf5F744dAB7IOt5SNP2MbsI2DuMu6x7dt4in8AoT/FCQ/sJ8wfmGd4bu6qVdZ9JC5lG0lj992Fc2XQdD6AWTmtiqJIDTeCo7Hs95sYm6Er1lAA28FL8nRBgewoKzNhJkyMRMnZyZT3Rljh7eHmeN9hzhKDeK/u1jY47JBhPZ0ZS2dOvHJXimsP0ETCSZdDq+K74PlosN/J99HF5p3sOcw3p4gK1bDIqSsqwfg6nlpRhdNGyMgVwAAdwAAdwAAdwAAdwAAdwAAfwLeDMQVPWBrxxELxpA6ZHLjuHsDtR80gp6tq/4v0KMAAbzOHQ3o3e/wAAAABJRU5ErkJggg==');
+}
+
+/* line 20, ../../touch/resources/themes/stylesheets/sencha-touch/default/_mixins.scss */
+.x-tab .x-button-icon.usi_user,
+.x-button .x-button-icon.x-icon-mask.usi_user {
+  -webkit-mask-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3JJREFUeNrsm++t2jAQwE30PlYKnYB0AugEpBPABi8doFI2KJ3g5akDvHSDMEHDBA82oBP0IfU7PbcXZEz++3zxe3CShQROzr+c73w+h9HxeBTXJHe2Ffz5PlrCRwhtBm1e0W0DbQstf/flmNkcz8iGhQFyDB8xtAjapOPlv6Cl0BKAf3EeGGAl6Aqab3irg7wPQCdOAqNVpWUWxEZZy5lCZW0SYITNoU0tud5OxgEKaO8VwAq8d466hgVmgD2DHhQYnnjCBHuCRp38PgyK5dr6c6D84RP4c85t4dWACdOK1cJgXZk1PQ+cJX4EK2+5LBw7kBbHnFN66QDwkgUYp7PvALCPY7Fu4ZlwR1iAA4eAAy4ffrVyA74B34DF3qHx7zmAtw4Bdx5L31z6xYHk4wC59JjLhzMHrJtx+bCUxAHghA0Yt2WbAWE3fbaGV1kA6A2MJZbHAWAf+5Z3ekdpLWLLqcVVyNsBrNFujSLTCsX/Qrl1WNQ1bGqJpwG2od05edCg1xZg11SwJD5c4tNv9/RQOQeWbQuDC7XvI0FwPgz3k1F5hsmG0bmxyclDmSUvasWmbwCU1MCNLN8ZGAeQVixFP2AgEbGLSF33FYEs6ppxdQIG5RLmqaHb+6opB9cXGVLx+xiD3qrGZX436PsM16fkwDVPWpdvZQANxzOlxyb4gL620Nl6ZnnEsAIDVZnUZUizjvfS5R7HaA7cEVbKBAOVETDeo0uEbwXtEcMWEhNYuM9hWSO017Ds9IGVMofrA/27uv6a7qChfxN03AkYA8wD1Z61zaGX1sd0r/2Abyg0A+NSQFGzWipv3QQt+geKforj2LTsrR+vwncmBAp9Jcq2qS4WfZaCpiI6KYsDXonvUJ7uF/fKMCWs2yhkFkpHsR5LvBK/o6w3yyWq2NrVRc9U9kG/mxDq9/UH6Gm+a+NVhsLKdcl+YrAUdYklZxaOhJ3ThIWcVmDBfUWBYC1/w6m3sKBfjSUXwLakzso2rXvB5inBampbIZZX1drXTim52nzg0yJ4FRYOhV3xcWupWzlRtp22D+dCTuDTlMW9q1yGDso+luNFtzPggEHhVEn3EsW6oeAp5P9jvGuR2FP7cq5N64hJ9/xU8YCnzPnnpQ+4RLUt4ZAJ6B0N8VJLZLjnNRJPyWWHAI4Y9R5OU/qa5K8AAwAQ03PQxoz3lAAAAABJRU5ErkJggg==');
+}
+
+/* line 20, ../../touch/resources/themes/stylesheets/sencha-touch/default/_mixins.scss */
+.x-tab .x-button-icon.usi_info,
+.x-button .x-button-icon.x-icon-mask.usi_info {
+  -webkit-mask-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAuhJREFUeNrsm+Ft6jAQgA3qzye1nYC8CUonIBs8OkHDANXLKEFvgBcmaDZ4YYKGDZIJWqT+p3fSvcqAnaTxHQi7J51AJNj+cvb5bF9Gu91OhSRXUgW//xlN4SMGxc8IdNbxlzVoDVqBlj+edpVEu0acFibIBHQOOnEsrgEtQHNOeBZgAEXIFPROqMNsQDMAz88KDKBoyYzBml+xegrgxUmBARTHZN5jXEoJjvcEwGtxYLIqwl47NLak7zjmfw0sZ0vQhRgwwGL3/c3ZQHJ0pcMDXEKZKTswNAyt+ujQDRc2pwNl4/T1z6HsFZSdsAEzwDbQoKijjtrR+fWCHp8AVlFAwXFPmzxSW4cD05h1hUW5YbqnD3Q2qEuTN35mnErubRETOa4XxroebN7bCEzzbOXgOW3RUgwNeTuo64a8NGeUhjPC1DRP2xYPOTOsIqCaxtn/pz+n2Ju7rmtiiDstLNCVzylHXdvktDKPlr9Zq5emVc/EI+AJMVktnAo3AFc7C9CfpAv6TVJS4xgWmBrO6aWtU6Ju4UT6SR/CotBv0j0rMXXpuWCFWwArbRfp2law/vkeMHVnSWdVMd3j4rymuoVj5b/EOvA0AOA9C0cBAEc68CwA4FmvDQDfJDxgWvuGAzxkM/tSBefioLo0xtPfTisU4HUArGsdOATHVevAVQDAexsAZQDA5ScwbX80HsM2pi2ewmPgwjQt5R4D50fAZPKNh7Ab/RDvMPDIPATOrJEWpST45LyawzQLU2iZegScdsbSdNrmQ6i5Nh2K2xYPiZLdGJeWrbKcpIwt68ZayR+9SIo1S2/csljG7rC8QNhlW3beuGOHAAf9iqERp8riWXVl5Z0qMQ3l1nR6SOUj7CsDbOcw7LXjQQW5WjodeI0NtreFNUu4JJeiHOVbUkrCX8cxy59cqjXQNX14o/bTloae/MunD2vQkQolQdxgbf9fATCAJyqElzwM4GG8xtMCHyufX9S6BPkQYABR8mBI9NO/fAAAAABJRU5ErkJggg==');
+}
+
+/* line 29, ../sass/app.scss */
 .x-course,
 .x-module,
 .x-folder-entry,
@@ -10543,7 +10561,7 @@ input[type="search"]::-webkit-search-cancel-button {
   border-bottom: 1px solid #dedede;
 }
 
-/* line 30, ../sass/app.scss */
+/* line 34, ../sass/app.scss */
 .x-module-section {
   background-color: white;
   padding-top: 10px;
@@ -10551,14 +10569,14 @@ input[type="search"]::-webkit-search-cancel-button {
   border-bottom: 2px solid #dedede;
 }
 
-/* line 38, ../sass/app.scss */
+/* line 42, ../sass/app.scss */
 .x-module,
 .x-folder-entry {
   padding-top: 10px;
   padding-left: 35px;
 }
 
-/* line 43, ../sass/app.scss */
+/* line 47, ../sass/app.scss */
 .x-module-icon-assignment {
   background: url("../images/assignment.png");
   background-repeat: no-repeat;
@@ -10566,7 +10584,7 @@ input[type="search"]::-webkit-search-cancel-button {
   background-position-y: 5px;
 }
 
-/* line 51, ../sass/app.scss */
+/* line 55, ../sass/app.scss */
 .x-module-icon-folder,
 .x-subfolder-icon {
   background: url("../images/folder.png");
@@ -10575,7 +10593,7 @@ input[type="search"]::-webkit-search-cancel-button {
   background-position-y: 5px;
 }
 
-/* line 58, ../sass/app.scss */
+/* line 62, ../sass/app.scss */
 .x-file-icon {
   background: url("../images/file_general.png");
   background-repeat: no-repeat;
@@ -10583,7 +10601,7 @@ input[type="search"]::-webkit-search-cancel-button {
   background-position-y: 5px;
 }
 
-/* line 65, ../sass/app.scss */
+/* line 69, ../sass/app.scss */
 .x-module-icon-forum {
   background: url("../images/forum.png");
   background-repeat: no-repeat;
@@ -10591,7 +10609,7 @@ input[type="search"]::-webkit-search-cancel-button {
   background-position-y: 5px;
 }
 
-/* line 72, ../sass/app.scss */
+/* line 76, ../sass/app.scss */
 .x-module-icon-resource {
   background: url("../images/resource.png");
   background-repeat: no-repeat;
@@ -10599,7 +10617,7 @@ input[type="search"]::-webkit-search-cancel-button {
   background-position-y: 5px;
 }
 
-/* line 79, ../sass/app.scss */
+/* line 83, ../sass/app.scss */
 .x-module-icon-url {
   background: url("../images/resource.png");
   background-repeat: no-repeat;
@@ -10607,7 +10625,7 @@ input[type="search"]::-webkit-search-cancel-button {
   background-position-y: 5px;
 }
 
-/* line 89, ../sass/app.scss */
+/* line 93, ../sass/app.scss */
 .x-course-module-status,
 .x-module-modname,
 .x-forum-discussion-stat,
@@ -10622,92 +10640,92 @@ input[type="search"]::-webkit-search-cancel-button {
  * Forum related classes
  *
  * */
-/* line 100, ../sass/app.scss */
+/* line 104, ../sass/app.scss */
 .x-forum-discussion {
   padding-top: 15px;
 }
 
-/* line 104, ../sass/app.scss */
+/* line 108, ../sass/app.scss */
 .forum-post {
   margin-bottom: 10px;
   border: 1px solid #dedede;
   padding: 5px;
 }
 
-/* line 110, ../sass/app.scss */
+/* line 114, ../sass/app.scss */
 .forum-post-selected {
   background-color: white;
 }
 
-/* line 116, ../sass/app.scss */
+/* line 120, ../sass/app.scss */
 .x-post-firstname {
   margin-left: 5px;
   margin-right: 5px;
 }
 
-/* line 123, ../sass/app.scss */
+/* line 127, ../sass/app.scss */
 .x-post-subject {
   font-weight: bold;
   padding-top: 10px;
 }
 
-/* line 128, ../sass/app.scss */
+/* line 132, ../sass/app.scss */
 .x-post-message {
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-/* line 135, ../sass/app.scss */
+/* line 139, ../sass/app.scss */
 .x-post-indentation-1 {
   margin-left: 15px;
 }
 
-/* line 139, ../sass/app.scss */
+/* line 143, ../sass/app.scss */
 .x-post-indentation-2 {
   margin-left: 30px;
 }
 
-/* line 143, ../sass/app.scss */
+/* line 147, ../sass/app.scss */
 .x-post-indentation-3 {
   margin-left: 45px;
 }
 
-/* line 147, ../sass/app.scss */
+/* line 151, ../sass/app.scss */
 .x-post-indentation-4 {
   margin-left: 60px;
 }
 
-/* line 151, ../sass/app.scss */
+/* line 155, ../sass/app.scss */
 .x-post-indentation-5 {
   margin-left: 75px;
 }
 
-/* line 155, ../sass/app.scss */
+/* line 159, ../sass/app.scss */
 .x-post-indentation-6 {
   margin-left: 90px;
 }
 
-/* line 159, ../sass/app.scss */
+/* line 163, ../sass/app.scss */
 .x-post-indentation-7 {
   margin-left: 105px;
 }
 
-/* line 163, ../sass/app.scss */
+/* line 167, ../sass/app.scss */
 .x-post-indentation-8 {
   margin-left: 120px;
 }
 
-/* line 167, ../sass/app.scss */
+/* line 171, ../sass/app.scss */
 .x-post-indentation-9 {
   margin-left: 135px;
 }
 
-/* line 171, ../sass/app.scss */
+/* line 175, ../sass/app.scss */
 .x-post-indentation-10 {
   margin-left: 150px;
 }
 
-/* line 175, ../sass/app.scss */
+/* line 179, ../sass/app.scss */
 .x-post-attachment-list {
   padding-top: 15px;
 }
@@ -10717,7 +10735,7 @@ input[type="search"]::-webkit-search-cancel-button {
  * Assignment related classes
  *
  * */
-/* line 184, ../sass/app.scss */
+/* line 188, ../sass/app.scss */
 .assignment-intro {
   background-color: white;
   padding: 5px;

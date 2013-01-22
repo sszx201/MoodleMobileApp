@@ -12,18 +12,18 @@ Ext.define("MoodleMobApp.view.Main", {
 		items: [
 			{
 				title: 'Courses',
-				iconCls: 'home',
+				iconCls: 'usi_home',
 				xtype: 'coursenavigator'
 			},
 			{
 				title: 'Account Settings',
-				iconCls: 'user',
+				iconCls: 'usi_user',
 				xtype: 'accountchoice',
 				
 			},
 			{
 				title: 'Shell',
-				iconCls: 'info',
+				iconCls: 'usi_info',
 				xtype: 'shell',
 				
 			}

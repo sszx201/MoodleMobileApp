@@ -19,6 +19,10 @@ $base-color: #F90;
 @include sencha-msgbox;
 
 // Your custom code goes here...
+@include pictos-iconmask('usi_home');
+@include pictos-iconmask('usi_user');
+@include pictos-iconmask('usi_info');
+
 .x-course,
 .x-module,
 .x-folder-entry,

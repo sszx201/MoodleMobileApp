@@ -186,9 +186,15 @@ $active-color: #C35817;
  * Assignment related classes
  *
  * */
-.assignment-intro {
+.assignment-intro,
+.choice-intro,
+.choice-status {
 	background-color: white;
 	padding: 5px;
 	padding-top: 10px;
 	padding-bottom: 10px;
+}
+
+.choice-status {
+	margin-top: 10px;
 }

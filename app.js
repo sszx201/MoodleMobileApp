@@ -48,6 +48,7 @@ Ext.application({
 		'MoodleMobApp.controller.Forum',
 		'MoodleMobApp.controller.Folder',
 		'MoodleMobApp.controller.Resource',
+		'MoodleMobApp.controller.Choice',
 		'MoodleMobApp.controller.Url',
 		'MoodleMobApp.controller.Shell',
 	],

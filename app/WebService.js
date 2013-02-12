@@ -222,6 +222,29 @@ Ext.define('MoodleMobApp.WebService', {
 		return resource_content_store;
 	},
 
+	getChoice: function(choice, token) {
+		// set parameters
+		var params = new Object();
+		params.wsfunction = 'local_uniappws_choice_get_choice';
+		params.wstoken = token;
+		params.choiceid = choice.instanceid;
+		// request
+		var choice_content_store = this.request(params, 'MoodleMobApp.model.Choice');
+		return choice_content_store;
+	},
+
+	submitChoice: function(choice, token) {
+		// set parameters
+		var params = new Object();
+		params.wsfunction = 'local_uniappws_choice_submit_choice';
+		params.wstoken = token;
+		params.choiceid = choice.instanceid;
+		params.optionid = choice.optionid;
+		// request
+		var submission_response_store = this.request(params, 'MoodleMobApp.model.SubmissionResponse');
+		return submission_response_store;
+	},
+
 	getUrl: function(resource, token) {
 		// set parameters
 		var params = new Object();

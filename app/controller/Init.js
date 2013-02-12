@@ -15,6 +15,7 @@ Ext.define('MoodleMobApp.controller.Init', {
 			'MoodleMobApp.store.Courses',
 			'MoodleMobApp.store.Modules',
 			'MoodleMobApp.store.Resources',
+			'MoodleMobApp.store.Choices',
 			'MoodleMobApp.store.Url',
 			'MoodleMobApp.store.ForumDiscussions',
 			'MoodleMobApp.store.ForumPosts',
@@ -84,6 +85,12 @@ Ext.define('MoodleMobApp.controller.Init', {
 		var resources_store = Ext.create('MoodleMobApp.store.Resources');
 		resources_store.load();
 		MoodleMobApp.Session.setResourcesStore(resources_store);
+
+		// create choices store
+		var choices_store = Ext.create('MoodleMobApp.store.Choices');
+		choices_store.load();
+		MoodleMobApp.Session.setChoicesStore(choices_store);
+
 
 		// create url store
 		var url_store = Ext.create('MoodleMobApp.store.Url');
@@ -158,6 +165,15 @@ Ext.define('MoodleMobApp.controller.Init', {
 					MoodleMobApp.log('=> resources_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
 					Ext.iterate(operation.getRecords(), function(record){
 						MoodleMobApp.log(' --> Resource: '+record.get('name')+'; id: '+record.get('id'));
+					});
+				});
+
+			choices_store.on(
+				'write',
+				function(store, operation) {
+					MoodleMobApp.log('=> choices_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
+					Ext.iterate(operation.getRecords(), function(record){
+						MoodleMobApp.log(' --> Choice: '+record.get('name')+'; id: '+record.get('id'));
 					});
 				});
 

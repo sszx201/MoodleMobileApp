@@ -151,6 +151,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 					MoodleMobApp.Session.getModulesStore().on('write', this.updateForumDiscussionsStore(course), this, {single:true});	
 					MoodleMobApp.Session.getModulesStore().on('write', this.updateFoldersStore(course), this, {single:true});	
 					MoodleMobApp.Session.getModulesStore().on('write', this.updateResourcesStore(course), this, {single:true});
+					MoodleMobApp.Session.getModulesStore().on('write', this.updateChoicesStore(course), this, {single:true});
 					MoodleMobApp.Session.getModulesStore().on('write', this.updateUrlStore(course), this, {single:true});
 					// sync
 					MoodleMobApp.Session.getModulesStore().sync();
@@ -159,6 +160,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 					this.updateForumDiscussionsStore(course);
 					this.updateFoldersStore(course);
 					this.updateResourcesStore(course);
+					this.updateChoicesStore(course);
 					this.updateUrlStore(course);
 				}
 			},
@@ -512,6 +514,38 @@ Ext.define('MoodleMobApp.controller.Main', {
 						MoodleMobApp.Session.getResourcesStore().remove(previous_record);
 						response.first().setDirty();
 						MoodleMobApp.Session.getResourcesStore().add(response.first());
+					}
+				},
+				this,
+				{single: true}
+			);
+		}, this);
+	},
+
+	updateChoicesStore: function (course) {
+		var courseid = course.get('id');
+		// -log-
+		if(MoodleMobApp.Config.getVerbose()) {
+			MoodleMobApp.log('UPDATING CHOICES STORE FOR COURSE: '+courseid);
+		}
+
+		MoodleMobApp.Session.getModulesStore().queryBy(function(record, id){
+			if(record.get('modname') == 'choice' && record.get('courseid') == courseid) {
+				return true;
+			}
+		}).each(function(choice) {
+			MoodleMobApp.WebService.getChoice(choice.getData(), course.get('token')).on(
+				'load',
+				function(response) {
+					var previous_record = MoodleMobApp.Session.getChoicesStore().findRecord('id', response.first().get('id'));
+
+					if(previous_record == null) { // add the new choice; this choice has not been recorded previously
+						response.first().setDirty();
+						MoodleMobApp.Session.getChoicesStore().add(response.first());
+					} else if(previous_record.get('timemodified') != response.first().get('timemodified')) { // choice modified; drop the old one
+						MoodleMobApp.Session.getChoicesStore().remove(previous_record);
+						response.first().setDirty();
+						MoodleMobApp.Session.getChoicesStore().add(response.first());
 					}
 				},
 				this,

@@ -13,11 +13,24 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 
 		control: {
 			form: {
-				initialize: 'loadAccountData'
+				initialize: 'loadAccountData',
+				show: 'loadHomeOrganisationValues'
 			},
    			save: {
 				tap: 'saveAccountData'
 			}	
+		}
+	},
+
+	loadHomeOrganisationValues: function() {
+		var homeOrgField = this.getForm().getItems().getAt(1).getItems().getAt(2);
+		if(homeOrgField.getStore() == null) {
+				var homeorgs_store = Ext.create('MoodleMobApp.store.HomeOrgs');
+				// wait for the interface to be shown; fix for the first time the application is loaded
+				setTimeout(function() { MoodleMobApp.app.showLoadMask('Loading Home Organisations.'); }, 100);
+				homeorgs_store.on('load', function(store){ MoodleMobApp.app.hideLoadMask(); }, this, {single: true});
+				homeorgs_store.load();
+				homeOrgField.setStore(homeorgs_store);
 		}
 	},
 
@@ -40,16 +53,12 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 		MoodleMobApp.Session.getSettingsStore().first().set('accounttype', 'aai');
 		MoodleMobApp.Session.getSettingsStore().sync();
 
-		// Mask the form
-		form.setMasked({
-			xtype: 'loadmask',
-			message: 'Saving...'
-		});
+		MoodleMobApp.app.showLoadMask('Saving...');
 
 		// Put it inside a timeout so it feels like it is going to a server.
 		setTimeout(function() {
 			// Unmask the formpanel
-			form.setMasked(false);
+			MoodleMobApp.app.hideLoadMask();
 			location.reload();
 		}, 1000);
 	},

@@ -122,6 +122,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		formData.forumid = this.selected_forum.get('instanceid');
 		var token = MoodleMobApp.Session.getCourse().get('token');
 		var create_discussion_result_store = MoodleMobApp.WebService.createDiscussion(formData, token);
+		MoodleMobApp.app.showLoadMask('Creating...');
 		create_discussion_result_store.on(
 			'load', 
 			function(store, records){
@@ -140,6 +141,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 					MoodleMobApp.Session.getForumDiscussionsStore().on(
 						'write',
 						function(){
+							MoodleMobApp.app.hideLoadMask();
 							this.checkIfEditable();
 							this.getNavigator().pop();
 							this.filterForumDiscussions();
@@ -262,6 +264,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 
 		var token = MoodleMobApp.Session.getCourse().get('token');
 		var create_post_result_store = MoodleMobApp.WebService.createForumPost(formData, token);
+		MoodleMobApp.app.showLoadMask('Saving...');
 		// refresh the discussion content
 		create_post_result_store.on(
 			'load', 
@@ -270,6 +273,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 					MoodleMobApp.Session.getForumPostsStore().on(
 						'write',
 						function(){
+							MoodleMobApp.app.hideLoadMask();
 							// refresh posts
 							this.selectDiscussion(null, 0, this.selected_discussion_target, this.selected_discussion);
 							// show posts
@@ -278,7 +282,6 @@ Ext.define('MoodleMobApp.controller.Forum', {
 						this,
 						{single:true}
 					);
-					//var discussion = MoodleMobApp.Session.getForumDiscussionsStore().getById(formData.discussion);
 					this.getApplication().getController('Main').updateForumPostsStore(this.selected_discussion, token);
 				} else {
 					Ext.Msg.alert(

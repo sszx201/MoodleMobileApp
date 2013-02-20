@@ -40,17 +40,13 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 		MoodleMobApp.Session.getSettingsStore().data.first().set('accounttype', 'manual');
 		MoodleMobApp.Session.getSettingsStore().first().setDirty();
 		MoodleMobApp.Session.getSettingsStore().sync();
-
-		// Mask the form
-		form.setMasked({
-			xtype: 'loadmask',
-			message: 'Saving...'
-		});
+		
+		MoodleMobApp.app.showLoadMask('Saving...');
 
 		// Put it inside a timeout so it feels like it is going to a server.
 		setTimeout(function() {
 			// Unmask the formpanel
-			form.setMasked(false);
+			MoodleMobApp.app.hideLoadMask();
 			location.reload();
 		}, 1000);
 	},

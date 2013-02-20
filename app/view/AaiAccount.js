@@ -9,7 +9,6 @@ Ext.define("MoodleMobApp.view.AaiAccount", {
 		'Ext.field.Text',
 		'Ext.field.Password',
 		'Ext.field.Select',
-		'MoodleMobApp.store.HomeOrgs',
 	],
 
 	controllers: [
@@ -43,7 +42,6 @@ Ext.define("MoodleMobApp.view.AaiAccount", {
 						name: 'homeorganisation',
 						label: 'Home Organisation',
 						usePicker: false,
-						store: Ext.create('MoodleMobApp.store.HomeOrgs'),
 						displayField: 'name',
 						valueField: 'url',
 						value: 'https://login2.usi.ch/idp/shibboleth'

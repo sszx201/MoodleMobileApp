@@ -46,6 +46,9 @@ Ext.define('MoodleMobApp.WebService', {
 			callback: function(records, operation, success) {
 				// check if there are any exceptions 
 				if( this.first() != undefined && this.first().raw.exception != undefined ) {
+					// hide the loading mask if visible
+					MoodleMobApp.app.hideLoadMask();
+					// display the error	
 					Ext.Msg.alert(
 						this.first().raw.exception,
 						this.first().raw.message

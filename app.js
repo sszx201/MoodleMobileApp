@@ -115,24 +115,15 @@ Ext.application({
 	// file is an object such as:
 	// {"name": "filename", "id": "file id number", "mime":"mime/type"}
 	getFile: function(file) {
-		var token = MoodleMobApp.Session.getCourse().get('token');
-		var dir = MoodleMobApp.Config.getFileCacheDir();
+		this.showLoadMask('');
 
 		// success function
 		var successFunc = function(result) {
 			// download mask code
-			if(
-				Ext.Viewport.getActiveItem().getMasked() == null || 
-				Ext.Viewport.getActiveItem().getMasked().isHidden() && result.progress < 100
-			) { // init mask
-				Ext.Viewport.getActiveItem().setMasked({
-					xtype: 'loadmask',
-					message: result.progress+' %'
-				});
-			} else if(result.progress < 100){ // update the progress
-				Ext.Viewport.getActiveItem().getMasked().setMessage(result.progress+' %');
+			if(result.progress < 100){ // update the progress
+				MoodleMobApp.app.updateLoadMaskMessage(result.progress+' %');
 			} else { // remove the mask
-				Ext.Viewport.getActiveItem().setMasked(false);
+				MoodleMobApp.app.hideLoadMask();
 			}
 
 			if(result.progress == 100 && result.status == 1) {
@@ -140,7 +131,9 @@ Ext.application({
 				MoodleMobApp.app.openFile(filePath, file.mime);
 			}
 
-			console.log(JSON.stringify(result));
+			if(MoodleMobApp.Config.getVerbose()) {
+				console.log(JSON.stringify(result));
+			}
 		};
 
 		// fail function
@@ -151,16 +144,21 @@ Ext.application({
 			);
 		};
 
-		MoodleMobApp.WebService.getFile(file, dir, successFunc, failFunc, token);
+		MoodleMobApp.WebService.getFile(
+			file,
+			MoodleMobApp.Config.getFileCacheDir(),
+			successFunc, 
+			failFunc,
+			MoodleMobApp.Session.getCourse().get('token')
+		);
 	},
 
 	openURL: function(urladdr){
 
-		/*
 		if(MoodleMobApp.Config.getVerbose()) {
 			console.log('===> Opening URL: '+urladdr);
 		}
-		*/
+
 		window.plugins.webintent.startActivity(
 			{
 				action: WebIntent.ACTION_VIEW,
@@ -171,5 +169,49 @@ Ext.application({
 				Ext.Msg.alert('URL Error', 'Failed to open:'+path+' via Android Intent');
   			});
 	},
+
+	sendEmail: function(to, subject, body) {
+		var extras = {};
+		extras[WebIntent.EXTRA_SUBJECT] = subject;
+		extras[WebIntent.EXTRA_TEXT] = body;
+		var successFunc = function() {};
+		// fail function
+		var failFunc = function(){
+			Ext.Msg.alert(
+				'Sending e-mail error',
+				'Failed to open the mail client and send a mail to: ' + to
+			);
+		};
+
+		window.plugins.webintent.startActivity(
+			{
+				url: to,
+				action: WebIntent.ACTION_SEND,
+				type: 'text/plain',
+				extras: extras
+			},
+			successFunc,
+			failFunc
+		);
+	},
+
+	isLoadMaskVisible: function() {
+		return Ext.Viewport.getActiveItem().getMasked() == null || Ext.Viewport.getActiveItem().getMasked().isHidden();
+	},
+
+	showLoadMask: function(msg) {
+		Ext.Viewport.getActiveItem().setMasked({
+			xtype: 'loadmask',
+			message: msg
+		});
+	},
+
+	updateLoadMaskMessage: function(msg) {
+		Ext.Viewport.getActiveItem().getMasked().setMessage(msg);
+	},
+
+	hideLoadMask: function() {
+		Ext.Viewport.getActiveItem().setMasked(false);
+	}
 
 });

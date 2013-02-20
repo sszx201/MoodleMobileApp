@@ -68,7 +68,7 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 	selectOnlineAssignment: function(assignment) {
 		// display assignment
 		var previous_submission_record = MoodleMobApp.Session.getOnlineAssignmentSubmissionsStore().getById(assignment.get('id'));
-		if(previous_submission_record != null){
+		if(previous_submission_record != null) {
 			assignment.set('submission', previous_submission_record.get('submission'))
 		}
 
@@ -85,6 +85,12 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 	
 	submitOnlineAssignment: function(button) {
 		var submission_data = this.getOnlineAssignment().getValues();
+		// check data
+		if(submission_data.submission == "") {
+			Ext.Msg.alert("Submission empty", "The submission cannot be empty. Please fill in.");
+			return;
+		}
+		MoodleMobApp.app.showLoadMask('Submitting...');
 		var token = MoodleMobApp.Session.getCourse().get('token');
 		var submission_status_store = MoodleMobApp.WebService.submitOnlineAssignment(submission_data, token);
 		// refresh the discussion content
@@ -92,6 +98,7 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 			'load', 
 			function(status_store){
 				if(status_store.first().get('subid') != null){
+					MoodleMobApp.app.hideLoadMask();
 					this.storeTheOnlineSubmission(submission_data);
 					this.backToTheCourseModulesList();
 				}

@@ -8,7 +8,7 @@ Ext.define('MoodleMobApp.store.HomeOrgs', {
 	config: {
 		storeId: 'homeorganisations_store',
 		model: 'MoodleMobApp.model.HomeOrg',
-		autoLoad: true,
+		//autoLoad: true,
 		//autoSync: true,
 		proxy: {
 			type: 'ajax',	

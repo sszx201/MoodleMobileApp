@@ -9,6 +9,31 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 		useComponents: true,
 		defaultType: 'module',
 		grouped: true,
+		items: [
+			{
+				xtype: 'toolbar',
+				docked: 'bottom',
+				items: [
+					{
+						xtype: 'spacer'
+					},
+					{
+						xtype: 'button',	
+						text: 'Partecipants',
+						action: 'showpartecipants',
+					},
+					{
+						xtype: 'button',	
+						text: 'Grades',
+						action: 'showgrades',
+					},
+					{
+						xtype: 'spacer'
+					},
+				]
+			},
+		],
+
 		listeners: {
 			painted: function(){
 				this.dropSectionLabels();
@@ -26,6 +51,7 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 	},
 
 	addSectionLabels: function(){
+		console.log('adding section labels');
 		var course_format = MoodleMobApp.Session.getCourse().get('format');
 		var course_start_date = MoodleMobApp.Session.getCourse().get('startdate')*1000; //
 		var week = 6*24*3600*1000; // in miliseconds

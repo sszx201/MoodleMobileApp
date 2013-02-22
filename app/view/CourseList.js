@@ -11,6 +11,6 @@ Ext.define("MoodleMobApp.view.CourseList", {
 		store: 'courses',
 		emptyText: 'No courses available.',
 		useComponents: true,
-		defaultType: 'course',
+		defaultType: 'course',	
 	},
 });

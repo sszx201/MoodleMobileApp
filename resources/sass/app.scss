@@ -96,6 +96,34 @@ $active-color: #C35817;
 	color: gray;
 	font-size: small;
 }
+
+.partecipant {
+	border-bottom: 1px solid #dedede;
+	padding: 5px;
+	padding-top: 10px;
+	padding-bottom: 7px;
+}
+
+.x-partecipant-firstname {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.x-partecipant-email {
+	color: gray;
+	font-size: small;
+	margin-top: -25px;
+	padding-left: 5px;
+	margin-bottom: 12px;
+}
+
+.partecipant-selected {
+	background-color: white;
+}
+
+.x-partecipant-contact-button {
+	margin-top: 10px;
+}
 /*
  *
  * Forum related classes
@@ -116,14 +144,12 @@ $active-color: #C35817;
 	background-color: white;
 }
 
-.x-post-avatar { }
-
 .x-post-firstname {
 	margin-left: 5px;
 	margin-right: 5px;
 }
 
-.x-post-lastname { }
+.x-post-lastname {}
 
 .x-post-subject {
 	font-weight: bold;

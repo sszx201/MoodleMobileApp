@@ -14,7 +14,6 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 		control: {
 			form: {
 				initialize: 'loadAccountData',
-				show: 'loadHomeOrganisationValues'
 			},
    			save: {
 				tap: 'saveAccountData'
@@ -27,8 +26,8 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 		if(homeOrgField.getStore() == null) {
 				var homeorgs_store = Ext.create('MoodleMobApp.store.HomeOrgs');
 				// wait for the interface to be shown; fix for the first time the application is loaded
-				setTimeout(function() { MoodleMobApp.app.showLoadMask('Loading Home Organisations.'); }, 100);
-				homeorgs_store.on('load', function(store){ MoodleMobApp.app.hideLoadMask(); }, this, {single: true});
+				//setTimeout(function() { MoodleMobApp.app.showLoadMask('Loading Home Organisations.'); }, 200);
+				//homeorgs_store.on('load', function(store){ MoodleMobApp.app.hideLoadMask(); }, this, {single: true});
 				homeorgs_store.load();
 				homeOrgField.setStore(homeorgs_store);
 		}
@@ -40,6 +39,7 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 			// Update the form with account data.
 			form.setRecord( Ext.create('MoodleMobApp.model.AaiAccount', MoodleMobApp.Session.getAaiAccountStore().first().getData()) );
 		}
+		this.loadHomeOrganisationValues();
 	},
 
 	saveAccountData: function () {

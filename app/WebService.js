@@ -257,7 +257,28 @@ Ext.define('MoodleMobApp.WebService', {
 		// request
 		var url_content_store = this.request(params, 'MoodleMobApp.model.Url');
 		return url_content_store;
-	}
+	},
 
+	getGradeItems: function(course, token) {
+		// set parameters
+		var params = new Object();
+		params.wsfunction = 'local_uniappws_get_grade_items_by_courseid';
+		params.wstoken = token;
+		params.courseid = course.id;
+		// request
+		var grade_items_store = this.request(params, 'MoodleMobApp.model.GradeItem');
+		return grade_items_store;
+	},
+
+	getGrades: function(course, token) {
+		// set parameters
+		var params = new Object();
+		params.wsfunction = 'local_uniappws_get_user_grades_by_courseid';
+		params.wstoken = token;
+		params.courseid = course.id;
+		// request
+		var grade_store = this.request(params, 'MoodleMobApp.model.Grade');
+		return grade_store;
+	},
 
 });

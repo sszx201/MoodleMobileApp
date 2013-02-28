@@ -26,6 +26,7 @@ $active-color: #C35817;
 
 .x-course,
 .x-module,
+.x-grade,
 .x-folder-entry,
 .x-forum-discussion {
 	padding: 5px;
@@ -93,6 +94,26 @@ $active-color: #C35817;
 .x-forum-discussion-stat,
 .x-folder-entry-mime {
 	text-align: right;
+	color: gray;
+	font-size: small;
+}
+
+
+.x-grade-data {
+	text-align: right;
+	color: black;
+	font-size: 1.1em;
+}
+
+.x-grade-is-passing-grade {
+	color: green;
+}
+
+.x-grade-is-not-passing-grade {
+	color: red;
+}
+
+.x-grade-passing-grade {
 	color: gray;
 	font-size: small;
 }

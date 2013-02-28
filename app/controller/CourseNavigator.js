@@ -12,6 +12,8 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			'MoodleMobApp.view.Module',
 			'MoodleMobApp.view.Partecipants',
 			'MoodleMobApp.view.Partecipant',
+			'MoodleMobApp.view.Grades',
+			'MoodleMobApp.view.Grade',
 		],
 
 		refs: {
@@ -24,6 +26,8 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			clearPartecipantsSelectionButton: '#partecipants button[action=clearselection]',
 			selectAllPartecipantsButton: '#partecipants button[action=selectall]',
 			contactPartecipantsButton: '#partecipants button[action=contactpartecipants]',
+			grades: '#grades',
+			showGradesButton: '#module_list button[action=showgrades]',
 		},
 
 		control: {
@@ -34,10 +38,11 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			contactPartecipantsButton: { tap: 'contactPartecipants' },
 			clearPartecipantsSelectionButton: { tap: 'clearPartecipantsSelection' },
 			selectAllPartecipantsButton: { tap: 'selectAllPartecipants' },
+			showGradesButton: { tap: 'showGrades' },
 		}
 	},
 
-	init: function(){
+	init: function() {
 		Ext.c = this;
 		this.current_course = null;
 	},
@@ -80,13 +85,13 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			update_stats = true;
 		}
 		
-		if(update_stats){
+		if(update_stats) {
 			MoodleMobApp.Session.getModulesStore().sync();
 			this.getApplication().getController('Main').updateCourseModulesStats(MoodleMobApp.Session.getCourse());
 		}
 	},
 
-	showPartecipants: function(button){
+	showPartecipants: function(button) {
 		this.filterPartecipants();
 		// display modules
 		if(typeof this.getPartecipants() == 'object') {
@@ -113,12 +118,12 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		);
 	},
 
-	contactPartecipants: function(button){
+	contactPartecipants: function(button) {
 		// extract the list of selected users
 		var list = '';
 		var separator = ';';
 		var partecipants = this.getPartecipants().getInnerItems()[1].getInnerItems();
-		Ext.each(partecipants, function(partecipant){
+		Ext.each(partecipants, function(partecipant) {
 			if(partecipant.getSelection().isChecked()) {
 				list += partecipant.getRecord().get('email') + separator;
 			}
@@ -135,20 +140,20 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 
 	clearPartecipantsSelection: function() {
 		var partecipants = this.getPartecipants().getInnerItems()[1].getInnerItems();
-		Ext.each(partecipants, function(partecipant){
+		Ext.each(partecipants, function(partecipant) {
 			partecipant.getSelection().uncheck();
 		});
 	},
 	
 	selectAllPartecipants: function() {
 		var partecipants = this.getPartecipants().getInnerItems()[1].getInnerItems();
-		Ext.each(partecipants, function(partecipant){
+		Ext.each(partecipants, function(partecipant) {
 			partecipant.getSelection().check();
 		});
 	},
 
 	clearStoreFilters: function(controller, view, opts) {
-		switch(view.getId()){
+		switch(view.getId()) {
 			case 'module_list':
 				MoodleMobApp.Session.getModulesStore().clearFilter();
 				break;
@@ -165,9 +170,29 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 				MoodleMobApp.Session.getUsersStore().clearFilter();
 				MoodleMobApp.Session.getEnrolledUsersStore().clearFilter();
 				break;
+			case 'grades':
+				MoodleMobApp.Session.getGradeItemsStore().clearFilter();
+				break;
 			default:
 				console.log('no instructions on how to clear stores for view: '+view.getId());
 		}
-	}
+	},
+
+	showGrades: function(button) {
+		MoodleMobApp.Session.getGradeItemsStore().filterBy(
+			function(record) { 
+				return parseInt(record.get('courseid')) == parseInt(this.current_course.get('id')) && record.get('hidden') == 0;
+			}, this
+		);
+		// display modules
+		if(typeof this.getGrades() == 'object') {
+			this.getNavigator().push(this.getGrades());
+		} else {
+			this.getNavigator().push({
+				xtype: 'grades',
+				store: MoodleMobApp.Session.getGradeItemsStore()
+			});
+		}
+	},
 
 });

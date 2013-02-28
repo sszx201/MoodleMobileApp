@@ -21,6 +21,8 @@ Ext.define('MoodleMobApp.controller.Init', {
 			'MoodleMobApp.store.ForumPosts',
 			'MoodleMobApp.store.OnlineAssignmentSubmissions',
 			'MoodleMobApp.store.Folders',
+			'MoodleMobApp.store.GradeItems',
+			'MoodleMobApp.store.Grades',
 		],
 		refs: {
 			
@@ -119,6 +121,16 @@ Ext.define('MoodleMobApp.controller.Init', {
 		folders_store.load();
 		MoodleMobApp.Session.setFoldersStore(folders_store);
 
+		// create gradeitems store
+		var gradeitems_store = Ext.create('MoodleMobApp.store.GradeItems');
+		gradeitems_store.load();
+		MoodleMobApp.Session.setGradeItemsStore(gradeitems_store);
+
+		// create grades store
+		var grades_store = Ext.create('MoodleMobApp.store.Grades');
+		grades_store.load();
+		MoodleMobApp.Session.setGradesStore(grades_store);
+
 		/*********************************
 		 * DEBUG/LOG MESSAGES
 		 * ******************************/
@@ -216,6 +228,25 @@ Ext.define('MoodleMobApp.controller.Init', {
 						}
 					});
 				});
+
+			gradeitems_store.on(
+				'write',
+				function(store, operation) {
+					MoodleMobApp.log('=> gradeitems_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
+					Ext.iterate(operation.getRecords(), function(record){
+						MoodleMobApp.log(' --> Grade Item: '+record.get('itemmodule')+'; instance: '+record.get('iteminstance'));
+					});
+				});
+
+			grades_store.on(
+				'write',
+				function(store, operation) {
+					MoodleMobApp.log('=> grades_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
+					Ext.iterate(operation.getRecords(), function(record){
+						MoodleMobApp.log(' --> Grade for: '+record.get('itemid')+'; value: '+record.get('rawgrade'));
+					});
+				});
+
 		}
 	}
 

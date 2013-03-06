@@ -30,6 +30,6 @@ Ext.define('MoodleMobApp.controller.Resource', {
 			'fileid': resource.get('fileid'),
 			'mime': resource.get('filemime'),
 		};
-		MoodleMobApp.app.getFile(file);
+		MoodleMobApp.app.downloadFile(file);
 	}
 });

@@ -37,8 +37,8 @@ Ext.application({
 	controllers: [
 		'MoodleMobApp.controller.Init',
 		'MoodleMobApp.controller.Main',
-		'MoodleMobApp.controller.UsageAgreement', 
-		'MoodleMobApp.controller.AccountChoice', 
+		'MoodleMobApp.controller.UsageAgreement',
+		'MoodleMobApp.controller.AccountChoice',
 		'MoodleMobApp.controller.Account',
 		'MoodleMobApp.controller.AaiAccount',
 		'MoodleMobApp.controller.ManualAccount',
@@ -103,17 +103,17 @@ Ext.application({
 				action: WebIntent.ACTION_VIEW,
 				type: mimetype,
 				url: protocol+store+path,
-  			}, 
-			function () {}, 
+			},
+			function () {},
 			function () {
 				Ext.Msg.alert('File Error', 'Failed to open:'+path+' via Android Intent');
-  			});
+			});
 	},
 
 
 	// file is an object such as:
 	// {"name": "filename", "id": "file id number", "mime":"mime/type"}
-	getFile: function(file) {
+	downloadFile: function(file) {
 		this.showLoadMask('');
 
 		// success function
@@ -146,14 +146,13 @@ Ext.application({
 		MoodleMobApp.WebService.getFile(
 			file,
 			MoodleMobApp.Config.getFileCacheDir(),
-			successFunc, 
+			successFunc,
 			failFunc,
 			MoodleMobApp.Session.getCourse().get('token')
 		);
 	},
 
 	openURL: function(urladdr){
-
 		if(MoodleMobApp.Config.getVerbose()) {
 			console.log('===> Opening URL: '+urladdr);
 		}
@@ -162,11 +161,11 @@ Ext.application({
 			{
 				action: WebIntent.ACTION_VIEW,
 				url: urladdr,
-  			}, 
-			function () {}, 
+			},
+			function () {},
 			function () {
 				Ext.Msg.alert('URL Error', 'Failed to open:'+path+' via Android Intent');
-  			});
+			});
 	},
 
 	sendEmail: function(to, subject, body) {
@@ -211,6 +210,70 @@ Ext.application({
 
 	hideLoadMask: function() {
 		Ext.Viewport.getActiveItem().setMasked(false);
+	},
+
+	readFile: function(path, successFunc, params) {
+		var gotFile = function(file) {
+			var reader = new FileReader();
+			// success
+			reader.onload = function(evt) {
+				successFunc(evt.target.result+'', params);
+			};
+
+			// failure
+			reader.onerror = function(error) {
+				Ext.Msg.alert(
+					'Read File',
+					'Reading the file failed! Code: ' + error.code
+				);
+			};
+
+			// read file data base64 encoded
+			reader.readAsDataURL(file);
+		};
+
+		// check the file entry
+		var gotFileEntry = function(fileEntry) {
+			//fileEntry.file(gotFile, fail);
+			fileEntry.file(
+				gotFile,
+				function(){
+					Ext.Msg.alert(
+						'Read File',
+						'Getting the File Entry failed'
+					);
+				}
+			);
+		};
+
+		var gotFS = function(fileSystem) {
+			// get the file entry
+			//return fileSystem.root.getFile(path, null, gotFileEntry, fail);
+			return fileSystem.root.getFile(
+				path,
+				null,
+				gotFileEntry,
+				function(){
+					Ext.Msg.alert(
+						'Read File',
+						'Getting the file failed! Path: ' + path
+					);
+				});
+		}
+
+		//return window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail)
+		return window.requestFileSystem(
+			LocalFileSystem.PERSISTENT,
+			0,
+			gotFS,
+			function(evt){
+				Ext.Msg.alert(
+					'Read File',
+					'File System request failed! Code: ' + evt.target.error.code
+				);
+			}
+		);
 	}
+
 
 });

@@ -20,6 +20,7 @@ Ext.define('MoodleMobApp.controller.Init', {
 			'MoodleMobApp.store.ForumDiscussions',
 			'MoodleMobApp.store.ForumPosts',
 			'MoodleMobApp.store.OnlineAssignmentSubmissions',
+			'MoodleMobApp.store.SingleUploadAssignmentSubmissions',
 			'MoodleMobApp.store.Folders',
 			'MoodleMobApp.store.GradeItems',
 			'MoodleMobApp.store.Grades',
@@ -110,11 +111,15 @@ Ext.define('MoodleMobApp.controller.Init', {
 		forum_posts_store.load();
 		MoodleMobApp.Session.setForumPostsStore(forum_posts_store);
 
-		// create onlineassingnments store
+		// create onlineassignments store
 		var online_assignment_submissions_store = Ext.create('MoodleMobApp.store.OnlineAssignmentSubmissions');
 		online_assignment_submissions_store.load();
 		MoodleMobApp.Session.setOnlineAssignmentSubmissionsStore(online_assignment_submissions_store);
 
+		// create single_upload assignments store
+		var single_upload_assignment_submissions_store = Ext.create('MoodleMobApp.store.SingleUploadAssignmentSubmissions');
+		single_upload_assignment_submissions_store.load();
+		MoodleMobApp.Session.setSingleUploadAssignmentSubmissionsStore(single_upload_assignment_submissions_store);
 
 		// create folders store
 		var folders_store = Ext.create('MoodleMobApp.store.Folders');

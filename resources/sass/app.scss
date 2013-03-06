@@ -234,6 +234,7 @@ $active-color: #C35817;
  *
  * */
 .assignment-intro,
+.assignment-previous-submission,
 .choice-intro,
 .choice-status {
 	background-color: white;
@@ -242,6 +243,7 @@ $active-color: #C35817;
 	padding-bottom: 10px;
 }
 
+.assignment-previous-submission,
 .choice-status {
 	margin-top: 10px;
 }

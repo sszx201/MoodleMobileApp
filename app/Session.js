@@ -23,6 +23,7 @@ Ext.define('MoodleMobApp.Session', {
 		forumPostsStore: null,
 		onlineAssignmentSubmissionsStore: null,
 		singleUploadAssignmentSubmissionsStore: null,
+		uploadAssignmentSubmissionsStore: null,
 		foldersStore: null,
 		gradeItemsStore: null,
 		gradesStore: null,

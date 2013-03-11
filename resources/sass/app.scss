@@ -228,19 +228,19 @@ $active-color: #C35817;
 	padding-top: 15px;
 }
 
-/*
- *
- * Assignment related classes
- *
- * */
 .assignment-intro,
 .assignment-previous-submission,
+.assignment-chosen-files-list,
 .choice-intro,
 .choice-status {
 	background-color: white;
 	padding: 5px;
 	padding-top: 10px;
 	padding-bottom: 10px;
+}
+
+.assignment-chosen-files-list div.file-entry {
+	margin-bottom: 5px;
 }
 
 .assignment-previous-submission,

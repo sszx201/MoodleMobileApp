@@ -161,6 +161,22 @@ Ext.define('MoodleMobApp.WebService', {
 		return submission_response_store;
 	},
 
+	submitUploadAssignment: function(assignment, token) {
+		// set parameters
+		var params = new Object();
+		params.wsfunction = 'local_uniappws_assign_submit_upload';
+		params.wstoken = token;
+		params.assigid = assignment.instanceid;
+		params.isfinal = assignment.isfinal;
+		for(i=0; i < assignment.files.length; ++i) {
+			params['files[' +i+ ']'] = assignment.files[i];
+		}
+		// request
+		var submission_response_store = this.request(params, 'MoodleMobApp.model.SubmissionResponse', 'GET');
+		return submission_response_store;
+	},
+
+
 	getAssignmentSubmission: function(assignid, token) {
 		// set parameters
 		var params = new Object();

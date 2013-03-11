@@ -39,15 +39,6 @@ Ext.define("MoodleMobApp.view.OnlineAssignment", {
 				title: 'Your Submission',
 				items: [	
 					{
-						xtype: 'textfield',
-						disabled: false,
-						name: 'userfile',
-						component: { 
-							xtype: 'file',
-							disabled: false,
-						}
-					},
-					{
 						xtype: 'textareafield',	
 						name: 'submission',
 					},

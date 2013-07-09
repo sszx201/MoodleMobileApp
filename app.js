@@ -118,36 +118,26 @@ Ext.application({
 
 		// success function
 		var successFunc = function(result) {
-			// download mask code
-			if(result.progress < 100){ // update the progress
-				MoodleMobApp.app.updateLoadMaskMessage(result.progress+' %');
-			} else { // remove the mask
-				MoodleMobApp.app.hideLoadMask();
-			}
-
-			if(result.progress == 100 && result.status == 1) {
-				var filePath = '/'+MoodleMobApp.Config.getFileCacheDir()+'/'+file.name;
-				MoodleMobApp.app.openFile(filePath, file.mime);
-			}
-
-			if(MoodleMobApp.Config.getVerbose()) {
-				console.log(JSON.stringify(result));
-			}
+			console.log('yaaaaaaaaaaay');
+			MoodleMobApp.app.hideLoadMask();
+			var filePath = '/'+MoodleMobApp.Config.getFileCacheDir()+'/'+file.name;
+			MoodleMobApp.app.openFile(filePath, file.mime);
 		};
 
-		// fail function
-		var failFunc = function(){
-			Ext.Msg.alert(
-				'File download error',
-				'Failed to download the file: ' + file.name
-			);
+		// progress function
+		var progressFunc = function(progressEvent){
+			if (progressEvent.lengthComputable) {
+				MoodleMobApp.app.updateLoadMaskMessage(progressEvent.loaded+' bytes');
+			} else {
+				this.hideLoadMask('');
+			}
 		};
 
 		MoodleMobApp.WebService.getFile(
 			file,
 			MoodleMobApp.Config.getFileCacheDir(),
+			progressFunc,
 			successFunc,
-			failFunc,
 			MoodleMobApp.Session.getCourse().get('token')
 		);
 	},

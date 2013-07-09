@@ -199,7 +199,7 @@ Ext.define('MoodleMobApp.WebService', {
 		return folder_content_store;
 	},
 
-	getFile: function(file, dir, successFunc, failFunc, token) {
+	getFile: function(file, dir, progressFunc, successFunc, token) {
 		var params = new Object();
 		// add response format
 		params.moodlewsrestformat = 'json';
@@ -214,9 +214,67 @@ Ext.define('MoodleMobApp.WebService', {
 		// remove the last & char
 		url_encoded_params = url_encoded_params.slice(0,-1);
 		// build the url
-		var url = MoodleMobApp.Config.getWebServiceUrl() + url_encoded_params;
+		//var url = MoodleMobApp.Config.getWebServiceUrl() + url_encoded_params;
 		// get the file
-		window.plugins.downloader.downloadFile(url, {'overwrite': true}, successFunc, failFunc, file.name, dir);
+		//window.plugins.downloader.downloadFile(url, {'overwrite': true}, successFunc, failFunc, file.name, dir);
+		//var url = encodeURI(MoodleMobApp.Config.getWebServiceUrl() + url_encoded_params);
+		var url = MoodleMobApp.Config.getWebServiceUrl() + url_encoded_params;
+
+		window.requestFileSystem(
+			LocalFileSystem.PERSISTENT, 0,
+			function onFileSystemSuccess(fileSystem) {
+					// get the filesystem
+					fileSystem.root.getFile(
+						'dummy.html', 
+						{
+							create: true,
+							exclusive: false
+						},
+						// success callback: remove the previous file
+						function gotFileEntry(fileEntry) {
+							var sPath = fileEntry.fullPath.replace("dummy.html","");
+							fileEntry.remove();
+
+							var fileTransfer = new FileTransfer();
+
+							fileTransfer.onprogress = progressFunc;
+							fileTransfer.download(
+								url,
+								sPath + dir + '/' + file.name,
+								function(theFile) {
+									successFunc();
+								},
+								function(error) {
+									Ext.Msg.alert(
+										'File download error',
+										'Failed to download the file: ' + file.name
+									);
+									/*
+									console.log("download error source " + error.source);
+									console.log("download error target " + error.target);
+									console.log("download error code: " + error.code);
+									console.log("download http status: " + error.http_status);
+									*/
+								},
+								true // trust the site; https fix
+							);
+						},
+						// error callback: notify the error
+						function(){
+							Ext.Msg.alert(
+								'File system error',
+								'Directory does not exist yet: ' + dir 
+							);
+						}
+					);
+			},
+			// error callback: notify the error
+			function(){
+				Ext.Msg.alert(
+					'File system error',
+					'Cannot access the local filesystem.'
+				);
+			});
 	},
 
 	uploadDraftFile: function(file, token) {

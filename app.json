@@ -4,7 +4,8 @@
   "url": null,
   "js": [
     {
-      "path": "touch/sencha-touch.js"
+      "path": "touch/sencha-touch.js",
+      "x-bootstrap": true
     },
     {
       "path": "app.js",
@@ -36,11 +37,6 @@
     ".svn$"
   ],
   "archivePath": "archive",
-  "buildOptions": {
-    "product": "touch",
-    "minVersion": 3,
-    "debug": false,
-    "logger": false
-  },
   "id": "732c0635-4750-42e8-ab6c-df7170cf88ae"
 }
+

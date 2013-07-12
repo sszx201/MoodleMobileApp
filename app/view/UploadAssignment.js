@@ -24,19 +24,8 @@ Ext.define("MoodleMobApp.view.UploadAssignment", {
 				// prepare the html
 				var intro_html = '<div class="x-form-fieldset-title x-docked-top">'+data.name+'</div>'+ 
 									'<div class="assignment-intro">'+ data.intro + '</div>';
-				var previous_submission = '';
-
-				if(data.submission != null) {
-					previous_submission += '<div class="assignment-previous-submission">Previously submitted files: ';
-					previous_submission += '<ul>';
-					for(var i=0; i < data.submission.length; ++i) {
-						previous_submission += '<li>' + data.submission[i] + '</li>';
-					}
-					previous_submission += '</ul>';
-					previous_submission += '</div>';
-				}
 				// inject html
-				this.getItems().first().setHtml(intro_html+previous_submission);
+				this.getItems().first().setHtml(intro_html);
 			},
 		},
 		items: [	
@@ -86,5 +75,17 @@ Ext.define("MoodleMobApp.view.UploadAssignment", {
 				]
 			},
 		]
+	},
+
+	displayPreviousSubmission: function(record) {
+		var intro = this.getItems().first().getHtml();
+		var previous_submission = '<div class="assignment-previous-submission">Previously submitted files: ';
+		previous_submission += '<ul>';
+		for(var i=0; i < record.get('userfiles').length; ++i) {
+			previous_submission += '<li>' + record.get('userfiles')[i].filename + '</li>';
+		}
+		previous_submission += '</ul>';
+		previous_submission += '</div>';
+		this.getItems().first().setHtml(intro+previous_submission);
 	}
 });

@@ -176,8 +176,8 @@ Ext.define('MoodleMobApp.WebService', {
 		return submission_response_store;
 	},
 
-
 	getAssignmentSubmission: function(assignid, token) {
+		console.log('here here');
 		// set parameters
 		var params = new Object();
 		params.wsfunction = 'local_uniappws_assignment_get_submission_by_assignid';

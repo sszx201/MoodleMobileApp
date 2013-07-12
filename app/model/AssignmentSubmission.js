@@ -6,9 +6,11 @@ Ext.define('MoodleMobApp.model.AssignmentSubmission', {
 			{name: 'id', type: 'auto'},
 			{name: 'assignment', type: 'int'},
 			{name: 'userid', type: 'int'},
-			{name: 'data1', type: 'string'},
-			{name: 'grade', type: 'float'},
+			{name: 'usertext', type: 'string'},
+			{name: 'userfiles', type: 'auto'},
 			{name: 'submissioncomment', type: 'string'},
+			{name: 'grade', type: 'float'},
+			{name: 'timemodified', type: 'auto'},
 		]
 	}
 });

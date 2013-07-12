@@ -59,5 +59,9 @@ Ext.define("MoodleMobApp.view.OnlineAssignment", {
 				]
 			},
 		]
+	},
+
+	displayPreviousSubmission: function(record) {
+		this.child('fieldset').child('textareafield').setValue(record.get('usertext'));
 	}
 });

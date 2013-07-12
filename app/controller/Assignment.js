@@ -5,9 +5,6 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 		models: [
 			'MoodleMobApp.model.AssignmentSubmission',
 			'MoodleMobApp.model.SubmissionResponse',
-			'MoodleMobApp.model.OnlineAssignmentSubmission',
-			'MoodleMobApp.model.SingleUploadAssignmentSubmission',
-			'MoodleMobApp.model.UploadAssignmentSubmission',
 			'MoodleMobApp.model.FileUploadResponse',
 		],
 
@@ -84,15 +81,18 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 	},
 
 	selectOnlineAssignment: function(assignment) {
-		// display assignment
-		var previous_submission_record = MoodleMobApp.Session.getOnlineAssignmentSubmissionsStore().getById(assignment.get('id'));
-		if(previous_submission_record != null) {
-			assignment.set('submission', previous_submission_record.get('submission'))
+		if(typeof this.getOnlineAssignment() == 'object') {
+			this.getOnlineAssignment().destroy(); // if the previous instance is still there remove it
 		}
 
 		this.getNavigator().push({
 			xtype: 'onlineassignment',
 			record: assignment
+		});
+
+		var self = this;
+		this.getPreviousSubmission(assignment.get('instanceid'), function(store){
+			self.getOnlineAssignment().displayPreviousSubmission(store.first());
 		});
 	},
 	
@@ -111,7 +111,6 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 			function(status_store){
 				if(status_store.first().get('subid') != null){
 					MoodleMobApp.app.hideLoadMask();
-					this.storeTheOnlineSubmission(submission_data);
 					this.backToTheCourseModulesList();
 				}
 			},
@@ -124,20 +123,10 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 		this.backToTheCourseModulesList();
 	},
 
-	storeTheOnlineSubmission: function(data) {
-		if(MoodleMobApp.Session.getOnlineAssignmentSubmissionsStore().find('id', data.id) == -1){
-			var submission_record = Ext.create('MoodleMobApp.model.OnlineAssignmentSubmission', data);
-			submission_record.setDirty();
-			MoodleMobApp.Session.getOnlineAssignmentSubmissionsStore().add(submission_record);
-		} else {
-			MoodleMobApp.Session.getOnlineAssignmentSubmissionsStore().getById(data.id).setData(data);
-			MoodleMobApp.Session.getOnlineAssignmentSubmissionsStore().getById(data.id).setDirty();
-		}
-
-		MoodleMobApp.Session.getOnlineAssignmentSubmissionsStore().sync()
-	},
-
 	selectOfflineAssignment: function(assignment) {
+		if(typeof this.getOfflineAssignment() == 'object') {
+			this.getOfflineAssignment().destroy(); // if the previous instance is still there remove it
+		}
 		// display assignment
 		this.getNavigator().push({
 			xtype: 'offlineassignment',
@@ -146,16 +135,18 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 	},
 
 	selectSingleUploadAssignment: function(assignment) {
-		// display assignment
-		var previous_submission_record = MoodleMobApp.Session.getSingleUploadAssignmentSubmissionsStore().getById(assignment.get('id'));
-
-		if(previous_submission_record != null) {
-			assignment.set('submission', previous_submission_record.get('filename'));
+		if(typeof this.getSingleUploadAssignment() == 'object') {
+			this.getSingleUploadAssignment().destroy(); // if the previous instance is still there remove it
 		}
 
 		this.getNavigator().push({
 			xtype: 'singleuploadassignment',
 			record: assignment
+		});
+
+		var self = this;
+		this.getPreviousSubmission(assignment.get('instanceid'), function(store){
+			self.getSingleUploadAssignment().displayPreviousSubmission(store.first());
 		});
 	},
 
@@ -190,7 +181,6 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 							'load',
 							function(status_store){
 								MoodleMobApp.app.hideLoadMask();
-								self.storeTheSingleUploadSubmission(params);
 								self.backToTheCourseModulesList();
 							},
 							null,
@@ -205,27 +195,7 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 		reader.readAsDataURL(files[0]);
 	},	
 
-	storeTheSingleUploadSubmission: function(data){
-		if(MoodleMobApp.Session.getSingleUploadAssignmentSubmissionsStore().find('id', data.id) == -1){
-			var submission_record = Ext.create('MoodleMobApp.model.SingleUploadAssignmentSubmission', data);
-			submission_record.setDirty();
-			MoodleMobApp.Session.getSingleUploadAssignmentSubmissionsStore().add(submission_record);
-		} else {
-			MoodleMobApp.Session.getSingleUploadAssignmentSubmissionsStore().getById(data.id).setData(data);
-			MoodleMobApp.Session.getSingleUploadAssignmentSubmissionsStore().getById(data.id).setDirty();
-		}
-
-		MoodleMobApp.Session.getSingleUploadAssignmentSubmissionsStore().sync()
-	},
-
 	selectUploadAssignment: function(assignment) {
-		// display assignment
-		var previous_submission_record = MoodleMobApp.Session.getUploadAssignmentSubmissionsStore().getById(assignment.get('id'));
-
-		if(previous_submission_record != null) {
-			assignment.set('submission', previous_submission_record.get('filenames'));
-		}
-
 		if(typeof this.getUploadAssignment() == 'object') {
 			this.getUploadAssignment().destroy(); // if the previous instance is still there remove it
 		}
@@ -233,6 +203,11 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 		this.getNavigator().push({
 			xtype: 'uploadassignment',
 			record: assignment
+		});
+
+		var self = this;
+		this.getPreviousSubmission(assignment.get('instanceid'), function(store){
+			self.getUploadAssignment().displayPreviousSubmission(store.first());
 		});
 	},
 
@@ -305,7 +280,6 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 				'load',
 				function(status_store){
 					MoodleMobApp.app.hideLoadMask();
-					self.storeTheUploadSubmission(params);
 					self.backToTheCourseModulesList();
 				},
 				null,
@@ -350,17 +324,16 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 		reader.readAsDataURL(first_file[0]);
 	},
 
-	storeTheUploadSubmission: function(data){
-		if(MoodleMobApp.Session.getUploadAssignmentSubmissionsStore().find('id', data.id) == -1){
-			var submission_record = Ext.create('MoodleMobApp.model.UploadAssignmentSubmission', data);
-			submission_record.setDirty();
-			MoodleMobApp.Session.getUploadAssignmentSubmissionsStore().add(submission_record);
-		} else {
-			MoodleMobApp.Session.getUploadAssignmentSubmissionsStore().getById(data.id).setData(data);
-			MoodleMobApp.Session.getUploadAssignmentSubmissionsStore().getById(data.id).setDirty();
-		}
-
-		MoodleMobApp.Session.getUploadAssignmentSubmissionsStore().sync()
-	},
+	getPreviousSubmission: function(assignmentid, successFunc) {
+		var submission = MoodleMobApp.WebService.getAssignmentSubmission(assignmentid, MoodleMobApp.Session.getCourse().get('token'));
+		submission.on(
+			'load',
+			function(store) {
+				successFunc(store);	
+			},
+			null,
+			{single: true}
+		);
+	}
 
 });

@@ -44,6 +44,7 @@ Ext.application({
 		'MoodleMobApp.controller.ManualAccount',
 		'MoodleMobApp.controller.CourseNavigator',
 		'MoodleMobApp.controller.Assignment',
+		'MoodleMobApp.controller.Assign', // moodle 2.4 assignment
 		'MoodleMobApp.controller.Forum',
 		'MoodleMobApp.controller.Folder',
 		'MoodleMobApp.controller.Resource',

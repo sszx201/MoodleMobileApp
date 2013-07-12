@@ -10,8 +10,8 @@ Ext.define("MoodleMobApp.view.OfflineAssignment", {
 	controllers: [ ],
 
 	config: {
-		id: 'offline_assignment_form',
 		title: 'Offline Assignment',
+		autoDestroy: true,
 		listeners: {
 			initialize: function(){
 				// display the parent post

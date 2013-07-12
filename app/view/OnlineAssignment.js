@@ -15,8 +15,8 @@ Ext.define("MoodleMobApp.view.OnlineAssignment", {
 	controllers: [ ],
 
 	config: {
-		id: 'online_assignment_form',
 		title: 'Online Assignment',
+		autoDestroy: true,
 		listeners: {
 			initialize: function(){
 				// display the parent post

@@ -1,6 +1,6 @@
-Ext.define("MoodleMobApp.view.SingleUploadAssignment", {
+Ext.define("MoodleMobApp.view.Assign", {
 	extend: 'Ext.form.Panel',
-	xtype: 'singleuploadassignment',
+	xtype: 'assign',
 	fullscreen: true,
 	
 	requires: [
@@ -15,8 +15,8 @@ Ext.define("MoodleMobApp.view.SingleUploadAssignment", {
 	controllers: [ ],
 
 	config: {
-		title: 'Single Upload Assignment',
-		autoDestroy: true,
+		id: 'assign_form',
+		title: 'Assignment',
 		listeners: {
 			show: function(){
 				// display the parent post
@@ -26,11 +26,11 @@ Ext.define("MoodleMobApp.view.SingleUploadAssignment", {
 									'<div class="assignment-intro">'+ data.intro + '</div>';
 				var previous_submission = '';
 				if(data.submission != null) {
-					previous_submission += '<div class="assignment-previous-submission">Previously submitted file: ' + data.submission + '</div>';
+					previous_submission += '<div class="assignment-previous-submission">Previously submitted files: ' + data.submission + '</div>';
 				}
 				// inject html
 				this.getItems().first().setHtml(intro_html+previous_submission);
-			}	
+			},
 		},
 		items: [	
 			{
@@ -41,16 +41,7 @@ Ext.define("MoodleMobApp.view.SingleUploadAssignment", {
 			{
 				xtype: 'fieldset',
 				title: 'Submit the file',
-				items: [	
-					{
-						xtype: 'textfield',
-						disabled: false,
-						name: 'filepath',
-						component: { 
-							xtype: 'file',
-							disabled: false,
-						}
-					},
+				items: [
 					{
 						xtype: 'hiddenfield',	
 						name: 'id',
@@ -60,11 +51,36 @@ Ext.define("MoodleMobApp.view.SingleUploadAssignment", {
 						name: 'instanceid',
 					},
 					{
-						xtype: 'button',
-						text: 'Submit',
-						ui: 'confirm',
-						action: 'submit',	
+						xtype: 'textfield',
+						disabled: false,
+						id: 'filepath',
+						name: 'filepath',
+						component: { 
+							xtype: 'file',
+							disabled: false,
+						}
 					},
+					{
+						xtype: 'panel',
+						layout: 'hbox', 
+						items: [
+							{
+								xtype: 'button',
+								text: 'Add File',
+								action: 'addfile',	
+								flex: 1,
+							},
+
+							{
+								xtype: 'button',
+								text: 'Submit',
+								ui: 'confirm',
+								action: 'submit',	
+								flex: 1,
+							},
+						] 
+					}
+					
 				]
 			},
 		]

@@ -139,7 +139,7 @@ Ext.define('MoodleMobApp.WebService', {
 	submitOnlineAssignment: function(assignment, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_assign_submit_online';
+		params.wsfunction = 'local_uniappws_assignment_submit_online';
 		params.wstoken = token;
 		params.assigid = assignment.instanceid;
 		params.data = assignment.submission;
@@ -151,7 +151,7 @@ Ext.define('MoodleMobApp.WebService', {
 	submitSingleUploadAssignment: function(assignment, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_assign_submit_singleupload';
+		params.wsfunction = 'local_uniappws_assignment_submit_singleupload';
 		params.wstoken = token;
 		params.courseid = assignment.courseid;
 		params.assigid = assignment.instanceid;
@@ -164,7 +164,7 @@ Ext.define('MoodleMobApp.WebService', {
 	submitUploadAssignment: function(assignment, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_assign_submit_upload';
+		params.wsfunction = 'local_uniappws_assignment_submit_upload';
 		params.wstoken = token;
 		params.assigid = assignment.instanceid;
 		params.isfinal = assignment.isfinal;
@@ -180,7 +180,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getAssignmentSubmission: function(assignid, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_assign_get_submission_by_assignid';
+		params.wsfunction = 'local_uniappws_assignment_get_submission_by_assignid';
 		params.wstoken = token;
 		params.assigid = assignid;
 		// request

@@ -4,7 +4,8 @@ Ext.define('MoodleMobApp.model.UploadAssignmentSubmission', {
 	config: {
 		fields: [
 			{ name: 'id', type: 'auto' },
-			{ name: 'files', type: 'auto' } // javascript array of filenames uploaded
+			{ name: 'files', type: 'auto' }, // javascript array of fileids
+			{ name: 'filenames', type: 'auto' } // javascript array of filenames
 		]
 	}
 });

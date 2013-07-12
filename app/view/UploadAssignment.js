@@ -15,8 +15,8 @@ Ext.define("MoodleMobApp.view.UploadAssignment", {
 	controllers: [ ],
 
 	config: {
-		id: 'upload_assignment_form',
 		title: ' Upload Assignment',
+		autoDestroy: true,
 		listeners: {
 			show: function(){
 				// display the parent post
@@ -25,8 +25,15 @@ Ext.define("MoodleMobApp.view.UploadAssignment", {
 				var intro_html = '<div class="x-form-fieldset-title x-docked-top">'+data.name+'</div>'+ 
 									'<div class="assignment-intro">'+ data.intro + '</div>';
 				var previous_submission = '';
+
 				if(data.submission != null) {
-					previous_submission += '<div class="assignment-previous-submission">Previously submitted files: ' + data.submission + '</div>';
+					previous_submission += '<div class="assignment-previous-submission">Previously submitted files: ';
+					previous_submission += '<ul>';
+					for(var i=0; i < data.submission.length; ++i) {
+						previous_submission += '<li>' + data.submission[i] + '</li>';
+					}
+					previous_submission += '</ul>';
+					previous_submission += '</div>';
 				}
 				// inject html
 				this.getItems().first().setHtml(intro_html+previous_submission);
@@ -40,41 +47,25 @@ Ext.define("MoodleMobApp.view.UploadAssignment", {
 			},
 			{
 				xtype: 'fieldset',
-				title: 'Submit the file',
-				items: [
+				title: 'Choose files',
+				items: [	
 					{
-						xtype: 'hiddenfield',	
-						name: 'id',
+						xtype: 'container',
+						//cls: 'filelist',
 					},
 					{
-						xtype: 'hiddenfield',	
-						name: 'instanceid',
-					},
-					{
-						xtype: 'textfield',
-						disabled: false,
-						id: 'filepath',
-						name: 'filepath',
-						//value: 'boa.jpg',
-						value: 'iCorsi/boa.jpg',
-						/*
-						component: { 
-							xtype: 'file',
-							disabled: false,
-						}
-						*/
-					},
-					{
-						xtype: 'panel',
+						xtype: 'container',
 						layout: 'hbox', 
+						defaults: {
+							padding: 10,
+						},
 						items: [
 							{
 								xtype: 'button',
 								text: 'Add File',
-								action: 'addfile',	
+								action: 'addfile',
 								flex: 1,
 							},
-
 							{
 								xtype: 'button',
 								text: 'Submit',
@@ -83,8 +74,15 @@ Ext.define("MoodleMobApp.view.UploadAssignment", {
 								flex: 1,
 							},
 						] 
-					}
-					
+					},
+					{
+						xtype: 'hiddenfield',	
+						name: 'id',
+					},
+					{
+						xtype: 'hiddenfield',	
+						name: 'instanceid',
+					},
 				]
 			},
 		]

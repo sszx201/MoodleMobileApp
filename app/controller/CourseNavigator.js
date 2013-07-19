@@ -73,7 +73,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 
 	selectModule: function(view, index, target, record) {
 		var update_stats = false;
-		target.getModName().setHtml(target.getRecord().get('modname'));
+		target.down('#modname').setHtml(target.getRecord().get('modname'));
 
 		if(record.get('isnew') == true) {
 			record.set('isnew', false);
@@ -141,14 +141,14 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 	clearPartecipantsSelection: function() {
 		var partecipants = this.getPartecipants().getInnerItems()[1].getInnerItems();
 		Ext.each(partecipants, function(partecipant) {
-			partecipant.getSelection().uncheck();
+			partecipant.down('#selection').uncheck();
 		});
 	},
 	
 	selectAllPartecipants: function() {
 		var partecipants = this.getPartecipants().getInnerItems()[1].getInnerItems();
 		Ext.each(partecipants, function(partecipant) {
-			partecipant.getSelection().check();
+			partecipant.down('#selection').check();
 		});
 	},
 

@@ -27,7 +27,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			addDiscussionButton: 'button[action=adddiscussion]',
 			postList: '#forum_post_list',
 			postReplyButton: 'button[action=postreply]',
-			replyForm: '#forum_post_reply_form',
+			replyForm: 'forumpostreply',
 			saveReplyButton: 'button[action=savereply]',
 		},
 
@@ -181,7 +181,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		}
 
 		if(update_status) {
-			target.getStat().setHtml('');
+			target.down('#stat').setHtml('');
 			MoodleMobApp.Session.getForumDiscussionsStore().sync();
 		}
 

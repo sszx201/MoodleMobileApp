@@ -5,55 +5,41 @@ Ext.define("MoodleMobApp.view.Grade", {
 	config: {
 		cls: 'x-grade',
 
-		// map records to the DataItem
-		dataMap: {
-			getName: {
-				setHtml: 'itemname'
+		items: [
+			{
+				itemId: 'itemname',
+				xtype: 'component',
+				cls: 'x-module-name',
 			},
-
-			getScore: {
-				setHtml: ''
+			{
+				itemId: 'score',
+				xtype: 'component',
+				cls: 'x-module-score',
 			},
+			{
+				itemId: 'modName',
+				xtype: 'component',
+				cls: 'x-module-modname',
+			}
 
-			getModName: {
-				setHtml: 'itemmodule'
-			},
-		},
-
-		name: {
-			cls: 'x-module-name',
-		},
-
-		score: {
-			cls: 'x-grade-score',
-		},
-
-		modName: {
-			cls: 'x-module-modname',
-		},
-
+		]
 		
-
-		listeners: {
-			painted: function(){
-				this.formatElement();
-			},
-		}
 	},
 
-	formatElement: function(){
+	updateRecord: function(record){
+		this.down('#itemname').setHtml(record.get('itemname'));
 		var classes = 'x-module';
-			classes+= ' x-module-icon-'+this.getRecord().get('itemmodule'); 
+			classes+= ' x-module-icon-'+record.get('itemmodule'); 
 		this.setCls(classes);
 		var userscore = '-';
-		var index = MoodleMobApp.Session.getGradesStore().findExact('itemid', this.getRecord().get('id'));
+		var index = MoodleMobApp.Session.getGradesStore().findExact('itemid', record.get('id'));
 		if(index != -1) {
 			var grade = MoodleMobApp.Session.getGradesStore().getAt(index);
 			userscore = grade.get('rawgrade');
 		}
 
 		var pass_class = 'x-grade-is-not-passing-grade';
-		if(userscore > this.getRecord().get('gradepass')) {
+		if(userscore > record.get('gradepass')) {
 			pass_class = 'x-grade-is-passing-grade';
 		}
 
@@ -63,53 +49,11 @@ Ext.define("MoodleMobApp.view.Grade", {
 			score+= '</span>';
 			score+= '/';
 			score+= '<span class="x-grade-max">';
-			score+= this.getRecord().get('grademax');
+			score+= record.get('grademax');
 			score+= '</span>';
 			score+= '</div>';
-		this.getScore().setHtml(score);
-		this.getModName().setHtml(this.getRecord().get('itemmodule'));
-	},
-
-	applyName: function(config) {
-		return Ext.factory(config, Ext.Component, this.getName());
-	},
-
-	updateName: function(newName, oldName) {
-		if (newName) {
-			this.add(newName);
-		}
-
-		if (oldName) {
-			this.remove(oldName);
-		}
-	},
-
-	applyModName: function(config) {
-		return Ext.factory(config, Ext.Component, this.getModName());
-	},
-
-	updateModName: function(newModName, oldModName) {
-		if (newModName) {
-			this.add(newModName);
-		}
-
-		if (oldModName) {
-			this.remove(oldModName);
-		}
-	},
-
-	applyScore: function(config) {
-		return Ext.factory(config, Ext.Component, this.getScore());
-	},
-
-	updateScore: function(newScore, oldScore) {
-		if (newScore) {
-			this.add(newScore);
-		}
-
-		if (oldScore) {
-			this.remove(oldScore);
-		}
+		this.down('#score').setHtml(score);
+		this.down('#modName').setHtml(record.get('itemmodule'));
 	},
 });
 

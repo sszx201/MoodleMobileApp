@@ -5,182 +5,86 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 	config: {
 		cls: 'forum-post',
 
-		// map records to the DataItem
-		dataMap: {
-			getImage: {
-				setSrc: 'avatar'
+		items: [
+			{
+				xtype: 'container',
+				items: [
+					{
+						itemId: 'avatar',
+						xtype: 'image',
+						height: 35,
+						width: 35,
+						cls: 'x-avatar',
+					},
+					{
+						itemId: 'firstname',
+						xtype: 'component',
+						cls: 'x-post-firstname',
+					},
+					{
+						itemId: 'lastname',
+						xtype: 'component',
+						cls: 'x-post-lastname',
+					},
+				],
+				layout: {
+					type: 'hbox',
+					align: 'center'
+				},
 			},
-
-			getFirstname: {
-				setHtml: 'firstname'
+			{
+				itemId: 'subject',
+				xtype: 'component',
+				cls: 'x-post-subject',
 			},
-
-			getLastname: {
-				setHtml: 'lastname'
+			{
+				itemId: 'message',
+				xtype: 'component',
+				cls: 'x-post-message',
 			},
+			{
+				itemId: 'replyButton',
+				xtype: 'button',
+				text: 'reply',
+				action: 'postreply',
+				docked: 'bottom',
+				ui: 'confirm',
+				hidden: true,
+				cls: 'x-post-message',
+			}
+		],
 
-			getSubject: {
-				setHtml: 'subject'
-			},
 
-			getMessage: {
-				setHtml: 'message'
-			},
-		},
-
-		image: {
-			cls: 'x-avatar',
-			height: 35,
-			width: 35,
-		},
-
-		firstname: {
-			cls: 'x-post-firstname',
-		},
-		
-		lastname: {
-			cls: 'x-post-lastname',
-		},
-
-		replyButton: {
-			cls: 'x-post-reply-button',
-			text: 'reply',
-			action: 'postreply',
-			docked: 'bottom',
-			ui: 'confirm',
-			hidden: true,
-			listeners: {
-				tap: function () {
-				}
-			},
-		},
-
-		message: {
-			cls: 'x-post-message',
-			docked: 'bottom',
-		},
-
-		subject: {
-			cls: 'x-post-subject',
-			docked: 'bottom',
-		},
-
-		layout: {
-            type: 'hbox',
-            align: 'center'
-        },
-
-		listeners: {	
-			updatedata: function(){
-				this.setCls('forum-post x-post-indentation-'+this.getRecord().get('indentation'));	
-				// process attachments
-				if(this.getRecord().get('attachments') != null && this.getRecord().get('attachments').length > 0) {
-					var message = this.getMessage().getHtml();
-					var attachment_list = '<ul class="x-post-attachment-list">';
-					var attachments = this.getRecord().getData().attachments;
-					for(var i=0; i < attachments.length; ++i) {
-						attachment_list +=  '<li class="x-post-attachment-entry">'+
-												'<a class="x-post-attachment-file" href="'+attachments[i].url+'">'+
-													attachments[i].filename+
-												'</a>'+
-												'  '+
-												'<span class="x-post-attachment-size">'+
-													attachments[i].filesize+'&nbsp;KB'+
-												'</span>'+
-											'</li>';
-					}
-					attachment_list += '</ul>';
-
-					this.getMessage().setHtml(message+attachment_list);
-				}
-			},
-
-		}
 	},
 
-	applyImage: function(config) {
-		return Ext.factory(config, Ext.Img, this.getImage());
-	},
+	updateRecord: function(record){
+		this.setCls('forum-post x-post-indentation-' + record.get('indentation'));	
+		this.down('#avatar').setSrc(record.get('avatar'));
+		this.down('#firstname').setHtml(record.get('firstname'));
+		this.down('#lastname').setHtml(record.get('lastname'));
+		this.down('#subject').setHtml(record.get('subject'));
+		// process attachments
+		if(record.get('attachments') != null && record.get('attachments').length > 0) {
+			var attachment_list = '<ul class="x-post-attachment-list">';
+			var attachments = record.get('attachments');
+			for(var i=0; i < attachments.length; ++i) {
+				attachment_list +=  '<li class="x-post-attachment-entry">'+
+										'<a class="x-post-attachment-file" href="'+attachments[i].url+'">'+
+											attachments[i].filename+
+										'</a>'+
+										'  '+
+										'<span class="x-post-attachment-size">'+
+											attachments[i].filesize+'&nbsp;KB'+
+										'</span>'+
+									'</li>';
+			}
+			attachment_list += '</ul>';
 
-	updateImage: function(newImage, oldImage) {
-		if(newImage){
-			this.add(newImage);
+			this.down('#message').setHtml(record.get('message')+attachment_list);
+		} else {
+			this.down('#message').setHtml(record.get('message'));
 		}
-
-		if(oldImage){
-			this.remove(oldImage);
-		}
 	},
-
-	applyFirstname: function(config) {
-        return Ext.factory(config, Ext.Component, this.getFirstname());
-    },
-
-    updateFirstname: function(newFirstname, oldFirstname) {
-        if (newFirstname) {
-            this.add(newFirstname);
-        }
-
-        if (oldFirstname) {
-            this.remove(oldFirstname);
-        }
-    },
-
-	applyLastname: function(config) {
-        return Ext.factory(config, Ext.Component, this.getLastname());
-    },
-
-    updateLastname: function(newLastname, oldLastname) {
-        if (newLastname) {
-            this.add(newLastname);
-        }
-
-        if (oldLastname) {
-            this.remove(oldLastname);
-        }
-    },
-
-	applySubject: function(config) {
-        return Ext.factory(config, Ext.Component, this.getSubject());
-    },
-
-    updateSubject: function(newSubject, oldSubject) {
-        if (newSubject) {
-            this.add(newSubject);
-        }
-
-        if (oldSubject) {
-            this.remove(oldSubject);
-        }
-    },
-
-	applyMessage: function(config) {
-        return Ext.factory(config, Ext.Component, this.getMessage());
-    },
-
-    updateMessage: function(newMessage, oldMessage) {
-        if (newMessage) {
-            this.add(newMessage);
-        }
-
-        if (oldMessage) {
-            this.remove(oldMessage);
-        }
-    },
-
-	applyReplyButton: function(config) {
-        return Ext.factory(config, Ext.Button, this.getReplyButton());
-    },
-
-    updateReplyButton: function(newReplyButton, oldReplyButton) {
-        if (newReplyButton) {
-            this.add(newReplyButton);
-        }
-
-        if (oldReplyButton) {
-            this.remove(oldReplyButton);
-        }
-    },
 
 });
 

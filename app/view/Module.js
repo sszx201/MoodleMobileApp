@@ -6,75 +6,41 @@ Ext.define("MoodleMobApp.view.Module", {
 		cls: 'x-module',
 
 		// map records to the DataItem
-		dataMap: {
-			getName: {
-				setHtml: 'name'
+		items: [
+			{
+				itemId: 'name',
+				xtype: 'component',
+				cls: 'x-course-name',
 			},
-
-			getModName: {
-				setHtml: 'modname'
-			},
-		},
-
-		name: {
-			cls: 'x-module-name',
-		},
-
-		modName: {
-			cls: 'x-module-modname',
-		},
-
-		listeners: {
-			painted: function(){
-				this.formatElement();
-			},
-		}
+			{
+				itemId: 'modname',
+				xtype: 'component',
+				cls: 'x-course-module-status',
+			}
+		]
 	},
 
-	formatElement: function(){
+	updateRecord: function(record){
+		this.down('#name').setHtml(record.get('name'));
 		var classes = 'x-module';
-			classes+= ' x-module-icon-'+this.getRecord().get('modname'); 
-			classes+= ' x-module-section-'+this.getRecord().get('section'); 
+			classes+= ' x-module-icon-'+record.get('modname'); 
+			classes+= ' x-module-section-'+record.get('section'); 
 		this.setCls(classes);
 
-		if(this.getRecord().get('isnew') == true) {
-			var notification = this.getRecord().get('modname');
+		if(record.get('isnew') == true) {
+			var notification = record.get('modname');
 			notification += ' | <span class="x-module-new">new</span>';
-			this.getModName().setHtml(notification);
+			this.down('#modname').setHtml(notification);
+		} else {
+			this.down('#modname').setHtml(record.get('modname'));
 		}
 
 		if(this.getRecord().get('isupdated') == true) {
-			var notification = this.getRecord().get('modname');
+			var notification = record.get('modname');
 			notification += ' | <span class="x-module-updated">updated</span>';
-			this.getModName().setHtml(notification);
-		}
-	},
-
-	applyName: function(config) {
-		return Ext.factory(config, Ext.Component, this.getName());
-	},
-
-	updateName: function(newName, oldName) {
-		if (newName) {
-			this.add(newName);
-		}
-
-		if (oldName) {
-			this.remove(oldName);
-		}
-	},
-
-	applyModName: function(config) {
-		return Ext.factory(config, Ext.Component, this.getModName());
-	},
-
-	updateModName: function(newModName, oldModName) {
-		if (newModName) {
-			this.add(newModName);
-		}
-
-		if (oldModName) {
-			this.remove(oldModName);
+			this.down('#modname').setHtml(notification);
+		} else {
+			this.down('#modname').setHtml(record.get('modname'));
 		}
 	},
 

@@ -5,56 +5,24 @@ Ext.define("MoodleMobApp.view.Course", {
 	config: {
 		cls: 'x-course',
 		// map records to the DataItem
-		dataMap: {
-			getName: {
-				setHtml: 'name'
+		items: [
+			{
+				itemId: 'name',
+				xtype: 'component',
+				cls: 'x-course-name',
 			},
-
-			getModuleStatus: {
-				setHtml: 'modulestatus'
-			},
-		},
-
-		name: {
-			cls: 'x-course-name',
-		},
-
-		moduleStatus: {
-			cls: 'x-course-module-status',
-		},
-
-		listeners: {
-			updatedata: function(){ },
-		}
+			{
+				itemId: 'modulestatus',
+				xtype: 'component',
+				cls: 'x-course-module-status',
+			}
+		]
 	},
 
-	applyName: function(config) {
-		return Ext.factory(config, Ext.Component, this.getName());
-	},
-
-	updateName: function(newName, oldName) {
-		if (newName) {
-			this.add(newName);
-		}
-
-		if (oldName) {
-			this.remove(oldName);
-		}
-	},
-
-	applyModuleStatus: function(config) {
-		return Ext.factory(config, Ext.Component, this.getModuleStatus());
-	},
-
-	updateModuleStatus: function(newModuleStatus, oldModuleStatus) {
-		if (newModuleStatus) {
-			this.add(newModuleStatus);
-		}
-
-		if (oldModuleStatus) {
-			this.remove(oldModuleStatus);
-		}
-	},
-
+	updateRecord: function(record) {
+		this.down('#name').setHtml(record.get('name'));
+		this.down('#modulestatus').setHtml(record.get('modulestatus'));
+	}
+	
 });
 

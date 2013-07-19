@@ -114,6 +114,7 @@ $active-color: #C35817;
 
 .partecipant {
 	border-bottom: 1px solid #dedede;
+	background-color: white;
 	padding: 5px;
 	padding-top: 10px;
 	padding-bottom: 7px;
@@ -127,9 +128,9 @@ $active-color: #C35817;
 .x-partecipant-email {
 	color: gray;
 	font-size: small;
-	margin-top: -25px;
-	padding-left: 5px;
-	margin-bottom: 12px;
+	margin-top: -10px;
+	padding-left: 40px;
+	margin-bottom: 7px;
 }
 
 .partecipant-selected {
@@ -222,6 +223,26 @@ $active-color: #C35817;
 .x-post-attachment-list {
 	padding-top: 15px;
 }
+
+.x-post-reply {
+	.parent-post {
+		background-color: white;
+		padding: 5px;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		padding: 10px;
+		.userinfo {
+			margin-bottom: 10px;
+		}
+
+		.content {
+			.subject {
+				margin-bottom: 10px;
+			}
+		}
+	}
+}
+
 
 /*
  *

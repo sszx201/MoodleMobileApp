@@ -16,13 +16,13 @@ Ext.define("MoodleMobApp.view.ForumPostList", {
 					dataview.selectedItem.addCls('forum-post-selected');
 				} else if (typeof dataview.selectedItem == 'object') {
 					// unselect the previous item
-					dataview.selectedItem.getReplyButton().setHidden(true);
+					dataview.selectedItem.down('#replyButton').hide();
 					dataview.selectedItem.removeCls('forum-post-selected');
 					// set the new selected item
 					dataview.selectedItem = target;
 					dataview.selectedItem.addCls('forum-post-selected');
 				}
-				target.getReplyButton().setHidden(false);
+				target.down('#replyButton').show();
 			},
 		}
 

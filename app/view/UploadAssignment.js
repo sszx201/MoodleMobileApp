@@ -16,17 +16,61 @@ Ext.define("MoodleMobApp.view.UploadAssignment", {
 
 	config: {
 		title: ' Upload Assignment',
+		cls: 'assignment',
 		autoDestroy: true,
 		listeners: {
-			show: function(){
+			initialize: function() {
+				// check the data
+				console.log(this.config.lastSubmission);
+				if(this.config.settings.preventlate == 1) { // check the dates
+					var today = new Date();
+					var duedate = new Date(this.config.settings.timedue * 1000);
+					var availabledate = new Date(this.config.settings.timeavailable * 1000);
+					if(today > duedate) {
+						this.child('panel[name=toolate]').show();
+						this.child('fieldset').hide();
+						return;
+					}
+
+					if(today < availabledate) {
+						this.child('panel[name=toosoon]').show();
+						this.child('fieldset').hide();
+						return;
+					}
+				} if(this.config.settings.resubmit == 0 && this.config.lastSubmission.id > 0) {
+					this.child('panel[name=noresubmit]').show();
+					this.child('fieldset').hide();
+				} if(this.config.lastSubmission.isfinal) {
+					this.child('panel[name=lastsubmissionwasfinal]').show();
+					this.child('fieldset').hide();
+				}
+			},
+
+			show: function() {
 				// display the parent post
 				var data = this.getRecord().getData();
 				// prepare the html
-				var intro_html = '<div class="x-form-fieldset-title x-docked-top">'+data.name+'</div>'+ 
-									'<div class="assignment-intro">'+ data.intro + '</div>';
-				// inject html
-				this.getItems().first().setHtml(intro_html);
-			},
+				var intro_html = '<div class="x-form-fieldset-title x-docked-top">'+data.name+'</div>';
+					intro_html+= '<div class="intro">'+ data.intro + '</div>';
+					intro_html+= '<div class="dates">';
+					intro_html+= '<div class="date">Available from date: </br>'+ MoodleMobApp.app.formatDate(this.config.settings.timeavailable) + '</div>';
+					intro_html+= '<div class="date">Deadline date: </br>'+ MoodleMobApp.app.formatDate(this.config.settings.timedue) + '</div>';
+					intro_html+= '</div>';
+
+				// display the intro
+
+				if(this.config.lastSubmission.id > 0) {
+					intro_html += '<div class="last-submission">Previously submitted files: ';
+					intro_html += '<ul>';
+					for(var i=0; i < this.config.lastSubmission.userfiles.length; ++i) {
+						intro_html += '<li>' + this.config.lastSubmission.userfiles[i].filename + '</li>';
+					}
+					intro_html += '</ul>';
+					intro_html += '</div>';
+				}
+
+				this.child('panel[name=intro]').setHtml(intro_html);
+			}
 		},
 		items: [	
 			{
@@ -37,10 +81,16 @@ Ext.define("MoodleMobApp.view.UploadAssignment", {
 			{
 				xtype: 'fieldset',
 				title: 'Choose files',
-				items: [	
+				items: [
+					{
+						xtype: 'checkboxfield',
+						name: 'isfinal',
+						value: 1,
+						label: 'Final Submission',
+					},
 					{
 						xtype: 'container',
-						//cls: 'filelist',
+						name: 'filelist',
 					},
 					{
 						xtype: 'container',
@@ -74,18 +124,39 @@ Ext.define("MoodleMobApp.view.UploadAssignment", {
 					},
 				]
 			},
+			{
+				xtype: 'panel',
+				name: 'toosoon',
+				cls: 'toosoon',
+				docked: 'top',
+				hidden: true,
+				html: 'This assignment has not been opened yet.'
+			},
+			{
+				xtype: 'panel',
+				name: 'toolate',
+				cls: 'toolate',
+				docked: 'top',
+				hidden: true,
+				html: 'This assignment has been closed.'
+			},
+			{
+				xtype: 'panel',
+				name: 'noresubmit',
+				cls: 'noresubmit',
+				docked: 'top',
+				hidden: true,
+				html: 'No resubmit allowed.'
+			},
+			{
+				xtype: 'panel',
+				name: 'lastsubmissionwasfinal',
+				cls: 'lastsubmissionwasfinal',
+				docked: 'top',
+				hidden: true,
+				html: 'The last submission was the final one.'
+			}
 		]
 	},
 
-	displayPreviousSubmission: function(record) {
-		var intro = this.getItems().first().getHtml();
-		var previous_submission = '<div class="assignment-previous-submission">Previously submitted files: ';
-		previous_submission += '<ul>';
-		for(var i=0; i < record.get('userfiles').length; ++i) {
-			previous_submission += '<li>' + record.get('userfiles')[i].filename + '</li>';
-		}
-		previous_submission += '</ul>';
-		previous_submission += '</div>';
-		this.getItems().first().setHtml(intro+previous_submission);
-	}
 });

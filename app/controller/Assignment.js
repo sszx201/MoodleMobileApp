@@ -3,6 +3,7 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 
 	config: {
 		models: [
+			'MoodleMobApp.model.Assignment',
 			'MoodleMobApp.model.AssignmentSubmission',
 			'MoodleMobApp.model.SubmissionResponse',
 			'MoodleMobApp.model.FileUploadResponse',
@@ -35,7 +36,7 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 			onlineAssignment: { deactivate: 'submitOnlineAssignmentCancelled' },
 			onlineAssignmentSubmit: { tap: 'submitOnlineAssignment' },
 			singleUploadAssignmentSubmit: { tap: 'submitSingleUploadAssignment' },
-			uploadAssignmentAddFile: { tap: 'addFileUploadAssignment' },
+			uploadAssignmentAddFile: { tap: 'addFileSlot' },
 			uploadAssignmentSubmit: { tap: 'submitUploadAssignment' },
 		}
 	},
@@ -51,28 +52,84 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 	},
 
 	selectAssignment: function(assignment) {
+		// assignment view config object
+		var aconf = {
+			record: assignment,
+			settings: null,
+			lastSubmission: null,
+		};
 		// display discussions
 		switch(assignment.get('type')) {
 			case 'online':
-				this.selectOnlineAssignment(assignment);
+				//this.selectOnlineAssignment(assignment);
+				// destroy the previous instance
+				if(typeof this.getOnlineAssignment() == 'object') {
+					this.getOnlineAssignment().destroy();
+				}
+				// set the xtype
+				aconf.xtype = 'onlineassignment';
 			break;
-
 			case 'offline':
-				this.selectOfflineAssignment(assignment);
+				//this.selectOnlineAssignment(assignment);
+				// destroy the previous instance
+				if(typeof this.getOfflineAssignment() == 'object') {
+					this.getOfflineAssignment().destroy();
+				}
+				// set the xtype
+				aconf.xtype = 'offlineassignment';
 			break;
-
 			case 'uploadsingle':
-				this.selectSingleUploadAssignment(assignment);
+				//this.selectOnlineAssignment(assignment);
+				// destroy the previous instance
+				if(typeof this.getSingleUploadAssignment() == 'object') {
+					this.getSingleUploadAssignment().destroy();
+				}
+				// set the xtype
+				aconf.xtype = 'singleuploadassignment';
 			break;
-
 			case 'upload':
-				this.selectUploadAssignment(assignment);
+				//this.selectOnlineAssignment(assignment);
+				// destroy the previous instance
+				if(typeof this.getUploadAssignment() == 'object') {
+					this.getUploadAssignment().destroy();
+				}
+				// set the xtype
+				aconf.xtype = 'uploadassignment';
 			break;
 
 			default:
 				Ext.Msg.alert( 'Assignment type error', 'Unknown assignment type.');
 			break;
+
 		}
+
+		var assignment_store = MoodleMobApp.WebService.getAssignmentById(assignment.get('instanceid'), MoodleMobApp.Session.getCourse().get('token'));
+		assignment_store.on(
+			'load', 
+			function(store){
+				aconf.settings = store.first().getData(); 
+				// check for submissions
+				if(aconf.xtype != 'offlineassignment') {
+					var submissions_store = MoodleMobApp.WebService.getAssignmentSubmission(assignment.get('instanceid'), MoodleMobApp.Session.getCourse().get('token'));
+					submissions_store.on(
+						'load', 
+						function(store){
+							if(store.first().get('id') != 0) {
+								aconf.lastSubmission = store.first().getData(); 
+							}
+							// show the object
+							this.getNavigator().push(aconf);
+						},
+						this,
+						{single: true}
+					);
+				} else { // if this is an offlineassignment then just push it; no submissions available
+					this.getNavigator().push(aconf);
+				}
+			},
+			this,
+			{single: true}
+		);
 	},
 
 	backToTheCourseModulesList: function() {
@@ -80,21 +137,6 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 		this.getNavigator().pop();
 	},
 
-	selectOnlineAssignment: function(assignment) {
-		if(typeof this.getOnlineAssignment() == 'object') {
-			this.getOnlineAssignment().destroy(); // if the previous instance is still there remove it
-		}
-
-		this.getNavigator().push({
-			xtype: 'onlineassignment',
-			record: assignment
-		});
-
-		var self = this;
-		this.getPreviousSubmission(assignment.get('instanceid'), function(store){
-			self.getOnlineAssignment().displayPreviousSubmission(store.first());
-		});
-	},
 	
 	submitOnlineAssignment: function(button) {
 		var submission_data = this.getOnlineAssignment().getValues();
@@ -123,39 +165,13 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 		this.backToTheCourseModulesList();
 	},
 
-	selectOfflineAssignment: function(assignment) {
-		if(typeof this.getOfflineAssignment() == 'object') {
-			this.getOfflineAssignment().destroy(); // if the previous instance is still there remove it
-		}
-		// display assignment
-		this.getNavigator().push({
-			xtype: 'offlineassignment',
-			record: assignment
-		});
-	},
-
-	selectSingleUploadAssignment: function(assignment) {
-		if(typeof this.getSingleUploadAssignment() == 'object') {
-			this.getSingleUploadAssignment().destroy(); // if the previous instance is still there remove it
-		}
-
-		this.getNavigator().push({
-			xtype: 'singleuploadassignment',
-			record: assignment
-		});
-
-		var self = this;
-		this.getPreviousSubmission(assignment.get('instanceid'), function(store){
-			self.getSingleUploadAssignment().displayPreviousSubmission(store.first());
-		});
-	},
-
 	submitSingleUploadAssignment: function(button) {
 		var self = this;
 		var submission_data = this.getSingleUploadAssignment().getValues();
 		var comp = button.getParent().child('textfield').getComponent();
 		var files = comp.input.dom.files;
 		submission_data.filename = files[0].name;
+		submission_data.draftid = Math.round(Math.random() * 1000000000);
 
 		var reader = new FileReader();
 		reader.onload = function(e) {
@@ -195,26 +211,9 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 		reader.readAsDataURL(files[0]);
 	},	
 
-	selectUploadAssignment: function(assignment) {
-		if(typeof this.getUploadAssignment() == 'object') {
-			this.getUploadAssignment().destroy(); // if the previous instance is still there remove it
-		}
-
-		this.getNavigator().push({
-			xtype: 'uploadassignment',
-			record: assignment
-		});
-
-		var self = this;
-		this.getPreviousSubmission(assignment.get('instanceid'), function(store){
-			self.getUploadAssignment().displayPreviousSubmission(store.first());
-		});
-	},
-
-	addFileUploadAssignment: function() {
-		var filelist = this.getUploadAssignment().child('fieldset').child('container');
-		filelist.insert(
-			0,
+	addFileSlot: function() {
+		var filelist = this.getUploadAssignment().child('fieldset').child('container[name=filelist]');
+		filelist.add(
 			{
 				xtype: 'container',
 				layout: 'hbox',
@@ -250,7 +249,8 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 		submission_data.uploadFile = new Array();
 		submission_data.files = new Array();
 		submission_data.filenames = new Array();
-		var filelist = this.getUploadAssignment().child('fieldset').child('container[cls=filelist]');
+		submission_data.draftid = Math.round(Math.random() * 1000000000);
+		var filelist = this.getUploadAssignment().child('fieldset').child('container[name=filelist]');
 		var fileEntries = filelist.getItems().getCount();
 		var files = {}; // this object is used to control the files; avoid duplicates and empty submissions
 		for(var i=0; i < fileEntries; ++i) {
@@ -274,7 +274,9 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 		var submit = function(params) {
 			params.courseid = MoodleMobApp.Session.getCourse().get('id');
 			params.instanceid = submission_data.instanceid;
-			params.isfinal = 1;
+			if(params.isfinal == null) params.isfinal = 0;
+			console.log('submitting the assignment multi');
+			console.log(params);
 			var assignment_submission_store = MoodleMobApp.WebService.submitUploadAssignment(params,  MoodleMobApp.Session.getCourse().get('token'));
 			assignment_submission_store.on(
 				'load',

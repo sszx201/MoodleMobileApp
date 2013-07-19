@@ -119,7 +119,6 @@ Ext.application({
 
 		// success function
 		var successFunc = function(result) {
-			console.log('yaaaaaaaaaaay');
 			MoodleMobApp.app.hideLoadMask();
 			var filePath = '/'+MoodleMobApp.Config.getFileCacheDir()+'/'+file.name;
 			MoodleMobApp.app.openFile(filePath, file.mime);
@@ -264,7 +263,11 @@ Ext.application({
 				);
 			}
 		);
-	}
+	},
 
+	formatDate: function(timestamp) {
+		var date = new Date(timestamp*1000);
+		return Ext.Date.format(date, "l d F Y h:m");
+	},
 
 });

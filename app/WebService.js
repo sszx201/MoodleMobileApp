@@ -136,6 +136,17 @@ Ext.define('MoodleMobApp.WebService', {
 		return user_store;
 	},
 
+	getAssignmentById: function(assigid, token) {
+		// set parameters
+		var params = new Object();
+		params.wsfunction = 'local_uniappws_assignment_get_assignment_by_id';
+		params.wstoken = token;
+		params.assigid = assigid;
+		// request
+		var user_store = this.request(params, 'MoodleMobApp.model.Assignment', 'GET');
+		return user_store;
+	},
+
 	submitOnlineAssignment: function(assignment, token) {
 		// set parameters
 		var params = new Object();
@@ -176,18 +187,61 @@ Ext.define('MoodleMobApp.WebService', {
 		return submission_response_store;
 	},
 
-	getAssignmentSubmission: function(assignid, token) {
-		console.log('here here');
+	getAssignmentSubmission: function(assigid, token) {
 		// set parameters
 		var params = new Object();
 		params.wsfunction = 'local_uniappws_assignment_get_submission_by_assignid';
 		params.wstoken = token;
-		params.assigid = assignid;
+		params.assigid = assigid;
 		// request
 		var submission_store = this.request(params, 'MoodleMobApp.model.AssignmentSubmission', 'GET');
 		return submission_store;
 	},
 
+	getAssignById: function(assigid, token) {
+		// set parameters
+		var params = new Object();
+		params.wsfunction = 'local_uniappws_assign_get_assign_by_id';
+		params.wstoken = token;
+		params.assigid = assigid;
+		// request
+		var user_store = this.request(params, 'MoodleMobApp.model.Assign', 'GET');
+		return user_store;
+	},
+
+	submitAssign: function(assign, token) {
+		// set parameters
+		var params = new Object();
+		params.wsfunction = 'local_uniappws_assign_submit_assign';
+		params.wstoken = token;
+		params.assigid = assign.instanceid;
+		params.onlinetext = assign.onlinetext;
+		params.teamsubmission = assign.teamsubmission;
+		if(assign.files != undefined) {
+			params.draftid = assign.draftid;
+			for(i=0; i < assign.files.length; ++i) {
+				params['files[' +i+ ']'] = assign.files[i];
+			}
+		} else {
+			params.draftid = 0;
+			params['files[]'] = 0;
+		}
+		// request
+		var submission_response_store = this.request(params, 'MoodleMobApp.model.SubmissionResponse', 'GET');
+		return submission_response_store;
+	},
+
+	getAssignSubmission: function(assigid, token) {
+		// set parameters
+		var params = new Object();
+		params.wsfunction = 'local_uniappws_assign_get_submission_by_assignid';
+		params.wstoken = token;
+		params.assigid = assigid;
+		// request
+		var submission_store = this.request(params, 'MoodleMobApp.model.AssignSubmission', 'GET');
+		return submission_store;
+	},
+	
 	getFolder: function(folder, token) {
 		// set parameters
 		var params = new Object();
@@ -214,10 +268,6 @@ Ext.define('MoodleMobApp.WebService', {
 		// remove the last & char
 		url_encoded_params = url_encoded_params.slice(0,-1);
 		// build the url
-		//var url = MoodleMobApp.Config.getWebServiceUrl() + url_encoded_params;
-		// get the file
-		//window.plugins.downloader.downloadFile(url, {'overwrite': true}, successFunc, failFunc, file.name, dir);
-		//var url = encodeURI(MoodleMobApp.Config.getWebServiceUrl() + url_encoded_params);
 		var url = MoodleMobApp.Config.getWebServiceUrl() + url_encoded_params;
 
 		window.requestFileSystem(
@@ -283,8 +333,10 @@ Ext.define('MoodleMobApp.WebService', {
 		params.moodlewsrestformat = 'json';
 		params.wsfunction = 'local_uniappws_files_upload_draft_file';
 		params.wstoken = token;
+		params.itemid = file.draftid;
 		params.filename = file.filename;
 		params.filedata = file.filedata;
+		console.log(params);
 
 		var file_upload_response_store = this.request(params, 'MoodleMobApp.model.FileUploadResponse', 'POST');
 		return file_upload_response_store;	

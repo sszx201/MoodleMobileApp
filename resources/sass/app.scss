@@ -37,6 +37,8 @@ $active-color: #C35817;
 	padding-left: 35px;
 }
 
+.x-module-icon-choice,
+.x-module-icon-assign,
 .x-module-icon-assignment {
 	background:url('../images/assignment.png');
 	background-repeat: no-repeat;
@@ -66,6 +68,7 @@ $active-color: #C35817;
 	background-position-y: 5px;
 }
 
+.x-module-icon-scorm,
 .x-module-icon-resource {
 	background:url('../images/resource.png');
 	background-repeat: no-repeat;
@@ -136,6 +139,7 @@ $active-color: #C35817;
 .x-partecipant-contact-button {
 	margin-top: 10px;
 }
+
 /*
  *
  * Forum related classes
@@ -219,15 +223,26 @@ $active-color: #C35817;
 	padding-top: 15px;
 }
 
+/*
+ *
+ * Assignment and Choices related classes
+ *
+ * */
+
 .assignment-intro,
 .assignment-previous-submission,
 .assignment-chosen-files-list,
 .choice-intro,
-.choice-status {
+.choice-status,
+.activity-dates {
 	background-color: white;
 	padding: 5px;
 	padding-top: 10px;
 	padding-bottom: 10px;
+}
+
+.activity-dates {
+	margin-top: 10px;
 }
 
 .assignment-chosen-files-list div.file-entry {
@@ -238,3 +253,39 @@ $active-color: #C35817;
 .choice-status {
 	margin-top: 10px;
 }
+
+/*
+ *
+ * Assign and Assignment related classes
+ *
+ * */
+.assignment{
+	.intro {
+		background-color: white;
+		padding: 5px;
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+	
+	.dates,
+	.last-submission {
+		margin-top: 10px;
+		background-color: white;
+		padding: 5px;
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+
+	.toosoon,
+	.toolate,
+	.noresubmit,
+	.lastsubmissionwasfinal {
+		padding-top: 10px;
+		padding-bottom: 10px;
+		background-color: white;
+		color: red;
+		text-align: center;
+		font-weight: bold;
+	}
+}
+

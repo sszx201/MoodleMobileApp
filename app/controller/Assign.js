@@ -3,7 +3,9 @@ Ext.define('MoodleMobApp.controller.Assign', {
 
 	config: {
 		models: [
+			'MoodleMobApp.model.Assign',
 			'MoodleMobApp.model.AssignSubmission',
+			'MoodleMobApp.model.AssignReport',
 			'MoodleMobApp.model.FileUploadResponse',
 		],
 
@@ -14,16 +16,16 @@ Ext.define('MoodleMobApp.controller.Assign', {
 		refs: {
 			navigator: '#course_navigator',
 			moduleList: '#module_list',
-			assign: '#assign_form',
-			assignAddFile: '#assign_form button[action=addfile]',
-			assignSubmit: '#assign_form button[action=submit]',
+			assign: 'assign',
+			addFileSlotButton: 'assign button[action=addfile]',
+			submitButton: 'assign button[action=submit]',
 		},
 
 		control: {
 			// generic controls
 			moduleList: { itemtap: 'selectModule' },
-			assignAddFile: { tap: 'addFile' },
-			assignSubmit: { tap: 'submitAssign' },
+			addFileSlotButton: { tap: 'addFileSlot' },
+			submitButton: { tap: 'submitAssign' },
 		}
 	},
 
@@ -42,74 +44,98 @@ Ext.define('MoodleMobApp.controller.Assign', {
 		this.getNavigator().pop();
 	},
 
-	selectAssign: function(assignment) {
-		// display assignment
-		var previous_submission_record = MoodleMobApp.Session.getAssignSubmissionsStore().getById(assignment.get('id'));
-
-		if(previous_submission_record != null) {
-			assignment.set('submission', previous_submission_record.get('filename'));
-		}
-
+	selectAssign: function(assign) {
 		if(typeof this.getAssign() == 'object') {
-			this.getAssign().setRecord(assignment);
-			this.getNavigator().push(this.getAssign());
-		} else {
-			this.getNavigator().push({
-				xtype: 'assign',
-				record: assignment
-			});
+			this.getAssign().destroy(); // if the previous instance is still there remove it
 		}
+		
+		// assign view config object
+		var aconf = {
+			xtype: 'assign',
+			record: assign,
+			settings: null,
+			lastSubmission: null,
+		};
+
+		var assign_store = MoodleMobApp.WebService.getAssignById(assign.get('instanceid'), MoodleMobApp.Session.getCourse().get('token'));
+		assign_store.on(
+			'load', 
+			function(store){
+				aconf.settings = store.first().getData(); 
+				console.log(aconf.settings);
+				// check for submissions
+				var submissions_store = MoodleMobApp.WebService.getAssignSubmission(assign.get('instanceid'), MoodleMobApp.Session.getCourse().get('token'));
+				submissions_store.on(
+					'load', 
+					function(store){
+						if(store.first().get('id') != 0) {
+							aconf.lastSubmission = store.first().getData(); 
+						}
+						// show the object
+						this.getNavigator().push(aconf);
+					},
+					this,
+					{single: true}
+				);
+			},
+			this,
+			{single: true}
+		);
 	},
 
-	addFile: function() {
-		var fieldset = this.getAssign().child('fieldset');
-		// get the formdata
-		//var newfile = fieldset.child('#filepath').getValue().split(/(\\|\/)/g).pop();
-		var newfile = fieldset.child('#filepath').getValue();
-		fieldset.child('#filepath').setValue('');
-		if(newfile == '' || newfile == null) {
-			Ext.Msg.alert("File Choice", "Please select a file first.");
-		} else if(fieldset.child('textfield[value="'+newfile+'"]') != null) {
-			Ext.Msg.alert("File Choice", "This file has already be chosen. Please select a different one.");
-		} else {
-			fieldset.insert(
-				0,
+	addFileSlot: function() {
+		var filelist = this.getAssign().child('fieldset').child('container[cls=filelist]');
+		if(filelist.getItems().getCount() < this.getAssign().config.settings.plugconf.files.assignsubmission.maxfilesubmissions) {
+			filelist.add(
 				{
-					xtype: 'textfield',
-					name: 'filelist',
-					value: newfile,
-					listeners: {
-						clearicontap: function(self){
-							self.destroy();
+					xtype: 'container',
+					layout: 'hbox',
+					items: [
+						{
+							xtype: 'textfield',
+							component: { 
+								xtype: 'file',
+								disabled: false,
+							},
+							flex: 4,
+						},
+						{
+							xtype: 'button',
+							text: 'Remove',
+							ui: 'decline',
+							flex: 1,
+							margin: 10,
+							listeners: {
+								tap: function(self) {
+									self.getParent().destroy();
+								}
+							}
 						}
-					}
+					]
 				}
 			);
+		} else {
+			Ext.Msg.alert("Submission max file number", "The max number of file allowed in this assignment has been reached. No more files can be attached.");
 		}
 	},
 
 	submitAssign: function(button) {
+		// check and prepare the files to be uploaded as drafts
+		// check files number; must be at least one file to submit
 		var submission_data = this.getAssign().getValues();
-		// check data
-		if(submission_data.filelist == undefined) {
-			Ext.Msg.alert("Submission empty", "The submission cannot be empty. Please select some files to submit.");
-			return;
-		}
 
-		MoodleMobApp.app.showLoadMask('Submitting...');
 		var self = this;
-		submission_data.files = new Array();
+		//MoodleMobApp.app.showLoadMask('Submitting...');
 		// function to execute if the file is read successfully
 		var submit = function(params) {
 			params.courseid = MoodleMobApp.Session.getCourse().get('id');
 			params.instanceid = submission_data.instanceid;
-			params.isfinal = 1;
-			var assignment_submission_store = MoodleMobApp.WebService.submitUploadAssignment(params,  MoodleMobApp.Session.getCourse().get('token'));
-			assignment_submission_store.on(
+			if(params.teamsubmission == null) params.teamsubmission = 0;
+			var assign_submission_store = MoodleMobApp.WebService.submitAssign(params,  MoodleMobApp.Session.getCourse().get('token'));
+			assign_submission_store.on(
 				'load',
 				function(status_store){
 					MoodleMobApp.app.hideLoadMask();
-					//self.storeTheUploadSubmission(params);
 					self.backToTheCourseModulesList();
 				},
 				null,
@@ -117,50 +143,77 @@ Ext.define('MoodleMobApp.controller.Assign', {
 			);
 		};
 
-		var uploadDraftFile = function(fdata, params) {
-			//update params
-			params.filename = params.filepath.split(/(\\|\/)/g).pop();
-			params.filedata = fdata;
-			var file_upload_response_store = MoodleMobApp.WebService.uploadDraftFile(params, MoodleMobApp.Session.getCourse().get('token'));
-			file_upload_response_store.on(
-				'load',
-				function(status_store) {
-					params.files.push(status_store.first().get('fileid'));
-					if(params.filelist.length > 0) {
-						var fpath = params.filelist.pop();
-						params.filepath = fpath;
-						MoodleMobApp.app.readFile(fpath, uploadDraftFile, params);
-					} else { // all draft files have been updated
-						submit(params);
+		if(this.getAssign().config.settings.plugconf.files.assignsubmission.enabled == 1) { // submit with files
+			submission_data.uploadFile = new Array();
+			submission_data.files = new Array();
+			submission_data.filenames = new Array();
+			var filelist = this.getAssign().child('fieldset').child('container[cls=filelist]');
+			var fileEntries = filelist.getItems().getCount();
+			var files = {}; // this object is used to control the files; avoid duplicates and empty submissions
+			for(var i=0; i < fileEntries; ++i) {
+				var file = filelist.getAt(i).child('textfield').getComponent().input.dom.files;
+				if(file.length > 0) { // ignore file is the slot is empty
+					if(files[file[0].name] == undefined) {
+						files[file[0].name] = file;
+						submission_data.uploadFile.push(file);
 					}
-				},
-				null,
-				{single: true}
-			);
-		};
+				}
+			}
+			// check if the submission is empty.
+			// there must be some files to upload.
+			if(Object.getOwnPropertyNames(files).length === 0) {
+				Ext.Msg.alert("Submission empty", "The submission cannot be empty. Please select some files to submit.");
+				return;
+			}
+			var uploadDraftFile = function(fdata, params) {
+				//update params
+				params.filedata = fdata;
+				var file_upload_response_store = MoodleMobApp.WebService.uploadDraftFile(params, MoodleMobApp.Session.getCourse().get('token'));
+				file_upload_response_store.on(
+					'load',
+					function(status_store) {
+						params.files.push(status_store.first().get('fileid'));
+						if(params.uploadFile.length > 0) {
+							var file = params.uploadFile.pop();
+							params.filename = file[0].name;
+							params.filenames.push(params.filename);
+							reader.readAsDataURL(file[0]);
+						} else { // all draft files have been updated
+							// final step: submission
+							submit(params);
+						}
+					},
+					null,
+					{single: true}
+				);
+			};
 
-		if(typeof submission_data.filelist == 'string') { // only one file to submit
-			var entry = submission_data.filelist;
-			submission_data.filelist = new Array();
-			submission_data.filelist.push(entry);
-		}
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				var content = e.target.result;
+				uploadDraftFile(content, submission_data);
+			}
+			
 
-		var fpath = submission_data.filelist.pop();
-		submission_data.filepath = fpath;
-		MoodleMobApp.app.readFile(fpath, uploadDraftFile, submission_data);
-	},
-
-	storeTheSubmission: function(data){
-		if(MoodleMobApp.Session.getAssignSubmissionsStore().find('id', data.id) == -1){
-			var submission_record = Ext.create('MoodleMobApp.model.AssignSubmission', data);
-			submission_record.setDirty();
-			MoodleMobApp.Session.getAssignSubmissionsStore().add(submission_record);
+			// generate a random draft itemid
+			submission_data.draftid = Math.round(Math.random() * 1000000000);
+			// start the draft uploading chain
+			var first_file = submission_data.uploadFile.pop();
+			submission_data.filename = first_file[0].name;
+			// store the filenames for the assignment submission report
+			submission_data.filenames.push(submission_data.filename);
+			reader.readAsDataURL(first_file[0]);
 		} else {
-			MoodleMobApp.Session.getAssignSubmissionsStore().getById(data.id).setData(data);
-			MoodleMobApp.Session.getAssignSubmissionsStore().getById(data.id).setDirty();
+			if(submission_data.onlinetext === "") {
+				Ext.Msg.alert("Submission empty", "The submission cannot be empty. Please write some text before submitting.");
+				return;
+			} else {
+				submit(submission_data);
+			}
 		}
 
-		MoodleMobApp.Session.getAssignSubmissionsStore().sync()
+
 	},
+
 
 });

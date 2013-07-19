@@ -53,8 +53,11 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 	addSectionLabels: function(){
 		var course_format = MoodleMobApp.Session.getCourse().get('format');
 		var course_start_date = MoodleMobApp.Session.getCourse().get('startdate')*1000; //
-		var week = 6*24*3600*1000; // in miliseconds
+		var day = 24 * 3600 * 1000;
+		var week = 6 * day; // in miliseconds
 		var date_format = 'd M';
+		var begin_day = course_start_date;
+		var end_day = course_start_date + week;
 		
 		// add section labels
 		var number_of_sections = 50;
@@ -64,9 +67,9 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 				break;
 			} else {
 				if(course_format == 'weeks') {
-					var begin_day = new Date(course_start_date + week*(i-1));
-					var end_day = new Date(course_start_date + week*i);
-					var label = Ext.Date.format(begin_day, date_format) + ' - ' + Ext.Date.format(end_day, date_format);
+					label = Ext.Date.format(new Date(begin_day), date_format) + ' - ' + Ext.Date.format(new Date(end_day), date_format);
+					begin_day = end_day + day;
+					end_day = begin_day + week;
 					Ext.DomHelper.insertBefore(element, '<div class="x-module-section">'+label+'</div>');
 				} else {
 					Ext.DomHelper.insertBefore(element, '<div class="x-module-section">section '+i+'</div>');

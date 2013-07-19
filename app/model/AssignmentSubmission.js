@@ -9,6 +9,7 @@ Ext.define('MoodleMobApp.model.AssignmentSubmission', {
 			{name: 'usertext', type: 'string'},
 			{name: 'userfiles', type: 'auto'},
 			{name: 'submissioncomment', type: 'string'},
+			{name: 'isfinal', type: 'boolean'},
 			{name: 'grade', type: 'float'},
 			{name: 'timemodified', type: 'auto'},
 		]

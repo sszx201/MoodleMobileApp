@@ -16,17 +16,52 @@ Ext.define("MoodleMobApp.view.SingleUploadAssignment", {
 
 	config: {
 		title: 'Single Upload Assignment',
+		cls: 'assignment',
 		autoDestroy: true,
 		listeners: {
-			show: function(){
+			initialize: function() {
+				// check the data
+				if(this.config.settings.preventlate == 1) { // check the dates
+					var today = new Date();
+					var duedate = new Date(this.config.settings.timedue * 1000);
+					var availabledate = new Date(this.config.settings.timeavailable * 1000);
+					if(today > duedate) {
+						this.child('panel[name=toolate]').show();
+						this.child('fieldset').hide();
+						return;
+					}
+
+					if(today < availabledate) {
+						this.child('panel[name=toosoon]').show();
+						this.child('fieldset').hide();
+						return;
+					}
+				} if(this.config.settings.resubmit == 0 && this.config.lastSubmission.id > 0) {
+					this.child('panel[name=noresubmit]').show();
+					this.child('fieldset').hide();
+				}
+			},
+
+			show: function() {
 				// display the parent post
 				var data = this.getRecord().getData();
 				// prepare the html
-				var intro_html = '<div class="x-form-fieldset-title x-docked-top">'+data.name+'</div>'+ 
-									'<div class="assignment-intro">'+ data.intro + '</div>';
-				// inject html
-				this.getItems().first().setHtml(intro_html);
-			}	
+				var intro_html = '<div class="x-form-fieldset-title x-docked-top">'+data.name+'</div>';
+					intro_html+= '<div class="intro">'+ data.intro + '</div>';
+					intro_html+= '<div class="dates">';
+					intro_html+= '<div class="date">Available from date: </br>'+ MoodleMobApp.app.formatDate(this.config.settings.timeavailable) + '</div>';
+					intro_html+= '<div class="date">Deadline date: </br>'+ MoodleMobApp.app.formatDate(this.config.settings.timedue) + '</div>';
+					intro_html+= '</div>';
+
+				// display the intro
+
+				if(this.config.lastSubmission.id > 0) {
+					intro_html += '<div class="last-submission">Previously submitted file: ' + this.config.lastSubmission.userfiles[0].filename + '</div>';
+				}
+
+				this.child('panel[name=intro]').setHtml(intro_html);
+			}
+
 		},
 		items: [	
 			{
@@ -63,12 +98,31 @@ Ext.define("MoodleMobApp.view.SingleUploadAssignment", {
 					},
 				]
 			},
+			{
+				xtype: 'panel',
+				name: 'toosoon',
+				cls: 'toosoon',
+				docked: 'top',
+				hidden: true,
+				html: 'This assignment has not been opened yet.'
+			},
+			{
+				xtype: 'panel',
+				name: 'toolate',
+				cls: 'toolate',
+				docked: 'top',
+				hidden: true,
+				html: 'This assignment has been closed.'
+			},
+			{
+				xtype: 'panel',
+				name: 'noresubmit',
+				cls: 'noresubmit',
+				docked: 'top',
+				hidden: true,
+				html: 'No resubmit allowed.'
+			}
 		]
 	},
 
-	displayPreviousSubmission: function(record) {
-		var intro = this.getItems().first().getHtml();
-		var previous_submission = '<div class="assignment-previous-submission">Previously submitted file: ' + record.get('userfiles')[0].filename + '</div>';
-		this.getItems().first().setHtml(intro+previous_submission);
-	}
 });

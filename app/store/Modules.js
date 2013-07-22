@@ -10,6 +10,7 @@ Ext.define('MoodleMobApp.store.Modules', {
 		storeId: 'modules',
 		model: 'MoodleMobApp.model.Module',
 		groupField: 'section',
+		sorters: 'modname',
 		autoLoad: true,
 		//autoSync: true,
 		proxy : {

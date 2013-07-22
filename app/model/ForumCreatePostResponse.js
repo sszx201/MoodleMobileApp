@@ -3,7 +3,7 @@ Ext.define('MoodleMobApp.model.ForumCreatePostResponse', {
 	
 	config: {
 		fields: [
-			{name: 'postid', type: 'int'}
+			{ name: 'postid', type: 'int' }
 		]
 	}
 });

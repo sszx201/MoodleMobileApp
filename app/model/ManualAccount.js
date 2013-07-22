@@ -4,8 +4,8 @@ Ext.define('MoodleMobApp.model.ManualAccount', {
 	config: {
 		identifier: 'uuid',
 		fields: [ 
-			{name: 'username', type: 'string'},
-			{name: 'password', type: 'string'}
+			{ name: 'username', type: 'string' },
+			{ name: 'password', type: 'string' }
 		]
 	}
 });

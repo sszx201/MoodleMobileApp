@@ -45,7 +45,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 						// else 
 						// if a previous entry of this user exists and has been modified
 						// then updated it by removing the previous entry otherwise skip the record
-						var current_user = MoodleMobApp.Session.getUsersStore().getById(record.get('id'));
+						var current_user = MoodleMobApp.Session.getUsersStore().findRecord('id', record.get('id'), null, false, true, true);
 						if(current_user == null) {
 							record.setDirty();
 							MoodleMobApp.Session.getUsersStore().add(record);
@@ -55,8 +55,8 @@ Ext.define('MoodleMobApp.controller.Main', {
 								MoodleMobApp.log('|I| New user; username: '+record.get('username')+'; id: '+record.get('id'));
 							}
 						} else if(typeof current_user == 'object' && current_user.get('timemodified') != record.get('timemodified')) {
-							MoodleMobApp.Session.getUsersStore().getById(record.get('id')).setData(record.getData());
-							MoodleMobApp.Session.getUsersStore().getById(record.get('id')).setDirty();
+							MoodleMobApp.Session.getUsersStore().remove(current_user);
+							MoodleMobApp.Session.getUsersStore().add(record);
 							users_store_to_sync = true;
 							// -log-
 							if(MoodleMobApp.Config.getVerbose()) {
@@ -112,33 +112,33 @@ Ext.define('MoodleMobApp.controller.Main', {
 								store_to_sync = true;
 								MoodleMobApp.Session.getModulesStore().remove(record);
 							}
-						}, this);
+						}, this
+					);
 
 				// add/update new module entries
-				mstore.each(function(module){
-					var index = MoodleMobApp.Session.getModulesStore().findExact('id', module.get('id'));
+				mstore.each(function(module) {
+					var local_module = MoodleMobApp.Session.getModulesStore().findRecord('id', module.get('id'), null, false, true, true);
 					// check if the moodle entry exists in the store
-					if(index == -1) {
+					if(local_module == null) {
 						// don't set 'new' flag in the module entries of the new courses
 						// avoid having new courses with all modules show as new
 						if(is_new_course) {
-							module.set('isnew', false);	
+							module.set('isnew', false);
 						} else {
-							module.set('isnew', true);	
+							module.set('isnew', true);
 						}
-						module.set('isupdated', false);	
+						module.set('isupdated', false);
 						MoodleMobApp.Session.getModulesStore().add(module);
 						store_to_sync = true;
 						// -log-
 						if(MoodleMobApp.Config.getVerbose()) {
 							MoodleMobApp.log('|I| New module '+module.get('modname')+'; type:'+module.get('type')+'; name: '+module.get('name')+'; id: '+module.get('id'));
 						}
-					} else if(MoodleMobApp.Session.getModulesStore().getAt(index).get('timemodified') != module.get('timemodified')) { // check if updated
-						MoodleMobApp.Session.getModulesStore().getAt(index).set('name', module.get('name'));
-						MoodleMobApp.Session.getModulesStore().getAt(index).set('intro', module.get('intro'));
-						MoodleMobApp.Session.getModulesStore().getAt(index).set('timemodified', module.get('timemodified'));
-						MoodleMobApp.Session.getModulesStore().getAt(index).set('isnew', false);
-						MoodleMobApp.Session.getModulesStore().getAt(index).set('isupdated', true);
+					} else if(local_module.get('timemodified') != module.get('timemodified')) { // check if updated
+						MoodleMobApp.Session.getModulesStore().remove(local_module);
+						module.set('isnew', false);
+						module.set('isupdated', true);
+						MoodleMobApp.Session.getModulesStore().add(module);
 						store_to_sync = true;
 						// -log-
 						if(MoodleMobApp.Config.getVerbose()) {
@@ -257,26 +257,25 @@ Ext.define('MoodleMobApp.controller.Main', {
 					var is_new_course = course.get('isnew');
 					var store_to_sync = false;
 					discussions.each(function(discussion) {
-						var index = MoodleMobApp.Session.getForumDiscussionsStore().findExact('id', discussion.get('id'));
+						var local_discussion = MoodleMobApp.Session.getForumDiscussionsStore().findRecord('id', discussion.get('id'), null, false, true, true);
 						// if this discussion is new then add
-						if(index == -1) {
+						if(local_discussion == null) {
 							// don't set 'new' flag in the module entries of the new courses
 							// avoid having new courses with all modules marked as new
 							if(is_new_course) {
-								discussion.set('isnew', false);	
+								discussion.set('isnew', false);
 							} else {
 								discussion.set('isnew', true);
 							}
-							discussion.set('isupdated', false);	
+							discussion.set('isupdated', false);
 							MoodleMobApp.Session.getForumDiscussionsStore().add(discussion);
 							store_to_sync = true;
 						// check if the discussion has been updated or not
-						} else if(MoodleMobApp.Session.getForumDiscussionsStore().getAt(index).get('timemodified') != discussion.get('timemodified')) {
-							MoodleMobApp.Session.getForumDiscussionsStore().getAt(index).set('name', discussion.get('name'));
-							MoodleMobApp.Session.getForumDiscussionsStore().getAt(index).set('groupid', discussion.get('groupid'));
-							MoodleMobApp.Session.getForumDiscussionsStore().getAt(index).set('timemodified', discussion.get('timemodified'));
-							MoodleMobApp.Session.getForumDiscussionsStore().getAt(index).set('isnew', false);
-							MoodleMobApp.Session.getForumDiscussionsStore().getAt(index).set('isupdated', true);
+						} else if(local_discussion.get('timemodified') != discussion.get('timemodified')) {
+							MoodleMobApp.Session.getForumDiscussionsStore().remove(local_discussion);
+							discussion.set('isnew', false);
+							discussion.set('isupdated', true);
+							MoodleMobApp.Session.getForumDiscussionsStore().add(discussion);
 							store_to_sync = true;
 						}
 						this.updateForumPostsStore(discussion, course.get('token'));
@@ -306,17 +305,17 @@ Ext.define('MoodleMobApp.controller.Main', {
 				var store_to_sync = false;
 				var is_new_discussion = discussion.get('isnew');
 				posts.each(function(post) {
-					var index = MoodleMobApp.Session.getForumPostsStore().findExact('id', post.get('id'));
+					var local_post = MoodleMobApp.Session.getForumPostsStore().findRecord('id', post.get('id'), null, false, true, true);
 					// if this post is new then add
-					if(index == -1) {
+					if(local_post == null) {
 						// don't set 'new' flag in the module entries of the new courses
 						// avoid having new courses with all modules marked as new
 						if(is_new_discussion) {
-							post.set('isnew', false);	
+							post.set('isnew', false);
 						} else {
-							post.set('isnew', true);	
+							post.set('isnew', true);
 						}
-						post.set('isupdated', false);	
+						post.set('isupdated', false);
 						MoodleMobApp.Session.getForumPostsStore().add(post);
 						store_to_sync = true;
 						// -log-
@@ -324,13 +323,11 @@ Ext.define('MoodleMobApp.controller.Main', {
 							MoodleMobApp.log('|I| New forum post: '+post.get('id')+' in discussion: '+discussionid);
 						}
 					// check if the discussion has been updated or not
-					} else if(MoodleMobApp.Session.getForumPostsStore().getAt(index).get('modified') != post.get('modified')) {
-						MoodleMobApp.Session.getForumPostsStore().getAt(index).set('subject', post.get('subject'));
-						MoodleMobApp.Session.getForumPostsStore().getAt(index).set('message', post.get('message'));
-						MoodleMobApp.Session.getForumPostsStore().getAt(index).set('modified', post.get('modified'));
-						MoodleMobApp.Session.getForumPostsStore().getAt(index).set('attachments', post.get('attachments'));
-						MoodleMobApp.Session.getForumPostsStore().getAt(index).set('isnew', false);
-						MoodleMobApp.Session.getForumPostsStore().getAt(index).set('isupdated', true);
+					} else if(local_post.get('modified') != post.get('modified')) {
+						MoodleMobApp.Session.getForumPostsStore().remove(local_post);
+						post.set('isnew', false);
+						post.set('isupdated', true);
+						MoodleMobApp.Session.getForumPostsStore().add(post);
 						store_to_sync = true;
 						// -log-
 						if(MoodleMobApp.Config.getVerbose()) {
@@ -381,8 +378,8 @@ Ext.define('MoodleMobApp.controller.Main', {
 						if(record.get('discussion') == discussionid) { return true; }
 					}).each(
 						function(post){
-							var user = MoodleMobApp.Session.getUsersStore().getById(post.get('userid'));
-							if(user == undefined && added_users.indexOf(post.get('userid')) == -1) { // avoid adding twice the same user
+							var user = MoodleMobApp.Session.getUsersStore().findRecord('id', post.get('userid'), null, false, true, true);
+							if(user == null && added_users.indexOf(post.get('userid')) == -1) { // avoid adding twice the same user
 								// keep track of added users
 								// -log-
 								if(MoodleMobApp.Config.getVerbose()) {
@@ -443,13 +440,13 @@ Ext.define('MoodleMobApp.controller.Main', {
 						// set the root post depth to 0
 						post.set('indentation', 0);
 					} else {
-						var parent_position = MoodleMobApp.Session.getForumPostsStore().findExact('id', parentid);
-						var parent_indentation = MoodleMobApp.Session.getForumPostsStore().getAt(parent_position).get('indentation');
+						var parent_post = MoodleMobApp.Session.getForumPostsStore().findRecord('id', parentid, null, false, true, true);
+						var parent_indentation = parent_post.get('indentation');
 						post.set('indentation', parent_indentation + 1);
 					}
 
 					// add user info
-					var user = MoodleMobApp.Session.getUsersStore().getById(post.get('userid'));
+					var user = MoodleMobApp.Session.getUsersStore().findRecord('id', post.get('userid'), null, false, true, true);
 					if( user != null) {
 						post.set('firstname', user.get('firstname'));
 						post.set('lastname', user.get('lastname'));
@@ -597,8 +594,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 			MoodleMobApp.log('UPDATING GRADEITEMS STORE');
 		}
 
-		var index = MoodleMobApp.Session.getUsersStore().findExact('username', MoodleMobApp.Session.getUsername());
-		var user = MoodleMobApp.Session.getUsersStore().getAt(index);
+		var user = MoodleMobApp.Session.getUsersStore().findRecord('username', MoodleMobApp.Session.getUsername(), null, false, true, true);
 
 		MoodleMobApp.WebService.getGradeItems(course.getData(), course.get('token')).on(
 			'load',
@@ -617,23 +613,24 @@ Ext.define('MoodleMobApp.controller.Main', {
 				
 				// add/update new gradeitem entries
 				response.each(function(gradeitem) {
-					var index = MoodleMobApp.Session.getGradeItemsStore().findExact('id', gradeitem.get('id'));
+					var local_grade = MoodleMobApp.Session.getGradeItemsStore().findRecord('id', gradeitem.get('id'), null, false, true, true);
 					// check if the moodle entry exists in the store
-					if(index == -1) {
+					if(local_grade == null) {
 						// don't set 'new' flag in the gradeitem entries of the new courses
 						// avoid having new courses with all gradeitems show as new
-						gradeitem.set('isnew', true);	
-						gradeitem.set('isupdated', false);	
+						gradeitem.set('isnew', true);
+						gradeitem.set('isupdated', false);
 						MoodleMobApp.Session.getGradeItemsStore().add(gradeitem);
 						store_to_sync = true;
 						// -log-
 						if(MoodleMobApp.Config.getVerbose()) {
 							MoodleMobApp.log('|I| New gradeitem '+gradeitem.get('itemname')+'; type:'+gradeitem.get('type'));
 						}
-					} else if(MoodleMobApp.Session.getGradeItemsStore().getAt(index).get('timemodified') != gradeitem.get('timemodified')) { // check if updated
-						MoodleMobApp.Session.getGradeItemsStore().getAt(index).setData(gradeitem);
-						MoodleMobApp.Session.getGradeItemsStore().getAt(index).set('isnew', false);
-						MoodleMobApp.Session.getGradeItemsStore().getAt(index).set('isupdated', true);
+					} else if(local_grade.get('timemodified') != gradeitem.get('timemodified')) { // check if updated
+						MoodleMobApp.Session.getGradeItemsStore().remove(local_grade);
+						gradeitem.set('isnew', false);
+						gradeitem.set('isupdated', true);
+						MoodleMobApp.Session.getGradeItemsStore().add(gradeitem);
 						store_to_sync = true;
 						// -log-
 						if(MoodleMobApp.Config.getVerbose()) {
@@ -655,8 +652,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 			MoodleMobApp.log('UPDATING GRADES STORE');
 		}
 
-		var index = MoodleMobApp.Session.getUsersStore().findExact('username', MoodleMobApp.Session.getUsername());
-		var user = MoodleMobApp.Session.getUsersStore().getAt(index);
+		var user = MoodleMobApp.Session.getUsersStore().findRecord('username', MoodleMobApp.Session.getUsername(), null, false, true, true);
 
 		MoodleMobApp.WebService.getGrades(course.getData(), course.get('token')).on(
 			'load',
@@ -675,23 +671,24 @@ Ext.define('MoodleMobApp.controller.Main', {
 				
 				// add/update new gradeitem entries
 				response.each(function(gradeitem) {
-					var index = MoodleMobApp.Session.getGradesStore().findExact('id', gradeitem.get('id'));
+					var local_grade = MoodleMobApp.Session.getGradesStore().findRecord('id', gradeitem.get('id'), null, false, true, true);
 					// check if the moodle entry exists in the store
-					if(index == -1) {
+					if(local_grade == null) {
 						// don't set 'new' flag in the gradeitem entries of the new courses
 						// avoid having new courses with all gradeitems show as new
-						gradeitem.set('isnew', true);	
-						gradeitem.set('isupdated', false);	
+						gradeitem.set('isnew', true);
+						gradeitem.set('isupdated', false);
 						MoodleMobApp.Session.getGradesStore().add(gradeitem);
 						store_to_sync = true;
 						// -log-
 						if(MoodleMobApp.Config.getVerbose()) {
 							MoodleMobApp.log('|I| New grade for item: '+grade.get('itemid')+'; gradeitem:'+gradeitem.get('rawgradeitem'));
 						}
-					} else if(MoodleMobApp.Session.getGradesStore().getAt(index).get('timemodified') != gradeitem.get('timemodified')) { // check if updated
-						MoodleMobApp.Session.getGradesStore().getAt(index).setData(gradeitem);
-						MoodleMobApp.Session.getGradesStore().getAt(index).set('isnew', false);
-						MoodleMobApp.Session.getGradesStore().getAt(index).set('isupdated', true);
+					} else if(local_grade.get('timemodified') != gradeitem.get('timemodified')) { // check if updated
+						MoodleMobApp.Session.getGradesStore().remove(local_grade);
+						gradeitem.set('isnew', false);
+						gradeitem.set('isupdated', true);
+						MoodleMobApp.Session.getGradesStore().add(gradeitem);
 						store_to_sync = true;
 						// -log-
 						if(MoodleMobApp.Config.getVerbose()) {

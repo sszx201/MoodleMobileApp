@@ -3,8 +3,8 @@ Ext.define('MoodleMobApp.model.ForumCreateDiscussionResponse', {
 	
 	config: {
 		fields: [
-			{name: 'discid', type: 'int'},
-			{name: 'postid', type: 'int'}
+			{ name: 'discid', type: 'int' },
+			{ name: 'postid', type: 'int' }
 		]
 	}
 });

@@ -6,16 +6,16 @@ Ext.define('MoodleMobApp.model.ForumDiscussion', {
 		identifier: 'uuid',
 
 		fields: [
-			{name: 'localid', type: 'auto'},
-			{name: 'id', type: 'int'},
-			{name: 'forum', type: 'int'},
-			{name: 'name', type: 'string'},
-			{name: 'firstpost', type: 'int'},
-			{name: 'userid', type: 'int'},
-			{name: 'groupid', type: 'int'},
-			{name: 'timemodified', type: 'string'},
-			{name: 'isnew', type: 'boolean'},
-			{name: 'isupdated', type: 'boolean'}
+			{ name: 'localid', type: 'auto' },
+			{ name: 'id', type: 'int' },
+			{ name: 'forum', type: 'int' },
+			{ name: 'name', type: 'string' },
+			{ name: 'firstpost', type: 'int' },
+			{ name: 'userid', type: 'int' },
+			{ name: 'groupid', type: 'int' },
+			{ name: 'timemodified', type: 'string' },
+			{ name: 'isnew', type: 'boolean' },
+			{ name: 'isupdated', type: 'boolean' }
 		]
 	}
 });

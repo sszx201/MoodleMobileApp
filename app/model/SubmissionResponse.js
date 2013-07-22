@@ -3,7 +3,7 @@ Ext.define('MoodleMobApp.model.SubmissionResponse', {
 	
 	config: {
 		fields: [
-			{name: 'subid', type: 'int'}
+			{ name: 'subid', type: 'int' }
 		]
 	}
 });

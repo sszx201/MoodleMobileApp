@@ -3,16 +3,16 @@ Ext.define('MoodleMobApp.model.Course', {
 		
 	config: {
 		fields: [
-			{name: 'id', type: 'auto'},
-			{name: 'name', type: 'string'},
-			{name: 'format', type: 'string'},
-			{name: 'startdate', type: 'int'},
-			{name: 'timemodified', type: 'int'},
-			{name: 'token', type: 'string'},
-			{name: 'modules', type: 'int', defaultValue: 0},
-			{name: 'isnew', type: 'boolean'},
-			{name: 'newmodules', type: 'int', defaultValue: 0},
-			{name: 'modulestatus', type: 'string', defaultValue: 'counting modules...'},
+			{ name: 'id', type: 'auto' },
+			{ name: 'name', type: 'string' },
+			{ name: 'format', type: 'string' },
+			{ name: 'startdate', type: 'int' },
+			{ name: 'timemodified', type: 'int' },
+			{ name: 'token', type: 'string' },
+			{ name: 'modules', type: 'int', defaultValue: 0 },
+			{ name: 'isnew', type: 'boolean' },
+			{ name: 'newmodules', type: 'int', defaultValue: 0 },
+			{ name: 'modulestatus', type: 'string', defaultValue: 'counting modules...' },
 		]
 	}
 });

@@ -62,7 +62,6 @@ Ext.define('MoodleMobApp.controller.Assign', {
 			'load', 
 			function(store){
 				aconf.settings = store.first().getData(); 
-				console.log(aconf.settings);
 				// check for submissions
 				var submissions_store = MoodleMobApp.WebService.getAssignSubmission(assign.get('instanceid'), MoodleMobApp.Session.getCourse().get('token'));
 				submissions_store.on(

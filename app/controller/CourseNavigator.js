@@ -86,6 +86,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		}
 		
 		if(update_stats) {
+			console.log('update stats from navigator');
 			MoodleMobApp.Session.getModulesStore().sync();
 			this.getApplication().getController('Main').updateCourseModulesStats(MoodleMobApp.Session.getCourse());
 		}
@@ -184,6 +185,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 				return parseInt(record.get('courseid')) == parseInt(this.current_course.get('id')) && record.get('hidden') == 0;
 			}, this
 		);
+
 		// display modules
 		if(typeof this.getGrades() == 'object') {
 			this.getNavigator().push(this.getGrades());

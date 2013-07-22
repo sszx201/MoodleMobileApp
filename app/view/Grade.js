@@ -32,10 +32,16 @@ Ext.define("MoodleMobApp.view.Grade", {
 			classes+= ' x-module-icon-'+record.get('itemmodule'); 
 		this.setCls(classes);
 		var userscore = '-';
-		var index = MoodleMobApp.Session.getGradesStore().findExact('itemid', record.get('id'));
-		if(index != -1) {
-			var grade = MoodleMobApp.Session.getGradesStore().getAt(index);
-			userscore = grade.get('rawgrade');
+		var user_grade = MoodleMobApp.Session.getGradesStore().findRecord('itemid', record.get('id'), null, false, true, true);
+		if(user_grade != null) {
+			console.log(record.getData());
+			console.log(user_grade.getData());
+			if(record.get('scaleid') > 0) {
+				var scale = record.get('scale').split(',');
+				userscore = scale[user_grade.get('finalgrade') - 1];
+			} else {
+				userscore = user_grade.get('finalgrade');
+			}
 		}
 
 		var pass_class = 'x-grade-is-not-passing-grade';
@@ -47,10 +53,12 @@ Ext.define("MoodleMobApp.view.Grade", {
 			score+= '<span class="x-grade-passed '+pass_class+'">';
 			score+= userscore;
 			score+= '</span>';
-			score+= '/';
-			score+= '<span class="x-grade-max">';
-			score+= record.get('grademax');
-			score+= '</span>';
+			if(record.get('scaleid') == 0) {
+				score+= '/';
+				score+= '<span class="x-grade-max">';
+				score+= record.get('grademax');
+				score+= '</span>';
+			}
 			score+= '</div>';
 		this.down('#score').setHtml(score);
 		this.down('#modName').setHtml(record.get('itemmodule'));

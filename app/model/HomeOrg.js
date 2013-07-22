@@ -4,8 +4,8 @@ Ext.define('MoodleMobApp.model.HomeOrg', {
 	config: {
 		identifier: 'uuid',
 		fields: [ 
-			{name: 'name', type: 'string'},
-			{name: 'url', type: 'string'}
+			{ name: 'name', type: 'string' },
+			{ name: 'url', type: 'string' }
 		]
 	}
 });

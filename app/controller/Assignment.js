@@ -61,7 +61,6 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 		// display discussions
 		switch(assignment.get('type')) {
 			case 'online':
-				//this.selectOnlineAssignment(assignment);
 				// destroy the previous instance
 				if(typeof this.getOnlineAssignment() == 'object') {
 					this.getOnlineAssignment().destroy();
@@ -70,7 +69,6 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 				aconf.xtype = 'onlineassignment';
 			break;
 			case 'offline':
-				//this.selectOnlineAssignment(assignment);
 				// destroy the previous instance
 				if(typeof this.getOfflineAssignment() == 'object') {
 					this.getOfflineAssignment().destroy();
@@ -79,7 +77,6 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 				aconf.xtype = 'offlineassignment';
 			break;
 			case 'uploadsingle':
-				//this.selectOnlineAssignment(assignment);
 				// destroy the previous instance
 				if(typeof this.getSingleUploadAssignment() == 'object') {
 					this.getSingleUploadAssignment().destroy();
@@ -88,7 +85,6 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 				aconf.xtype = 'singleuploadassignment';
 			break;
 			case 'upload':
-				//this.selectOnlineAssignment(assignment);
 				// destroy the previous instance
 				if(typeof this.getUploadAssignment() == 'object') {
 					this.getUploadAssignment().destroy();
@@ -275,8 +271,6 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 			params.courseid = MoodleMobApp.Session.getCourse().get('id');
 			params.instanceid = submission_data.instanceid;
 			if(params.isfinal == null) params.isfinal = 0;
-			console.log('submitting the assignment multi');
-			console.log(params);
 			var assignment_submission_store = MoodleMobApp.WebService.submitUploadAssignment(params,  MoodleMobApp.Session.getCourse().get('token'));
 			assignment_submission_store.on(
 				'load',

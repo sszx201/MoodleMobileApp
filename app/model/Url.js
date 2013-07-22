@@ -6,13 +6,13 @@ Ext.define('MoodleMobApp.model.Url', {
 		identifier: 'uuid',
 
 		fields: [
-			{name: 'localid', type: 'auto'},
-			{name: 'id', type: 'int'},
-			{name: 'course', type: 'int'},
-			{name: 'name', type: 'string'},
-			{name: 'intro', type: 'string'},
-			{name: 'timemodified', type: 'int'},
-			{name: 'url', type: 'string'},
+			{ name: 'localid', type: 'auto' },
+			{ name: 'id', type: 'int' },
+			{ name: 'course', type: 'int' },
+			{ name: 'name', type: 'string' },
+			{ name: 'intro', type: 'string' },
+			{ name: 'timemodified', type: 'int' },
+			{ name: 'url', type: 'string' },
 		]
 	}
 });

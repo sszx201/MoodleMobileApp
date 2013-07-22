@@ -4,9 +4,9 @@ Ext.define('MoodleMobApp.model.Settings', {
 	config: {
 		identifier: 'uuid',
 		fields: [
-			{name: 'usageagreement', type: 'boolean'},
-			{name: 'accounttype', type: 'string'},
-			{name: 'storeaccount', type: 'boolean'}
+			{ name: 'usageagreement', type: 'boolean' },
+			{ name: 'accounttype', type: 'string' },
+			{ name: 'storeaccount', type: 'boolean' }
 		]
 	}
 });

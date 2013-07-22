@@ -18,6 +18,7 @@ Ext.define("MoodleMobApp.view.Assign", {
 	config: {
 		title: 'Assignment',
 		cls: 'assignment',
+		autoDestroy: true,
 		listeners: {
 			initialize: function() {
 				Ext.av = this;

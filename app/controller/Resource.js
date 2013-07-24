@@ -24,7 +24,7 @@ Ext.define('MoodleMobApp.controller.Resource', {
 	},
 
 	getFile: function(module){
-		var resource = MoodleMobApp.Session.getResourcesStore().findRecord('id', module.get('instanceid'));
+		var resource = MoodleMobApp.Session.getResourcesStore().findRecord('id', module.get('instanceid'), 0, false, true, true);
 		var file = {
 			'name': resource.get('filename'),
 			'fileid': resource.get('fileid'),

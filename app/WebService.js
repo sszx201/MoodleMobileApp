@@ -253,13 +253,7 @@ Ext.define('MoodleMobApp.WebService', {
 		return folder_content_store;
 	},
 
-	getFile: function(file, dir, progressFunc, successFunc, token) {
-		var params = new Object();
-		// add response format
-		params.moodlewsrestformat = 'json';
-		params.wsfunction = 'local_uniappws_files_get_file';
-		params.wstoken = token;
-		params.fileid = file.fileid;
+	fetchFile: function(file, dir, progressFunc, successFunc, params) {
 		// prepare the parameters
 		var url_encoded_params = '?';
 		Ext.iterate(params, function(key, value){
@@ -288,6 +282,8 @@ Ext.define('MoodleMobApp.WebService', {
 							var fileTransfer = new FileTransfer();
 
 							fileTransfer.onprogress = progressFunc;
+							console.log('downloading from: ' + url);
+							console.log('to: ' + sPath + dir + '/' + file.name);
 							fileTransfer.download(
 								url,
 								sPath + dir + '/' + file.name,
@@ -327,6 +323,16 @@ Ext.define('MoodleMobApp.WebService', {
 			});
 	},
 
+	getFile: function(file, dir, progressFunc, successFunc, token) {
+		var params = new Object();
+		// add response format
+		params.moodlewsrestformat = 'json';
+		params.wsfunction = 'local_uniappws_files_get_file';
+		params.wstoken = token;
+		params.fileid = file.fileid;
+		this.fetchFile(file, dir, progressFunc, successFunc, params);
+	},
+
 	uploadDraftFile: function(file, token) {
 		var params = new Object();
 		// add response format
@@ -336,11 +342,20 @@ Ext.define('MoodleMobApp.WebService', {
 		params.itemid = file.draftid;
 		params.filename = file.filename;
 		params.filedata = file.filedata;
-		console.log(params);
 
 		var file_upload_response_store = this.request(params, 'MoodleMobApp.model.FileUploadResponse', 'POST');
 		return file_upload_response_store;	
 
+	},
+
+	getScorm: function(file, dir, progressFunc, successFunc, token) {
+		var params = new Object();
+		// add response format
+		params.moodlewsrestformat = 'json';
+		params.wsfunction = 'local_uniappws_scorm_get_package';
+		params.wstoken = token;
+		params.scormid = file.scormid;
+		this.fetchFile(file, dir, progressFunc, successFunc, params);
 	},
 
 	getResource: function(resource, token) {

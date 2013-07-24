@@ -48,6 +48,7 @@ Ext.application({
 		'MoodleMobApp.controller.Forum',
 		'MoodleMobApp.controller.Folder',
 		'MoodleMobApp.controller.Resource',
+		'MoodleMobApp.controller.Scorm',
 		'MoodleMobApp.controller.Choice',
 		'MoodleMobApp.controller.Url',
 		'MoodleMobApp.controller.Shell',
@@ -224,7 +225,6 @@ Ext.application({
 
 		// check the file entry
 		var gotFileEntry = function(fileEntry) {
-			//fileEntry.file(gotFile, fail);
 			fileEntry.file(
 				gotFile,
 				function(){
@@ -238,7 +238,6 @@ Ext.application({
 
 		var gotFS = function(fileSystem) {
 			// get the file entry
-			//return fileSystem.root.getFile(path, null, gotFileEntry, fail);
 			return fileSystem.root.getFile(
 				path,
 				null,
@@ -251,7 +250,6 @@ Ext.application({
 				});
 		}
 
-		//return window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail)
 		return window.requestFileSystem(
 			LocalFileSystem.PERSISTENT,
 			0,
@@ -270,4 +268,11 @@ Ext.application({
 		return Ext.Date.format(date, "l d F Y h:m");
 	},
 
+	unzip: function(filePath, successFunc, failFunc) {
+		// Implementend in a separated javascript file because depends on 
+		// the external plugin. The plugin is platform related.	
+
+		var ZipClient = new ExtractZipFilePlugin();
+        ZipClient.extractFile('sdcard/'+filePath, successFunc, failFunc);
+	}
 });

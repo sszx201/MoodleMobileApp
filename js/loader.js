@@ -4,11 +4,13 @@
 	var is_iOS = navigator.userAgent.match(/(iPhone|iPod|iPad)/);
 	var droidScripts = [
 		"js/android/cordova.js",
+		"js/android/extensions.js",
 		"js/android/plugins/WebIntent.js",
 		"js/android/plugins/ExtractZipFilePlugin.js",
 	];
 	var iosScripts = [
 		"js/ios/cordova.js",
+		"js/android/extensions.js",
 	];
 
 	var browserScripts = [

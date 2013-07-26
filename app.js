@@ -73,6 +73,9 @@ Ext.application({
     },
 
     launch: function() {
+		// add the architecture related extensions
+		// this code is located under js/[arch]/extensions.js
+		addExtensions();
         // Destroy the #appLoadingIndicator element
 		Ext.fly('appLoadingIndicator').destroy();
 
@@ -96,22 +99,6 @@ Ext.application({
             }
         );
     },
-
-	openFile: function(path, mimetype){
-		var protocol = 'file:///';
-		var store = 'sdcard'
-		window.plugins.webintent.startActivity(
-			{
-				action: WebIntent.ACTION_VIEW,
-				type: mimetype,
-				url: protocol+store+path,
-			},
-			function () {},
-			function () {
-				Ext.Msg.alert('File Error', 'Failed to open:'+path+' via Android Intent');
-			});
-	},
-
 
 	// file is an object such as:
 	// {"name": "filename", "id": "file id number", "mime":"mime/type"}
@@ -263,16 +250,12 @@ Ext.application({
 		);
 	},
 
+	unzip: function(filePath, successFunc, failFunc) { },
+
+	openFile: function(path, mimetype) { },
+
 	formatDate: function(timestamp) {
 		var date = new Date(timestamp*1000);
 		return Ext.Date.format(date, "l d F Y h:m");
 	},
-
-	unzip: function(filePath, successFunc, failFunc) {
-		// Implementend in a separated javascript file because depends on 
-		// the external plugin. The plugin is platform related.	
-
-		var ZipClient = new ExtractZipFilePlugin();
-        ZipClient.extractFile('sdcard/'+filePath, successFunc, failFunc);
-	}
 });

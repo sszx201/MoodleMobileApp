@@ -26,6 +26,8 @@ Ext.define("MoodleMobApp.view.Choice", {
 			{
 				xtype: 'fieldset',
 				title: 'Options',
+				defaults: {
+				}
 			},
 			{
 				xtype: 'button',

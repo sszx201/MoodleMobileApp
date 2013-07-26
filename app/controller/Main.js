@@ -114,7 +114,6 @@ Ext.define('MoodleMobApp.controller.Main', {
 							}
 						}, this
 					);
-
 				// add/update new module entries
 				mstore.each(function(module) {
 					var local_module = MoodleMobApp.Session.getModulesStore().findRecord('id', module.get('id'), null, false, true, true);

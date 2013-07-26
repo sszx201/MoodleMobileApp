@@ -36,7 +36,7 @@ Ext.define("MoodleMobApp.view.SingleUploadAssignment", {
 						this.child('fieldset').hide();
 						return;
 					}
-				} if(this.config.settings.resubmit == 0 && this.config.lastSubmission.id > 0) {
+				} if(this.config.settings.resubmit == 0 && this.config.lastSubmission != null && this.config.lastSubmission.id > 0) {
 					this.child('panel[name=noresubmit]').show();
 					this.child('fieldset').hide();
 				}
@@ -55,7 +55,7 @@ Ext.define("MoodleMobApp.view.SingleUploadAssignment", {
 
 				// display the intro
 
-				if(this.config.lastSubmission.id > 0) {
+				if(this.config.lastSubmission != null && this.config.lastSubmission.id > 0) {
 					intro_html += '<div class="last-submission">Previously submitted file: ' + this.config.lastSubmission.userfiles[0].filename + '</div>';
 				}
 

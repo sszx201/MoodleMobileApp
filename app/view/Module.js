@@ -4,8 +4,7 @@ Ext.define("MoodleMobApp.view.Module", {
 
 	config: {
 		cls: 'x-module',
-
-		// map records to the DataItem
+		autoDestroy: true,
 		items: [
 			{
 				itemId: 'name',
@@ -21,6 +20,10 @@ Ext.define("MoodleMobApp.view.Module", {
 	},
 
 	updateRecord: function(record){
+		// this function is called also when a DataItem is destroyed or the record is removed from the store
+		// the check bellow avoids the running of the function when it is null
+		if(record == null) { return; } 
+
 		this.down('#name').setHtml(record.get('name'));
 		var classes = 'x-module';
 			classes+= ' x-module-icon-'+record.get('modname'); 

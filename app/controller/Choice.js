@@ -77,7 +77,7 @@ Ext.define('MoodleMobApp.controller.Choice', {
 				label: option.text,
 				value: option.optionid,
 				checked: self.choice.get('answer') == option.optionid ? true : false,
-				labelWidth: '85%',
+				labelWidth: '70%',
 			});
 		});
 	},

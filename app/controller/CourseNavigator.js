@@ -51,24 +51,25 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		this.current_course = record;
 		// set the course token inside the session
 		MoodleMobApp.Session.setCourse(record);
+
 		// filter modules
-		MoodleMobApp.Session.getModulesStore().clearFilter();
-		MoodleMobApp.Session.getModulesStore().filterBy(
+		var modules = Ext.create('Ext.data.Store', { model: 'MoodleMobApp.model.Module' });
+		MoodleMobApp.Session.getModulesStore().each(
 			function(record) { 
-				return parseInt(record.get('courseid')) == parseInt(this.current_course.get('id'))
+				if( parseInt(record.get('courseid')) == parseInt(this.current_course.get('id')) ) {
+					modules.add(record);
+				}
 			}, this
 		);
-
 		// display modules
 		if(typeof this.getModuleList() == 'object') {
 			this.getNavigator().push(this.getModuleList());
 		} else {
 			this.getNavigator().push({
 				xtype: 'modulelist',	
-				store: MoodleMobApp.Session.getModulesStore()
+				store: modules
 			});
 		}
-		
 	},
 
 	selectModule: function(view, index, target, record) {
@@ -86,7 +87,6 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		}
 		
 		if(update_stats) {
-			console.log('update stats from navigator');
 			MoodleMobApp.Session.getModulesStore().sync();
 			this.getApplication().getController('Main').updateCourseModulesStats(MoodleMobApp.Session.getCourse());
 		}

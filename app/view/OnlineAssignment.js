@@ -37,7 +37,7 @@ Ext.define("MoodleMobApp.view.OnlineAssignment", {
 						this.child('fieldset').hide();
 						return;
 					}
-				} if(this.config.settings.resubmit == 0 && this.config.lastSubmission.id > 0) {
+				} if(this.config.settings.resubmit == 0 && this.config.lastSubmission != null && this.config.lastSubmission.id > 0) {
 					this.child('panel[name=noresubmit]').show();
 					this.child('fieldset').child('button[action=submit]').hide();
 					this.child('fieldset').child('textareafield[name=submission]').disable();
@@ -58,7 +58,7 @@ Ext.define("MoodleMobApp.view.OnlineAssignment", {
 				// display the intro
 				this.child('panel[name=intro]').setHtml(intro_html);
 
-				if(this.config.lastSubmission.id > 0) {
+				if(this.config.lastSubmission != null && this.config.lastSubmission.id > 0) {
 					this.child('fieldset').child('textareafield[name=submission]').setValue(this.config.lastSubmission.usertext);
 				}
 			}

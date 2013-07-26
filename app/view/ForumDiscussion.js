@@ -19,6 +19,10 @@ Ext.define("MoodleMobApp.view.ForumDiscussion", {
 	},
 
 	updateRecord: function(record) {
+		// this function is called also when a DataItem is destroyed or the record is removed from the store
+		// the check bellow avoids the running of the function when it is null
+		if(record == null) { return; } 
+
 		this.down('#name').setHtml(record.get('name'));
 
 		var notification = '';

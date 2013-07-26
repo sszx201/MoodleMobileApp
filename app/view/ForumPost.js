@@ -58,6 +58,10 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 	},
 
 	updateRecord: function(record){
+		// this function is called also when a DataItem is destroyed or the record is removed from the store
+		// the check bellow avoids the running of the function when it is null
+		if(record == null) { return; } 
+
 		this.setCls('forum-post x-post-indentation-' + record.get('indentation'));	
 		this.down('#avatar').setSrc(record.get('avatar'));
 		this.down('#firstname').setHtml(record.get('firstname'));

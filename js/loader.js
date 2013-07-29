@@ -10,7 +10,8 @@
 	];
 	var iosScripts = [
 		"js/ios/cordova.js",
-		"js/android/extensions.js",
+		"js/ios/extensions.js",
+		"js/ios/plugins/ExtractZipFilePlugin.js",
 	];
 
 	var browserScripts = [

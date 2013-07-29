@@ -3,8 +3,14 @@ Ext.define('MoodleMobApp.model.AssignSubmission', {
 	
 	config: {
 		fields: [
-			{ name: 'id', type: 'auto' },
-			{ name: 'files', type: 'auto' } // javascript array of filenames uploaded
+			{ name: 'id', type: 'int' },
+			{ name: 'assignment', type: 'int' },
+			{ name: 'grade', type: 'int' },
+			{ name: 'usertext', type: 'string' }, // javascript array of filenames uploaded
+			{ name: 'userfiles', type: 'auto' } ,
+			{ name: 'timecreated', type: 'int' },
+			{ name: 'timemodified', type: 'int' },
+			{ name: 'status', type: 'int' },
 		]
 	}
 });

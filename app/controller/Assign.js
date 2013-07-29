@@ -56,7 +56,6 @@ Ext.define('MoodleMobApp.controller.Assign', {
 			settings: null,
 			lastSubmission: null,
 		};
-
 		var assign_store = MoodleMobApp.WebService.getAssignById(assign.get('instanceid'), MoodleMobApp.Session.getCourse().get('token'));
 		assign_store.on(
 			'load', 
@@ -100,7 +99,7 @@ Ext.define('MoodleMobApp.controller.Assign', {
 						},
 						{
 							xtype: 'button',
-							text: 'Remove',
+							text: 'Drop',
 							ui: 'decline',
 							flex: 1,
 							margin: 10,

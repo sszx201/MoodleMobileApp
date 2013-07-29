@@ -58,7 +58,6 @@ Ext.define("MoodleMobApp.view.UploadAssignment", {
 					intro_html+= '</div>';
 
 				// display the intro
-
 				if(this.config.lastSubmission != null && this.config.lastSubmission.id > 0) {
 					intro_html += '<div class="last-submission">Previously submitted files: ';
 					intro_html += '<ul>';

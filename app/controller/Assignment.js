@@ -224,7 +224,7 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 					},
 					{
 						xtype: 'button',
-						text: 'Remove',
+						text: 'Drop',
 						ui: 'decline',
 						flex: 1,
 						margin: 10,

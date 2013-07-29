@@ -14,6 +14,7 @@
 	];
 
 	var browserScripts = [
+		"js/browser/extensions.js",
 	];
 
 

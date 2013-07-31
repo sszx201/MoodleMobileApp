@@ -57,10 +57,19 @@ public class ExtractZipFilePlugin extends CordovaPlugin {
 							int count;
 							byte data[] = new byte[102222];
 							String fileName = dirToInsert + entry.getName();
+							// check if this ZipEntry is a directory
 							File outFile = new File(fileName);
+							if(fileName.charAt(fileName.length()-1) == '/') {
+								outFile.mkdirs();
+								continue; // no files to be written; just a new directory
+							}
+
+							// check if the parent directory exists in the filesystem
+							// if it does not exist then make it
 							if(!outFile.getParentFile().isDirectory()) {
 								outFile.getParentFile().mkdirs();
 							}
+
 							FileOutputStream fos = new FileOutputStream(outFile);
 							dest = new BufferedOutputStream(fos, 102222);
 							while ((count = is.read(data, 0, 102222)) != -1)
@@ -78,6 +87,7 @@ public class ExtractZipFilePlugin extends CordovaPlugin {
 						return false;
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
+						//
 						callbackContext.error(PluginResult.Status.IO_EXCEPTION.toString());
 						return false;
 					}

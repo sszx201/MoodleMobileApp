@@ -63,11 +63,13 @@
 
 	selectModule: function(view, index, target, record) {
 		if(record.get('modname') === 'scorm'){
+			/*
 			if(typeof this.getScorm() != 'object') {
 				var scorm = Ext.create('MoodleMobApp.view.Scorm');
 			}
 			this.parseScorm('XGG003_DE/');
 			return;
+			*/
 
 			var scormExtractedFileFlag = MoodleMobApp.Config.getFileCacheDir() + '/' + record.get('id') + '/_scorm_extracted_';
 			var self = this;
@@ -160,7 +162,7 @@
 		var downloadProgressFunc = function(progressEvent){
 			if (progressEvent.lengthComputable) {
 				//MoodleMobApp.app.updateLoadMaskMessage(progressEvent.loaded+' bytes');
-				console.log('downloaded : ' + progressEvent.loaded + ' bytes');
+				console.log('downloaded in percentage: ' + (progressEvent.loaded/progressEvent.total * 100) + '%');
 			} else {
 				//this.hideLoadMask('');
 				console.log('download complete');

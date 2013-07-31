@@ -1,0 +1,27 @@
+
+.x-scorm-cover{
+  position:absolute;
+  background: rgba(255, 0, 0, .3);
+  display:none;
+  height:100%;
+  width:100%;
+}
+.x-scorm-wrapper{
+  //border:5px dashed red;
+
+  // l'altezza deve essere settata programmaticamente!
+  height:0;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch
+}
+.x-scorm-panel{
+  //position:absolute;
+  //top: 0;
+  //border:1px solid blue;
+  height:100%;
+  height:100%;
+  width:100%;
+}
+html, body{
+  scroll:none;
+}

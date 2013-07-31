@@ -1,0 +1,25 @@
+html, body {
+  //font-size:3em;
+  //-webkit-transform-origin: 0 0;
+  //-webkit-transform: scale(1.1);
+}
+* {
+  -webkit-user-select:auto !important;
+}
+span.scorm_highlight{
+  color:#000;
+  background:#66ff00;
+}
+span.scorm_note{
+  color:#000;
+  background:yellow;
+}
+.scorm_search_result{
+  background:rgba(100,255,100,1);
+}
+.content{
+  // override di TATA
+  top:0 !important;
+}
+.contenttopic{
+}

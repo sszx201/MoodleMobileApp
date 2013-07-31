@@ -1,7 +1,8 @@
 //<debug>
 Ext.Loader.setPath({
     'Ext': 'touch/src',
-    'MoodleMobApp': 'app'
+    'MoodleMobApp': 'app',
+    'Supsi':   'js/supsi'
 });
 //</debug>
 
@@ -48,9 +49,11 @@ Ext.application({
 		'MoodleMobApp.controller.Forum',
 		'MoodleMobApp.controller.Folder',
 		'MoodleMobApp.controller.Resource',
-		'MoodleMobApp.controller.Scorm',
+		//'MoodleMobApp.controller.Scorm',
 		'MoodleMobApp.controller.Choice',
 		'MoodleMobApp.controller.Url',
+		'MoodleMobApp.controller.Scorm',
+		'MoodleMobApp.controller.ScormPlayer',
 		'MoodleMobApp.controller.Shell',
 	],
 

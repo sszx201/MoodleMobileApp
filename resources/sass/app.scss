@@ -14,6 +14,14 @@ $active-color: #C35817;
 @include icon('home');
 @include icon('user');
 @include icon('info');
+@import 'scorm_panel';
+
+// scorm reader icons
+@include icon-font('IcoMoon', inline-font-files('icomoon/icomoon.woff', woff, 'icomoon/icomoon.ttf', truetype,'icomoon/icomoon.svg', svg));
+@include icon('bookmark', '\e000', 'icoMoon');
+@include icon('leftarrow', '\e001', 'icoMoon');
+@include icon('rightarrow', '\e002', 'icoMoon');
+@include icon('marker', '\e003', 'icoMoon');
 
 .x-course,
 .x-module,

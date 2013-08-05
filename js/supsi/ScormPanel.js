@@ -149,8 +149,9 @@
 				reader.readAsText(file);
 
 			}else{
+				console.log('trying to load ', this.SCORMId + Supsi.Constants.get('DATA_LOCATION') + uri);
 				jQuery.ajax({
-					url: Supsi.Constants.get('DATA_LOCATION') + uri,
+					url: this.SCORMId + Supsi.Constants.get('DATA_LOCATION') + uri,
 					type: 'GET',
 					success: function(response){
 						that.resourceLoaded(response, file, fileEntry)
@@ -165,19 +166,14 @@
 		_getFileCback: function(uri, fileEntry){
 			var that = this;
 			fileEntry.file(function(file){
-				that._fileCback(file, uri, fileEntry)
-			}), this._fileErrback
+				that._fileCback(file, uri, fileEntry);
+			}, this._fileErrback);
 
 		},
 		_getFileErr: function(err){
-			Ext.Msg.alert('Error', '[i18n] Error opening the file, code = ' + err.code)
+			Ext.Msg.alert('Error', '[i18n] Error opening the file, code = ' + err.code);
 		},
 		setURI: function(uri){
-			console.log('**************************');
-			console.log('**************************');
-			console.log('seturi to ', uri);
-			console.log('**************************');
-			console.log('**************************');
 			var that = this,
 			contentDocument = this.docContainer.dom.contentDocument, base;
 			this.setResourceId(uri);
@@ -185,7 +181,7 @@
 			if(!contentDocument.querySelector('base')){
 				base = contentDocument.createElement('base');
 
-				base.setAttribute('href', Supsi.Constants.get('DOCS_LOCATION'));
+				base.setAttribute('href', this.SCORMId + Supsi.Constants.get('DOCS_LOCATION'));
 				contentDocument.body.appendChild(base);
 			}
 
@@ -323,7 +319,33 @@
 					contentWindow.onSelectedHighlight = function(){
 						that.onSelectedHighlight.apply(that, arguments);
 					};
+
+					
+					var style;
+
+					// style = contentDocument.createElement('link');
+					// style.rel = 'stylesheet';
+					// style.href = '../../../../../resources/css/player_doc.css?' + +new Date;
+					// contentDocument.body.appendChild(style);
+
+					var styles = [
+						"compendio/template/compendio/Layout.css",
+					 	"compendio/template/Styles/compendio.css",
+					 	"compendio/template/Styles/annotator.css",
+						"compendio/template/Styles/annotator.touch.css",
+						"compendio/template/Styles/annotator.compendio.css",
+						"compendio/template/Styles/div_mode.css",
+						"compendio/template/Styles/link_coords.css"
+					];
+					for (var i = 0, l = styles.length; i < l; i++) {
+						// style = contentDocument.createElement('link');
+						// style.rel = 'stylesheet';
+						// console.log('css location = ', that.SCORMId + styles[i])
+						// style.href = that.SCORMId + styles[i] + '?' +  +new Date;
+						// contentDocument.body.appendChild(style);
+					}
 				}
+
 			}
 
 
@@ -359,6 +381,24 @@
 					style.rel = 'stylesheet';
 					style.href = '../../../../../resources/css/player_doc.css?' + +new Date;
 					contentDocument.body.appendChild(style);
+
+					var styles = [
+						"compendio/template/compendio/Layout.css",
+					 	"compendio/template/Styles/compendio.css",
+					 	"compendio/template/Styles/annotator.css",
+						"compendio/template/Styles/annotator.touch.css",
+						"compendio/template/Styles/annotator.compendio.css",
+						"compendio/template/Styles/div_mode.css",
+						"compendio/template/Styles/link_coords.css"
+					];
+					for (var i = 0, l = styles.length; i < l; i++) {
+						style = contentDocument.createElement('link');
+						style.rel = 'stylesheet';
+						console.log('css location = ', this.SCORMId + styles[i])
+						style.href = this.SCORMId + styles[i] + '?' +  +new Date;
+						contentDocument.body.appendChild(style);
+					}
+
 					s = contentDocument.createElement('script');
 					contentDocument.body.appendChild(s);
 

@@ -11,7 +11,7 @@ Ext.define('Supsi.Constants', {
 		this.config.DATA_LOCATION = 'compendio/';
 		this.config.TOC_LOCATION = this.config.DATA_LOCATION + 'whxdata/';
 		this.config.RELATIVE_DOCS_LOCATION = 'LECD/Text/';
-		this.config.DOCS_LOCATION = this.config.DOCS_BASE + this.config.DOC_ID + 'compendio/LECD/Text/';
+		this.config.DOCS_LOCATION = 'compendio/LECD/Text/';
 
 		this.config.SCORM_HIGHLIGHT_ATTRIBUTE = 'data-scorm-highlight';
 		this.config.SCORM_ANNOTATION_ATTRIBUTE = 'data-scorm-annotation';

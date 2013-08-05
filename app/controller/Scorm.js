@@ -83,10 +83,9 @@
 								create: false,
 								exclusive: false
 							},
-							function() {
-								console.log('this scorm has already been extracted ', arguments);
-								console.log('full path = ', MoodleMobApp.Config.getFileCacheDir() + '/' + record.get('id'))
-								self.parseScorm(MoodleMobApp.Config.getFileCacheDir() + '/' + record.get('id'));
+							function(args){
+								// poco bello, ma funziona
+								self.parseScorm(args.fullPath.replace(/_scorm_extracted_$/, ''));
 							},
 							// error callback: notify the error
 							function() {
@@ -136,7 +135,7 @@
 									},
 									function() {
 										// console.log('finalized the scorm path = ', sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1) );
-										that.parseScorm(targetPath + module.get('id') + '/');
+										that.parseScorm(targetPath + '/');
 									},
 									function() {
 										console.log('cannot finalize the scorm');
@@ -265,7 +264,8 @@
 			if(record.get('src')){
 				_navHistory.push(record.get('src'));
 				this.getNavBackBtn().show();
-				this.loadToc(Supsi.Constants.get('TOC_LOCATION') + record.get('src'));
+				console.log('loading toc from ', this.getScormPanel().SCORMId + Supsi.Constants.get('TOC_LOCATION') + record.get('src'))
+				this.loadToc(this.getScormPanel().SCORMId + Supsi.Constants.get('TOC_LOCATION') + record.get('src'));
 			}
 		},
 		mainView: null,
@@ -414,7 +414,7 @@
 
 			// toc sh*t
 			_navHistory.push('toc.js');
-			console.log('toc location = ', path + Supsi.Constants.get('TOC_LOCATION') );
+			console.log('toc location = ', path + Supsi.Constants.get('TOC_LOCATION'));
 			/*
 			var scorm = Ext.create('MoodleMobApp.view.Scorm');
 			console.log('output of the scorm');

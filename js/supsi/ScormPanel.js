@@ -308,7 +308,7 @@
 				;
 				if(contentDocument.location.href !== 'about:blank'){
 					contentWindow.setLocation = function(location){
-						that.setLocation(location)
+						that.setLocation(location);
 					};
 					contentWindow.showNoteView = function(){
 						that.showNoteView.apply(that, arguments);
@@ -320,7 +320,7 @@
 						that.onSelectedHighlight.apply(that, arguments);
 					};
 
-					
+
 					var style;
 
 					// style = contentDocument.createElement('link');
@@ -330,19 +330,19 @@
 
 					var styles = [
 						"compendio/template/compendio/Layout.css",
-					 	"compendio/template/Styles/compendio.css",
-					 	"compendio/template/Styles/annotator.css",
+						"compendio/template/Styles/compendio.css",
+						"compendio/template/Styles/annotator.css",
 						"compendio/template/Styles/annotator.touch.css",
 						"compendio/template/Styles/annotator.compendio.css",
 						"compendio/template/Styles/div_mode.css",
 						"compendio/template/Styles/link_coords.css"
 					];
 					for (var i = 0, l = styles.length; i < l; i++) {
-						// style = contentDocument.createElement('link');
-						// style.rel = 'stylesheet';
-						// console.log('css location = ', that.SCORMId + styles[i])
-						// style.href = that.SCORMId + styles[i] + '?' +  +new Date;
-						// contentDocument.body.appendChild(style);
+						style = contentDocument.createElement('link');
+						style.rel = 'stylesheet';
+						console.log('css location = ', that.SCORMId + styles[i]);
+						style.href = that.SCORMId + styles[i] + '?' +  +new Date;
+						contentDocument.body.appendChild(style);
 					}
 				}
 

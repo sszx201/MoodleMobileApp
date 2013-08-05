@@ -93,7 +93,9 @@ function addExtensions() {
 		}
 
 		var zu = cordova.require("cordova/plugin/ziputil");
-		zu.unzip(win, fail, sPath+path, sPath);	
+		var source = sPath+path;
+		var target = source.substring(0, source.lastIndexOf("/"));
+		zu.unzip(win, fail, source, target);	
 						},
 						// error callback: notify the error
 						function(){

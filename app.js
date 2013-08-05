@@ -17,22 +17,24 @@ Ext.application({
 		'MoodleMobApp.Config',
 		'MoodleMobApp.Session',
 		'MoodleMobApp.WebService',
-		'MoodleMobApp.store.HomeOrgs',
+		'MoodleMobApp.store.HomeOrgs'
     ],
 
 	models: [
 		"MoodleMobApp.model.Settings",
 		"MoodleMobApp.model.AaiAccount",
-		"MoodleMobApp.model.ManualAccount",
+		"MoodleMobApp.model.ManualAccount"
 	],
 
 	views: [
 		'MoodleMobApp.view.UsageAgreement',
 		'MoodleMobApp.view.AccountChoice',
+		'MoodleMobApp.view.Scorm',
 		'MoodleMobApp.view.Main',
 		'MoodleMobApp.view.Course',
 		'MoodleMobApp.view.CourseList',
-		'MoodleMobApp.view.Shell',
+		'MoodleMobApp.view.Shell'
+
 	],
 
 	controllers: [
@@ -49,12 +51,11 @@ Ext.application({
 		'MoodleMobApp.controller.Forum',
 		'MoodleMobApp.controller.Folder',
 		'MoodleMobApp.controller.Resource',
-		//'MoodleMobApp.controller.Scorm',
 		'MoodleMobApp.controller.Choice',
 		'MoodleMobApp.controller.Url',
 		'MoodleMobApp.controller.Scorm',
 		'MoodleMobApp.controller.ScormPlayer',
-		'MoodleMobApp.controller.Shell',
+		'MoodleMobApp.controller.Shell'
 	],
 
     icon: {

@@ -1,5 +1,4 @@
 //require(['js/supsi/Constants', 'js/supsi/utils'], function(Constants, utils){
-
 	Ext.define('MoodleMobApp.controller.ScormPlayer', {
 		extend: 'Ext.app.Controller',
 
@@ -72,6 +71,7 @@
 				highlightNode = this._createHighlightNode(),
 				rangeOp = false, scormId, resId, scormPanel = this.getScormPanel(), index = -1;
 			;
+			console.log('on marktext called 2', this.getScormPanel().getSelectionRange());
 
 			try{
 				range.surroundContents(highlightNode);
@@ -93,7 +93,7 @@
 						index: index,
 						data: {}, // it's only a test
 						cback: function(){
-//							scormPanel.flushDomToFile();
+							scormPanel.flushDomToFile();
 							console.log('doc and metadata saved');
 						},
 						errback: function(tx, err){
@@ -153,8 +153,11 @@
 		 * */
 		_createHighlightNode: function(){
 			var n = document.createElement('span');
+			console.log('prima di leggere da Constants');
 			n.setAttribute(Supsi.Constants.get('SCORM_HIGHLIGHT_ATTRIBUTE'), '');
+			console.log(Supsi.Constants.get('SCORM_HIGHLIGHT_ATTRIBUTE'))
 			n.className = 'scorm_highlight';
+			console.log('highlight node created')
 			return n;
 		},
 

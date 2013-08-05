@@ -173,6 +173,11 @@
 			Ext.Msg.alert('Error', '[i18n] Error opening the file, code = ' + err.code)
 		},
 		setURI: function(uri){
+			console.log('**************************');
+			console.log('**************************');
+			console.log('seturi to ', uri);
+			console.log('**************************');
+			console.log('**************************');
 			var that = this,
 			contentDocument = this.docContainer.dom.contentDocument, base;
 			this.setResourceId(uri);
@@ -184,7 +189,7 @@
 				contentDocument.body.appendChild(base);
 			}
 
-
+			console.log('reading file from ', uri)
 			Supsi.Filesystem.getFile(uri.substr(uri.lastIndexOf('/')+1), true,
 				function(fileEntry){
 					that._getFileCback.call(that, uri, fileEntry)
@@ -289,9 +294,9 @@
 				&&
 				Array.prototype.every.call(annotations, function(item){ return (range.endContainer.compareDocumentPosition(item) & 1) })
 				){
-				this.fireEvent('onselectionchecked', true)
+				this.fireEvent('onselectionchecked', true);
 			}else{
-				this.fireEvent('onselectionchecked', false)
+				this.fireEvent('onselectionchecked', false);
 			}
 		},
 		onSelectedHighlight: function(target){

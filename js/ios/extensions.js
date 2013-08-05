@@ -77,8 +77,9 @@ function addExtensions() {
 				// {"zipResult":{"zip":false,"source":"/path/to/test.zip","target":"/path/to/targetfolder/"}}
 		
 				console.log((json.zipResult.zip? "zip" : "unzip") + " OK: " + JSON.stringify(json));
+				successFunc(json.zipResult.target);
 			}
-		}
+		};
 		
 		// handles failure
 		var fail = function(obj) {

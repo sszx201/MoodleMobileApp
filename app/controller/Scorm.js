@@ -63,13 +63,13 @@
 
 	selectModule: function(view, index, target, record) {
 		if(record.get('modname') === 'scorm'){
-			/*
+			
 			if(typeof this.getScorm() != 'object') {
 				var scorm = Ext.create('MoodleMobApp.view.Scorm');
 			}
-			this.parseScorm('XGG003_DE/');
-			return;
-			*/
+			// this.parseScorm('XGG003_DE/');
+			// return;
+			
 
 			var scormExtractedFileFlag = MoodleMobApp.Config.getFileCacheDir() + '/' + record.get('id') + '/_scorm_extracted_';
 			var self = this;
@@ -83,8 +83,10 @@
 								create: false,
 								exclusive: false
 							},
-							function () {
-								console.log('this scorm has already been extracted');
+							function() {
+								console.log('this scorm has already been extracted ', arguments);
+								console.log('full path = ', MoodleMobApp.Config.getFileCacheDir() + '/' + record.get('id'))
+								self.parseScorm(MoodleMobApp.Config.getFileCacheDir() + '/' + record.get('id'));
 							},
 							// error callback: notify the error
 							function() {
@@ -103,7 +105,8 @@
 	},
 
 	downloadArchive: function(module){
-		var file = {
+		var that = this,
+		file = {
 			'scormid': module.get('instanceid'),
 			'name': module.get('id') + '.zip',
 			'mime': 'application/zip',
@@ -112,7 +115,7 @@
 		// The archive is going to be named id.zip and is going to be stored in a directory named id
 		// Example: 508/508.zip
 		// Once extracted all the content is going to be contained in one directory.
-		var dir = MoodleMobApp.Config.getFileCacheDir() + '/' + module.get('id'); 
+		var dir = MoodleMobApp.Config.getFileCacheDir() + '/' + module.get('id');
 		var scormExtractedFileFlag = dir + '/_scorm_extracted_';
 		//this.showLoadMask('');
 		// success function
@@ -120,22 +123,20 @@
 			console.log('download success function start');
 			//MoodleMobApp.app.hideLoadMask();
 			var filePath = dir + '/' + file.name;
-			var extractionSuccessFunc = function(status) {
-					console.log('Success !!!!!!!!!!!!!!!!!');
-					alert('Status: '+status);
+			var extractionSuccessFunc = function(targetPath) {
 					window.requestFileSystem(
 						LocalFileSystem.PERSISTENT, 0,
 						function onFileSystemSuccess(fileSystem) {
 								// get the filesystem
 								fileSystem.root.getFile(
-									scormExtractedFileFlag, 
+									scormExtractedFileFlag,
 									{
 										create: true,
 										exclusive: false
 									},
 									function() {
-										console.log('finalized the scorm');
-										this.parseScorm(filePath);
+										// console.log('finalized the scorm path = ', sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1) );
+										that.parseScorm(targetPath + module.get('id') + '/');
 									},
 									function() {
 										console.log('cannot finalize the scorm');
@@ -149,12 +150,13 @@
 								'Cannot access the local filesystem.'
 							);
 						});
-			};        
-			var extractionFailFunc = function(error) { 
+			};
+			var extractionFailFunc = function(error) {
 					console.log('ERROR !!!!!!!!!!!!!!!!!');
 					console.log(error);
 			};
-			// start the extraction
+						// start the extraction
+
 			MoodleMobApp.app.unzip(filePath, extractionSuccessFunc, extractionFailFunc);
 		};
 
@@ -162,7 +164,7 @@
 		var downloadProgressFunc = function(progressEvent){
 			if (progressEvent.lengthComputable) {
 				//MoodleMobApp.app.updateLoadMaskMessage(progressEvent.loaded+' bytes');
-				console.log('downloaded in percentage: ' + (progressEvent.loaded/progressEvent.total * 100) + '%');
+				// console.log('downloaded in percentage: ' + (progressEvent.loaded/progressEvent.total * 100) + '%');
 			} else {
 				//this.hideLoadMask('');
 				console.log('download complete');
@@ -277,7 +279,10 @@
 				url: manifest,
 				method: 'GET',
 				scope: this,
-				success: this.manifestLoaded
+				success: this.manifestLoaded,
+				failure: function(err){
+					console.log('load error ', err);
+				}
 
 			});
 		},
@@ -353,14 +358,13 @@
 		 * load a table of contents - non standard SCORM
 		 * */
 		loadToc: function(toc){
-			console.log('loadToc with parameter:');
-			console.log(toc);
+			console.log('loadToc with parameter: ', toc);
 			if(_transport){
 				_transport.onload = null;
 				_transport = null;
 			}
 			_transport = document.createElement('script');
-			_transport.type = 'text/javascript'
+			_transport.type = 'text/javascript';
 			var that = this;
 			_transport.onload = function(){
 				console.log('table of contents loaded');
@@ -368,10 +372,9 @@
 			};
 
 			_transport.onerror = function(error){
-				console.log('error: ');
-				console.log(error);
+				console.log('error: ', arguments);
 			};
-			_transport.src = toc // toc toc! chi è?
+			_transport.src = toc; // toc toc! chi è?
 			document.body.appendChild(_transport);
 
 		},
@@ -395,18 +398,23 @@
 
 		},
 
-		parseScorm: function(){
+		parseScorm: function(path){
 //			this.mainView = this.getMainView();
-
+			
 			// todo: qui intervenire con il parametro che mi darà il link al manifest
-			this.loadManifest(Supsi.Constants.get('DOC_ID'));
+			// this.loadManifest(Supsi.Constants.get('DOC_ID'));
+			console.log('nav ', this.getNavigator());
+			console.log('scormview ', this.getScorm());
+			this.getNavigator().push(this.getScorm());
+			console.log('filePath is ', path);
+			this.loadManifest(path);
 			this.resourceList = this.getResourceList();
 			// loading the test manifest file
 			//        this.loadManifest(Supsi.Constants.get('TOC_LOCATION') + 'imsmanifest.xml');
 
 			// toc sh*t
 			_navHistory.push('toc.js');
-			console.log('toc location = ' + Supsi.Constants.get('TOC_LOCATION') )
+			console.log('toc location = ', path + Supsi.Constants.get('TOC_LOCATION') );
 			/*
 			var scorm = Ext.create('MoodleMobApp.view.Scorm');
 			console.log('output of the scorm');
@@ -415,8 +423,7 @@
 			*/
 			console.log('pushing the scorm view');
 			//this.getMain().push({ xtype: 'scorm' });
-			this.loadToc(Supsi.Constants.get('TOC_LOCATION') + 'toc.js');
-			this.getNavigator().push(this.getScorm());
+			this.loadToc(path + Supsi.Constants.get('TOC_LOCATION') + 'toc.js');
 			//nr 18-07-2013e
 		},
 		//called when the Application is launched, remove if not needed

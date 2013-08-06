@@ -125,9 +125,9 @@
 			targetNode.innerHTML = evt.target.result;
 		},
 		flushDomToFile: function(){
-			console.log('currentFile = ', this._currentFileEntry)
+			console.log('[ScormPanel:flushDomToFile] currentFile = ', this._currentFileEntry);
 			if(!this._currentFileEntry){
-				return
+				return;
 			}
 			var that = this;
 			this._currentFileEntry.createWriter(function(writer){
@@ -135,26 +135,27 @@
 				writer.write(that.docContainer.dom.contentDocument.body.querySelector('.contenttopic').innerHTML);
 				console.log('file written');
 			}, function(){
-				console.error('error creating a file writer')
+				console.error('error creating a file writer');
 			});
 		},
 		_fileCback: function(file, uri, fileEntry){
+			console.log('[ScormPanel] file size = ', file.size);
 			var that = this, reader;
 			this._currentFileEntry = fileEntry;
 			if(file.size){
 				reader = new FileReader();
 				reader.onloadend = function(){
-					that._loadEnd.apply(that, arguments)
+					that._loadEnd.apply(that, arguments);
 				};
 				reader.readAsText(file);
 
 			}else{
-				console.log('trying to load ', this.SCORMId + Supsi.Constants.get('DATA_LOCATION') + uri);
+				console.log('trying to load via xhr', this.SCORMId + Supsi.Constants.get('DATA_LOCATION') + uri);
 				jQuery.ajax({
 					url: this.SCORMId + Supsi.Constants.get('DATA_LOCATION') + uri,
 					type: 'GET',
 					success: function(response){
-						that.resourceLoaded(response, file, fileEntry)
+						that.resourceLoaded(response, file, fileEntry);
 					}
 				});
 
@@ -165,6 +166,7 @@
 		},
 		_getFileCback: function(uri, fileEntry){
 			var that = this;
+			console.log('getFile cback, trying to open ', uri);
 			fileEntry.file(function(file){
 				that._fileCback(file, uri, fileEntry);
 			}, this._fileErrback);
@@ -185,14 +187,18 @@
 				contentDocument.body.appendChild(base);
 			}
 
-			console.log('reading file from ', uri)
-			Supsi.Filesystem.getFile(uri.substr(uri.lastIndexOf('/')+1), true,
+			console.log('reading file from ', uri);
+			console.log('the real path should be ', this.SCORMId + Supsi.Constants.get('CLONED_BASE') + uri);
+			
+			// la CLONED_BASE sarebbe meglio lasciarla fuori dalla cartella ID. Poi, per ora cerchiamo di fare in modo che funzioni tutto.
+			// Supsi.Filesystem.getFile(uri.substr(uri.lastIndexOf('/')+1), true,
+			Supsi.Filesystem.getFile(this.SCORMId + Supsi.Constants.get('CLONED_BASE') + uri, true,
 				function(fileEntry){
-					that._getFileCback.call(that, uri, fileEntry)
+					that._getFileCback.call(that, uri, fileEntry);
 				},
 				function(err){
 					console.error('file errback');
-					that._getFileErr.apply(that, arguments)
+					that._getFileErr.apply(that, arguments);
 				}
 			);
 		},
@@ -215,6 +221,7 @@
 		 * file writer error callback
 		 * */
 		_fileWriterErr: function(){
+			console.log('[ScormPanel] fileWriterErr ', arguments);
 
 		},
 		/**
@@ -235,7 +242,7 @@
 
 			fileEntry.createWriter(
 				function(writer){
-					that._fileWriterCreated(writer, html)
+					that._fileWriterCreated(writer, html);
 				}, this._fileWriterErr);
 
 			this.preventNavigation(targetNode);
@@ -340,7 +347,6 @@
 					for (var i = 0, l = styles.length; i < l; i++) {
 						style = contentDocument.createElement('link');
 						style.rel = 'stylesheet';
-						console.log('css location = ', that.SCORMId + styles[i]);
 						style.href = that.SCORMId + styles[i] + '?' +  +new Date;
 						contentDocument.body.appendChild(style);
 					}
@@ -394,7 +400,6 @@
 					for (var i = 0, l = styles.length; i < l; i++) {
 						style = contentDocument.createElement('link');
 						style.rel = 'stylesheet';
-						console.log('css location = ', this.SCORMId + styles[i])
 						style.href = this.SCORMId + styles[i] + '?' +  +new Date;
 						contentDocument.body.appendChild(style);
 					}

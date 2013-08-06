@@ -69,7 +69,7 @@
 		onMarkText: function(){
 			var range = this.getScormPanel().getSelectionRange(),
 				highlightNode = this._createHighlightNode(),
-				rangeOp = false, scormId, resId, scormPanel = this.getScormPanel(), index = -1;
+				rangeOp = false, scormId, resId, scormPanel = this.getScormPanel(), index = -1
 			;
 			console.log('on marktext called 2', this.getScormPanel().getSelectionRange());
 
@@ -93,6 +93,7 @@
 						index: index,
 						data: {}, // it's only a test
 						cback: function(){
+							console.log('---flushing?');
 							scormPanel.flushDomToFile();
 							console.log('doc and metadata saved');
 						},
@@ -203,8 +204,8 @@
 		//called when the Application is launched, remove if not needed
 		launch: function(app) {
 			var sp = this.getScormPanel();
-			Ext.Viewport.on('orientationchange', function(){ sp.setupGeometry.apply(sp, arguments) })
-//			window.addEventListener('orientationchange', function(){ sp.setupGeometry() }, false);
+			Ext.Viewport.on('orientationchange', function(){ sp.setupGeometry.apply(sp, arguments); });
+			//			window.addEventListener('orientationchange', function(){ sp.setupGeometry() }, false);
 
 		}
 	})

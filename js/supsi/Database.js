@@ -52,7 +52,7 @@
 					}
 //					that._checkScormExistence(args, results)
 				}, function(tx, err){
-					args.errback.apply(null, arguments)
+					args.errback.apply(null, arguments);
 				}
 			);
 			args.tx.executeSql('SELECT * from RESOURCE', [],
@@ -211,10 +211,10 @@
 			!count && tx.executeSql('INSERT INTO METADATA_DICTIONARY (id, description) VALUES (?, ?)', [2, 'annotation'], null, this.onDbError);
 		},
 		onCreateError: function(err){
-			console.error('db creation error: ', err)
+			console.error('db creation error: ', err);
 		},
 		onCreate: function(){
-			console.log('db creation ok')
+			console.log('db creation ok');
 		},
 		initialize: function(){
 			// todo: acc, questa roba non va su ios7, nel browser.
@@ -223,11 +223,11 @@
 			var that = this;
 //			db = window.openDatabase("scormreader", "1.0", "Scorm Reader DB", 10000000);
 			db = window.openDatabase("scormreader", "1.0", "Scorm Reader DB", 100000);
-			db.transaction(function(){ that.createTables.apply(that, arguments) }, this.onCreateError, this.onCreate);
+			db.transaction(function(){ that.createTables.apply(that, arguments); }, this.onCreateError, this.onCreate);
 
 			console.log('database initialization ok');
 			//
 		}
 	});
-	//Supsi.Database.initialize();
+	Supsi.Database.initialize();
 })();

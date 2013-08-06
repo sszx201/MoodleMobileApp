@@ -5,7 +5,7 @@ Ext.define('Supsi.Constants', {
 	singleton : true,
 
 	constructor: function(config) {
-		this.config.CLONED_BASE = '/sdcard/' + MoodleMobApp.Config.get('fileCacheDir') + '/__PRIVATE_SUPSI/' + this.config.DOC_ID;
+		this.config.CLONED_BASE = '__PRIVATE_SUPSI/';
 		this.config.DOCS_BASE = 'data/scorm/';
 		// this.config.DATA_LOCATION = this.config.DOCS_BASE + this.config.DOC_ID + 'compendio/';
 		this.config.DATA_LOCATION = 'compendio/';

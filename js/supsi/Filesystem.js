@@ -35,15 +35,16 @@
 		 *
 		 * */
 		getFile: function(path, create, success, failure){
-			var fullPath = Supsi.Constants.get('CLONED_BASE') + path;
+			console.log('[Filesystem] trying %s...', path);
+			// var fullPath = Supsi.Constants.get('CLONED_BASE') + path;
+			var fullPath = path;
 			this.getDirectory(fullPath.substr(0, fullPath.lastIndexOf("/")));
 //			console.log('directory creation ok ****************************')
-			console.log('getFile path: ');
-			console.log(Supsi.Constants.get('CLONED_BASE') + path);
-			this.fileSystem.root.getFile(Supsi.Constants.get('CLONED_BASE') + path, {
+			console.log('getFile path: ', path);
+			this.fileSystem.root.getFile(path, {
 				create: create,
 				exclusive: false
-			}, success, failure)
+			}, success, failure);
 		},
 		/**
 		 * check the file existence

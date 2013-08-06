@@ -57,11 +57,11 @@
 //			console.log('testing...', cback)
 			reader.onloadend = cback;
 			reader.onerror = function(){
-				console.log('file error')
+				console.log('file error');
 			};
 		},
 		IOError: function(){
-			console.error('[Supsi.Filesystem] IO error')
+			console.error('[Supsi.Filesystem] IO error');
 		},
 		/**
 		 * @arguments {Function} cback
@@ -90,21 +90,21 @@
 				cbacks.pop()();
 			}
 			isReady = true;
-
+			
 			console.log('Filesystem initialization ok');
 		},
 		_fileSystemRequestError: function(){
-			console.error('Error obtaining the filesystem')
+			console.error('Error obtaining the filesystem');
 		},
 		initialize: function(){
 			var that = this;
 			this.exists(Supsi.Constants.get('CLONED_BASE'), existsCallback);
-			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(){ that._fileSystemRequestSuccess.apply(that, arguments) }, this._fileSystemRequestError);
+			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(){ that._fileSystemRequestSuccess.apply(that, arguments); }, this._fileSystemRequestError);
 		}
 	});
 	
 	//setTimeout(function() { Supsi.Filesystem.initialize(); }, 0);
 })();
 
-Supsi.Filesystem.initialize();
+// Supsi.Filesystem.initialize();
 //})

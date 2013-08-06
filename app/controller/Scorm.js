@@ -12,6 +12,7 @@
 			'MoodleMobApp.model.ScormResource',
 			'MoodleMobApp.view.Scorm',
 			'Ext.data.Store',
+			'Supsi.Filesystem',
 			'Supsi.Database'
 		],
 		config: {
@@ -187,7 +188,7 @@
 				return;
 			}
 			_navHistory.pop();
-			this.loadToc(Supsi.Constants.get('TOC_LOCATION') + _navHistory[_navHistory.length - 1])
+			this.loadToc(this.getScormPanel().SCORMId +Supsi.Constants.get('TOC_LOCATION') + _navHistory[_navHistory.length - 1]);
 			if(_navHistory.length === 1){
 				this.getNavBackBtn().hide();
 			}
@@ -213,17 +214,17 @@
 				errback: function(){
 
 				}
-			})
-			this.getMetaPanel().show()
+			});
+			this.getMetaPanel().show();
 		},
 
 		/**
 		 * show the settings panel
 		 * */
 		showSettingsPanel: function(){
-			this.getSettingsPanel().showBy(this.getSettingsBtn())
-			this.getSettingsPanel().hide()
-			this.getSettingsPanel().showBy(this.getSettingsBtn())
+			this.getSettingsPanel().showBy(this.getSettingsBtn());
+			this.getSettingsPanel().hide();
+			this.getSettingsPanel().showBy(this.getSettingsBtn());
 		},
 		/**
 		 * hide the navigation panel
@@ -236,8 +237,8 @@
 
 			setTimeout(function(){
 				// sporchissimo trucco per forzare il reflow in ios. Android stava bene anche senza
-				sp.docContainer.dom.contentDocument.querySelector('.contenttopic').style.width = sp.docContainer.dom.contentDocument.querySelector('.content').offsetWidth + 'px'
-			}, 0)
+				sp.docContainer.dom.contentDocument.querySelector('.contenttopic').style.width = sp.docContainer.dom.contentDocument.querySelector('.content').offsetWidth + 'px';
+			}, 0);
 		},
 
 		/**
@@ -246,7 +247,7 @@
 		showPanel: function(){
 			this.getResourceContainer().show();
 			this.getHidePanelBtn().show();
-			this.getShowPanelBtn().hide()
+			this.getShowPanelBtn().hide();
 		},
 
 		/**
@@ -429,16 +430,18 @@
 		//called when the Application is launched, remove if not needed
 		launch: function(app) {
 			Ext.sm = this;
-			return;
+			// return;
 			var that = this;
 			if(typeof device !== 'undefined'){
 				document.addEventListener('deviceready', function(){
+					Supsi.Filesystem.initialize();
+					Supsi.Database.initialize();
 					Supsi.Filesystem.ready(function(){
-						that._onDeviceReady()
-					})
-				}, false)
+						// that._onDeviceReady();
+					});
+				}, false);
 			}else{
-				that._onDeviceReady()
+				// that._onDeviceReady();
 			}
 		}
 	});

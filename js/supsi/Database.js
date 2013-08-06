@@ -229,5 +229,5 @@
 			//
 		}
 	});
-	Supsi.Database.initialize();
+	// Supsi.Database.initialize();
 })();

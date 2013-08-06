@@ -60,7 +60,7 @@
 		 * */
 		getHighlightIndex: function(highlightNode){
 			var hNodes = this.docContainer.dom.contentDocument.querySelectorAll('[' + Supsi.Constants.get('SCORM_HIGHLIGHT_ATTRIBUTE') + ']');
-			return Array.prototype.indexOf.call(hNodes, highlightNode)
+			return Array.prototype.indexOf.call(hNodes, highlightNode);
 		},
 		getSelection: function(){
 			// surroundContents will be useful
@@ -76,7 +76,7 @@
 			// quella parte di documento (che pero' risulta davvero difficile, usando DOM). Forse conviene fare una replace
 			// di stringhe e rimpiazzare l'intero innerHTML. Grezzo ma efficace.
 			// alert(this.docContainer.dom.contentWindow.getSelection().getRangeAt(0).toString());
-			return this.docContainer.dom.contentWindow.document.getSelection().toString()
+			return this.docContainer.dom.contentWindow.document.getSelection().toString();
 		},
 		onAnnotation: function(id, text){
 			switch(id){
@@ -125,21 +125,18 @@
 			targetNode.innerHTML = evt.target.result;
 		},
 		flushDomToFile: function(){
-			console.log('[ScormPanel:flushDomToFile] currentFile = ', this._currentFileEntry);
+			Supsi.Utils.log('[ScormPanel:flushDomToFile] currentFile = ', this._currentFileEntry);
 			if(!this._currentFileEntry){
 				return;
 			}
 			var that = this;
 			this._currentFileEntry.createWriter(function(writer){
-				console.log('write start');
 				writer.write(that.docContainer.dom.contentDocument.body.querySelector('.contenttopic').innerHTML);
-				console.log('file written');
 			}, function(){
 				console.error('error creating a file writer');
 			});
 		},
 		_fileCback: function(file, uri, fileEntry){
-			console.log('[ScormPanel] file size = ', file.size);
 			var that = this, reader;
 			this._currentFileEntry = fileEntry;
 			if(file.size){
@@ -150,7 +147,7 @@
 				reader.readAsText(file);
 
 			}else{
-				console.log('trying to load via xhr', this.SCORMId + Supsi.Constants.get('DATA_LOCATION') + uri);
+				Supsi.Utils.log('trying to load via xhr', this.SCORMId + Supsi.Constants.get('DATA_LOCATION') + uri);
 				jQuery.ajax({
 					url: this.SCORMId + Supsi.Constants.get('DATA_LOCATION') + uri,
 					type: 'GET',
@@ -166,7 +163,6 @@
 		},
 		_getFileCback: function(uri, fileEntry){
 			var that = this;
-			console.log('getFile cback, trying to open ', uri);
 			fileEntry.file(function(file){
 				that._fileCback(file, uri, fileEntry);
 			}, this._fileErrback);
@@ -187,8 +183,8 @@
 				contentDocument.body.appendChild(base);
 			}
 
-			console.log('reading file from ', uri);
-			console.log('the real path should be ', this.SCORMId + Supsi.Constants.get('CLONED_BASE') + uri);
+			Supsi.Utils.log('reading file from ', uri);
+			Supsi.Utils.log('the real path should be ', this.SCORMId + Supsi.Constants.get('CLONED_BASE') + uri);
 			
 			// la CLONED_BASE sarebbe meglio lasciarla fuori dalla cartella ID. Poi, per ora cerchiamo di fare in modo che funzioni tutto.
 			// Supsi.Filesystem.getFile(uri.substr(uri.lastIndexOf('/')+1), true,
@@ -221,7 +217,7 @@
 		 * file writer error callback
 		 * */
 		_fileWriterErr: function(){
-			console.log('[ScormPanel] fileWriterErr ', arguments);
+			Supsi.Utils.log('[ScormPanel] fileWriterErr ', arguments);
 
 		},
 		/**
@@ -455,7 +451,7 @@
 //						this._annotationsNodes.push(annotation);
 //					}
 //				}
-//				console.log('included nodes: ', this._annotationsNodes);
+//				Supsi.Utils.log('included nodes: ', this._annotationsNodes);
 //				this.mbox.down('#notearea').setValue(notes);
 				this.mbox.down('#notearea').setValue('');
 			}, this);
@@ -518,7 +514,7 @@
 		onSearchDismiss: function(){
 			var doc = this.docContainer.dom.contentDocument, searchResults = doc.querySelectorAll('.scorm_search_result');
 			Array.prototype.every.call(searchResults, function(item){
-				item.classList.remove('scorm_search_result')
+				item.classList.remove('scorm_search_result');
 			});
 			this.searchView.hide();
 		},
@@ -528,7 +524,7 @@
 		},
 		onNoteDelete: function(){
 			Supsi.Utils.unwrap(this._currentAnnotationNode);
-			this.noteView.hide()
+			this.noteView.hide();
 		},
 		onNoteCancel: function(){
 			this.noteView.hide();
@@ -538,11 +534,11 @@
 		},
 		setSCORMId: function(SCORMId){
 			this.SCORMId = SCORMId;
-			console.log('SCORMid set to %s', SCORMId);
+			Supsi.Utils.log('SCORMid set to %s', SCORMId);
 		},
 		setResourceId: function(resourceId){
 			this.resourceId = resourceId;
-			console.log('resourceId set to %s', resourceId);
+			Supsi.Utils.log('resourceId set to %s', resourceId);
 		},
 		initialize: function(){
 			this.callParent(arguments);

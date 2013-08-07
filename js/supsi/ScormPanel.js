@@ -147,6 +147,7 @@
 				reader.readAsText(file);
 
 			}else{
+				Supsi.Utils('before the ajax call');
 				Supsi.Utils.log('trying to load via xhr', this.SCORMId + Supsi.Constants.get('DATA_LOCATION') + uri);
 				jQuery.ajax({
 					url: this.SCORMId + Supsi.Constants.get('DATA_LOCATION') + uri,
@@ -344,7 +345,7 @@
 						style = contentDocument.createElement('link');
 						style.rel = 'stylesheet';
 						style.href = that.SCORMId + styles[i] + '?' +  +new Date;
-						contentDocument.body.appendChild(style);
+						// contentDocument.body.appendChild(style);
 					}
 				}
 
@@ -541,12 +542,14 @@
 			Supsi.Utils.log('resourceId set to %s', resourceId);
 		},
 		initialize: function(){
+			var that = this;
 			this.callParent(arguments);
 
 			this.setupGeometry(this, Ext.Viewport.getOrientation(), Ext.Viewport.getWindowWidth(), Ext.Viewport.getWindowHeight());
 			this.buildComponents();
 			this.setupEventHandlers();
 			this.loadTemplate();
+			Ext.Viewport.on('orientationchange', this.setupGeometry, false);
 		}
 	});
 //})

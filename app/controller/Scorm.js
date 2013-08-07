@@ -126,7 +126,13 @@
 			//MoodleMobApp.app.hideLoadMask();
 			var filePath = dir + '/' + file.name;
 			var extractionSuccessFunc = function(targetPath) {
-					Supsi.Utils.log('extractionSuccessFunc ', targetPath);
+				var astr = '';
+					for(var k = 0, l = arguments.length; k < l; k++){
+						astr += arguments[k] + ','
+					}
+					console.log('extractionSuccessFunc arguments ' + astr);
+					
+					console.log('extractionSuccessFunc ', targetPath);
 					window.requestFileSystem(
 						LocalFileSystem.PERSISTENT, 0,
 						function onFileSystemSuccess(fileSystem) {
@@ -365,7 +371,7 @@
 		 * load a table of contents - non standard SCORM
 		 * */
 		loadToc: function(toc){
-			console.log('loadToc with parameter: ', toc);
+			console.log('loadToc with parameter: ' + toc);
 			if(_transport){
 				_transport.onload = null;
 				_transport = null;
@@ -421,7 +427,7 @@
 
 			// toc sh*t
 			_navHistory.push('toc.js');
-			console.log('toc location = ', path + Supsi.Constants.get('TOC_LOCATION'));
+			console.log('toc location = ' + path + Supsi.Constants.get('TOC_LOCATION'));
 			/*
 			var scorm = Ext.create('MoodleMobApp.view.Scorm');
 			console.log('output of the scorm');

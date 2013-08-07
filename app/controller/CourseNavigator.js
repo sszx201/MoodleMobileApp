@@ -63,6 +63,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		);
 		// display modules
 		if(typeof this.getModuleList() == 'object') {
+			this.getModuleList().setStore(modules);
 			this.getNavigator().push(this.getModuleList());
 		} else {
 			this.getNavigator().push({

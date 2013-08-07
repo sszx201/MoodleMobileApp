@@ -13,7 +13,7 @@ Ext.define('MoodleMobApp.Config', {
 	},
 
 	config : {
-		moodleUrl : 'https://mobile.icorsi.ch',
+		moodleUrl : 'https://yourmoodleinstallation.org',
 		aaiAuthUrl : '/auth/mobileaai/authenticate.php',
 		homeOrgsUrl : '/auth/mobileaai/get_idps.php',
 		manualAuthUrl : '/auth/mobilemanual/authenticate.php',

@@ -122,22 +122,22 @@
 		//this.showLoadMask('');
 		// success function
 		var downloadSuccessFunc = function(result){
-			Supsi.Utils.log('download success function start');
+			console.log('download success function start');
 			//MoodleMobApp.app.hideLoadMask();
 			var filePath = dir + '/' + file.name;
 			var extractionSuccessFunc = function(targetPath) {
 				var astr = '';
 					for(var k = 0, l = arguments.length; k < l; k++){
-						astr += arguments[k] + ','
+						astr += arguments[k] + ',';
 					}
 					console.log('extractionSuccessFunc arguments ' + astr);
 					
-					console.log('extractionSuccessFunc ', targetPath);
+					console.log('extractionSuccessFunc ' + targetPath);
 					window.requestFileSystem(
 						LocalFileSystem.PERSISTENT, 0,
 						function onFileSystemSuccess(fileSystem) {
 								// get the filesystem
-								Supsi.Utils.log('requestFileSystem callback ', targetPath);
+								console.log('requestFileSystem callback ' + targetPath);
 								fileSystem.root.getFile(
 									scormExtractedFileFlag,
 									{
@@ -146,12 +146,12 @@
 									},
 									function() {
 										// console.log('finalized the scorm path = ', sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1) );
-										Supsi.Utils.log('before parseScorm ', targetPath);
+										console.log('before parseScorm ' + targetPath);
 
 										that.parseScorm(targetPath + '/');
 									},
 									function() {
-										Supsi.Utils.log('cannot finalize the scorm');
+										console.log('cannot finalize the scorm');
 									}
 								);
 						},

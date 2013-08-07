@@ -12,7 +12,11 @@
 
 		config : {},
 		log: function(){
-			this.isDebug && console.log.apply(console, ['[Utils logger] '].concat(Array.prototype.slice.call(arguments, 0)));
+			// this.isDebug && console.log.apply(console, ['[Utils logger] '].concat(Array.prototype.slice.call(arguments, 0)));
+			// 
+			if(this.isDebug){
+				console.log.apply(console, arguments);
+			}
 		},
 		unwrap: function(node){
 			for(var i = 0, l = docFrag.childNodes.length; i < l; i++){

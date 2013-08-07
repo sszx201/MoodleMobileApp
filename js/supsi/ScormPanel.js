@@ -139,6 +139,7 @@
 		_fileCback: function(file, uri, fileEntry){
 			var that = this, reader;
 			this._currentFileEntry = fileEntry;
+			console.log('file size = %i', file.size);
 			if(file.size){
 				reader = new FileReader();
 				reader.onloadend = function(){
@@ -147,13 +148,17 @@
 				reader.readAsText(file);
 
 			}else{
-				Supsi.Utils('before the ajax call');
-				Supsi.Utils.log('trying to load via xhr', this.SCORMId + Supsi.Constants.get('DATA_LOCATION') + uri);
+				Supsi.Utils.log('trying to load via xhr 1 ', this.SCORMId );
+				Supsi.Utils.log('trying to load via xhr 2 ', Supsi.Constants.get('DATA_LOCATION'));
+				Supsi.Utils.log('trying to load via xhr 3 ', uri);
 				jQuery.ajax({
 					url: this.SCORMId + Supsi.Constants.get('DATA_LOCATION') + uri,
 					type: 'GET',
 					success: function(response){
 						that.resourceLoaded(response, file, fileEntry);
+					},
+					error: function(xhr, err){
+						console.log('xhr error, %o', err);
 					}
 				});
 
@@ -191,6 +196,7 @@
 			// Supsi.Filesystem.getFile(uri.substr(uri.lastIndexOf('/')+1), true,
 			Supsi.Filesystem.getFile(this.SCORMId + Supsi.Constants.get('CLONED_BASE') + uri, true,
 				function(fileEntry){
+					console.log('+è+è+è+è+è+è getFile ', uri);
 					that._getFileCback.call(that, uri, fileEntry);
 				},
 				function(err){
@@ -345,7 +351,7 @@
 						style = contentDocument.createElement('link');
 						style.rel = 'stylesheet';
 						style.href = that.SCORMId + styles[i] + '?' +  +new Date;
-						// contentDocument.body.appendChild(style);
+						contentDocument.body.appendChild(style);
 					}
 				}
 

@@ -38,6 +38,7 @@ function addExtensions() {
 		function(){ 
 			var targetPath = '/sdcard/'+filePath;
 			targetPath = targetPath.substring(0, targetPath.lastIndexOf('/'));
+			console.log('23) **************************** targetPath = ' + targetPath);
 			successFunc(targetPath);
 	},failFunc);
 	};

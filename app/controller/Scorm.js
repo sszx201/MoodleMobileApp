@@ -12,6 +12,7 @@
 			'MoodleMobApp.model.ScormResource',
 			'MoodleMobApp.view.Scorm',
 			'Ext.data.Store',
+			'Supsi.Utils',
 			'Supsi.Filesystem',
 			'Supsi.Database'
 		],
@@ -116,18 +117,21 @@
 		// Example: 508/508.zip
 		// Once extracted all the content is going to be contained in one directory.
 		var dir = MoodleMobApp.Config.getFileCacheDir() + '/' + module.get('id');
+		Supsi.Utils.log('files unzipped in ',  MoodleMobApp.Config.getFileCacheDir() + '/' + module.get('id'));
 		var scormExtractedFileFlag = dir + '/_scorm_extracted_';
 		//this.showLoadMask('');
 		// success function
-		var downloadSuccessFunc = function(result) {
-			console.log('download success function start');
+		var downloadSuccessFunc = function(result){
+			Supsi.Utils.log('download success function start');
 			//MoodleMobApp.app.hideLoadMask();
 			var filePath = dir + '/' + file.name;
 			var extractionSuccessFunc = function(targetPath) {
+					Supsi.Utils.log('extractionSuccessFunc ', targetPath);
 					window.requestFileSystem(
 						LocalFileSystem.PERSISTENT, 0,
 						function onFileSystemSuccess(fileSystem) {
 								// get the filesystem
+								Supsi.Utils.log('requestFileSystem callback ', targetPath);
 								fileSystem.root.getFile(
 									scormExtractedFileFlag,
 									{
@@ -136,10 +140,12 @@
 									},
 									function() {
 										// console.log('finalized the scorm path = ', sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1) );
+										Supsi.Utils.log('before parseScorm ', targetPath);
+
 										that.parseScorm(targetPath + '/');
 									},
 									function() {
-										console.log('cannot finalize the scorm');
+										Supsi.Utils.log('cannot finalize the scorm');
 									}
 								);
 						},
@@ -152,8 +158,8 @@
 						});
 			};
 			var extractionFailFunc = function(error) {
-					console.log('ERROR !!!!!!!!!!!!!!!!!');
-					console.log(error);
+					Supsi.Utils.log('ERROR !!!!!!!!!!!!!!!!!');
+					Supsi.Utils.log(error);
 			};
 						// start the extraction
 
@@ -164,10 +170,10 @@
 		var downloadProgressFunc = function(progressEvent){
 			if (progressEvent.lengthComputable) {
 				//MoodleMobApp.app.updateLoadMaskMessage(progressEvent.loaded+' bytes');
-				// console.log('downloaded in percentage: ' + (progressEvent.loaded/progressEvent.total * 100) + '%');
+				// Supsi.Utils.log('downloaded in percentage: ' + (progressEvent.loaded/progressEvent.total * 100) + '%');
 			} else {
 				//this.hideLoadMask('');
-				console.log('download complete');
+				Supsi.Utils.log('download complete');
 			}
 		};
 
@@ -265,7 +271,7 @@
 			if(record.get('src')){
 				_navHistory.push(record.get('src'));
 				this.getNavBackBtn().show();
-				console.log('loading toc from ', this.getScormPanel().SCORMId + Supsi.Constants.get('TOC_LOCATION') + record.get('src'))
+				Supsi.Utils.log('loading toc from ', this.getScormPanel().SCORMId + Supsi.Constants.get('TOC_LOCATION') + record.get('src'))
 				this.loadToc(this.getScormPanel().SCORMId + Supsi.Constants.get('TOC_LOCATION') + record.get('src'));
 			}
 		},
@@ -282,13 +288,13 @@
 				scope: this,
 				success: this.manifestLoaded,
 				failure: function(err){
-					console.log('load error ', err);
+					Supsi.Utils.log('load error ', err);
 				}
 
 			});
 		},
 		manifestLoaded: function(data){
-			console.log('***************** DOC LOADED 2 ********************')
+			Supsi.Utils.log('***************** DOC LOADED 2 ********************')
 			var root = data.responseXML.documentElement;
 
 			this.parseManifest(root);

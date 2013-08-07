@@ -51,7 +51,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		this.current_course = record;
 		// set the course token inside the session
 		MoodleMobApp.Session.setCourse(record);
-
+		console.log('selectCourse: ', record.get('id'));
 		// filter modules
 		var modules = Ext.create('Ext.data.Store', { model: 'MoodleMobApp.model.Module' });
 		MoodleMobApp.Session.getModulesStore().each(

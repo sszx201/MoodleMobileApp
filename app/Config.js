@@ -8,8 +8,8 @@ Ext.define('MoodleMobApp.Config', {
 		this.config.manualAuthUrl = this.config.moodleUrl + this.config.manualAuthUrl;
 		this.config.webServiceUrl = this.config.moodleUrl + this.config.webServiceUrl;
 
-  		this.initConfig(config);
-  		return this;
+		this.initConfig(config);
+		return this;
 	},
 
 	config : {

@@ -98,10 +98,10 @@
 							console.log('doc and metadata saved');
 						},
 						errback: function(tx, err){
-							console.error('db error: ', err)
+							console.error('db error: ', err);
 						}
 
-					})
+					});
 
 				}
 			}
@@ -116,7 +116,7 @@
 			this.getAnnotateBtn().setDisabled(!isValid);
 		},
 		onSetLocation: function(location){
-			this.getScormPanel().setURI(Supsi.Constants.get('RELATIVE_DOCS_LOCATION') + location)
+			this.getScormPanel().setURI(Supsi.Constants.get('RELATIVE_DOCS_LOCATION') + location);
 		},
 		onSearchText: function(text){
 			this.getScormPanel().searchText(text);
@@ -156,9 +156,9 @@
 			var n = document.createElement('span');
 			console.log('prima di leggere da Constants');
 			n.setAttribute(Supsi.Constants.get('SCORM_HIGHLIGHT_ATTRIBUTE'), '');
-			console.log(Supsi.Constants.get('SCORM_HIGHLIGHT_ATTRIBUTE'))
+			console.log(Supsi.Constants.get('SCORM_HIGHLIGHT_ATTRIBUTE'));
 			n.className = 'scorm_highlight';
-			console.log('highlight node created')
+			Supsi.Utils.log('highlight node created');
 			return n;
 		},
 
@@ -203,10 +203,10 @@
 		},
 		//called when the Application is launched, remove if not needed
 		launch: function(app) {
-			var sp = this.getScormPanel();
-			Ext.Viewport.on('orientationchange', function(){ sp.setupGeometry.apply(sp, arguments); });
+			// var sp = this.getScormPanel();
+			// Ext.Viewport.on('orientationchange', function(){ sp.setupGeometry.apply(sp, arguments); });
 			//			window.addEventListener('orientationchange', function(){ sp.setupGeometry() }, false);
 
 		}
-	})
+	});
 //});

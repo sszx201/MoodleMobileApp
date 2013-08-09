@@ -122,16 +122,22 @@
 		//this.showLoadMask('');
 		// success function
 		var downloadSuccessFunc = function(result){
-			Supsi.Utils.log('download success function start');
+			console.log('download success function start');
 			//MoodleMobApp.app.hideLoadMask();
 			var filePath = dir + '/' + file.name;
 			var extractionSuccessFunc = function(targetPath) {
-					Supsi.Utils.log('extractionSuccessFunc ', targetPath);
+				var astr = '';
+					for(var k = 0, l = arguments.length; k < l; k++){
+						astr += arguments[k] + ',';
+					}
+					console.log('extractionSuccessFunc arguments ' + astr);
+					
+					console.log('extractionSuccessFunc ' + targetPath);
 					window.requestFileSystem(
 						LocalFileSystem.PERSISTENT, 0,
 						function onFileSystemSuccess(fileSystem) {
 								// get the filesystem
-								Supsi.Utils.log('requestFileSystem callback ', targetPath);
+								console.log('requestFileSystem callback ' + targetPath);
 								fileSystem.root.getFile(
 									scormExtractedFileFlag,
 									{
@@ -140,12 +146,12 @@
 									},
 									function() {
 										// console.log('finalized the scorm path = ', sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1) );
-										Supsi.Utils.log('before parseScorm ', targetPath);
+										console.log('before parseScorm ' + targetPath);
 
 										that.parseScorm(targetPath + '/');
 									},
 									function() {
-										Supsi.Utils.log('cannot finalize the scorm');
+										console.log('cannot finalize the scorm');
 									}
 								);
 						},
@@ -365,7 +371,7 @@
 		 * load a table of contents - non standard SCORM
 		 * */
 		loadToc: function(toc){
-			console.log('loadToc with parameter: ', toc);
+			console.log('loadToc with parameter: ' + toc);
 			if(_transport){
 				_transport.onload = null;
 				_transport = null;
@@ -421,7 +427,7 @@
 
 			// toc sh*t
 			_navHistory.push('toc.js');
-			console.log('toc location = ', path + Supsi.Constants.get('TOC_LOCATION'));
+			console.log('toc location = ' + path + Supsi.Constants.get('TOC_LOCATION'));
 			/*
 			var scorm = Ext.create('MoodleMobApp.view.Scorm');
 			console.log('output of the scorm');

@@ -33,7 +33,14 @@ function addExtensions() {
 		// the external plugin. The plugin is platform related.	
 
 		var ZipClient = new ExtractZipFilePlugin();
-        ZipClient.extractFile('sdcard/'+filePath, successFunc, failFunc);
+		console.log('**************************** before unzip, filePath = ' + filePath);
+		ZipClient.extractFile('sdcard/'+filePath,
+		function(){ 
+			var targetPath = '/sdcard/'+filePath;
+			targetPath = targetPath.substring(0, targetPath.lastIndexOf('/'));
+			console.log('23) **************************** targetPath = ' + targetPath);
+			successFunc(targetPath);
+	},failFunc);
 	};
 
 	MoodleMobApp.app.onBackKeyDown = function(e) {

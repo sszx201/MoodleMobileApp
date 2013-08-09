@@ -28,6 +28,11 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 						action: 'showgrades',
 					},
 					{
+						xtype: 'button',	
+						text: 'Calendar Events',
+						action: 'showcalendarevents',
+					},
+					{
 						xtype: 'spacer'
 					},
 				]

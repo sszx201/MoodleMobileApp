@@ -84,9 +84,37 @@ Ext.define('MoodleMobApp.controller.Main', {
 		);
 	},
 
-	updateDataStores: function(course){
-		var mstore = MoodleMobApp.WebService.getCourseModules(course.getData());
-		
+	updateDataStores: function(course) {
+		this.updateCalendarEvents(course);
+		this.updateCourseModules(course);
+	},
+
+	updateCalendarEvents: function(course){
+		MoodleMobApp.WebService.getCalendarEvents(course.getData()).on(
+			'load', 
+			function(cstore){
+				// -log-
+				if(MoodleMobApp.Config.getVerbose()) {
+					MoodleMobApp.log('UPDATING COURSE CALENDAR EVENTS: ' + course.get('name') + '; ID: ' + course.get('id'));
+				}
+				MoodleMobApp.Session.getCalendarEventsStore().each(
+					function(record){
+						if(record.get('courseid') == course.get('id')) {
+							MoodleMobApp.Session.getCalendarEventsStore().remove(record);
+							return true;
+						}
+					}
+				);
+
+				cstore.each(function(record){ MoodleMobApp.Session.getCalendarEventsStore().add(record); });
+				MoodleMobApp.Session.getModulesStore().sync();
+			},
+			this,
+			{single: true}
+		);
+	},
+
+	updateCourseModules: function(course) {
 		// update modules
 		MoodleMobApp.WebService.getCourseModules(course.getData()).on(
 			'load', 

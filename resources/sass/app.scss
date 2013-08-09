@@ -24,6 +24,7 @@ $active-color: #C35817;
 @include icon('marker', '\e003', 'icoMoon');
 
 .x-course,
+.x-calendar-event,
 .x-module,
 .x-grade,
 .x-folder-entry,
@@ -100,7 +101,6 @@ $active-color: #C35817;
 	font-size: small;
 }
 
-
 .x-grade-data {
 	text-align: right;
 	color: black;
@@ -147,6 +147,12 @@ $active-color: #C35817;
 
 .x-partecipant-contact-button {
 	margin-top: 10px;
+}
+
+.x-calendar-event-timestart,
+.x-calendar-event-timeduration {
+	color: gray;
+	font-size: small;
 }
 
 /*

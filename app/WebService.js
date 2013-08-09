@@ -63,6 +63,17 @@ Ext.define('MoodleMobApp.WebService', {
 		course_modules_store.setGroupField('modname');
 		return course_modules_store;
 	},
+
+	getCalendarEvents: function(course) {
+		// set parameters
+		var params = new Object();
+		params.wsfunction = 'local_uniappws_calendar_get_events';
+		params.wstoken = course.token;
+		params.courseid = course.id;
+		// request
+		var calendar_events_store = this.request(params, 'MoodleMobApp.model.CalendarEvent', 'GET');
+		return calendar_events_store;
+	},
 	
 	getForumDiscussions: function(forum, token) {
 		// set parameters

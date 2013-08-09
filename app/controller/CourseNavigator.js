@@ -14,6 +14,8 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			'MoodleMobApp.view.Partecipant',
 			'MoodleMobApp.view.Grades',
 			'MoodleMobApp.view.Grade',
+			'MoodleMobApp.view.CalendarEvents',
+			'MoodleMobApp.view.CalendarEvent',
 		],
 
 		refs: {
@@ -28,6 +30,8 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			contactPartecipantsButton: '#partecipants button[action=contactpartecipants]',
 			grades: '#grades',
 			showGradesButton: '#module_list button[action=showgrades]',
+			calendarEvents: '#calendarevents',
+			showCalendarEventsButton: '#module_list button[action=showcalendarevents]',
 		},
 
 		control: {
@@ -39,6 +43,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			clearPartecipantsSelectionButton: { tap: 'clearPartecipantsSelection' },
 			selectAllPartecipantsButton: { tap: 'selectAllPartecipants' },
 			showGradesButton: { tap: 'showGrades' },
+			showCalendarEventsButton: { tap: 'showCalendarEvents' },
 		}
 	},
 
@@ -196,6 +201,27 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 				store: MoodleMobApp.Session.getGradeItemsStore()
 			});
 		}
+	},
+
+	showCalendarEvents: function(button) {
+		this.filterCalendarEvents();
+		// display modules
+		if(typeof this.getCalendarEvents() == 'object') {
+			this.getNavigator().push(this.getCalendarEvents());
+		} else {
+			this.getNavigator().push({
+				xtype: 'calendarevents',	
+				store: MoodleMobApp.Session.getCalendarEventsStore()
+			});
+		}
+	},
+
+	filterCalendarEvents: function() {
+		MoodleMobApp.Session.getCalendarEventsStore().filterBy(
+			function(calendar_event) {
+				return parseInt(calendar_event.get('courseid')) == parseInt(this.current_course.get('id'))
+			}, this
+		);
 	},
 
 });

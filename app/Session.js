@@ -15,6 +15,7 @@ Ext.define('MoodleMobApp.Session', {
 		manualAccountStore: null,
 		aaiAccountStore: null,
 		coursesStore: null,
+		calendarEventsStore: null,
 		modulesStore: null,
 		resourcesStore: null,
 		choicesStore: null,

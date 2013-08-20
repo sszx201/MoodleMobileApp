@@ -9,7 +9,8 @@ Ext.define('MoodleMobApp.view.Scorm', {
         'Ext.Button',
         'Supsi.MetaPanel',
         'Supsi.SettingsPanel',
-        'Supsi.ScormPanel'
+        'Supsi.ScormPanel',
+        'MoodleMobApp.store.ScormMetadataStore'
     ],
     config: {
         fullscreen: true,
@@ -35,6 +36,7 @@ Ext.define('MoodleMobApp.view.Scorm', {
 						items:[
 							{
 								xtype: 'toolbar',
+								id: 'scormToolbar',
 								items: [
 									{
 										xtype: 'button',
@@ -48,6 +50,7 @@ Ext.define('MoodleMobApp.view.Scorm', {
 							},
 							{
 								title: 'home',
+								id: 'resourceList',
 								xtype: 'list',
 								itemTpl: '{title}',
 								width: 300,
@@ -173,15 +176,12 @@ Ext.define('MoodleMobApp.view.Scorm', {
 					{
 						xtype: 'list',
 						id: 'metadataList',
-						itemTpl: '{title}',
+						selectedCls: '',
+						itemTpl: '<div>{data}</div><div class=\'metaType\'>{type}</div>',
 						width:'100%',
 						height:'100%',
-						data: [
-							{ title: 'Item 1' },
-							{ title: 'Item 2' },
-							{ title: 'Item 3' },
-							{ title: 'Item 4' }
-						]
+						store: { xclass: 'MoodleMobApp.store.ScormMetadataStore' }
+						// store: 'scormmetadata'
 					}
 				]
 			}

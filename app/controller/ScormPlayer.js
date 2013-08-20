@@ -86,14 +86,14 @@
 					index = scormPanel.getHighlightIndex(highlightNode);
 					scormId = scormPanel.SCORMId;
 					resId = scormPanel.resourceId;
+					console.log('saving the metadata...');
 					Supsi.Database.saveMetadata({
 						scormId: scormId,
 						resId: resId,
 						type: 1, // highlight
 						index: index,
-						data: {}, // it's only a test
+						data: range.toString(),
 						cback: function(){
-							console.log('---flushing?');
 							scormPanel.flushDomToFile();
 							console.log('doc and metadata saved');
 						},

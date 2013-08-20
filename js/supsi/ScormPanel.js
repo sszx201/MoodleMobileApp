@@ -306,7 +306,7 @@
 			}
 		},
 		onSelectedHighlight: function(target){
-			this.fireEvent('highlightselected', target)
+			this.fireEvent('highlightselected', target);
 		},
 		setupEventHandlers: function(){
 			var that = this;

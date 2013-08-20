@@ -1,4 +1,3 @@
-//require(['js/supsi/Constants'], function(Constants){
 ;(function(){
 	var _navHistory = [],
 		_transport,
@@ -20,7 +19,6 @@
 			refs: {
 				navigator: '#course_navigator',
 				module: '#module_list',
-				metaExitBtn: 'metapanel button',
 				navBackBtn: '#navBack',
 //				mainView: 'scormreader',
 				hidePanelBtn: '#hidePanelBtn',
@@ -29,9 +27,11 @@
 				settingsBtn: '#settingsBtn',
 				settingsPanel: '#settingsPanel',
 				metaPanel: '#metaPanel',
-				resourceList: 'list',
+				resourceList: '#resourceList',
 				resourceContainer: '#resourceListContainer',
 				scorm: 'scorm',
+				scormToolbar: '#scormToolbar',
+				metadataList: '#metadataList',
 				scormPanel: 'scormpanel'//,
 
 			},
@@ -44,9 +44,6 @@
 				},
 				navBackBtn: {
 					tap: 'navigationBack'
-				},
-				metaExitBtn: {
-					tap: 'hideMetaPanel'
 				},
 				settingsBtn: {
 					tap: 'showSettingsPanel'
@@ -164,8 +161,7 @@
 						});
 			};
 			var extractionFailFunc = function(error) {
-					Supsi.Utils.log('ERROR !!!!!!!!!!!!!!!!!');
-					Supsi.Utils.log(error);
+					Supsi.Utils.log('ERROR ', error);
 			};
 						// start the extraction
 
@@ -207,27 +203,48 @@
 
 		},
 
-		/**
-		 * hide the metadata panel
-		 * */
-		hideMetaPanel: function(){
-			this.getMetaPanel().hide();
-		},
 
 		/**
 		 * show the metadata panel
 		 * */
 		showMetaPanel: function(){
+			var that = this;
 			Supsi.Database.selectResourcesByScormId({
 				scormId: this.getScormPanel().SCORMId,
-				cback: function(){
+				cback: function(results){
+					var list = that.getMetadataList(), store = list.getStore(), rows = results.rows, data = [], 
 
+					// todo: localize me, i18n!
+					types = ['Bookmark', 'Highlight', 'Annotation']
+					;
+					for(var i = 0, l = rows.length, item; i < l; i++){
+						item = rows.item(i);
+						data.push({
+							data: item['METADATA.data'],
+							type: types[+item['METADATA.type']],
+							index: item['METADATA.idx'],
+							timestamp: item['METADATA.timestamp'],
+							href: item['agg.url']
+						});
+					}
+					store.setData(data);
+					// Supsi.Database.selectResourcesByScormId()
+					store.sync();
 				},
 				errback: function(){
 
 				}
 			});
+			this.getScormToolbar().hide();
+			this.loadMetadata();
 			this.getMetaPanel().show();
+		},
+		/**
+		 * load the metadata into the list
+		 */
+		loadMetadata: function(){
+			// list.removeAll();
+			
 		},
 
 		/**
@@ -296,11 +313,10 @@
 				failure: function(err){
 					Supsi.Utils.log('load error ', err);
 				}
-
 			});
 		},
 		manifestLoaded: function(data){
-			Supsi.Utils.log('***************** DOC LOADED 2 ********************')
+			Supsi.Utils.log('***************** DOC LOADED 2 ********************');
 			var root = data.responseXML.documentElement;
 
 			this.parseManifest(root);
@@ -329,7 +345,7 @@
 				}
 				currentChildren = this.parseItems(itemsNodes[i], root);
 
-				newItem.leaf = !currentChildren.length
+				newItem.leaf = !currentChildren.length;
 				if(currentChildren.length){
 					newItem.items = currentChildren;
 				}
@@ -458,4 +474,3 @@
 		}
 	});
 })();
-//});

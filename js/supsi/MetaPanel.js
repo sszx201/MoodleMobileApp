@@ -9,7 +9,7 @@ Ext.define('Supsi.MetaPanel', {
         items: [
             {
                 padding: 10,
-				width: 400,
+                width: 400,
                 html: 'Search Panel here '
 
             }

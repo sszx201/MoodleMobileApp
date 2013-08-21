@@ -8,6 +8,11 @@ Ext.define('MoodleMobApp.store.ScormMetadataStore', {
 	config: {
 		storeId: 'scormmetadatastore',
 		model: 'MoodleMobApp.model.ScormMetadata',
+		grouper: {
+			groupFn: function(record) {
+				return record.get('href');
+			}
+		},
 		// autoLoad: true,
 		// autoSync: true,
 		proxy : {

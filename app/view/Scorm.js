@@ -175,6 +175,7 @@ Ext.define('MoodleMobApp.view.Scorm', {
 					},
 					{
 						xtype: 'list',
+						grouped: true,
 						id: 'metadataList',
 						selectedCls: '',
 						itemTpl: '<div>{data}</div><div class=\'metaType\'>{type}</div>',

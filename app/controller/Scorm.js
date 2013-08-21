@@ -200,7 +200,6 @@
 			if(_navHistory.length === 1){
 				this.getNavBackBtn().hide();
 			}
-
 		},
 
 
@@ -228,7 +227,6 @@
 						});
 					}
 					data.length ? store.setData(data) : store.removeAll();
-					// Supsi.Database.selectResourcesByScormId()
 					store.sync();
 				},
 				errback: function(){

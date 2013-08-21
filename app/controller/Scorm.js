@@ -227,7 +227,7 @@
 							href: item['agg.url']
 						});
 					}
-					store.setData(data);
+					data.length ? store.setData(data) : store.removeAll();
 					// Supsi.Database.selectResourcesByScormId()
 					store.sync();
 				},

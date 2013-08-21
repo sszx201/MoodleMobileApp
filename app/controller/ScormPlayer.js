@@ -47,10 +47,6 @@
 			}
 		},
 		_currentHighlightNode: null,
-		removeHighlight: function(){
-			Supsi.Utils.unwrap(this._currentHighlightNode);
-			this.getHighlightRemovalPanel().hide();
-		},
 		onHightlightRemovalPanelHide: function(){
 			this._currentHighlightNode = null;
 		},
@@ -62,6 +58,31 @@
 		onDocLoaded: function(){
 			this.getBookmarkBtn().setDisabled(false);
 			this.getFindBtn().setDisabled(false);
+		},
+		/**
+		 * handle the text highlight removal
+		 * */
+		removeHighlight: function(){
+			var that = this, scormPanel = this.getScormPanel(),
+			index = scormPanel.getHighlightIndex(this._currentHighlightNode),
+			scormId = scormPanel.SCORMId,
+			resId = scormPanel.resourceId;
+			Supsi.Database.removeMetadata({
+				scormId: scormId,
+				resId: resId,
+				type: 1, // highlight
+				index: index,
+				cback: function(){
+					scormPanel.flushDomToFile();
+					console.log('doc and metadata removed');
+					Supsi.Utils.unwrap(that._currentHighlightNode);
+					that.getHighlightRemovalPanel().hide();
+				},
+				errback: function(tx, err){
+					console.error('db error: ', err);
+				}
+
+			});
 		},
 		/**
 		 * handle the text highlight
@@ -79,14 +100,10 @@
 			}catch(exception){
 				// thrown when the range contains at least a non-text node
 			}finally{
-				console.log('before the flush op, rangeOp = ', rangeOp);
-				console.log('scormid = ', scormPanel.SCORMId);
 				if(rangeOp){
-
 					index = scormPanel.getHighlightIndex(highlightNode);
 					scormId = scormPanel.SCORMId;
 					resId = scormPanel.resourceId;
-					console.log('saving the metadata...');
 					Supsi.Database.saveMetadata({
 						scormId: scormId,
 						resId: resId,

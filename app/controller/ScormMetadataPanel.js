@@ -33,8 +33,6 @@ Ext.define('MoodleMobApp.controller.ScormMetadataPanel', {
             if(record.get('href')){
                 this.getScormPanel().setURI(record.get('href'));
             }
-            // todo: trova un modo per deselezionare
-            // dataview.deselectAll();
             this.hideMetaPanel();
     }
 });

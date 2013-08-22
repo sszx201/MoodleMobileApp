@@ -3,6 +3,7 @@ Ext.define('MoodleMobApp.model.ScormMetadata', {
     config: {
         fields: [
             { name: 'data', type: 'string' },
+            { name: 'fragment', type: 'string' },
             { name: 'type', type: 'string' },
             { name: 'href', type: 'string' },
             { name: 'index', type: 'integer' },

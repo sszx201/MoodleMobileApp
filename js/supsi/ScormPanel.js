@@ -58,8 +58,8 @@
 		/**
 		 * get the DOM index of this highlightNode
 		 * */
-		getHighlightIndex: function(highlightNode){
-			var hNodes = this.docContainer.dom.contentDocument.querySelectorAll('[' + Supsi.Constants.get('SCORM_HIGHLIGHT_ATTRIBUTE') + ']');
+		getMetadataIndex: function(highlightNode){
+			var hNodes = this.docContainer.dom.contentDocument.querySelectorAll('[' + Supsi.Constants.get('SCORM_HIGHLIGHT_ATTRIBUTE') + '],[' + Supsi.Constants.get('SCORM_ANNOTATION_ATTRIBUTE') + ']');
 			return Array.prototype.indexOf.call(hNodes, highlightNode);
 		},
 		getSelection: function(){
@@ -530,8 +530,7 @@
 			this.fireEvent('annotationend', this.mbox.down('#notearea').getValue());
 		},
 		onNoteDelete: function(){
-			Supsi.Utils.unwrap(this._currentAnnotationNode);
-			this.noteView.hide();
+			this.fireEvent('annotationdelete', this._currentAnnotationNode);
 		},
 		onNoteCancel: function(){
 			this.noteView.hide();

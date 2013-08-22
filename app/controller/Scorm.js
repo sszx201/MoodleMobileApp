@@ -221,6 +221,7 @@
 						data.push({
 							data: item['METADATA.data'],
 							type: types[+item['METADATA.type']],
+							fragment: item['METADATA.fragment'],
 							index: item['METADATA.idx'],
 							timestamp: item['METADATA.timestamp'],
 							href: item['agg.url']

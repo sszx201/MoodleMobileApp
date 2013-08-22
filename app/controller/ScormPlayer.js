@@ -40,6 +40,7 @@
 					docloaded: 'onDocLoaded',
 					onselectionchecked: 'checkDocSelection',
 					annotationend: 'onAnnotationEnd',
+					annotationdelete: 'onAnnotationDelete',
 					annotationchange: 'onAnnotationChange',
 					searchtext: 'onSearchText',
 					setlocation: 'onSetLocation'
@@ -64,7 +65,7 @@
 		 * */
 		removeHighlight: function(){
 			var that = this, scormPanel = this.getScormPanel(),
-			index = scormPanel.getHighlightIndex(this._currentHighlightNode),
+			index = scormPanel.getMetadataIndex(this._currentHighlightNode),
 			scormId = scormPanel.SCORMId,
 			resId = scormPanel.resourceId;
 			Supsi.Database.removeMetadata({
@@ -92,7 +93,6 @@
 				highlightNode = this._createHighlightNode(),
 				rangeOp = false, scormId, resId, scormPanel = this.getScormPanel(), index = -1
 			;
-			console.log('on marktext called 2', this.getScormPanel().getSelectionRange());
 
 			try{
 				range.surroundContents(highlightNode);
@@ -101,7 +101,7 @@
 				// thrown when the range contains at least a non-text node
 			}finally{
 				if(rangeOp){
-					index = scormPanel.getHighlightIndex(highlightNode);
+					index = scormPanel.getMetadataIndex(highlightNode);
 					scormId = scormPanel.SCORMId;
 					resId = scormPanel.resourceId;
 					Supsi.Database.saveMetadata({
@@ -109,7 +109,8 @@
 						resId: resId,
 						type: 1, // highlight
 						index: index,
-						data: range.toString(),
+						fragment: range.toString(),
+						data: '',
 						cback: function(){
 							scormPanel.flushDomToFile();
 							console.log('doc and metadata saved');
@@ -144,24 +145,70 @@
 		toggleBookmark: function(){
 			// todo: save the bookmark metadata (or remove it)
 		},
-		saveAnnotationText: function(){
-
-		},
 		onAnnotationChange: function(node, val){
 			node.setAttribute(Supsi.Constants.get('SCORM_ANNOTATION_ATTRIBUTE'), val);
 		},
-		onAnnotationEnd: function(text){
-			// todo: save the annotation metadata
-			var range = this.getScormPanel().getSelectionRange(),
-				highlightNode = this._createNoteNode(text)//,
-//				clonedContents = range.cloneContents()
-				;
+		/**
+		 * @description handle the annotation removal
+		 * @arguments {Node} annotationNode the node containing the annotation itself
+		 * */
+		onAnnotationDelete: function(annotationNode){
+			var scormPanel = this.getScormPanel(),
+				index = scormPanel.getMetadataIndex(annotationNode),
+				scormId = scormPanel.SCORMId,
+				resId = scormPanel.resourceId
+			;
+			console.log('index to remove = %d', index);
+			Supsi.Database.removeMetadata({
+				scormId: scormId,
+				resId: resId,
+				type: 2,
+				index: index,
+				cback: function(){
+					scormPanel.flushDomToFile();
+					Supsi.Utils.unwrap(annotationNode);
+					scormPanel.noteView.hide();
+				},
+				errback: function(tx, err){
+					console.error('db error: ', err);
+				}
 
-	//        console.log(clonedContents, ' ', clonedContents.querySelectorAll('.scorm_selection').length);
+			});
+
+
+		},
+		onAnnotationEnd: function(text){
+			var range = this.getScormPanel().getSelectionRange(),
+				highlightNode = this._createNoteNode(text),
+				rangeOp = false, scormId, resId, scormPanel = this.getScormPanel(), index = -1
+				;
 			try{
 				range.surroundContents(highlightNode);
+				rangeOp = true;
 			}catch(exception){
 				// thrown when the range contains at least a non-text node
+			}finally{
+				if(rangeOp){
+					index = scormPanel.getMetadataIndex(highlightNode);
+					scormId = scormPanel.SCORMId;
+					resId = scormPanel.resourceId;
+					Supsi.Database.saveMetadata({
+						scormId: scormId,
+						resId: resId,
+						type: 2, // annotation
+						index: index,
+						data: text,
+						fragment: range.toString(),
+						cback: function(){
+							scormPanel.flushDomToFile();
+							console.log('doc and metadata saved');
+						},
+						errback: function(tx, err){
+							console.error('db error: ', err);
+						}
+
+					});
+				}
 			}
 		},
 		/**
@@ -171,9 +218,7 @@
 		 * */
 		_createHighlightNode: function(){
 			var n = document.createElement('span');
-			console.log('prima di leggere da Constants');
 			n.setAttribute(Supsi.Constants.get('SCORM_HIGHLIGHT_ATTRIBUTE'), '');
-			console.log(Supsi.Constants.get('SCORM_HIGHLIGHT_ATTRIBUTE'));
 			n.className = 'scorm_highlight';
 			Supsi.Utils.log('highlight node created');
 			return n;

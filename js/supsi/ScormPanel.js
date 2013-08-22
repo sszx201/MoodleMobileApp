@@ -146,7 +146,7 @@
 					that._loadEnd.apply(that, arguments);
 				};
 				reader.readAsText(file);
-
+				this.fireEvent('docloaded');
 			}else{
 				Supsi.Utils.log('trying to load via xhr 1 ', this.SCORMId );
 				Supsi.Utils.log('trying to load via xhr 2 ', Supsi.Constants.get('DATA_LOCATION'));

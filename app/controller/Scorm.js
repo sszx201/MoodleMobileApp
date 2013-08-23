@@ -18,6 +18,7 @@
 		config: {
 			refs: {
 				navigator: '#course_navigator',
+				bookmarkBtn: '#bookmarkBtn',
 				module: '#module_list',
 				navBackBtn: '#navBack',
 //				mainView: 'scormreader',
@@ -107,7 +108,7 @@
 		file = {
 			'scormid': module.get('instanceid'),
 			'name': module.get('id') + '.zip',
-			'mime': 'application/zip',
+			'mime': 'application/zip'
 		};
 
 		// The archive is going to be named id.zip and is going to be stored in a directory named id
@@ -366,6 +367,7 @@
 			data.leaf = false;
 //        this.fireEvent('itemsUpdated', itemsNodes);
 			this.setListData(data);
+
 		},
 
 		/**
@@ -391,28 +393,32 @@
 				_transport.onload = null;
 				_transport = null;
 			}
+			console.log('creating _transport');
 			_transport = document.createElement('script');
 			_transport.type = 'text/javascript';
 			var that = this;
+			console.log('adding a callback');
 			_transport.onload = function(){
 				console.log('table of contents loaded');
 				that.parseToc();
 			};
 
 			_transport.onerror = function(error){
-				console.log('error: ', arguments);
+				console.log('transport error: ', error);
 			};
 			_transport.src = toc; // toc toc! chi è?
+			console.log('before appendChild');
 			document.body.appendChild(_transport);
 
 		},
 
 		parseToc: function(){
-			console.log('parse toc executed');
-			var parsedDoc = domParser.parseFromString(gXMLBuffer, "text/xml"),
+			console.log('parse toc executed, contents = ', window.gXMLBuffer);
+			var parsedDoc = domParser.parseFromString(window.gXMLBuffer, "text/xml"),
 				data = [],
 				itemsAndBooks = parsedDoc.querySelector('data').childNodes
 			;
+			console.log('parsedDocs = ', parsedDoc);
 			for(var i = 0, l = itemsAndBooks.length; i < l; i++){
 				data[i] = {
 					href: itemsAndBooks[i].getAttribute('url'),
@@ -451,6 +457,9 @@
 			*/
 			console.log('pushing the scorm view');
 			//this.getMain().push({ xtype: 'scorm' });
+
+			this.getBookmarkBtn().setStyle('color:white');
+
 			this.loadToc(path + Supsi.Constants.get('TOC_LOCATION') + 'toc.js');
 			//nr 18-07-2013e
 		},

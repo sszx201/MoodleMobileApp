@@ -48,6 +48,7 @@
 			}
 		},
 		_currentHighlightNode: null,
+		_bookmarked: false,
 		onHightlightRemovalPanelHide: function(){
 			this._currentHighlightNode = null;
 		},
@@ -55,10 +56,44 @@
 			this._currentHighlightNode = target;
 			this.getHighlightRemovalPanel().showBy(this.getMarkerBtn());
 		},
+		syncBookmarkBtn: function(){
+			var that = this, scormPanel = this.getScormPanel();
+			// todo: serve una select resources by resource id.
 
+			// il metadato deve essere relativo al resource id, non allo scorm id.
+			Supsi.Database.selectResourcesByScormId({
+				scormId: scormPanel.SCORMId,
+				resId: scormPanel.resourceId,
+				type: 0,
+				cback: function(results){
+					var bookmarks = 0;
+					for(var i = 0, l = results.rows.length; i < l; i++){
+						if(results.rows.item(i)['METADATA.type'] === 0 && results.rows.item(i)['agg.url'] === scormPanel.resourceId){
+							bookmarks++;
+						}
+					}
+//					that._bookmarked = !!bookmarks;
+					that['setBookmark' + (bookmarks ? '' : 'Not') + 'Present']();
+				},
+				errback: function(error){
+					console.error('error preparing a tx ', error)
+				}
+			});
+		},
 		onDocLoaded: function(){
 			this.getBookmarkBtn().setDisabled(false);
 			this.getFindBtn().setDisabled(false);
+			this.syncBookmarkBtn();
+
+		},
+		setBookmarkPresent: function(){
+			this.getBookmarkBtn().setStyle('color:red');
+			this._bookmarked = true;
+//			this.syncBookmarkBtn();
+		},
+		setBookmarkNotPresent: function(){
+			this.getBookmarkBtn().setStyle('color:white');
+			this._bookmarked = false;
 		},
 		/**
 		 * handle the text highlight removal
@@ -144,6 +179,28 @@
 		},
 		toggleBookmark: function(){
 			// todo: save the bookmark metadata (or remove it)
+			var that = this,
+			scormPanel = this.getScormPanel(),
+			scormId = scormPanel.SCORMId,
+			resId = scormPanel.resourceId;
+			Supsi.Database[(this._bookmarked ? 'remove' : 'save') + 'Metadata']({
+				scormId: scormId,
+				resId: resId,
+				type: 0, // bookmark
+				index: -1,
+				data: '',
+				fragment: 'Bookmark',
+				cback: function(){
+//					scormPanel.flushDomToFile();
+					that.syncBookmarkBtn();
+
+				},
+				errback: function(tx, err){
+					console.error('db error: ', err);
+				}
+
+			});
+
 		},
 		onAnnotationChange: function(node, val){
 			node.setAttribute(Supsi.Constants.get('SCORM_ANNOTATION_ATTRIBUTE'), val);
@@ -158,7 +215,6 @@
 				scormId = scormPanel.SCORMId,
 				resId = scormPanel.resourceId
 			;
-			console.log('index to remove = %d', index);
 			Supsi.Database.removeMetadata({
 				scormId: scormId,
 				resId: resId,

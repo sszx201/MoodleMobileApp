@@ -21,6 +21,7 @@ Ext.define('Supsi.Constants', {
 	},
 
 	config : {
+		BOOKMARK_ACTIVE_COLOR: 'red',
 		SCORM_HIGHLIGHT_ATTRIBUTE: '',
 		SCORM_ANNOTATION_ATTRIBUTE: '',
 		DOC_ID: localStorage.scormDocId,

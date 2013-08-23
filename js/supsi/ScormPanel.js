@@ -139,7 +139,6 @@
 		_fileCback: function(file, uri, fileEntry){
 			var that = this, reader;
 			this._currentFileEntry = fileEntry;
-			console.log('file size = %i', file.size);
 			if(file.size){
 				reader = new FileReader();
 				reader.onloadend = function(){

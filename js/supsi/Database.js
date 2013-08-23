@@ -107,6 +107,37 @@
 				}
 			);
 		},
+		findMetaByScormAndResId: function(args){
+			var
+				errback = args.errback || function(){}, that = this
+				;
+			db.transaction(function(tx){ console.log('uh?'); args.tx = tx; that._findMetaByScormAndResId(args) },
+				function(err){
+					console.error('error initialising the _findMetaByScormAndResId transaction, error', err);
+					errback.apply(null, arguments);
+				},
+				function(){
+					// nothing to do
+				}
+			);
+		},
+		_findMetaByScormAndResId: function(args){
+			// todo: continua da qui
+			console.log('_findMeta... ', args)
+//			args.tx.executeSql('SELECT id FROM RESOURCE WHERE RESOURCE.url = ? and RESOURCE.scormid in (SELECT ID FROM SCORM where url = ?)', [args.resId, args.scormId],
+			args.tx.executeSql('SELECT * FROM METADATA INNER JOIN RESOURCE ON METADATA.resourceid = RESOURCE.id WHERE METADATA.url = ? and METADATA.scormid IN (SELECT id from SCORM where SCORM.url = ?)', [args.resId, args.scormId],
+				function(tx, results){
+					console.log('last query success');
+					for(var i = 0, l = results.rows.length; i < l; i++){
+						console.log('>>>>> metadata: ', results.rows.item(i));
+					}
+					typeof args.cback === 'function' && args.cback(results);
+				},
+			function(error, err){
+				console.log('last query fail ', err);
+			});
+
+		},
 		_resourceInserted: function(args){
 			console.log('resource insertion [ ok ]');
 		},

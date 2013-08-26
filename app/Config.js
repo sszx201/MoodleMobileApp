@@ -7,6 +7,7 @@ Ext.define('MoodleMobApp.Config', {
 		this.config.homeOrgsUrl = this.config.moodleUrl + this.config.homeOrgsUrl;
 		this.config.manualAuthUrl = this.config.moodleUrl + this.config.manualAuthUrl;
 		this.config.webServiceUrl = this.config.moodleUrl + this.config.webServiceUrl;
+		this.config.resourceViewUrl = this.config.moodleUrl + this.config.resourceViewUrl;
 
 		this.initConfig(config);
 		return this;
@@ -18,6 +19,7 @@ Ext.define('MoodleMobApp.Config', {
 		homeOrgsUrl : '/auth/mobileaai/get_idps.php',
 		manualAuthUrl : '/auth/mobilemanual/authenticate.php',
 		webServiceUrl : '/webservice/rest/server.php',
+		resourceViewUrl : '/mod/resource/view.php',
 		//paths
 		fileCacheDir: 'iCorsi',
 		//system

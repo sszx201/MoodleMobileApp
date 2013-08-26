@@ -126,7 +126,7 @@ Ext.define('MoodleMobApp.view.Scorm', {
 									},
 									{
 										xtype: 'button',
-										iconCls: 'bookmark',
+										iconCls: 'bookmark on',
 										disabled: true,
 										id:'bookmarkBtn'
 									},
@@ -169,7 +169,27 @@ Ext.define('MoodleMobApp.view.Scorm', {
 						items: [
 							{
 								xtype: 'button',
+								ui: 'back',
+								id: 'exitMetaBtn',
 								text: 'back'
+							},
+							{
+								xtype: 'textfield',
+				                flex: 2,
+								id: 'notesFilterField',
+								autoCorrect: false,
+								autoComplete: false,
+								name: 'notesFilterField'
+							},
+							{
+								xtype: 'button',
+								id: 'notesFilterBtn',
+								text: 'Search notes'
+							},
+							{
+								xtype: 'button',
+								id: 'clearNotesFilterBtn',
+								text: 'Clear'
 							}
 						]
 					},

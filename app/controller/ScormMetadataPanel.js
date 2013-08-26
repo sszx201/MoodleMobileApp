@@ -3,16 +3,26 @@ Ext.define('MoodleMobApp.controller.ScormMetadataPanel', {
     config: {
         requires: [
             'Supsi.Constants',
-            'Supsi.Utils'
+            'Supsi.Utils',
+			'Ext.util.Filter'
         ],
         refs: {
-            metaExitBtn: 'metapanel button',
+            metaExitBtn: '#exitMetaBtn',
             scormToolbar: '#scormToolbar',
             metaPanel: '#metaPanel',
             metadataList: '#metadataList',
+			notesFilterBtn: '#notesFilterBtn',
+			clearNotesFilterBtn: '#clearNotesFilterBtn',
+			notesFilterField: '#notesFilterField',
             scormPanel: 'scormpanel'
         },
         control: {
+			clearNotesFilterBtn: {
+				tap: 'clearNotesFilter'
+			},
+			notesFilterBtn: {
+				tap: 'applyNotesFilter'
+			},
             metadataList: {
                 itemtap: 'onListTap'
             },
@@ -21,6 +31,28 @@ Ext.define('MoodleMobApp.controller.ScormMetadataPanel', {
             }
         }
     },
+
+	/**
+	 * clear the note filter
+	 * */
+	clearNotesFilter: function(){
+		this.getNotesFilterField().setValue('');
+		this.getMetadataList().getStore().clearFilter();
+	},
+
+	/**
+	 * apply the text filter on the metadata list (notes only)
+	 * */
+	applyNotesFilter: function(){
+		var metaList = this.getMetadataList(), store = metaList.getStore();
+		var value = this.getNotesFilterField().getValue();
+		store.clearFilter();
+		value && store.filterBy(function(item){
+				return item.data['data'].indexOf(value) != -1
+			}
+		);
+		store.sync();
+	},
     /**
      * hide the metadata panel
      * */

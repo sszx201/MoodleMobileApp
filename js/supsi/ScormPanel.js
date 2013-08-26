@@ -136,8 +136,12 @@
 				console.error('error creating a file writer');
 			});
 		},
+		setFontSize: function(fontSize){
+			this.docContainer.dom.contentDocument.body.style.fontSize = fontSize + 'em';
+		},
 		_fileCback: function(file, uri, fileEntry){
-			var that = this, reader;
+			var that = this, reader, fontSize = localStorage['ScormReaderFontSize'] || '1';
+			this.docContainer.dom.contentDocument.body.style.fontSize = fontSize + 'em';
 			this._currentFileEntry = fileEntry;
 			if(file.size){
 				reader = new FileReader();
@@ -147,9 +151,6 @@
 				reader.readAsText(file);
 				this.fireEvent('docloaded');
 			}else{
-				Supsi.Utils.log('trying to load via xhr 1 ', this.SCORMId );
-				Supsi.Utils.log('trying to load via xhr 2 ', Supsi.Constants.get('DATA_LOCATION'));
-				Supsi.Utils.log('trying to load via xhr 3 ', uri);
 				jQuery.ajax({
 					url: this.SCORMId + Supsi.Constants.get('DATA_LOCATION') + uri,
 					type: 'GET',

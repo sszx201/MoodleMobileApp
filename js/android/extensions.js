@@ -25,6 +25,22 @@ function addExtensions() {
 			});
 	};
 
+	openURLinExternalBrowser = function(urladdr){
+		if(MoodleMobApp.Config.getVerbose()) {
+			console.log('===> Opening URL: '+urladdr);
+		}
+
+		window.plugins.webintent.startActivity(
+			{
+				action: WebIntent.ACTION_VIEW,
+				url: urladdr,
+			},
+			function () {},
+			function () {
+				Ext.Msg.alert('URL Error', 'Failed to open:'+path+' via Android Intent');
+			});
+	};
+
 	//////////////////////////////////////////////////////////////////////////
 	// this function extracts a compressed zip archive 
 	//////////////////////////////////////////////////////////////////////////
@@ -35,12 +51,14 @@ function addExtensions() {
 		var ZipClient = new ExtractZipFilePlugin();
 		console.log('**************************** before unzip, filePath = ' + filePath);
 		ZipClient.extractFile('sdcard/'+filePath,
-		function(){ 
-			var targetPath = '/sdcard/'+filePath;
-			targetPath = targetPath.substring(0, targetPath.lastIndexOf('/'));
-			console.log('23) **************************** targetPath = ' + targetPath);
-			successFunc(targetPath);
-	},failFunc);
+			function(){
+				var targetPath = '/sdcard/'+filePath;
+				targetPath = targetPath.substring(0, targetPath.lastIndexOf('/'));
+				console.log('23) **************************** targetPath = ' + targetPath);
+				successFunc(targetPath);
+			},
+			failFunc
+		);
 	};
 
 	MoodleMobApp.app.onBackKeyDown = function(e) {

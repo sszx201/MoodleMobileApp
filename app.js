@@ -135,19 +135,7 @@ Ext.application({
 	},
 
 	openURL: function(urladdr){
-		if(MoodleMobApp.Config.getVerbose()) {
-			console.log('===> Opening URL: '+urladdr);
-		}
-
-		window.plugins.webintent.startActivity(
-			{
-				action: WebIntent.ACTION_VIEW,
-				url: urladdr,
-			},
-			function () {},
-			function () {
-				Ext.Msg.alert('URL Error', 'Failed to open:'+path+' via Android Intent');
-			});
+		window.open(urladdr, '_blank', 'location=yes');
 	},
 
 	sendEmail: function(to, subject, body) {

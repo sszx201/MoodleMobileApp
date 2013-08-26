@@ -1,4 +1,3 @@
-//require(['js/supsi/Constants'], function(Constants){
 ;(function(){
 	var _navHistory = [],
 		_transport,
@@ -19,8 +18,8 @@
 		config: {
 			refs: {
 				navigator: '#course_navigator',
+				bookmarkBtn: '#bookmarkBtn',
 				module: '#module_list',
-				metaExitBtn: 'metapanel button',
 				navBackBtn: '#navBack',
 //				mainView: 'scormreader',
 				hidePanelBtn: '#hidePanelBtn',
@@ -29,9 +28,11 @@
 				settingsBtn: '#settingsBtn',
 				settingsPanel: '#settingsPanel',
 				metaPanel: '#metaPanel',
-				resourceList: 'list',
+				resourceList: '#resourceList',
 				resourceContainer: '#resourceListContainer',
 				scorm: 'scorm',
+				scormToolbar: '#scormToolbar',
+				metadataList: '#metadataList',
 				scormPanel: 'scormpanel'//,
 
 			},
@@ -44,9 +45,6 @@
 				},
 				navBackBtn: {
 					tap: 'navigationBack'
-				},
-				metaExitBtn: {
-					tap: 'hideMetaPanel'
 				},
 				settingsBtn: {
 					tap: 'showSettingsPanel'
@@ -110,7 +108,7 @@
 		file = {
 			'scormid': module.get('instanceid'),
 			'name': module.get('id') + '.zip',
-			'mime': 'application/zip',
+			'mime': 'application/zip'
 		};
 
 		// The archive is going to be named id.zip and is going to be stored in a directory named id
@@ -164,8 +162,7 @@
 						});
 			};
 			var extractionFailFunc = function(error) {
-					Supsi.Utils.log('ERROR !!!!!!!!!!!!!!!!!');
-					Supsi.Utils.log(error);
+					Supsi.Utils.log('ERROR ', error);
 			};
 						// start the extraction
 
@@ -204,30 +201,50 @@
 			if(_navHistory.length === 1){
 				this.getNavBackBtn().hide();
 			}
-
 		},
 
-		/**
-		 * hide the metadata panel
-		 * */
-		hideMetaPanel: function(){
-			this.getMetaPanel().hide();
-		},
 
 		/**
 		 * show the metadata panel
 		 * */
 		showMetaPanel: function(){
+			var that = this;
 			Supsi.Database.selectResourcesByScormId({
 				scormId: this.getScormPanel().SCORMId,
-				cback: function(){
+				cback: function(results){
+					var list = that.getMetadataList(), store = list.getStore(), rows = results.rows, data = [], 
 
+					// todo: localize me, i18n!
+					types = ['Bookmark', 'Highlight', 'Annotation']
+					;
+					for(var i = 0, l = rows.length, item; i < l; i++){
+						item = rows.item(i);
+						data.push({
+							data: item['METADATA.data'],
+							type: types[+item['METADATA.type']],
+							fragment: item['METADATA.fragment'],
+							index: item['METADATA.idx'],
+							timestamp: item['METADATA.timestamp'],
+							href: item['agg.url']
+						});
+					}
+					data.length ? store.setData(data) : store.removeAll();
+					store.sync();
 				},
 				errback: function(){
 
 				}
 			});
+			this.getScormToolbar().hide();
+			this.loadMetadata();
 			this.getMetaPanel().show();
+		},
+		/**
+		 * load the metadata into the list
+		 */
+		loadMetadata: function(){
+			// list.removeAll();
+			
 		},
 
 		/**
@@ -296,11 +313,10 @@
 				failure: function(err){
 					Supsi.Utils.log('load error ', err);
 				}
-
 			});
 		},
 		manifestLoaded: function(data){
-			Supsi.Utils.log('***************** DOC LOADED 2 ********************')
+			Supsi.Utils.log('***************** DOC LOADED 2 ********************');
 			var root = data.responseXML.documentElement;
 
 			this.parseManifest(root);
@@ -329,7 +345,7 @@
 				}
 				currentChildren = this.parseItems(itemsNodes[i], root);
 
-				newItem.leaf = !currentChildren.length
+				newItem.leaf = !currentChildren.length;
 				if(currentChildren.length){
 					newItem.items = currentChildren;
 				}
@@ -351,6 +367,7 @@
 			data.leaf = false;
 //        this.fireEvent('itemsUpdated', itemsNodes);
 			this.setListData(data);
+
 		},
 
 		/**
@@ -376,28 +393,32 @@
 				_transport.onload = null;
 				_transport = null;
 			}
+			console.log('creating _transport');
 			_transport = document.createElement('script');
 			_transport.type = 'text/javascript';
 			var that = this;
+			console.log('adding a callback');
 			_transport.onload = function(){
 				console.log('table of contents loaded');
 				that.parseToc();
 			};
 
 			_transport.onerror = function(error){
-				console.log('error: ', arguments);
+				console.log('transport error: ', error);
 			};
 			_transport.src = toc; // toc toc! chi è?
+			console.log('before appendChild');
 			document.body.appendChild(_transport);
 
 		},
 
 		parseToc: function(){
-			console.log('parse toc executed');
-			var parsedDoc = domParser.parseFromString(gXMLBuffer, "text/xml"),
+			console.log('parse toc executed, contents = ', window.gXMLBuffer);
+			var parsedDoc = domParser.parseFromString(window.gXMLBuffer, "text/xml"),
 				data = [],
 				itemsAndBooks = parsedDoc.querySelector('data').childNodes
 			;
+			console.log('parsedDocs = ', parsedDoc);
 			for(var i = 0, l = itemsAndBooks.length; i < l; i++){
 				data[i] = {
 					href: itemsAndBooks[i].getAttribute('url'),
@@ -436,6 +457,9 @@
 			*/
 			console.log('pushing the scorm view');
 			//this.getMain().push({ xtype: 'scorm' });
+
+			this.getBookmarkBtn().setStyle('color:white');
+
 			this.loadToc(path + Supsi.Constants.get('TOC_LOCATION') + 'toc.js');
 			//nr 18-07-2013e
 		},
@@ -458,4 +482,3 @@
 		}
 	});
 })();
-//});

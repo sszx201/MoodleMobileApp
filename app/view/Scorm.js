@@ -9,7 +9,8 @@ Ext.define('MoodleMobApp.view.Scorm', {
         'Ext.Button',
         'Supsi.MetaPanel',
         'Supsi.SettingsPanel',
-        'Supsi.ScormPanel'
+        'Supsi.ScormPanel',
+        'MoodleMobApp.store.ScormMetadataStore'
     ],
     config: {
         fullscreen: true,
@@ -35,6 +36,7 @@ Ext.define('MoodleMobApp.view.Scorm', {
 						items:[
 							{
 								xtype: 'toolbar',
+								id: 'scormToolbar',
 								items: [
 									{
 										xtype: 'button',
@@ -48,6 +50,7 @@ Ext.define('MoodleMobApp.view.Scorm', {
 							},
 							{
 								title: 'home',
+								id: 'resourceList',
 								xtype: 'list',
 								itemTpl: '{title}',
 								width: 300,
@@ -123,7 +126,7 @@ Ext.define('MoodleMobApp.view.Scorm', {
 									},
 									{
 										xtype: 'button',
-										iconCls: 'bookmark',
+										iconCls: 'bookmark on',
 										disabled: true,
 										id:'bookmarkBtn'
 									},
@@ -166,22 +169,40 @@ Ext.define('MoodleMobApp.view.Scorm', {
 						items: [
 							{
 								xtype: 'button',
+								ui: 'back',
+								id: 'exitMetaBtn',
 								text: 'back'
+							},
+							{
+								xtype: 'textfield',
+				                flex: 2,
+								id: 'notesFilterField',
+								autoCorrect: false,
+								autoComplete: false,
+								name: 'notesFilterField'
+							},
+							{
+								xtype: 'button',
+								id: 'notesFilterBtn',
+								text: 'Search notes'
+							},
+							{
+								xtype: 'button',
+								id: 'clearNotesFilterBtn',
+								text: 'Clear'
 							}
 						]
 					},
 					{
 						xtype: 'list',
+						grouped: true,
 						id: 'metadataList',
-						itemTpl: '{title}',
+						selectedCls: '',
+						itemTpl: '<div>{fragment}</div><div class=\'metaType\'>{type}</div>',
 						width:'100%',
 						height:'100%',
-						data: [
-							{ title: 'Item 1' },
-							{ title: 'Item 2' },
-							{ title: 'Item 3' },
-							{ title: 'Item 4' }
-						]
+						store: { xclass: 'MoodleMobApp.store.ScormMetadataStore' }
+						// store: 'scormmetadata'
 					}
 				]
 			}

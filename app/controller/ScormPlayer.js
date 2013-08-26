@@ -40,6 +40,7 @@
 					docloaded: 'onDocLoaded',
 					onselectionchecked: 'checkDocSelection',
 					annotationend: 'onAnnotationEnd',
+					annotationdelete: 'onAnnotationDelete',
 					annotationchange: 'onAnnotationChange',
 					searchtext: 'onSearchText',
 					setlocation: 'onSetLocation'
@@ -47,10 +48,7 @@
 			}
 		},
 		_currentHighlightNode: null,
-		removeHighlight: function(){
-			Supsi.Utils.unwrap(this._currentHighlightNode);
-			this.getHighlightRemovalPanel().hide();
-		},
+		_bookmarked: false,
 		onHightlightRemovalPanelHide: function(){
 			this._currentHighlightNode = null;
 		},
@@ -58,10 +56,69 @@
 			this._currentHighlightNode = target;
 			this.getHighlightRemovalPanel().showBy(this.getMarkerBtn());
 		},
+		syncBookmarkBtn: function(){
+			var that = this, scormPanel = this.getScormPanel();
+			// todo: serve una select resources by resource id.
 
+			// il metadato deve essere relativo al resource id, non allo scorm id.
+			Supsi.Database.selectResourcesByScormId({
+				scormId: scormPanel.SCORMId,
+				resId: scormPanel.resourceId,
+				type: 0,
+				cback: function(results){
+					var bookmarks = 0;
+					for(var i = 0, l = results.rows.length; i < l; i++){
+						if(results.rows.item(i)['METADATA.type'] === 0 && results.rows.item(i)['agg.url'] === scormPanel.resourceId){
+							bookmarks++;
+						}
+					}
+//					that._bookmarked = !!bookmarks;
+					that['setBookmark' + (bookmarks ? '' : 'Not') + 'Present']();
+				},
+				errback: function(error){
+					console.error('error preparing a tx ', error)
+				}
+			});
+		},
 		onDocLoaded: function(){
 			this.getBookmarkBtn().setDisabled(false);
 			this.getFindBtn().setDisabled(false);
+			this.syncBookmarkBtn();
+
+		},
+		setBookmarkPresent: function(){
+			this.getBookmarkBtn().setStyle('color:red');
+			this._bookmarked = true;
+//			this.syncBookmarkBtn();
+		},
+		setBookmarkNotPresent: function(){
+			this.getBookmarkBtn().setStyle('color:white');
+			this._bookmarked = false;
+		},
+		/**
+		 * handle the text highlight removal
+		 * */
+		removeHighlight: function(){
+			var that = this, scormPanel = this.getScormPanel(),
+			index = scormPanel.getMetadataIndex(this._currentHighlightNode),
+			scormId = scormPanel.SCORMId,
+			resId = scormPanel.resourceId;
+			Supsi.Database.removeMetadata({
+				scormId: scormId,
+				resId: resId,
+				type: 1, // highlight
+				index: index,
+				cback: function(){
+					scormPanel.flushDomToFile();
+					console.log('doc and metadata removed');
+					Supsi.Utils.unwrap(that._currentHighlightNode);
+					that.getHighlightRemovalPanel().hide();
+				},
+				errback: function(tx, err){
+					console.error('db error: ', err);
+				}
+
+			});
 		},
 		/**
 		 * handle the text highlight
@@ -71,7 +128,6 @@
 				highlightNode = this._createHighlightNode(),
 				rangeOp = false, scormId, resId, scormPanel = this.getScormPanel(), index = -1
 			;
-			console.log('on marktext called 2', this.getScormPanel().getSelectionRange());
 
 			try{
 				range.surroundContents(highlightNode);
@@ -79,11 +135,8 @@
 			}catch(exception){
 				// thrown when the range contains at least a non-text node
 			}finally{
-				console.log('before the flush op, rangeOp = ', rangeOp);
-				console.log('scormid = ', scormPanel.SCORMId);
 				if(rangeOp){
-
-					index = scormPanel.getHighlightIndex(highlightNode);
+					index = scormPanel.getMetadataIndex(highlightNode);
 					scormId = scormPanel.SCORMId;
 					resId = scormPanel.resourceId;
 					Supsi.Database.saveMetadata({
@@ -91,9 +144,9 @@
 						resId: resId,
 						type: 1, // highlight
 						index: index,
-						data: {}, // it's only a test
+						fragment: range.toString(),
+						data: '',
 						cback: function(){
-							console.log('---flushing?');
 							scormPanel.flushDomToFile();
 							console.log('doc and metadata saved');
 						},
@@ -126,25 +179,92 @@
 		},
 		toggleBookmark: function(){
 			// todo: save the bookmark metadata (or remove it)
-		},
-		saveAnnotationText: function(){
+			var that = this,
+			scormPanel = this.getScormPanel(),
+			scormId = scormPanel.SCORMId,
+			resId = scormPanel.resourceId;
+			Supsi.Database[(this._bookmarked ? 'remove' : 'save') + 'Metadata']({
+				scormId: scormId,
+				resId: resId,
+				type: 0, // bookmark
+				index: -1,
+				data: '',
+				fragment: 'Bookmark',
+				cback: function(){
+//					scormPanel.flushDomToFile();
+					that.syncBookmarkBtn();
+
+				},
+				errback: function(tx, err){
+					console.error('db error: ', err);
+				}
+
+			});
 
 		},
 		onAnnotationChange: function(node, val){
 			node.setAttribute(Supsi.Constants.get('SCORM_ANNOTATION_ATTRIBUTE'), val);
 		},
-		onAnnotationEnd: function(text){
-			// todo: save the annotation metadata
-			var range = this.getScormPanel().getSelectionRange(),
-				highlightNode = this._createNoteNode(text)//,
-//				clonedContents = range.cloneContents()
-				;
+		/**
+		 * @description handle the annotation removal
+		 * @arguments {Node} annotationNode the node containing the annotation itself
+		 * */
+		onAnnotationDelete: function(annotationNode){
+			var scormPanel = this.getScormPanel(),
+				index = scormPanel.getMetadataIndex(annotationNode),
+				scormId = scormPanel.SCORMId,
+				resId = scormPanel.resourceId
+			;
+			Supsi.Database.removeMetadata({
+				scormId: scormId,
+				resId: resId,
+				type: 2,
+				index: index,
+				cback: function(){
+					scormPanel.flushDomToFile();
+					Supsi.Utils.unwrap(annotationNode);
+					scormPanel.noteView.hide();
+				},
+				errback: function(tx, err){
+					console.error('db error: ', err);
+				}
 
-	//        console.log(clonedContents, ' ', clonedContents.querySelectorAll('.scorm_selection').length);
+			});
+
+
+		},
+		onAnnotationEnd: function(text){
+			var range = this.getScormPanel().getSelectionRange(),
+				highlightNode = this._createNoteNode(text),
+				rangeOp = false, scormId, resId, scormPanel = this.getScormPanel(), index = -1
+				;
 			try{
 				range.surroundContents(highlightNode);
+				rangeOp = true;
 			}catch(exception){
 				// thrown when the range contains at least a non-text node
+			}finally{
+				if(rangeOp){
+					index = scormPanel.getMetadataIndex(highlightNode);
+					scormId = scormPanel.SCORMId;
+					resId = scormPanel.resourceId;
+					Supsi.Database.saveMetadata({
+						scormId: scormId,
+						resId: resId,
+						type: 2, // annotation
+						index: index,
+						data: text,
+						fragment: range.toString(),
+						cback: function(){
+							scormPanel.flushDomToFile();
+							console.log('doc and metadata saved');
+						},
+						errback: function(tx, err){
+							console.error('db error: ', err);
+						}
+
+					});
+				}
 			}
 		},
 		/**
@@ -154,9 +274,7 @@
 		 * */
 		_createHighlightNode: function(){
 			var n = document.createElement('span');
-			console.log('prima di leggere da Constants');
 			n.setAttribute(Supsi.Constants.get('SCORM_HIGHLIGHT_ATTRIBUTE'), '');
-			console.log(Supsi.Constants.get('SCORM_HIGHLIGHT_ATTRIBUTE'));
 			n.className = 'scorm_highlight';
 			Supsi.Utils.log('highlight node created');
 			return n;

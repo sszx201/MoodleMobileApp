@@ -54,6 +54,7 @@ Ext.application({
 		'MoodleMobApp.controller.Choice',
 		'MoodleMobApp.controller.Url',
 		'MoodleMobApp.controller.Scorm',
+		'MoodleMobApp.controller.ScormMetadataPanel',
 		'MoodleMobApp.controller.ScormPlayer',
 		'MoodleMobApp.controller.Shell'
 	],

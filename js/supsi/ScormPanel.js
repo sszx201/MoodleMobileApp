@@ -58,8 +58,8 @@
 		/**
 		 * get the DOM index of this highlightNode
 		 * */
-		getHighlightIndex: function(highlightNode){
-			var hNodes = this.docContainer.dom.contentDocument.querySelectorAll('[' + Supsi.Constants.get('SCORM_HIGHLIGHT_ATTRIBUTE') + ']');
+		getMetadataIndex: function(highlightNode){
+			var hNodes = this.docContainer.dom.contentDocument.querySelectorAll('[' + Supsi.Constants.get('SCORM_HIGHLIGHT_ATTRIBUTE') + '],[' + Supsi.Constants.get('SCORM_ANNOTATION_ATTRIBUTE') + ']');
 			return Array.prototype.indexOf.call(hNodes, highlightNode);
 		},
 		getSelection: function(){
@@ -139,14 +139,13 @@
 		_fileCback: function(file, uri, fileEntry){
 			var that = this, reader;
 			this._currentFileEntry = fileEntry;
-			console.log('file size = %i', file.size);
 			if(file.size){
 				reader = new FileReader();
 				reader.onloadend = function(){
 					that._loadEnd.apply(that, arguments);
 				};
 				reader.readAsText(file);
-
+				this.fireEvent('docloaded');
 			}else{
 				Supsi.Utils.log('trying to load via xhr 1 ', this.SCORMId );
 				Supsi.Utils.log('trying to load via xhr 2 ', Supsi.Constants.get('DATA_LOCATION'));
@@ -306,7 +305,7 @@
 			}
 		},
 		onSelectedHighlight: function(target){
-			this.fireEvent('highlightselected', target)
+			this.fireEvent('highlightselected', target);
 		},
 		setupEventHandlers: function(){
 			var that = this;
@@ -530,8 +529,7 @@
 			this.fireEvent('annotationend', this.mbox.down('#notearea').getValue());
 		},
 		onNoteDelete: function(){
-			Supsi.Utils.unwrap(this._currentAnnotationNode);
-			this.noteView.hide();
+			this.fireEvent('annotationdelete', this._currentAnnotationNode);
 		},
 		onNoteCancel: function(){
 			this.noteView.hide();

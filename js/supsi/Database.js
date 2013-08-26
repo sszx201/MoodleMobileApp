@@ -3,7 +3,7 @@
 		db
 	;
 	Ext.define('Supsi.Database', {
-		fromScratch: true,
+		fromScratch: 0,
 		singleton: true,
 		initMetadataDictionary: function(tx, results){
 			console.log('returned %d rows', results.rows.length)
@@ -28,10 +28,8 @@
 			tx.executeSql('CREATE TABLE IF NOT EXISTS METADATA_DICTIONARY (id INTEGER NOT NULL PRIMARY KEY, description TEXT)');
 
 			// METADATA
-			tx.executeSql('CREATE TABLE IF NOT EXISTS METADATA (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, resourceid INTEGER, idx INTEGER, data TEXT, type INTEGER, timestamp DATE, FOREIGN KEY(type) REFERENCES METADATA_DICTIONARY(id), FOREIGN KEY(resourceid) REFERENCES RESOURCE(id))');
+			tx.executeSql('CREATE TABLE IF NOT EXISTS METADATA (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, resourceid INTEGER, idx INTEGER, data TEXT, fragment TEXT, type INTEGER, timestamp DATE, FOREIGN KEY(type) REFERENCES METADATA_DICTIONARY(id), FOREIGN KEY(resourceid) REFERENCES RESOURCE(id))');
 
-
-//			tx.executeSql('INSERT INTO SCORM (url) VALUES ("about:blank")');
 
 			tx.executeSql('SELECT COUNT(id) as count FROM METADATA_DICTIONARY', [], this.initMetadataDictionary, this.onDbError);
 
@@ -42,46 +40,19 @@
 //			args.tx.executeSql('SELECT METADATA.idx, METADATA.data, METADATA.type, METADATA.timestamp, RESOURCE.url FROM METADATA JOIN RESOURCE ON METADATA.resourceid = RESOURCE.id JOIN (SELECT id from SCORM where SCORM.url = ?) y ON RESOURCE.scormid = y.id', [args.scormId],
 //			args.tx.executeSql('SELECT METADATA.idx, METADATA.data, METADATA.type, METADATA.timestamp, RESOURCE.url FROM METADATA JOIN RESOURCE ON METADATA.resourceid = RESOURCE.id and RESOURCE.scormid in (SELECT id from SCORM where SCORM.url = ?)', [args.scormId],
 //			args.tx.executeSql('SELECT METADATA.idx, METADATA.data, METADATA.type, METADATA.timestamp, RESOURCE.url FROM METADATA JOIN RESOURCE ON METADATA.resourceid = RESOURCE.id', [],
-			args.tx.executeSql('SELECT METADATA.id metaId, METADATA.idx, METADATA.type, METADATA.timestamp, METADATA.data, agg.url FROM (SELECT id, url FROM RESOURCE WHERE RESOURCE.scormid IN (SELECT id FROM SCORM WHERE url = ?)) agg INNER JOIN METADATA ON METADATA.resourceid = agg.id', [args.scormId],
+			args.tx.executeSql('SELECT METADATA.id metaId, METADATA.idx, METADATA.type, METADATA.timestamp, METADATA.data, METADATA.fragment, agg.url FROM (SELECT id, url FROM RESOURCE WHERE ' +
+				'RESOURCE.scormid IN (SELECT id FROM SCORM WHERE url = ?)) agg INNER JOIN METADATA ON METADATA.resourceid = agg.id ORDER BY METADATA.idx', [args.scormId],
 //			args.tx.executeSql('SELECT * from METADATA', [],
 //			args.tx.executeSql('SELECT * FROM METADATA ', [],
 				function(tx, results){
-					console.log('metadata extraction ok, results = ', results.rows.length);
-					for(var i = 0, l = results.rows.length; i < l; i++){
-						console.log('results: ', results.rows.item(i))
+					if(typeof args.cback === 'function'){
+						args.cback(results);
 					}
 //					that._checkScormExistence(args, results)
 				}, function(tx, err){
 					args.errback.apply(null, arguments);
 				}
 			);
-			args.tx.executeSql('SELECT * from RESOURCE', [],
-//			args.tx.executeSql('SELECT * FROM METADATA ', [],
-				function(tx, results){
-					console.log('resource extraction ok, results = ', results.rows.length);
-					for(var i = 0, l = results.rows.length; i < l; i++){
-						console.log('results: ', results.rows.item(i))
-					}
-//					that._checkScormExistence(args, results)
-				}, function(tx, err){
-					console.error('----------- ', err.message)
-					args.errback.apply(null, arguments)
-				}
-			);
-			args.tx.executeSql('SELECT * from SCORM', [],
-//			args.tx.executeSql('SELECT * FROM METADATA ', [],
-				function(tx, results){
-					console.log('scorm extraction ok, results = ', results.rows.length);
-					for(var i = 0, l = results.rows.length; i < l; i++){
-						console.log('results: ', results.rows.item(i))
-					}
-//					that._checkScormExistence(args, results)
-				}, function(tx, err){
-					console.error('----------- ', err.message)
-					args.errback.apply(null, arguments)
-				}
-			);
-
 		},
 		/**
 		 * select the resources list for the given scorm
@@ -110,65 +81,158 @@
 
 		_checkScormExistence: function(args, results){
 			var that = this;
-			switch(results.rows.item(0).count){
+			switch(results.rows.length){
 				case 0:
 					// insert here
-					console.log('trying to insert data, SCORM.url = ', args.scormId)
+					console.log('trying to insert data, SCORM.url = ', args.scormId);
 					args.tx.executeSql('INSERT INTO SCORM (url) VALUES (?)', [args.scormId], function(){
-						that._findResourceById(args);
+						that._findResourceByUrl(args);
 					}, this.onDbError);
 					break;
 				default:
 					// ok, find the related resource
-					this._findResourceById(args);
+					this._findResourceByUrl(args);
 					break;
 
 			}
 
 		},
-		_findResourceById: function(args){
+		_findResourceByUrl: function(args){
 			var that = this;
-			args.tx.executeSql('SELECT COUNT(id) as count FROM RESOURCE WHERE RESOURCE.url = ?', [args.resId],
+			args.tx.executeSql('SELECT id FROM RESOURCE WHERE RESOURCE.url = ? and RESOURCE.scormid in (SELECT ID FROM SCORM where url = ?)', [args.resId, args.scormId],
 				function(tx, results){
-					that._checkResExistence(args, results)
+					that._checkResExistence(args, results);
 				}, function(){
-					args.errback.apply(null, arguments)
+					args.errback.apply(null, arguments);
 				}
 			);
+		},
+		findMetaByScormAndResId: function(args){
+			var
+				errback = args.errback || function(){}, that = this
+				;
+			db.transaction(function(tx){ console.log('uh?'); args.tx = tx; that._findMetaByScormAndResId(args) },
+				function(err){
+					console.error('error initialising the _findMetaByScormAndResId transaction, error', err);
+					errback.apply(null, arguments);
+				},
+				function(){
+					// nothing to do
+				}
+			);
+		},
+		_findMetaByScormAndResId: function(args){
+			// todo: continua da qui
+			console.log('_findMeta... ', args)
+//			args.tx.executeSql('SELECT id FROM RESOURCE WHERE RESOURCE.url = ? and RESOURCE.scormid in (SELECT ID FROM SCORM where url = ?)', [args.resId, args.scormId],
+			args.tx.executeSql('SELECT * FROM METADATA INNER JOIN RESOURCE ON METADATA.resourceid = RESOURCE.id WHERE METADATA.url = ? and METADATA.scormid IN (SELECT id from SCORM where SCORM.url = ?)', [args.resId, args.scormId],
+				function(tx, results){
+					console.log('last query success');
+					for(var i = 0, l = results.rows.length; i < l; i++){
+						console.log('>>>>> metadata: ', results.rows.item(i));
+					}
+					typeof args.cback === 'function' && args.cback(results);
+				},
+			function(error, err){
+				console.log('last query fail ', err);
+			});
+
 		},
 		_resourceInserted: function(args){
 			console.log('resource insertion [ ok ]');
 		},
 		_insertResource: function(args){
 			var that = this;
-			args.tx.executeSql('INSERT INTO METADATA (resourceid, data, type) SELECT id, ?, ? from RESOURCE where RESOURCE.url = ?', ['', args.type, args.resId], function(){
-				that._resourceInserted(args);
-				args.cback.apply(null, arguments);
-			}, function(){
-				that.onDbError.apply(that, arguments);
-				args.errback.apply(null, arguments);
+			args.tx.executeSql('SELECT id FROM RESOURCE where RESOURCE.url = ? ', [args.resId], function(tx, results){
+				var resId = results.rows.item(0).id;
+				args.tx.executeSql('UPDATE METADATA set idx = idx + 1 WHERE resourceid = ? and (type = 1 or type = 2) and idx >= ? ', [resId, args.index], function(tx, results){
+//					args.tx.executeSql('INSERT INTO METADATA (resourceid, data, type, idx) SELECT id, ?, ?, ? from RESOURCE where RESOURCE.url = ?', [args.data, args.type, args.index, args.resId], function(){
+					args.tx.executeSql('INSERT INTO METADATA (resourceid, data, type, idx, fragment) VALUES(?, ?, ?, ?, ?)', [args._resourceId, args.data, args.type, args.index, args.fragment], function(){
+						that._resourceInserted(args);
+						args.cback.apply(null, arguments);
+					}, function(){
+						that.onDbError.apply(that, arguments);
+						args.errback.apply(null, arguments);
+					});
+				},
+				function(){
 
-			});
+				});
+			}, function(){});
 
+		},
+		__showRes: function(agrs){
+			args.tx.executeSql('SELECT * FROM RESOURCE', [], function(tx, results){
+				for(var i = 0, l = results.rows.length; i < l; i++){
+					console.log('resource: ', results.rows.item(i))
+
+				}
+			}, this.onDbError);
+		},
+		__showMeta: function(args){
+			args.tx.executeSql('SELECT * FROM METADATA', [], function(tx, results){
+				for(var i = 0, l = results.rows.length; i < l; i++){
+					console.log('META: ', results.rows.item(i))
+
+				}
+			}, this.onDbError);
 		},
 		_checkResExistence: function(args, results){
 			var that = this;
-			switch(results.rows.item(0).count){
+			switch(results.rows.length){
 				case 0:
 					// insert the resource here here
-					args.tx.executeSql('INSERT INTO RESOURCE (scormid, url)  SELECT id, ? from SCORM where SCORM.url = ?', [args.resId, args.scormId], function(){
+					args.tx.executeSql('INSERT INTO RESOURCE (scormid, url) SELECT id, ? from SCORM where SCORM.url = ?', [args.resId, args.scormId], function(tx, results){
+						args._resourceId = results.insertId;
 						that._insertResource(args);
 					}, this.onDbError);
 					break;
 				default:
 					// insert here
+					args._resourceId = results.rows.item(0).id;
 					that._insertResource(args);
 					break;
 
 			}
 
 		},
+		/**
+		 * remote the metadata identified by id
+		 * @param  {Object} args contains the Metadata id
+		 */
+		removeMetadata: function(args){
+			var
+				errback = args.errback || function(){}, that = this
+			;
 
+			db.transaction(function(tx){ args.tx = tx; that._removeMeta(args) },
+				function(err){
+					console.error('error initialising the _removeMeta transaction, error', err);
+					errback.apply(null, arguments);
+				},
+					function(){
+						// nothing to do
+					}
+				);
+		},
+		_removeMeta: function(args){
+			var that = this;
+			args.tx.executeSql('SELECT id FROM RESOURCE where RESOURCE.url = ? and RESOURCE.scormid in (SELECT id from SCORM WHERE url = ?)', [args.resId, args.scormId], function(tx, results){
+				var resId = results.rows.item(0).id;
+				args.tx.executeSql('DELETE FROM METADATA where idx = ? and type = ? and resourceid = ?', [args.index, args.type, resId], function(tx, results){
+					console.log("deletion, rows affected = %d", results.rowsAffected);
+
+					args.tx.executeSql('UPDATE METADATA set idx = idx - 1 WHERE resourceid = ? and (type = 1 or type = 2) and idx > ? ', [resId, args.index], function(tx, results){
+							args.cback.apply(null, arguments);
+					},
+					function(){});
+				}, function(){
+					that.onDbError.apply(that, arguments);
+					args.errback.apply(null, arguments);
+				});
+			}, function(){});
+
+		},
 		/**
 		 * save the metadata
 		 * {Object} args
@@ -191,11 +255,11 @@
 		},
 		_saveMeta: function(args){
 			var that = this;
-			args.tx.executeSql('SELECT COUNT(id) as count FROM SCORM WHERE SCORM.url = ?', [args.scormId],
+			args.tx.executeSql('SELECT id FROM SCORM WHERE SCORM.url = ?', [args.scormId],
 				function(tx, results){
-					that._checkScormExistence(args, results)
+					that._checkScormExistence(args, results);
 				}, function(){
-					args.errback.apply(null, arguments)
+					args.errback.apply(null, arguments);
 				}
 			);
 		},

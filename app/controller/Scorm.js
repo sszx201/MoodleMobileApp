@@ -481,7 +481,6 @@
 			this.getReadPercent().setHtml(((val*100)|0) + '&#37;');
 		},
 		updateSpineLength: function(){
-			console.log('WRITING slen, slen = ', compendio.spineIndex().length - 3);
 			var slen = localStorage[this.path + Supsi.Constants.get('SPINE_LENGTH_SUFFIX')], rpages = localStorage[this.path + Supsi.Constants.get('READ_PAGES_SUFFIX')];
 			if(!rpages){
 				this.updateReadLength(0)
@@ -501,8 +500,6 @@
 				rpages = localStorage[this.path + Supsi.Constants.get('READ_PAGES_SUFFIX')]
 			;
 			rpages = rpages ? JSON.parse(rpages) : [];
-			console.log('docloaded, rpages: ', rpages);
-			console.log('docloaded, slen: ', slen);
 			if(!~rpages.indexOf(scormPanel.resourceId)){
 				rpages.push(scormPanel.resourceId);
 				this.updateReadLength(rpages.length/slen);

@@ -21,6 +21,8 @@ Ext.define('Supsi.Constants', {
 	},
 
 	config : {
+		SPINE_LENGTH_SUFFIX: '-spineLength',
+		READ_PAGES_SUFFIX: '-readPages',
 		BOOKMARK_ACTIVE_COLOR: 'red',
 		SCORM_HIGHLIGHT_ATTRIBUTE: '',
 		SCORM_ANNOTATION_ATTRIBUTE: '',

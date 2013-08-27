@@ -17,6 +17,7 @@
 		],
 		config: {
 			refs: {
+				readPercent: '#readPercent',
 				navigator: '#course_navigator',
 				bookmarkBtn: '#bookmarkBtn',
 				module: '#module_list',
@@ -37,6 +38,9 @@
 
 			},
 			control: {
+				scormPanel: {
+					docloaded: 'onDocLoaded'
+				},
 				module: {
 					itemtap: 'selectModule'
 				},
@@ -60,7 +64,7 @@
 				}
 			}
 		},
-
+	path: '',
 	selectModule: function(view, index, target, record) {
 		if(record.get('modname') === 'scorm'){
 			
@@ -434,7 +438,7 @@
 
 		parseScorm: function(path){
 //			this.mainView = this.getMainView();
-			
+			this.path = path;
 			// todo: qui intervenire con il parametro che mi darà il link al manifest
 			// this.loadManifest(Supsi.Constants.get('DOC_ID'));
 			console.log('nav ', this.getNavigator());
@@ -455,29 +459,69 @@
 			console.log(scorm);
 			this.getMain().push(scorm);
 			*/
-			console.log('pushing the scorm view');
 			//this.getMain().push({ xtype: 'scorm' });
 
 			this.getBookmarkBtn().setStyle('color:white');
-
+			this.loadSpine(path + Supsi.Constants.get('DATA_LOCATION') + 'template/JavaScript/book.spine.js');
 			this.loadToc(path + Supsi.Constants.get('TOC_LOCATION') + 'toc.js');
 			//nr 18-07-2013e
+		},
+		loadSpine: function(spineSrc){
+			var that = this, _spineTransport = document.createElement('script');
+			// guarda cosa mi tocca fare...
+			window.compendio = {};
+			_spineTransport.type = 'text/javascript';
+			_spineTransport.src = spineSrc;
+			_spineTransport.onload = function(){
+				that.updateSpineLength()
+			};
+			document.body.appendChild(_spineTransport);
+		},
+		updateReadLength: function(val){
+			this.getReadPercent().setHtml(((val*100)|0) + '&#37;');
+		},
+		updateSpineLength: function(){
+			console.log('WRITING slen, slen = ', compendio.spineIndex().length - 3);
+			var slen = localStorage[this.path + Supsi.Constants.get('SPINE_LENGTH_SUFFIX')], rpages = localStorage[this.path + Supsi.Constants.get('READ_PAGES_SUFFIX')];
+			if(!rpages){
+				this.updateReadLength(0)
+			}
+			if(slen){
+				if(rpages){
+					this.updateReadLength(JSON.parse(rpages).length/slen)
+				}
+				return;
+			}
+			localStorage[this.path + Supsi.Constants.get('SPINE_LENGTH_SUFFIX')] = compendio.spineIndex().length - 3; // fidiamoci
+		},
+		onDocLoaded: function(){
+			var
+				scormPanel = this.getScormPanel(),
+				slen = localStorage[this.path + Supsi.Constants.get('SPINE_LENGTH_SUFFIX')],
+				rpages = localStorage[this.path + Supsi.Constants.get('READ_PAGES_SUFFIX')]
+			;
+			rpages = rpages ? JSON.parse(rpages) : [];
+			console.log('docloaded, rpages: ', rpages);
+			console.log('docloaded, slen: ', slen);
+			if(!~rpages.indexOf(scormPanel.resourceId)){
+				rpages.push(scormPanel.resourceId);
+				this.updateReadLength(rpages.length/slen);
+				localStorage[this.path + Supsi.Constants.get('READ_PAGES_SUFFIX')] = JSON.stringify(rpages);
+			}
+
 		},
 		//called when the Application is launched, remove if not needed
 		launch: function(app) {
 			Ext.sm = this;
 			// return;
-			var that = this;
 			if(typeof device !== 'undefined'){
 				document.addEventListener('deviceready', function(){
 					Supsi.Filesystem.initialize();
 					Supsi.Database.initialize();
 					Supsi.Filesystem.ready(function(){
-						// that._onDeviceReady();
 					});
 				}, false);
 			}else{
-				// that._onDeviceReady();
 			}
 		}
 	});

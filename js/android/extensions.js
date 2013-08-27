@@ -12,12 +12,12 @@ function addExtensions() {
 	//////////////////////////////////////////////////////////////////////////
 	MoodleMobApp.app.openFile = function(path, mimetype) {
 		var protocol = 'file:///';
-		var store = 'sdcard'
+		var store = 'sdcard';
 		window.plugins.webintent.startActivity(
 			{
 				action: WebIntent.ACTION_VIEW,
 				type: mimetype,
-				url: protocol+store+path,
+				url: protocol+store+path
 			},
 			function () {},
 			function () {
@@ -33,7 +33,7 @@ function addExtensions() {
 		window.plugins.webintent.startActivity(
 			{
 				action: WebIntent.ACTION_VIEW,
-				url: urladdr,
+				url: urladdr
 			},
 			function () {},
 			function () {

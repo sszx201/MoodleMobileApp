@@ -438,7 +438,7 @@
 		},
 		buildComponents: function(){
 			(this.mbox = Ext.create('Ext.MessageBox', {
-					title: '[i18n note]',
+					title: 'Note',
 					prompt: {
 						id: 'notearea',
 						xtype: 'textareafield'
@@ -481,7 +481,7 @@
 			this.mbox.down('#cancel').on('tap', this.onFirstNoteCancel, this);
 
 			(this.noteView = Ext.create('Ext.MessageBox', {
-				title: '[i18n] note',
+				title: 'Note',
 				prompt: {
 					id: 'writenotearea',
 					xtype: 'textareafield'
@@ -509,7 +509,7 @@
 
 			// search view
 			(this.searchView = Ext.create('Ext.MessageBox', {
-				title: '[i18n] search',
+				title: 'Search',
 				prompt: {
 					id: 'searcharea',
 					xtype: 'textareafield'

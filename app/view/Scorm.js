@@ -44,6 +44,14 @@ Ext.define('MoodleMobApp.view.Scorm', {
 										id: 'navBack',
 										hidden: true,
 										text: 'back'
+									},
+									{
+										xtype: 'spacer'
+									},
+									{
+										xtype: 'label',
+										id: 'readPercent',
+										html: '0&#37;'
 									}
 								],
 								docked: 'top'

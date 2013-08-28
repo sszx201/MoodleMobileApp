@@ -175,7 +175,7 @@
 
 		},
 		_getFileErr: function(err){
-			Ext.Msg.alert('Error', '[i18n] Error opening the file, code = ' + err.code);
+			Ext.Msg.alert('Error', 'Error opening the file, code = ' + err.code);
 		},
 		setURI: function(uri){
 			var that = this,
@@ -217,6 +217,20 @@
 		 * file writer successfully created
 		 * */
 		_fileWriterCreated: function(writer, html){
+//			var data = new ArrayBuffer(5),
+//				dataView = new Int8Array(data);
+//			for (i=0; i < 5; i++) {
+//				dataView[i] = i;
+//			}
+//			writer.onwrite = function(evt) {
+//				console.log("write success");
+//			};
+//			writer.write(data);
+//
+//			var dataView = new Int8Array(html);
+//			for(var i = 0, l = html.length; i < l; i++){
+//				dataView[i] = html.charAt(i)
+//			}
 			writer.write(html);
 		},
 		/**

@@ -39,8 +39,6 @@
 			// var fullPath = Supsi.Constants.get('CLONED_BASE') + path;
 			var fullPath = path;
 			this.getDirectory(fullPath.substr(0, fullPath.lastIndexOf("/")));
-//			console.log('directory creation ok ****************************')
-			console.log('getFile path: ', path);
 			this.fileSystem.root.getFile(path, {
 				create: create,
 				exclusive: false

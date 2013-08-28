@@ -89,7 +89,7 @@
 							},
 							function(args){
 								// poco bello, ma funziona
-								self.parseScorm(args.fullPath.replace(/_scorm_extracted_$/, ''));
+								self.parseScorm(args.fullPath.replace(/_scorm_extracted_$/, '').replace(/file:\/\//, ''));
 							},
 							// error callback: notify the error
 							function() {
@@ -437,14 +437,9 @@
 		},
 
 		parseScorm: function(path){
-//			this.mainView = this.getMainView();
 			this.path = path;
 			// todo: qui intervenire con il parametro che mi darà il link al manifest
-			// this.loadManifest(Supsi.Constants.get('DOC_ID'));
-			console.log('nav ', this.getNavigator());
-			console.log('scormview ', this.getScorm());
 			this.getNavigator().push(this.getScorm());
-			console.log('filePath is ', path);
 			this.loadManifest(path);
 			this.resourceList = this.getResourceList();
 			// loading the test manifest file

@@ -62,8 +62,7 @@ function addExtensions() {
 	};
 
 	MoodleMobApp.app.onBackKeyDown = function(e) {
-		var popOutput = MoodleMobApp.app.getController('Main').getMain().pop();
-		if(popOutput == undefined) {
+		if(MoodleMobApp.app.getController('Main').getNavigator().pop() == undefined) {
 			navigator.app.exitApp();
 			/*
 			Ext.Msg.confirm(

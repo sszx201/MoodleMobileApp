@@ -3,7 +3,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 	
 	config: {
 		refs: {
-   
+			navigator: 'coursenavigator',
 		},
 		control: {
 			

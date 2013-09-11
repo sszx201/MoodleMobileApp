@@ -53,6 +53,7 @@ Ext.application({
 		'MoodleMobApp.controller.Resource',
 		'MoodleMobApp.controller.Choice',
 		'MoodleMobApp.controller.Url',
+		'MoodleMobApp.controller.Page',
 		'MoodleMobApp.controller.Scorm',
 		'MoodleMobApp.controller.ScormMetadataPanel',
 		'MoodleMobApp.controller.ScormSettings',

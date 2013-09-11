@@ -18,6 +18,7 @@ Ext.define('MoodleMobApp.controller.Init', {
 			'MoodleMobApp.store.Resources',
 			'MoodleMobApp.store.Choices',
 			'MoodleMobApp.store.Url',
+			'MoodleMobApp.store.Page',
 			'MoodleMobApp.store.ForumDiscussions',
 			'MoodleMobApp.store.ForumPosts',
 			'MoodleMobApp.store.Folders',
@@ -98,12 +99,15 @@ Ext.define('MoodleMobApp.controller.Init', {
 		choices_store.load();
 		MoodleMobApp.Session.setChoicesStore(choices_store);
 
-
 		// create url store
 		var url_store = Ext.create('MoodleMobApp.store.Url');
 		url_store.load();
 		MoodleMobApp.Session.setUrlStore(url_store);
 
+		// create page store
+		var page_store = Ext.create('MoodleMobApp.store.Page');
+		page_store.load();
+		MoodleMobApp.Session.setPageStore(page_store);
 
 		// create forumdiscussions store
 		var forum_discussions_store = Ext.create('MoodleMobApp.store.ForumDiscussions');

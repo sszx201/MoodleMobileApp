@@ -78,6 +78,7 @@ $active-color: #C35817;
 }
 
 .x-module-icon-scorm,
+.x-module-icon-page,
 .x-module-icon-resource {
 	background:url('../images/resource.png');
 	background-repeat: no-repeat;
@@ -321,6 +322,27 @@ $active-color: #C35817;
 		color: red;
 		text-align: center;
 		font-weight: bold;
+	}
+}
+
+/*
+ *
+ * Page related classes
+ *
+ * */
+.page{
+	.name {
+		font-weight: bold;
+	}
+
+	.name,
+	.intro,
+	.content {
+		margin-top: 10px;
+		background-color: white;
+		padding: 5px;
+		padding-top: 10px;
+		padding-bottom: 10px;
 	}
 }
 

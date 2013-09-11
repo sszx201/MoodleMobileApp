@@ -414,6 +414,19 @@ Ext.define('MoodleMobApp.WebService', {
 		return url_content_store;
 	},
 
+	getPage: function(resource, token) {
+		// set parameters
+		console.log('getting page');
+		console.log(resource);
+		var params = new Object();
+		params.wsfunction = 'local_uniappws_page_get_page';
+		params.wstoken = token;
+		params.pageid = resource.instanceid;
+		// request
+		var page_content_store = this.request(params, 'MoodleMobApp.model.Page', 'GET');
+		return page_content_store;
+	},
+
 	getGradeItems: function(course, token) {
 		// set parameters
 		var params = new Object();

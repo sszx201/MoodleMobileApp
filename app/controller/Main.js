@@ -181,6 +181,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 					MoodleMobApp.Session.getModulesStore().on('write', this.updateResourcesStore(course), this, {single:true});
 					MoodleMobApp.Session.getModulesStore().on('write', this.updateChoicesStore(course), this, {single:true});
 					MoodleMobApp.Session.getModulesStore().on('write', this.updateUrlStore(course), this, {single:true});
+					MoodleMobApp.Session.getModulesStore().on('write', this.updatePageStore(course), this, {single:true});
 					MoodleMobApp.Session.getModulesStore().on('write', this.updateGradeItemsStore(course), this, {single:true});
 					MoodleMobApp.Session.getModulesStore().on('write', this.updateGradesStore(course), this, {single:true});
 					// sync
@@ -192,6 +193,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 					this.updateResourcesStore(course);
 					this.updateChoicesStore(course);
 					this.updateUrlStore(course);
+					this.updatePageStore(course);
 					this.updateGradeItemsStore(course);
 					this.updateGradesStore(course);
 				}
@@ -607,6 +609,38 @@ Ext.define('MoodleMobApp.controller.Main', {
 						MoodleMobApp.Session.getUrlStore().remove(previous_record);
 						response.first().setDirty();
 						MoodleMobApp.Session.getUrlStore().add(response.first());
+					}
+				},
+				this,
+				{single: true}
+			);
+		}, this);
+	},
+
+	updatePageStore: function (course) {
+		var courseid = course.get('id');
+		// -log-
+		if(MoodleMobApp.Config.getVerbose()) {
+			MoodleMobApp.log('UPDATING PAGE STORE FOR COURSE: '+courseid);
+		}
+
+		MoodleMobApp.Session.getModulesStore().queryBy(function(record, id){
+			if(record.get('modname') == 'page' && record.get('courseid') == courseid) {
+				return true;
+			}
+		}).each(function(page) {
+			MoodleMobApp.WebService.getPage(page.getData(), course.get('token')).on(
+				'load',
+				function(response) {
+					var previous_record = MoodleMobApp.Session.getPageStore().findRecord('id', response.first().get('id'));
+
+					if(previous_record == null) { // add the new page; this page has not been recorded previously
+						response.first().setDirty();
+						MoodleMobApp.Session.getPageStore().add(response.first());
+					} else if(previous_record.get('timemodified') != response.first().get('timemodified')) { // page modified; drop the old one
+						MoodleMobApp.Session.getPageStore().remove(previous_record);
+						response.first().setDirty();
+						MoodleMobApp.Session.getPageStore().add(response.first());
 					}
 				},
 				this,

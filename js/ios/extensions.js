@@ -27,7 +27,7 @@ function addExtensions() {
 							fileEntry.remove();
 							console.log('opening file');
 							console.log(sPath+path);
-							window.open(sPath+path, '_blank', 'location=yes');
+							window.open(sPath+path, '_blank', 'enableViewportScale=yes');
 						},
 						// error callback: notify the error
 						function(){

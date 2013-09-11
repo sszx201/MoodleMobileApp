@@ -293,8 +293,8 @@ Ext.define('MoodleMobApp.WebService', {
 							var fileTransfer = new FileTransfer();
 
 							fileTransfer.onprogress = progressFunc;
-							console.log('downloading from: ' + url);
-							console.log('to: ' + sPath + dir + '/' + file.name);
+							//console.log('downloading from: ' + url);
+							//console.log('to: ' + sPath + dir + '/' + file.name);
 							fileTransfer.download(
 								url,
 								sPath + dir + '/' + file.name,
@@ -416,8 +416,6 @@ Ext.define('MoodleMobApp.WebService', {
 
 	getPage: function(resource, token) {
 		// set parameters
-		console.log('getting page');
-		console.log(resource);
 		var params = new Object();
 		params.wsfunction = 'local_uniappws_page_get_page';
 		params.wstoken = token;

@@ -161,7 +161,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 						if(MoodleMobApp.Config.getVerbose()) {
 							MoodleMobApp.log('|I| New module '+module.get('modname')+'; type:'+module.get('type')+'; name: '+module.get('name')+'; id: '+module.get('id'));
 						}
-					} else if(local_module.get('timemodified') != module.get('timemodified')) { // check if updated
+					} else if(local_module.get('timemodified') != module.get('timemodified') || local_module.get('section') != module.get('section')) { // check if updated or if has been moved to another section
 						MoodleMobApp.Session.getModulesStore().remove(local_module);
 						module.set('isnew', false);
 						module.set('isupdated', true);

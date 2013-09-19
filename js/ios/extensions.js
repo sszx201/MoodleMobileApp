@@ -115,4 +115,12 @@ function addExtensions() {
 				);
 			});
 	};
+
+	MoodleMobApp.app.calculateDownloadPercentage = function(progressEvent) {
+		if (progressEvent.lengthComputable) {
+			return Math.round(progressEvent.loaded/progressEvent.total * 100);
+		} else {
+			return '...';
+		}
+	};
 }

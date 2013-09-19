@@ -110,8 +110,6 @@ Ext.application({
 	// file is an object such as:
 	// {"name": "filename", "id": "file id number", "mime":"mime/type"}
 	downloadFile: function(file) {
-		this.showLoadMask('');
-
 		// success function
 		var successFunc = function(result) {
 			MoodleMobApp.app.hideLoadMask();
@@ -119,19 +117,9 @@ Ext.application({
 			MoodleMobApp.app.openFile(filePath, file.mime);
 		};
 
-		// progress function
-		var progressFunc = function(progressEvent){
-			if (progressEvent.lengthComputable) {
-				MoodleMobApp.app.updateLoadMaskMessage(progressEvent.loaded+' bytes');
-			} else {
-				this.hideLoadMask('');
-			}
-		};
-
 		MoodleMobApp.WebService.getFile(
 			file,
 			MoodleMobApp.Config.getFileCacheDir(),
-			progressFunc,
 			successFunc,
 			MoodleMobApp.Session.getCourse().get('token')
 		);
@@ -253,4 +241,7 @@ Ext.application({
 		var date = new Date(timestamp*1000);
 		return Ext.Date.format(date, "l d F Y h:m");
 	},
+
+	calculateDownloadPercentage: function(progressEvent) { },
+
 });

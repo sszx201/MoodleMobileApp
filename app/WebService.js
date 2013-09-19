@@ -264,7 +264,7 @@ Ext.define('MoodleMobApp.WebService', {
 		return folder_content_store;
 	},
 
-	fetchFile: function(file, dir, progressFunc, successFunc, params) {
+	fetchFile: function(file, dir, successFunc, params) {
 		// prepare the parameters
 		var url_encoded_params = '?';
 		Ext.iterate(params, function(key, value){
@@ -274,7 +274,7 @@ Ext.define('MoodleMobApp.WebService', {
 		url_encoded_params = url_encoded_params.slice(0,-1);
 		// build the url
 		var url = MoodleMobApp.Config.getWebServiceUrl() + url_encoded_params;
-
+		var self = this;
 		window.requestFileSystem(
 			LocalFileSystem.PERSISTENT, 0,
 			function onFileSystemSuccess(fileSystem) {
@@ -292,13 +292,37 @@ Ext.define('MoodleMobApp.WebService', {
 
 							var fileTransfer = new FileTransfer();
 
-							fileTransfer.onprogress = progressFunc;
+							var progressBar = '<progress class="html5pbar" value="0" max="100" />';
+
+							Ext.Msg.alert('Downloading', progressBar);
+
+							Ext.Msg.setButtons({
+								xtype: 'button',
+								ui: 'action',
+								text: 'Stop',
+								handler: function() {
+									Ext.Msg.hide();
+									fileTransfer.abort();
+								},
+							});
+
+							//self.fileTransfer.onprogress = progressFunc;
+							var prev_percentage = 0;
+							fileTransfer.onprogress = function(progressEvent) {
+								var percentage = MoodleMobApp.app.calculateDownloadPercentage(progressEvent);
+								// avoid updating the bar for the same percentage values
+								if(percentage != prev_percentage) {
+									document.getElementsByTagName('progress')[0].setAttribute('value', percentage);
+									prev_percentage = percentage;
+								}
+							};
 							//console.log('downloading from: ' + url);
 							//console.log('to: ' + sPath + dir + '/' + file.name);
 							fileTransfer.download(
 								url,
 								sPath + dir + '/' + file.name,
 								function(theFile) {
+									Ext.Msg.hide();
 									successFunc();
 								},
 								function(error) {
@@ -334,14 +358,14 @@ Ext.define('MoodleMobApp.WebService', {
 			});
 	},
 
-	getFile: function(file, dir, progressFunc, successFunc, token) {
+	getFile: function(file, dir, successFunc, token) {
 		var params = new Object();
 		// add response format
 		params.moodlewsrestformat = 'json';
 		params.wsfunction = 'local_uniappws_files_get_file';
 		params.wstoken = token;
 		params.fileid = file.fileid;
-		this.fetchFile(file, dir, progressFunc, successFunc, params);
+		this.fetchFile(file, dir, successFunc, params);
 	},
 
 	uploadDraftFile: function(file, token) {
@@ -359,14 +383,14 @@ Ext.define('MoodleMobApp.WebService', {
 
 	},
 
-	getScorm: function(file, dir, progressFunc, successFunc, token) {
+	getScorm: function(file, dir, successFunc, token) {
 		var params = new Object();
 		// add response format
 		params.moodlewsrestformat = 'json';
 		params.wsfunction = 'local_uniappws_scorm_get_package';
 		params.wstoken = token;
 		params.scormid = file.scormid;
-		this.fetchFile(file, dir, progressFunc, successFunc, params);
+		this.fetchFile(file, dir, successFunc, params);
 	},
 
 	getResource: function(resource, token) {

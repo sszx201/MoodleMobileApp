@@ -12,7 +12,7 @@ Ext.define("MoodleMobApp.view.CourseNavigator", {
 		items: [
 			{
 				xtype: 'courselist',
-			}
+			},
 		]
 	}
 });

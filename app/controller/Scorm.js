@@ -71,10 +71,7 @@
 			if(typeof this.getScorm() != 'object') {
 				var scorm = Ext.create('MoodleMobApp.view.Scorm');
 			}
-			// this.parseScorm('XGG003_DE/');
-			// return;
 			
-
 			var scormExtractedFileFlag = MoodleMobApp.Config.getFileCacheDir() + '/' + record.get('id') + '/_scorm_extracted_';
 			var self = this;
 			window.requestFileSystem(
@@ -121,9 +118,9 @@
 		var dir = MoodleMobApp.Config.getFileCacheDir() + '/' + module.get('id');
 		Supsi.Utils.log('files unzipped in ',  MoodleMobApp.Config.getFileCacheDir() + '/' + module.get('id'));
 		var scormExtractedFileFlag = dir + '/_scorm_extracted_';
-		//this.showLoadMask('');
 		// success function
 		var downloadSuccessFunc = function(result){
+			MoodleMobApp.app.hideLoadMask('');
 			console.log('download success function start');
 			//MoodleMobApp.app.hideLoadMask();
 			var filePath = dir + '/' + file.name;
@@ -148,7 +145,7 @@
 									},
 									function() {
 										// console.log('finalized the scorm path = ', sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1) );
-										console.log('before parseScorm ' + targetPath);
+										// console.log('before parseScorm ' + targetPath);
 
 										that.parseScorm(targetPath + '/');
 									},
@@ -173,21 +170,9 @@
 			MoodleMobApp.app.unzip(filePath, extractionSuccessFunc, extractionFailFunc);
 		};
 
-		// progress function
-		var downloadProgressFunc = function(progressEvent){
-			if (progressEvent.lengthComputable) {
-				//MoodleMobApp.app.updateLoadMaskMessage(progressEvent.loaded+' bytes');
-				// Supsi.Utils.log('downloaded in percentage: ' + (progressEvent.loaded/progressEvent.total * 100) + '%');
-			} else {
-				//this.hideLoadMask('');
-				Supsi.Utils.log('download complete');
-			}
-		};
-
 		MoodleMobApp.WebService.getScorm(
 			file,
 			dir,
-			downloadProgressFunc,
 			downloadSuccessFunc,
 			MoodleMobApp.Session.getCourse().get('token')
 		);

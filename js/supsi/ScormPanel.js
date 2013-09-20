@@ -439,6 +439,7 @@
 		buildComponents: function(){
 			(this.mbox = Ext.create('Ext.MessageBox', {
 					title: 'Note',
+					margin: '-250 0 0 0',
 					prompt: {
 						id: 'notearea',
 						xtype: 'textareafield'
@@ -482,6 +483,7 @@
 
 			(this.noteView = Ext.create('Ext.MessageBox', {
 				title: 'Note',
+				margin: '-250 0 0 0',
 				prompt: {
 					id: 'writenotearea',
 					xtype: 'textareafield'
@@ -510,6 +512,7 @@
 			// search view
 			(this.searchView = Ext.create('Ext.MessageBox', {
 				title: 'Search',
+				margin: '-250 0 0 0',
 				prompt: {
 					id: 'searcharea',
 					xtype: 'textareafield'

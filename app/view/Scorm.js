@@ -43,7 +43,7 @@ Ext.define('MoodleMobApp.view.Scorm', {
 										ui: 'back',
 										id: 'navBack',
 										hidden: true,
-										text: 'back'
+										text: 'prev'
 									},
 									{
 										xtype: 'spacer'

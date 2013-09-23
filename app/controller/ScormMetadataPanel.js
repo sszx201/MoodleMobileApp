@@ -48,7 +48,7 @@ Ext.define('MoodleMobApp.controller.ScormMetadataPanel', {
 		var value = this.getNotesFilterField().getValue();
 		store.clearFilter();
 		value && store.filterBy(function(item){
-				return item.data['data'].indexOf(value) != -1
+				return (item.data['fragment'].indexOf(value) != -1 || item.data['data'].indexOf(value) != -1)
 			}
 		);
 		store.sync();

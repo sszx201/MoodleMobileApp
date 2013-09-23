@@ -292,7 +292,7 @@ Ext.define('MoodleMobApp.WebService', {
 
 							var fileTransfer = new FileTransfer();
 
-							var progressBar = '<progress class="html5pbar" value="0" max="100" />';
+							var progressBar = '<div class="progress-bar"><span style="width: 0%"></span></div>';
 
 							Ext.Msg.alert('Downloading', progressBar);
 
@@ -312,8 +312,8 @@ Ext.define('MoodleMobApp.WebService', {
 								var percentage = MoodleMobApp.app.calculateDownloadPercentage(progressEvent);
 								// avoid updating the bar for the same percentage values
 								if(percentage != prev_percentage) {
-									document.getElementsByTagName('progress')[0].setAttribute('value', percentage);
 									prev_percentage = percentage;
+									document.querySelector('div.progress-bar span').setAttribute('style', 'width: '+percentage+'%');
 								}
 							};
 							//console.log('downloading from: ' + url);

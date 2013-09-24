@@ -44,8 +44,8 @@ Ext.define('MoodleMobApp.controller.ScormMetadataPanel', {
 	 * apply the text filter on the metadata list (notes only)
 	 * */
 	applyNotesFilter: function(){
-		var metaList = this.getMetadataList(), store = metaList.getStore();
-		var value = this.getNotesFilterField().getValue();
+		var metaList = this.getMetadataList(), store = metaList.getStore(),
+			value = this.getNotesFilterField().getValue();
 		store.clearFilter();
 		value && store.filterBy(function(item){
 				return (item.data['fragment'].indexOf(value) != -1 || item.data['data'].indexOf(value) != -1)

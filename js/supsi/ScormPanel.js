@@ -22,23 +22,31 @@
 		template: [
 			{
 				tag: 'div',
-				className: Ext.baseCSSPrefix + 'scorm-cover',
-				reference: 'cover'
-			},
-			{
-				tag:'div',
-				reference: 'wrapperRef',
-				className: Ext.baseCSSPrefix + 'scorm-wrapper',
+				className: 'scorm-container',
+				reference: 'scormContainer',
 				children: [
 					{
-						tag: 'iframe',
-						src: '',
-						className: Ext.baseCSSPrefix + 'scorm-panel',
-						reference: 'docContainer'
+						tag: 'div',
+						className: Ext.baseCSSPrefix + 'scorm-cover',
+						reference: 'cover'
+					},
+					{
+						tag:'div',
+						reference: 'wrapperRef',
+						className: Ext.baseCSSPrefix + 'scorm-wrapper',
+						children: [
+							{
+								tag: 'iframe',
+								src: '',
+								className: Ext.baseCSSPrefix + 'scorm-panel',
+								reference: 'docContainer'
+							}
+						]
 					}
 				]
-			}
+			},
 		],
+		scormContainer: null,
 		wrapperRef: null,
 		docContainer: null,
 		showAnnotationDialog: function(){
@@ -123,6 +131,7 @@
 		_loadEnd: function(evt){
 			var targetNode = this.docContainer.dom.contentDocument.body.querySelector('.contenttopic');
 			targetNode.innerHTML = evt.target.result;
+			this.scrollToTop();
 		},
 		flushDomToFile: function(){
 			Supsi.Utils.log('[ScormPanel:flushDomToFile] currentFile = ', this._currentFileEntry);
@@ -196,7 +205,6 @@
 			// Supsi.Filesystem.getFile(uri.substr(uri.lastIndexOf('/')+1), true,
 			Supsi.Filesystem.getFile(this.SCORMId + Supsi.Constants.get('CLONED_BASE') + uri, true,
 				function(fileEntry){
-					console.log('+è+è+è+è+è+è getFile ', uri);
 					that._getFileCback.call(that, uri, fileEntry);
 				},
 				function(err){
@@ -207,7 +215,8 @@
 		},
 		setupGeometry: function(t, newOrientation, w, h, opts){
 			var partial = newOrientation === 'landscape' ? 'in' : 'ax', height = Math['m' + partial](h, w);
-			this.wrapperRef.setHeight(height);
+			// 120 px per tenere conto della presenza delle varie barre
+			this.wrapperRef.setHeight(height - 120);
 		},
 		loadTemplate: function(){
 			this.docContainer.dom.src = 'ScormPanelTemplate.html';
@@ -239,7 +248,12 @@
 		 * */
 		_fileWriterErr: function(){
 			Supsi.Utils.log('[ScormPanel] fileWriterErr ', arguments);
-
+		},
+		/**
+		 * scroll the content node to the top of the page
+		 * */
+		scrollToTop: function(){
+			this.docContainer.dom.contentDocument.querySelector('.content').scrollTop = 0;
 		},
 		/**
 		 * the resource is successfully loaded via xhr
@@ -256,7 +270,7 @@
 
 
 			targetNode.innerHTML = html;
-
+			this.scrollToTop();
 			fileEntry.createWriter(
 				function(writer){
 					that._fileWriterCreated(writer, html);
@@ -272,7 +286,7 @@
 				this.docContainer.dom.contentDocument.querySelector('.content').scrollTop = elem.offsetTop;
 				return;
 			}
-			this.fireEvent('setlocation', loc);
+			this.fireEvent('+', loc);
 		},
 		/**
 		 * prevent navigation to other pages
@@ -571,7 +585,10 @@
 			this.buildComponents();
 			this.setupEventHandlers();
 			this.loadTemplate();
-			Ext.Viewport.on('orientationchange', this.setupGeometry, false);
+			var that = this;
+			Ext.Viewport.on('orientationchange', function(){
+				that.setupGeometry.apply(that, arguments)
+			}, false);
 		}
 	});
 //})

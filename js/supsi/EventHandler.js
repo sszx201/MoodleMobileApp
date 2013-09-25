@@ -16,8 +16,9 @@ define(['js/supsi/ConstantsOrig'], function(Constants){
             }
 			// todo: implementare tap a tempo perso
 			jQuery('body').on('touchend', 'img', this.zoomHandler);
-//			jQuery('body').on('click', 'img', this.zoomHandler)
         },
+		touchstartHandler: function(evt){
+		},
 		zoomHandler: function(evt){
 			var target = evt.target;
 			if(target.id && target.id === 'fancybox-img'){
@@ -38,7 +39,14 @@ define(['js/supsi/ConstantsOrig'], function(Constants){
 //            document.addEventListener('click', function(e){
                 that.onTouchStart(e);
             }, false);
-            document.addEventListener('touchmove', function(e){}, false)
+            document.addEventListener('touchmove', function(e){
+				if(e.target.id && (e.target.id === 'fancybox-overlay' || e.target.id === 'fancybox-img')){
+					e.preventDefault();
+					e.stopPropagation();
+					return;
+				}
+
+			}, false)
 
         },
         _touchMoveListener: function(){

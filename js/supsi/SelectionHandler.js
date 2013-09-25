@@ -12,7 +12,7 @@ define(function(){
         },
         onTouchStart: function(){
             this.selectedRange = null;
-	 checkSelection.call(null, this.selectedRange);
+	 		checkSelection.call(null, this.selectedRange);
         },
         onSelectionChange: function(){
             // nr 12-07-2013
@@ -21,7 +21,6 @@ define(function(){
             checkSelection.call(null, this.selectedRange);
         },
         addListeners: function(){
-            console.log('selection add listeners');
             var that = this;
             document.addEventListener('touchstart', function(e){
                 that.onTouchStart(e);

@@ -22,7 +22,8 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 	},
 
 	loadHomeOrganisationValues: function() {
-		var homeOrgField = this.getForm().getItems().getAt(1).getItems().getAt(2);
+		//var homeOrgField = this.getForm().getItems().getItems().getAt(2);
+		var homeOrgField = this.getForm().down('#homeorganisation');
 		if(homeOrgField.getStore() == null) {
 				var homeorgs_store = Ext.create('MoodleMobApp.store.HomeOrgs');
 				// wait for the interface to be shown; fix for the first time the application is loaded

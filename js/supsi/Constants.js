@@ -1,5 +1,3 @@
-localStorage.scormDocId = 'XGG003_DE/';
-
 // todo: questo script deve essere fatto girare ogni volta che si cambia SCORM
 Ext.define('Supsi.Constants', {
 	singleton : true,

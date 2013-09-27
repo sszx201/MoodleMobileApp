@@ -72,7 +72,7 @@
 				var scorm = Ext.create('MoodleMobApp.view.Scorm');
 			}
 			
-			var scormExtractedFileFlag = MoodleMobApp.Config.getFileCacheDir() + '/' + record.get('id') + '/_scorm_extracted_';
+			var scormExtractedFileFlag = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/scorm/' + record.get('id') + '/_scorm_extracted_';
 			var self = this;
 			window.requestFileSystem(
 				LocalFileSystem.PERSISTENT, 0,
@@ -115,8 +115,8 @@
 		// The archive is going to be named id.zip and is going to be stored in a directory named id
 		// Example: 508/508.zip
 		// Once extracted all the content is going to be contained in one directory.
-		var dir = MoodleMobApp.Config.getFileCacheDir() + '/' + module.get('id');
-		Supsi.Utils.log('files unzipped in ',  MoodleMobApp.Config.getFileCacheDir() + '/' + module.get('id'));
+		var dir = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/scorm/' + module.get('id');
+		Supsi.Utils.log('files unzipped in ',  dir);
 		var scormExtractedFileFlag = dir + '/_scorm_extracted_';
 		// success function
 		var downloadSuccessFunc = function(result){

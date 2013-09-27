@@ -25,6 +25,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			editDiscussionForm: '#forum_discussion_edit_form',
 			saveDiscussionButton: 'button[action=savediscussion]',
 			addDiscussionButton: 'button[action=adddiscussion]',
+			post: 'forumpost',
 			postList: '#forum_post_list',
 			postReplyButton: 'button[action=postreply]',
 			replyForm: 'forumpostreply',
@@ -41,6 +42,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			replyForm: { deactivate: 'replyToPostCancelled' },
 			postReplyButton: { tap: 'replyToPost' },
 			saveReplyButton: { tap: 'saveReplyToPost' },
+			post: { getattachment: function() { console.log('attachment clicked'); } },
 		}
 	},
 

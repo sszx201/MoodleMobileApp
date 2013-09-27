@@ -16,9 +16,9 @@ Ext.define("MoodleMobApp.view.Main", {
 				xtype: 'coursenavigator'
 			},
 			{
-				title: 'Account Settings',
-				iconCls: 'user',
-				xtype: 'accountchoice',
+				title: 'Settings',
+				iconCls: 'settings',
+				xtype: 'settings',
 				
 			},
 			{

@@ -28,7 +28,7 @@ Ext.application({
 
 	views: [
 		'MoodleMobApp.view.UsageAgreement',
-		'MoodleMobApp.view.AccountChoice',
+		'MoodleMobApp.view.Settings',
 		'MoodleMobApp.view.Scorm',
 		'MoodleMobApp.view.Main',
 		'MoodleMobApp.view.Course',
@@ -41,7 +41,7 @@ Ext.application({
 		'MoodleMobApp.controller.Init',
 		'MoodleMobApp.controller.Main',
 		'MoodleMobApp.controller.UsageAgreement',
-		'MoodleMobApp.controller.AccountChoice',
+		'MoodleMobApp.controller.Settings',
 		'MoodleMobApp.controller.Account',
 		'MoodleMobApp.controller.AaiAccount',
 		'MoodleMobApp.controller.ManualAccount',
@@ -89,7 +89,7 @@ Ext.application({
 		if( MoodleMobApp.Session.getSettingsStore().first().getData().usageagreement == false ) {
 			Ext.Viewport.add( Ext.create('MoodleMobApp.view.UsageAgreement') );
 		} else if( MoodleMobApp.Session.getSettingsStore().first().getData().accounttype == '' ) {
-			Ext.Viewport.add(Ext.create('MoodleMobApp.view.AccountChoice'));
+			Ext.Viewport.add(Ext.create('MoodleMobApp.view.Settings'));
 		} else {
 			Ext.Viewport.add(Ext.create('MoodleMobApp.view.Main'));
 		}
@@ -111,15 +111,17 @@ Ext.application({
 	// {"name": "filename", "id": "file id number", "mime":"mime/type"}
 	downloadFile: function(file) {
 		// success function
+		var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + file.fileid;
 		var successFunc = function(result) {
 			MoodleMobApp.app.hideLoadMask();
-			var filePath = '/'+MoodleMobApp.Config.getFileCacheDir()+'/'+file.name;
+			var filePath = '/'+dirPath+'/'+file.name;
 			MoodleMobApp.app.openFile(filePath, file.mime);
 		};
 
+
 		MoodleMobApp.WebService.getFile(
 			file,
-			MoodleMobApp.Config.getFileCacheDir(),
+			dirPath,
 			successFunc,
 			MoodleMobApp.Session.getCourse().get('token')
 		);

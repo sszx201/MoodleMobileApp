@@ -7,7 +7,8 @@ Ext.define("MoodleMobApp.view.CourseList", {
 
 	config: {
 		id: 'course_list',
-	   	title: 'Course List', 
+	   	//title: 'Course List', 
+	   	title: '<img src="resources/images/header.png"/>', 
 		store: 'courses',
 		emptyText: 'No courses available.',
 		useComponents: true,

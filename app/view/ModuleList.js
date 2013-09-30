@@ -9,36 +9,6 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 		useComponents: true,
 		defaultType: 'module',
 		grouped: true,
-		items: [
-			{
-				xtype: 'toolbar',
-				docked: 'bottom',
-				items: [
-					{
-						xtype: 'spacer'
-					},
-					{
-						xtype: 'button',	
-						text: 'Partecipants',
-						action: 'showpartecipants',
-					},
-					{
-						xtype: 'button',	
-						text: 'Grades',
-						action: 'showgrades',
-					},
-					{
-						xtype: 'button',	
-						text: 'Calendar Events',
-						action: 'showcalendarevents',
-					},
-					{
-						xtype: 'spacer'
-					},
-				]
-			},
-		],
-
 		listeners: {
 			painted: function(){
 				this.dropSectionLabels();

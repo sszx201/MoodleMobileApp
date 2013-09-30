@@ -84,6 +84,7 @@ Ext.application({
 		// this code is located under js/[arch]/extensions.js
 		addExtensions();
         // Destroy the #appLoadingIndicator element
+		Ext.fly('appLoadingHeader').destroy();
 		Ext.fly('appLoadingIndicator').destroy();
 
 		if( MoodleMobApp.Session.getSettingsStore().first().getData().usageagreement == false ) {
@@ -91,7 +92,7 @@ Ext.application({
 		} else if( MoodleMobApp.Session.getSettingsStore().first().getData().accounttype == '' ) {
 			Ext.Viewport.add(Ext.create('MoodleMobApp.view.Settings'));
 		} else {
-			Ext.Viewport.add(Ext.create('MoodleMobApp.view.Main'));
+			Ext.Viewport.add(Ext.create('MoodleMobApp.view.CourseNavigator'));
 		}
     },
 

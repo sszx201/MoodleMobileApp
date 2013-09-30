@@ -19,14 +19,7 @@ Ext.define("MoodleMobApp.view.Main", {
 				title: 'Settings',
 				iconCls: 'settings',
 				xtype: 'settings',
-				
 			},
-			{
-				title: 'Shell',
-				iconCls: 'info',
-				xtype: 'shell',
-				
-			}
 		]
 	}
 });

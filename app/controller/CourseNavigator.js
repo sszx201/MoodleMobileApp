@@ -89,9 +89,10 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 	},
 
 	selectCourse: function(view, index, target, record) {
-		this.getPartecipantsButton().show();
+		// update the app bar
 		this.getGradesButton().show();
 		this.getCalendarButton().show();
+		// store the current course
 		this.current_course = record;
 		// set the course token inside the session
 		MoodleMobApp.Session.setCourse(record);
@@ -116,6 +117,10 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 				store: modules
 			});
 		}
+
+		// update the title
+		this.getNavigator().down('titlebar').setTitle(record.get('name'));
+		this.getPartecipantsButton().show();
 	},
 
 	selectModule: function(view, index, target, record) {

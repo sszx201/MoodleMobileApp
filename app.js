@@ -87,6 +87,7 @@ Ext.application({
 		Ext.fly('appLoadingHeader').destroy();
 		Ext.fly('appLoadingIndicator').destroy();
 
+
 		if( MoodleMobApp.Session.getSettingsStore().first().getData().usageagreement == false ) {
 			Ext.Viewport.add( Ext.create('MoodleMobApp.view.UsageAgreement') );
 		} else if( MoodleMobApp.Session.getSettingsStore().first().getData().accounttype == '' ) {

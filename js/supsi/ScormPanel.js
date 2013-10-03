@@ -163,6 +163,7 @@
 //								}, this._fileWriterErr);
 //
 			// require.js must be the first script loaded
+			console.log('before loading require.js');
 			contentDocument.body.appendChild(s);
 			s.src = origin + 'js/require.js';
 
@@ -207,7 +208,9 @@
 //						this.docContainer.dom.onload = function(){
 //							that._firstSCORMLoad(fileEntry)
 //						}
+						Supsi.Utils.log('iframe ***************** changing location');
 						that.docContainer.dom.onload = function(){
+							Supsi.Utils.log('***************** iframe loaded');
 							that._docContainerLoadHandler();
 							that._scormLoadEnd.call(that, evt);
 
@@ -232,6 +235,8 @@
 //				console.log('trying using ajax, file ', this.SCORMId + uri);
 				if(this.standard){
 					this.docContainer.dom.onload = function(){
+						console.log('callback riassegnata correttamente ******* ', typeof that._docContainerLoadHandler);
+						that._docContainerLoadHandler();
 						that._firstSCORMLoad(fileEntry)
 					}
 					this.loadSCORMPage(this.SCORMId + uri);
@@ -458,12 +463,13 @@
 		onSelectedHighlight: function(target){
 			this.fireEvent('highlightselected', target);
 		},
-		_docContainerLoadHandler: function(){
+		_docContainerLoadHandler: function(evt){
 			var that = this, style,
-			contentDocument = that.docContainer.dom.contentDocument,
-			contentWindow = that.docContainer.dom.contentWindow
+			contentDocument = this.docContainer.dom.contentDocument,
+			contentWindow = this.docContainer.dom.contentWindow
 			;
-			if(that.standard){
+			if(this.standard){
+				this.injectBehaviour();
 				var
 					contentDocument = that.docContainer.dom.contentDocument
 					;

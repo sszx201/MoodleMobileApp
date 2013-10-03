@@ -163,7 +163,6 @@
 //								}, this._fileWriterErr);
 //
 			// require.js must be the first script loaded
-			console.log('before loading require.js');
 			contentDocument.body.appendChild(s);
 			s.src = origin + 'js/require.js';
 

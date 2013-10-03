@@ -61,10 +61,9 @@ Ext.define('MoodleMobApp.controller.ScormMetadataPanel', {
         this.getScormToolbar().show();
     },
     onListTap: function(dataview, index, target, record, el, options){
-            // standard
-            if(record.get('href')){
-                this.getScormPanel().setURI(record.get('href'));
-            }
-            this.hideMetaPanel();
+		if(record.get('href')){
+			this.getScormPanel().setURI(record.get('href'));
+		}
+		this.hideMetaPanel();
     }
 });

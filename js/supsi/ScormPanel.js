@@ -11,6 +11,7 @@
 		],
 
 		xtype: 'scormpanel',
+		standard: true,
 		mbox: null,
 		noteView: null,
 		searchView: null,
@@ -44,7 +45,7 @@
 						]
 					}
 				]
-			},
+			}
 		],
 		scormContainer: null,
 		wrapperRef: null,
@@ -128,6 +129,48 @@
 		 * @private
 		 * read as text callback
 		 * */
+		_scormLoadEnd: function(evt){
+//			Supsi.Utils.log('file read: ', evt.target.result);
+			var targetNode = this.docContainer.dom.contentDocument.body;
+			targetNode.innerHTML = evt.target.result;
+			this.injectBehaviour();
+//			this.scrollToTop();
+		},
+		injectBehaviour: function(){
+			// cambiare base
+			var contentDocument = this.docContainer.dom.contentDocument,
+				s = contentDocument.createElement('script'),
+				base = contentDocument.createElement('base'), origin = localStorage['filesystemOrigin']
+			;
+
+
+//			base.setAttribute('href', this.SCORMId + 'DOCS_LOCATION');
+
+//			base.setAttribute('href', document.location.href.substring(0, document.location.href.lastIndexOf('/')+1));
+//			contentDocument.body.appendChild(base);
+			s.onload = function(){
+				var innerScript;
+				innerScript = contentDocument.createElement('script');
+				innerScript.src = origin + 'js/iframe.js?ts=' + +new Date;
+				contentDocument.body.appendChild(innerScript);
+			};
+
+//							html = this.docContainer.dom.contentDocument.documentElement.innerHTML;
+//							Supsi.Utils.log('html found: ', html);
+//							fileEntry.createWriter(
+//								function(writer){
+//									that._fileWriterCreated(writer, html);
+//								}, this._fileWriterErr);
+//
+			// require.js must be the first script loaded
+			contentDocument.body.appendChild(s);
+			s.src = origin + 'js/require.js';
+
+		},
+		/**
+		 * @private
+		 * read as text callback
+		 * */
 		_loadEnd: function(evt){
 			var targetNode = this.docContainer.dom.contentDocument.body.querySelector('.contenttopic');
 			targetNode.innerHTML = evt.target.result;
@@ -140,7 +183,11 @@
 			}
 			var that = this;
 			this._currentFileEntry.createWriter(function(writer){
-				writer.write(that.docContainer.dom.contentDocument.body.querySelector('.contenttopic').innerHTML);
+				if(that.standard){
+					writer.write(that.docContainer.dom.contentDocument.body.innerHTML);
+				}else{
+					writer.write(that.docContainer.dom.contentDocument.body.querySelector('.contenttopic').innerHTML);
+				}
 			}, function(){
 				console.error('error creating a file writer');
 			});
@@ -149,29 +196,72 @@
 			this.docContainer.dom.contentDocument.body.style.fontSize = fontSize + 'em';
 		},
 		_fileCback: function(file, uri, fileEntry){
-			var that = this, reader, fontSize = localStorage['ScormReaderFontSize'] || '1';
+			var that = this, reader, fontSize = localStorage['ScormReaderFontSize'] || '1', html = '',
+				dataLocation = Supsi.Constants.get(this.standard  ? 'DATA_LOCATION' : 'TOC_DATA_LOCATION');
 			this.docContainer.dom.contentDocument.body.style.fontSize = fontSize + 'em';
 			this._currentFileEntry = fileEntry;
 			if(file.size){
 				reader = new FileReader();
-				reader.onloadend = function(){
-					that._loadEnd.apply(that, arguments);
+				reader.onloadend = function(evt){
+					if(that.standard){
+//						this.docContainer.dom.onload = function(){
+//							that._firstSCORMLoad(fileEntry)
+//						}
+						that.docContainer.dom.onload = function(){
+							that._docContainerLoadHandler();
+							that._scormLoadEnd.call(that, evt);
+
+							var style;
+							style = that.docContainer.dom.contentDocument.createElement('link');
+							style.rel = 'stylesheet';
+							style.href = localStorage['filesystemOrigin'] + 'resources/css/player_doc.css?' + +new Date;
+							that.docContainer.dom.contentDocument.body.appendChild(style);
+							that.fireEvent('docloaded');
+
+						}
+						that.loadSCORMPage(that.SCORMId + uri);
+					}else{
+						that._loadEnd.apply(that, arguments);
+					}
 				};
 				reader.readAsText(file);
 				this.fireEvent('docloaded');
 			}else{
-				jQuery.ajax({
-					url: this.SCORMId + Supsi.Constants.get('DATA_LOCATION') + uri,
-					type: 'GET',
-					success: function(response){
-						that.resourceLoaded(response, file, fileEntry);
-					},
-					error: function(xhr, err){
-						console.log('xhr error, %o', err);
+//				this.SCORMId = this.SCORMId.replace(/storage\/emulated\/0/, 'sdcard');
+//				Supsi.Utils.log('xhr get from ', this.SCORMId + dataLocation + uri)
+//				console.log('trying using ajax, file ', this.SCORMId + uri);
+				if(this.standard){
+					this.docContainer.dom.onload = function(){
+						that._firstSCORMLoad(fileEntry)
 					}
-				});
+					this.loadSCORMPage(this.SCORMId + uri);
+				}else{
+					jQuery.ajax({
+						url: this.SCORMId + dataLocation + uri,
+//					url: this.SCORMId + uri,
+						type: 'GET',
+						success: function(response){
+							that.resourceLoaded(response, file, fileEntry);
+						},
+						error: function(xhr, err){
+							console.log('xhr error, %o', err);
+						}
+					});
+				}
 
 			}
+		},
+		_firstSCORMLoad: function(fileEntry){
+			var that = this,
+				html = this.docContainer.dom.contentDocument.body.innerHTML
+			;
+//			this.docContainer.dom.onload = function(){
+//				that._docContainerLoadHandler();
+//			}
+			fileEntry.createWriter(
+				function(writer){
+					that._fileWriterCreated(writer, html);
+				}, this._fileWriterErr);
 		},
 		_fileErrback: function(){
 
@@ -190,21 +280,25 @@
 			var that = this,
 			contentDocument = this.docContainer.dom.contentDocument, base;
 			this.setResourceId(uri);
+			Supsi.Utils.log('setURI, uri = ', uri);
 			// inserisco elemento <base .../> solo al primo caricamento del doc
-			if(!contentDocument.querySelector('base')){
+			if(!contentDocument.querySelector('base') && !this.standard){
+				Supsi.Utils.log('INSERISCO L\'ELEMENTO BASE***************** ', this.SCORMId + Supsi.Constants.get(this.standard ? 'DOCS_LOCATION' : 'TOC_DOCS_LOCATION'));
 				base = contentDocument.createElement('base');
 
-				base.setAttribute('href', this.SCORMId + Supsi.Constants.get('DOCS_LOCATION'));
+
+				base.setAttribute('href', this.SCORMId + Supsi.Constants.get(this.standard ? 'DOCS_LOCATION' : 'TOC_DOCS_LOCATION'));
 				contentDocument.body.appendChild(base);
 			}
 
-			Supsi.Utils.log('reading file from ', uri);
-			Supsi.Utils.log('the real path should be ', this.SCORMId + Supsi.Constants.get('CLONED_BASE') + uri);
+			Supsi.Utils.log('SCORMId = ', this.SCORMId);
+			Supsi.Utils.log('the real path should be ', this.SCORMId + (this.standard ? '' : 'compendio/whxdata/') + Supsi.Constants.get('CLONED_BASE') + uri);
 			
 			// la CLONED_BASE sarebbe meglio lasciarla fuori dalla cartella ID. Poi, per ora cerchiamo di fare in modo che funzioni tutto.
 			// Supsi.Filesystem.getFile(uri.substr(uri.lastIndexOf('/')+1), true,
-			Supsi.Filesystem.getFile(this.SCORMId + Supsi.Constants.get('CLONED_BASE') + uri, true,
+			Supsi.Filesystem.getFile(this.SCORMId + (this.standard ? '' : 'compendio/whxdata/') + Supsi.Constants.get('CLONED_BASE') + uri, true,
 				function(fileEntry){
+					Supsi.Utils.log('file found: ', that.SCORMId + (that.standard ? '' : 'compendio/whxdata/') + Supsi.Constants.get('CLONED_BASE') + uri);
 					that._getFileCback.call(that, uri, fileEntry);
 				},
 				function(err){
@@ -218,8 +312,11 @@
 			// 120 px per tenere conto della presenza delle varie barre
 			this.wrapperRef.setHeight(height - 120);
 		},
+		loadSCORMPage: function(scormPage){
+			this.docContainer.dom.src = scormPage;
+		},
 		loadTemplate: function(){
-			this.docContainer.dom.src = 'ScormPanelTemplate.html';
+			this.docContainer.dom.src = localStorage['filesystemOrigin'] + 'ScormPanelTemplate.html';
 		},
 		/**
 		 * @private
@@ -263,6 +360,27 @@
 		 * */
 		resourceLoaded: function(response, file, fileEntry){
 			// resource loaded, via xhr
+			if(!this.standard){
+				this._tataResourceLoaded.apply(this, arguments);
+				return;
+			}
+			var
+				that = this,
+				targetNode = this.docContainer.dom.contentDocument.documentElement,
+				html = response;
+
+
+			targetNode.innerHTML = html;
+			this.scrollToTop();
+			fileEntry.createWriter(
+				function(writer){
+					that._fileWriterCreated(writer, html);
+				}, this._fileWriterErr);
+
+			this.preventNavigation(targetNode);
+			this.fireEvent('docloaded');
+		},
+		_tataResourceLoaded: function(response, file, fileEntry){
 			var contentsNode = jQuery(response).find('div.contenttopic'),
 				that = this,
 				targetNode = this.docContainer.dom.contentDocument.body.querySelector('.contenttopic'),
@@ -286,7 +404,7 @@
 				this.docContainer.dom.contentDocument.querySelector('.content').scrollTop = elem.offsetTop;
 				return;
 			}
-			this.fireEvent('+', loc);
+			this.fireEvent('setlocation', loc);
 		},
 		/**
 		 * prevent navigation to other pages
@@ -315,35 +433,71 @@
 //						this._annotationsNodes.push(annotation);
 //					}
 //				}
+			try{
 
-			var commonAncestor = range.commonAncestorContainer,
-				annotations = commonAncestor.querySelectorAll ? commonAncestor.querySelectorAll('[' + Supsi.Constants.get('SCORM_ANNOTATION_ATTRIBUTE') + '],[' + Supsi.Constants.get('SCORM_HIGHLIGHT_ATTRIBUTE') + ' ]') : []
-			;
+				var commonAncestor = range.commonAncestorContainer,
+					annotations = commonAncestor.querySelectorAll ? commonAncestor.querySelectorAll('[' + Supsi.Constants.get('SCORM_ANNOTATION_ATTRIBUTE') + '],[' + Supsi.Constants.get('SCORM_HIGHLIGHT_ATTRIBUTE') + ' ]') : []
+				;
 
-			// controllo che non ci siano intersezioni con le vecchie selezioni
+				// controllo che non ci siano intersezioni con le vecchie selezioni
 
-			if(range && !range.collapsed
-				&&
-				Array.prototype.every.call(annotations, function(item){ return (range.startContainer.compareDocumentPosition(item) & 1) })
-				&&
-				Array.prototype.every.call(annotations, function(item){ return (range.endContainer.compareDocumentPosition(item) & 1) })
-				){
-				this.fireEvent('onselectionchecked', true);
-			}else{
-				this.fireEvent('onselectionchecked', false);
+				if(range && !range.collapsed
+					&&
+					Array.prototype.every.call(annotations, function(item){ return (range.startContainer.compareDocumentPosition(item) & 1) })
+					&&
+					Array.prototype.every.call(annotations, function(item){ return (range.endContainer.compareDocumentPosition(item) & 1) })
+					){
+					this.fireEvent('onselectionchecked', true);
+				}else{
+					this.fireEvent('onselectionchecked', false);
+				}
+			}catch(exc){
+
 			}
 		},
 		onSelectedHighlight: function(target){
 			this.fireEvent('highlightselected', target);
 		},
-		setupEventHandlers: function(){
-			var that = this;
-			// method injection
-			this.docContainer.dom.onload = function(){
+		_docContainerLoadHandler: function(){
+			var that = this, style,
+			contentDocument = that.docContainer.dom.contentDocument,
+			contentWindow = that.docContainer.dom.contentWindow
+			;
+			if(that.standard){
 				var
-					contentDocument = that.docContainer.dom.contentDocument,
-					contentWindow = that.docContainer.dom.contentWindow
-				;
+					contentDocument = that.docContainer.dom.contentDocument
+					;
+				if(contentDocument.location.href !== 'about:blank'){
+					contentWindow.setLocation = function(location){
+						that.setLocation(location);
+					};
+					contentWindow.showNoteView = function(){
+						that.showNoteView.apply(that, arguments);
+					};
+					contentWindow.checkSelection = function(){
+						that.checkSelection.apply(that, arguments);
+					};
+					contentWindow.onSelectedHighlight = function(){
+						that.onSelectedHighlight.apply(that, arguments);
+					};
+
+					// orientation changes
+					// inietto weinre per debuggare sul mio vecchio ipad
+//					var weinre = that.docContainer.dom.contentDocument.createElement('script');
+//					that.docContainer.dom.contentDocument.body.appendChild(weinre);
+//					weinre.src = 'http://192.168.0.5:8080/target/target-script-min.js';
+
+
+					// injecting the external css
+
+					style = contentDocument.createElement('link');
+					style.rel = 'stylesheet';
+					style.href = localStorage['filesystemOrigin'] + 'resources/css/player_doc.css?' + +new Date;
+					contentDocument.body.appendChild(style);
+					that.fireEvent('docloaded');
+				}
+
+			}else{
 				if(contentDocument.location.href !== 'about:blank'){
 					contentWindow.setLocation = function(location){
 						that.setLocation(location);
@@ -359,7 +513,6 @@
 					};
 
 
-					var style;
 
 					// style = contentDocument.createElement('link');
 					// style.rel = 'stylesheet';
@@ -382,73 +535,18 @@
 						contentDocument.body.appendChild(style);
 					}
 				}
-
 			}
-
-
-
-				return;
-			// -------------------------------------------------------------------------------------------------------------
-			// -------------------------------------------------------------------------------------------------------------
-			// -------------------------------------------------------------------------------------------------------------
-			// -------------------------------------------------------------------------------------------------------------
+		},
+		setupNonStdEvents: function(){
 			var that = this;
 			this.docContainer.dom.onload = function(){
-				var
-						contentDocument = that.docContainer.dom.contentDocument
-						;
-				if(contentDocument.location.href !== 'about:blank'){
-
-					// orientation changes
-
-
-
-
-					// inietto weinre per debuggare sul mio vecchio ipad
-//					var weinre = that.docContainer.dom.contentDocument.createElement('script');
-//					that.docContainer.dom.contentDocument.body.appendChild(weinre);
-//					weinre.src = 'http://192.168.0.5:8080/target/target-script-min.js';
-
-
-					// injecting the external css
-
-					var style, s;
-
-					style = contentDocument.createElement('link');
-					style.rel = 'stylesheet';
-					style.href = '../../../../../resources/css/player_doc.css?' + +new Date;
-					contentDocument.body.appendChild(style);
-
-					var styles = [
-						"compendio/template/compendio/Layout.css",
-					 	"compendio/template/Styles/compendio.css",
-					 	"compendio/template/Styles/annotator.css",
-						"compendio/template/Styles/annotator.touch.css",
-						"compendio/template/Styles/annotator.compendio.css",
-						"compendio/template/Styles/div_mode.css",
-						"compendio/template/Styles/link_coords.css"
-					];
-					for (var i = 0, l = styles.length; i < l; i++) {
-						style = contentDocument.createElement('link');
-						style.rel = 'stylesheet';
-						style.href = this.SCORMId + styles[i] + '?' +  +new Date;
-						contentDocument.body.appendChild(style);
-					}
-
-					s = contentDocument.createElement('script');
-					contentDocument.body.appendChild(s);
-
-					s.onload = function(){
-						var innerScript;
-						innerScript = contentDocument.createElement('script');
-						innerScript.src = '../../../../../js/iframe.js?ts=' + +new Date;
-						contentDocument.body.appendChild(innerScript);
-					};
-
-					// require.js must be the first script loaded
-					s.src = '../../../../../js/require.js'
-				}
-			};
+				that._docContainerLoadHandler();
+			}
+		},
+		setupEventHandlers: function(){
+			var that = this;
+			// method injection
+			this.docContainer.dom.onload = null;
 		},
 		buildComponents: function(){
 			(this.mbox = Ext.create('Ext.MessageBox', {
@@ -584,7 +682,6 @@
 			this.setupGeometry(this, Ext.Viewport.getOrientation(), Ext.Viewport.getWindowWidth(), Ext.Viewport.getWindowHeight());
 			this.buildComponents();
 			this.setupEventHandlers();
-			this.loadTemplate();
 			var that = this;
 			Ext.Viewport.on('orientationchange', function(){
 				that.setupGeometry.apply(that, arguments)

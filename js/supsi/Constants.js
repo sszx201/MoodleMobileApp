@@ -8,10 +8,12 @@ Ext.define('Supsi.Constants', {
 		this.config.CLONED_BASE = '__PRIVATE_SUPSI/';
 		this.config.DOCS_BASE = 'data/scorm/';
 		// this.config.DATA_LOCATION = this.config.DOCS_BASE + this.config.DOC_ID + 'compendio/';
-		this.config.DATA_LOCATION = 'compendio/';
-		this.config.TOC_LOCATION = this.config.DATA_LOCATION + 'whxdata/';
+		this.config.TOC_DATA_LOCATION = 'compendio/';
+		this.config.DATA_LOCATION = '/';
+		this.config.TOC_LOCATION = this.config.TOC_DATA_LOCATION + 'whxdata/';
 		this.config.RELATIVE_DOCS_LOCATION = 'LECD/Text/';
-		this.config.DOCS_LOCATION = 'compendio/LECD/Text/';
+		this.config.TOC_DOCS_LOCATION = 'compendio/LECD/Text/';
+		this.config.DOCS_LOCATION = 'LECD/Text/';
 
 		this.config.SCORM_HIGHLIGHT_ATTRIBUTE = 'data-scorm-highlight';
 		this.config.SCORM_ANNOTATION_ATTRIBUTE = 'data-scorm-annotation';
@@ -30,8 +32,10 @@ Ext.define('Supsi.Constants', {
 		CLONED_BASE: '',
 		DOCS_BASE: '',
 		DATA_LOCATION: '',
+		TOC_DATA_LOCATION: '',
 		TOC_LOCATION: '',
 		RELATIVE_DOCS_LOCATION: '',
+		TOC_DOCS_LOCATION: '',
 		DOCS_LOCATION: ''
 	}
 

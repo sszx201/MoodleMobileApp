@@ -19,31 +19,41 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		],
 
 		refs: {
+			// app bar
+			appBarButton: 'button#appBarBtn',
+			appBar: 'container#appbar',
+			homeButton: 'button#homeAppBtn',
+			settingsButton: 'button#settingsAppBtn',
+			partecipantsButton: 'button#partecipantsAppBtn',
+			gradesButton: 'button#gradesAppBtn',
+			calendarButton: 'button#calendarAppBtn',
+			// views
 			navigator: '#course_navigator',
+			settings: 'settings',
 			courseList: '#course_list',
 			moduleList: '#module_list',
 			partecipants: '#partecipants',
 			partecipantsSelectors: '#partecipants checkbox',
-			showPartecipantsButton: '#module_list button[action=showpartecipants]',
 			clearPartecipantsSelectionButton: '#partecipants button[action=clearselection]',
 			selectAllPartecipantsButton: '#partecipants button[action=selectall]',
 			contactPartecipantsButton: '#partecipants button[action=contactpartecipants]',
 			grades: '#grades',
-			showGradesButton: '#module_list button[action=showgrades]',
 			calendarEvents: '#calendarevents',
-			showCalendarEventsButton: '#module_list button[action=showcalendarevents]',
 		},
 
 		control: {
-			navigator:  { pop: 'clearStoreFilters' },
-			courseList: { itemtap: 'selectCourse' },
+			appBarButton: { tap: 'toggleSideMenu'},
+			homeButton: { tap: 'goHome'},
+			settingsButton: { tap: 'showSettings'},
+			partecipantsButton: { tap: 'showPartecipants' },
+			gradesButton: { tap: 'showGrades' },
+			calendarButton: { tap: 'showCalendarEvents' },
+			navigator:  { pop: 'clearStoreFilters', },
+			courseList: { itemtap: 'selectCourse', },
 			moduleList: { itemtap: 'selectModule' },
-			showPartecipantsButton: { tap: 'showPartecipants' },
 			contactPartecipantsButton: { tap: 'contactPartecipants' },
 			clearPartecipantsSelectionButton: { tap: 'clearPartecipantsSelection' },
 			selectAllPartecipantsButton: { tap: 'selectAllPartecipants' },
-			showGradesButton: { tap: 'showGrades' },
-			showCalendarEventsButton: { tap: 'showCalendarEvents' },
 		}
 	},
 
@@ -52,7 +62,37 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		this.current_course = null;
 	},
 
+	toggleSideMenu: function() {
+		console.log('toggling the side menu');
+		if(this.getAppBar().getRight() == null || this.getAppBar().getRight() == '-200px') {
+			this.getAppBar().setRight('0px');
+		} else {
+			this.getAppBar().setRight('-200px');
+		}
+	},
+
+	goHome: function() {
+		//this.toggleSideMenu();
+		this.getNavigator().pop(10);
+	},
+
+	showSettings: function() {
+		//this.toggleSideMenu();
+		// display modules
+		if(typeof this.getSettings() == 'object') {
+			this.getNavigator().push(this.getSettings());
+		} else {
+			this.getNavigator().push({
+				xtype: 'settings',	
+			});
+		}
+	},
+
 	selectCourse: function(view, index, target, record) {
+		// update the app bar
+		this.getGradesButton().show();
+		this.getCalendarButton().show();
+		// store the current course
 		this.current_course = record;
 		// set the course token inside the session
 		MoodleMobApp.Session.setCourse(record);
@@ -66,6 +106,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 				}
 			}, this
 		);
+
 		// display modules
 		if(typeof this.getModuleList() == 'object') {
 			this.getModuleList().setStore(modules);
@@ -76,6 +117,10 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 				store: modules
 			});
 		}
+
+		// update the title
+		this.getNavigator().down('titlebar').setTitle(record.get('name'));
+		this.getPartecipantsButton().show();
 	},
 
 	selectModule: function(view, index, target, record) {
@@ -162,6 +207,9 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 	clearStoreFilters: function(controller, view, opts) {
 		switch(view.getId()) {
 			case 'module_list':
+				this.getPartecipantsButton().hide();
+				this.getGradesButton().hide();
+				this.getCalendarButton().hide();
 				MoodleMobApp.Session.getModulesStore().clearFilter();
 				break;
 			case 'forum_discussions_list':

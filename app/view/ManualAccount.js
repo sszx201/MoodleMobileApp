@@ -14,13 +14,9 @@ Ext.define("MoodleMobApp.view.ManualAccount", {
 		id: 'manualaccount_form',
 		items: [
 			{
-				docked: 'top',
-				xtype: 'titlebar',
-				title: 'Your External User profile',
-				iconCls: 'user'
-			},
-			{
 				xtype: 'fieldset',
+				title: 'Your External User profile',
+				instructions: 'Set your External user account here.',
 				items: [
 					{
 						xtype: 'textfield',	

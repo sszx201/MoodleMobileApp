@@ -7,10 +7,10 @@ $active-color: #C35817;
 
 @import 'sencha-touch/default';
 @import 'sencha-touch/default/all';
-
 // Examples of using the icon mixin:
 // @include icon('user');
 // Your custom code goes here...
+@include sencha-button-ui('black_button', black, null);
 @include icon('home');
 @include icon('user');
 @include icon('info');
@@ -22,6 +22,22 @@ $active-color: #C35817;
 @include icon('leftarrow', '\e001', 'icoMoon');
 @include icon('rightarrow', '\e002', 'icoMoon');
 @include icon('marker', '\e003', 'icoMoon');
+
+.appbar {
+	opacity: 0.9;
+	background-color: $base-color*0.5;
+	-webkit-transition: right 0.5s;
+	-moz-transition: right 0.5s;
+	-o-transition: right 0.5s;
+	transition: right 0.5s;	
+	.app_bar_button {
+		color: $base-color*0.5;
+		border: 2px solid $base-color*0.5;
+		background-color: $base-color*0.5;
+		opacity: 1 !important;
+		font-size: 27px;
+	}
+}
 
 .x-course,
 .x-calendar-event,
@@ -46,9 +62,33 @@ $active-color: #C35817;
 	padding-left: 35px;
 }
 
+
 .x-module-icon-choice,
 .x-module-icon-assign,
+.x-module-icon-assignment,
+.x-module-icon-folder,
+.x-module-icon-icon,
+.x-module-icon-forum,
+.x-module-icon-page,
+.x-module-icon-scorm,
+.x-module-icon-url {
+}
+
+.x-module-icon-assign {
+	background:url('../images/assignment.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
 .x-module-icon-assignment {
+	background:url('../images/assignment.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
+.x-module-icon-choice {
 	background:url('../images/assignment.png');
 	background-repeat: no-repeat;
 	background-position-x: 0px;
@@ -64,7 +104,7 @@ $active-color: #C35817;
 }
 
 .x-file-icon {
-	background:url('../images/file_general.png');
+	background:url('../images/file.png');
 	background-repeat: no-repeat;
 	background-position-x: 0px;
 	background-position-y: 5px;
@@ -77,8 +117,20 @@ $active-color: #C35817;
 	background-position-y: 5px;
 }
 
-.x-module-icon-scorm,
-.x-module-icon-page,
+.x-module-icon-page {
+	background:url('../images/page.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
+.x-module-icon-scorm {
+	background:url('../images/scorm.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
 .x-module-icon-resource {
 	background:url('../images/resource.png');
 	background-repeat: no-repeat;
@@ -87,7 +139,7 @@ $active-color: #C35817;
 }
 
 .x-module-icon-url {
-	background:url('../images/resource.png');
+	background:url('../images/url.png');
 	background-repeat: no-repeat;
 	background-position-x: 0px;
 	background-position-y: 5px;

@@ -19,13 +19,9 @@ Ext.define("MoodleMobApp.view.AaiAccount", {
 		id: 'aaiaccount_form',
 		items: [
 			{
-				docked: 'top',
-				xtype: 'titlebar',
-				title: 'Your AAI/NetID profile',
-				iconCls: 'user'
-			},
-			{
 				xtype: 'fieldset',
+				title: 'Your AAI/NetID profile',
+				instructions: 'Set your AAI/NetID account here.',
 				items: [
 					{
 						xtype: 'textfield',	
@@ -39,6 +35,7 @@ Ext.define("MoodleMobApp.view.AaiAccount", {
 					},
 					{
 						xtype: 'selectfield',
+						itemId: 'homeorganisation',
 						name: 'homeorganisation',
 						label: 'Home Organisation',
 						usePicker: false,

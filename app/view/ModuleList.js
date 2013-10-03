@@ -4,41 +4,11 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 
 	config: {
 		id: 'module_list',
-	   	title: 'List of modules', 
+		//title: 'List of modules',
 		emptyText: 'No posts available in this discussion.',
 		useComponents: true,
 		defaultType: 'module',
 		grouped: true,
-		items: [
-			{
-				xtype: 'toolbar',
-				docked: 'bottom',
-				items: [
-					{
-						xtype: 'spacer'
-					},
-					{
-						xtype: 'button',	
-						text: 'Partecipants',
-						action: 'showpartecipants',
-					},
-					{
-						xtype: 'button',	
-						text: 'Grades',
-						action: 'showgrades',
-					},
-					{
-						xtype: 'button',	
-						text: 'Calendar Events',
-						action: 'showcalendarevents',
-					},
-					{
-						xtype: 'spacer'
-					},
-				]
-			},
-		],
-
 		listeners: {
 			painted: function(){
 				this.dropSectionLabels();

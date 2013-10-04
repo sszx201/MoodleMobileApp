@@ -47,6 +47,7 @@
 				}
 			}
 		},
+		_overlay: null,
 		_currentHighlightNode: null,
 		_bookmarked: false,
 		onHightlightRemovalPanelHide: function(){
@@ -99,26 +100,36 @@
 		 * handle the text highlight removal
 		 * */
 		removeHighlight: function(){
-			var that = this, scormPanel = this.getScormPanel(),
-			index = scormPanel.getMetadataIndex(this._currentHighlightNode),
-			scormId = scormPanel.SCORMId,
-			resId = scormPanel.resourceId;
-			Supsi.Database.removeMetadata({
-				scormId: scormId,
-				resId: resId,
-				type: 1, // highlight
-				index: index,
-				cback: function(){
-					scormPanel.flushDomToFile();
-					console.log('doc and metadata removed');
-					Supsi.Utils.unwrap(that._currentHighlightNode);
-					that.getHighlightRemovalPanel().hide();
-				},
-				errback: function(tx, err){
-					console.error('db error: ', err);
-				}
 
-			});
+
+			this._overlay.show();
+			// non rimuovere questa timeout: è necessaria per dare il tempo alla webview di mostrare l'overlay,
+			// che è fondamentale per impedire la navigazione durante le operazioni sul filesystem
+			var that = this;
+			setTimeout(function(){
+				var scormPanel = that.getScormPanel(),
+					index = scormPanel.getMetadataIndex(that._currentHighlightNode),
+					scormId = scormPanel.SCORMId,
+					resId = scormPanel.resourceId;
+				Supsi.Database.removeMetadata({
+					scormId: scormId,
+					resId: resId,
+					type: 1, // highlight
+					index: index,
+					cback: function(){
+						console.log('doc and metadata removed');
+						Supsi.Utils.unwrap(that._currentHighlightNode);
+						scormPanel.flushDomToFile();
+						that._overlay.hide();
+						that.getHighlightRemovalPanel().hide();
+					},
+					errback: function(tx, err){
+						that._overlay.hide();
+						console.error('db error: ', err);
+					}
+
+				});
+			}, 100)
 		},
 		/**
 		 * handle the text highlight
@@ -324,7 +335,23 @@
 			// var sp = this.getScormPanel();
 			// Ext.Viewport.on('orientationchange', function(){ sp.setupGeometry.apply(sp, arguments); });
 			//			window.addEventListener('orientationchange', function(){ sp.setupGeometry() }, false);
-
+			this._overlay = Ext.Viewport.add({
+				xtype: 'panel',
+				centered: true,
+				style:'background-color: black',
+				modal: {
+					style: 'opacity: .5'
+				},
+				hideOnMaskTap:false,
+				width:'300px',
+				height: '100px',
+				styleHtmlContent:true,
+				hidden: true,
+				html:'removing metadata...',
+				items:[{
+					text:'removing...'
+				}]
+			});
 		}
 	});
 //});

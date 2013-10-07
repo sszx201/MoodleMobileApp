@@ -176,7 +176,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		var separator = ';';
 		var partecipants = this.getPartecipants().getInnerItems()[1].getInnerItems();
 		Ext.each(partecipants, function(partecipant) {
-			if(partecipant.getSelection().isChecked()) {
+			if(partecipant.down('#selection').isChecked()) {
 				list += partecipant.getRecord().get('email') + separator;
 			}
 		});

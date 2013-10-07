@@ -8,6 +8,33 @@
  */
 function addExtensions() {
 	//////////////////////////////////////////////////////////////////////////
+	// this function sends a mail to a list of users
+	//////////////////////////////////////////////////////////////////////////
+	MoodleMobApp.app.sendEmail = function(to, subject, body) {
+		var extras = {};
+		extras[WebIntent.EXTRA_SUBJECT] = subject;
+		extras[WebIntent.EXTRA_TEXT] = body;
+		var successFunc = function() {};
+		// fail function
+		var failFunc = function(){
+			Ext.Msg.alert(
+				'Sending e-mail error',
+				'Failed to open the mail client and send a mail to: ' + to
+			);
+		};
+
+		window.plugins.webintent.startActivity(
+			{
+				url: to,
+				action: WebIntent.ACTION_SEND,
+				type: 'text/plain',
+				extras: extras
+			},
+			successFunc,
+			failFunc
+		);
+	};
+	//////////////////////////////////////////////////////////////////////////
 	// this function opens a file by using the web intent mechanism
 	//////////////////////////////////////////////////////////////////////////
 	MoodleMobApp.app.openFile = function(path, mimetype) {
@@ -86,6 +113,7 @@ function addExtensions() {
 		}
 		e.preventDefault();
 	};
+
 
 	document.addEventListener("backbutton", Ext.bind(MoodleMobApp.app.onBackKeyDown, this), false);
 }

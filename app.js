@@ -133,31 +133,6 @@ Ext.application({
 		window.open(urladdr, '_blank', 'location=yes');
 	},
 
-	sendEmail: function(to, subject, body) {
-		var extras = {};
-		extras[WebIntent.EXTRA_SUBJECT] = subject;
-		extras[WebIntent.EXTRA_TEXT] = body;
-		var successFunc = function() {};
-		// fail function
-		var failFunc = function(){
-			Ext.Msg.alert(
-				'Sending e-mail error',
-				'Failed to open the mail client and send a mail to: ' + to
-			);
-		};
-
-		window.plugins.webintent.startActivity(
-			{
-				url: to,
-				action: WebIntent.ACTION_SEND,
-				type: 'text/plain',
-				extras: extras
-			},
-			successFunc,
-			failFunc
-		);
-	},
-
 	isLoadMaskVisible: function() {
 		return Ext.Viewport.getActiveItem().getMasked() == null || Ext.Viewport.getActiveItem().getMasked().isHidden();
 	},
@@ -237,14 +212,16 @@ Ext.application({
 		);
 	},
 
-	unzip: function(filePath, successFunc, failFunc) { },
-
-	openFile: function(path, mimetype) { },
-
 	formatDate: function(timestamp) {
 		var date = new Date(timestamp*1000);
 		return Ext.Date.format(date, "l d F Y h:m");
 	},
+
+	sendEmail: function(to, subject, body) { },
+
+	unzip: function(filePath, successFunc, failFunc) { },
+
+	openFile: function(path, mimetype) { },
 
 	calculateDownloadPercentage: function(progressEvent) { },
 

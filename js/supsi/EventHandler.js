@@ -1,4 +1,4 @@
-define(['js/supsi/ConstantsOrig'], function(Constants){
+define([localStorage['filesystemOrigin'] + 'js/supsi/ConstantsOrig.js'], function(Constants){
     var Core = {
         init: function(){
             this.addListeners();
@@ -15,6 +15,9 @@ define(['js/supsi/ConstantsOrig'], function(Constants){
 				onSelectedHighlight(target)
             }
 			// todo: implementare tap a tempo perso
+			if(typeof jQuery === 'undefined'){
+				return;
+			}
 			jQuery('body').on('touchend', 'img', this.zoomHandler);
         },
 		touchstartHandler: function(evt){

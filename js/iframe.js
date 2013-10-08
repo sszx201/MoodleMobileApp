@@ -1,8 +1,9 @@
+
 require([
 //	'../../../../../js/supsi/TouchHandler.js',
 //	'../../../../../js/supsi/SelectionHandler.js'
-	'js/supsi/EventHandler',
-	'js/supsi/SelectionHandler'
+	localStorage['filesystemOrigin'] + 'js/supsi/EventHandler.js',
+	localStorage['filesystemOrigin'] + 'js/supsi/SelectionHandler.js'
 ], function(ScrollHandler, SelectionHandler){
 	window.__selectionHandler = SelectionHandler;
 });

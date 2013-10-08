@@ -29,6 +29,7 @@
 				settingsBtn: '#settingsBtn',
 				settingsPanel: '#settingsPanel',
 				metaPanel: '#metaPanel',
+				resourceTocList: '#resourceTocList',
 				resourceList: '#resourceList',
 				resourceContainer: '#resourceListContainer',
 				scorm: 'scorm',
@@ -43,6 +44,9 @@
 				},
 				module: {
 					itemtap: 'selectModule'
+				},
+				resourceTocList: {
+					itemtap: 'onResourceTocTap'
 				},
 				resourceList: {
 					itemtap: 'onResourceTap'
@@ -271,28 +275,41 @@
 		/**
 		 * resource list tap handler
 		 * */
-		onResourceTap: function(dataview, index, target, record, el, options){
+		onResourceTocTap: function(dataview, index, target, record, el, options){
 			// warning: attenzione, la firma riportata sulla documentazione ufficiale di sencha per questo evento
 			// è SBAGLIATA
+			Supsi.Utils.log('record = ', record);
 
-			// standard
 			if(record.get('href')){
 				this.getScormPanel().setURI(record.get('href'));
 			}
-			// TATA
+
 			if(record.get('src')){
 				_navHistory.push(record.get('src'));
 				this.getNavBackBtn().show();
-				Supsi.Utils.log('loading toc from ', this.getScormPanel().SCORMId + Supsi.Constants.get('TOC_LOCATION') + record.get('src'))
+				this.loadToc(this.getScormPanel().SCORMId + Supsi.Constants.get('TOC_LOCATION') + record.get('src'));
+			}
+		},
+		onResourceTap: function(dataview, list, index, target, record, e, eOpts ){
+			// ovviamente la firma dell'handler su una nested list è diversa, attenzione
+
+			if(record.get('href')){
+				Supsi.Utils.log('onResourceTap, uri = ', record.get('href'));
+				this.getScormPanel().setURI(record.get('href'));
+			}
+
+			if(record.get('src')){
+				_navHistory.push(record.get('src'));
+				this.getNavBackBtn().show();
 				this.loadToc(this.getScormPanel().SCORMId + Supsi.Constants.get('TOC_LOCATION') + record.get('src'));
 			}
 		},
 		mainView: null,
+		resourceTocList: null,
 		resourceList: null,
 
 		loadManifest: function(manifest){
-			this.getScormPanel().setSCORMId(manifest);
-			return;
+//			this.getScormPanel().setSCORMId(manifest);
 			// bloccata per ora, visto che di fatto è inutile leggere il manifest
 			Ext.Ajax.request({
 				url: manifest,
@@ -305,7 +322,6 @@
 			});
 		},
 		manifestLoaded: function(data){
-			Supsi.Utils.log('***************** DOC LOADED 2 ********************');
 			var root = data.responseXML.documentElement;
 
 			this.parseManifest(root);
@@ -348,6 +364,7 @@
 				data = {}, ret = []
 			;
 			data.items = [];
+			this.updateItemsLength(root);
 			for(; i < l; i++){
 				ret = ret.concat(this.parseItems(organizations[i], root));
 			}
@@ -356,19 +373,31 @@
 			data.leaf = false;
 //        this.fireEvent('itemsUpdated', itemsNodes);
 			this.setListData(data);
-
 		},
 
 		/**
 		 * set the data in the nested list
 		 * */
-		setListData: function(data){
+		setTocListData: function(data){
 //			var store = Ext.create('Ext.data.TreeStore', {
 			var store = Ext.create('Ext.data.Store', {
 				model: 'MoodleMobApp.model.ScormResource',
 				data: data
 //				defaultRootProperty: 'items',
 //				root: data
+			});
+			this.resourceTocList.setStore(store);
+		},
+		/**
+		 * set the data in the nested list
+		 * */
+		setListData: function(data){
+			var store = Ext.create('Ext.data.TreeStore', {
+//			var store = Ext.create('Ext.data.Store', {
+				model: 'MoodleMobApp.model.ScormResource',
+				data: data,
+				defaultRootProperty: 'items',
+				root: data
 			});
 			this.resourceList.setStore(store);
 		},
@@ -417,22 +446,40 @@
 			}
 			console.log('parse toc data');
 			console.log(data);
-			this.setListData(data);
+			this.setTocListData(data);
 
 		},
 
 		parseScorm: function(path){
-			this.path = path;
-			// todo: qui intervenire con il parametro che mi darà il link al manifest
 			this.getNavigator().push(this.getScorm());
-			this.loadManifest(path);
+			this.resourceTocList = this.getResourceTocList();
 			this.resourceList = this.getResourceList();
-			// loading the test manifest file
-			//        this.loadManifest(Supsi.Constants.get('TOC_LOCATION') + 'imsmanifest.xml');
+			this.path = path;
+			// pulisco la situazione eventualmente lasciata da un altro documento
+			this.getNavBackBtn().hide();
+			var scormPanel = this.getScormPanel(), that = this,
+				tatacback = function(){
+					Supsi.Utils.log('++++++++++ TATA CBACK, setting SCORMID = ', path + Supsi.Constants.get('TOC_LOCATION'));
+					_navHistory.push('toc.js');
+					that.resourceTocList.setHidden(false);
+					that.resourceList.setHidden(true);
+					scormPanel.standard = false;
+//					scormPanel.setSCORMId(path + Supsi.Constants.get('TOC_LOCATION'));
+					scormPanel.setSCORMId(path);
+					scormPanel.setupNonStdEvents();
+					scormPanel.loadTemplate();
+					that.loadToc(path + Supsi.Constants.get('TOC_LOCATION') + 'toc.js');
+				},
+				scormcback = function(){
+					Supsi.Utils.log('++++++++++ STANDARD CBACK');
+					scormPanel.standard = true;
+					that.resourceList.setHidden(false);
+					that.resourceTocList.setHidden(true);
 
-			// toc sh*t
-			_navHistory.push('toc.js');
-			console.log('toc location = ' + path + Supsi.Constants.get('TOC_LOCATION'));
+					scormPanel.setSCORMId(path);
+					that.loadManifest(path + 'imsmanifest.xml');
+				};
+
 			/*
 			var scorm = Ext.create('MoodleMobApp.view.Scorm');
 			console.log('output of the scorm');
@@ -442,23 +489,45 @@
 			//this.getMain().push({ xtype: 'scorm' });
 
 			this.getBookmarkBtn().setStyle('color:white');
-			this.loadSpine(path + Supsi.Constants.get('DATA_LOCATION') + 'template/JavaScript/book.spine.js');
-			this.loadToc(path + Supsi.Constants.get('TOC_LOCATION') + 'toc.js');
+
+			// fork: real or fake SCORM?
+			// In entrambi i casi devo svuotare la lista eventualmente presente in precedenza.
+
+			// la ricerca di spine.js ovviamente va sempre fatta all'interno delle directory usate per l'approccio non
+			// scorm standard, cioè in TOC_DATA_LOCATION
+			this.loadSpine(path + Supsi.Constants.get('TOC_DATA_LOCATION') + 'template/JavaScript/book.spine.js', tatacback, scormcback);
 			//nr 18-07-2013e
 		},
-		loadSpine: function(spineSrc){
+		loadSpine: function(spineSrc, success, fallback){
 			var that = this, _spineTransport = document.createElement('script');
 			// guarda cosa mi tocca fare...
 			window.compendio = {};
 			_spineTransport.type = 'text/javascript';
 			_spineTransport.src = spineSrc;
 			_spineTransport.onload = function(){
+				success();
 				that.updateSpineLength()
 			};
+			_spineTransport.onerror = fallback;
 			document.body.appendChild(_spineTransport);
 		},
 		updateReadLength: function(val){
 			this.getReadPercent().setHtml(((val*100)|0) + '&#37;');
+		},
+		updateItemsLength: function(root){
+			// avanzassero tempo e denaro, refactor di questa funzione e della successiva, che sono formalmente identiche
+			var slen = localStorage[this.path + Supsi.Constants.get('SPINE_LENGTH_SUFFIX')], rpages = localStorage[this.path + Supsi.Constants.get('READ_PAGES_SUFFIX')], len;
+			if(!rpages){
+				this.updateReadLength(0)
+			}
+			if(slen){
+				if(rpages){
+					this.updateReadLength(JSON.parse(rpages).length/slen)
+				}
+				return;
+			}
+			var len = root.querySelectorAll('resources>resource').length;
+			localStorage[this.path + Supsi.Constants.get('SPINE_LENGTH_SUFFIX')] = len;
 		},
 		updateSpineLength: function(){
 			var slen = localStorage[this.path + Supsi.Constants.get('SPINE_LENGTH_SUFFIX')], rpages = localStorage[this.path + Supsi.Constants.get('READ_PAGES_SUFFIX')];
@@ -474,6 +543,7 @@
 			localStorage[this.path + Supsi.Constants.get('SPINE_LENGTH_SUFFIX')] = compendio.spineIndex().length - 3; // fidiamoci
 		},
 		onDocLoaded: function(){
+			Supsi.Utils.log('subscription: docloaded');
 			var
 				scormPanel = this.getScormPanel(),
 				slen = localStorage[this.path + Supsi.Constants.get('SPINE_LENGTH_SUFFIX')],

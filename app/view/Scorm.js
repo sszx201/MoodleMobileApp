@@ -58,8 +58,20 @@ Ext.define('MoodleMobApp.view.Scorm', {
 							},
 							{
 								title: 'home',
-								id: 'resourceList',
+								id: 'resourceTocList',
 								xtype: 'list',
+								itemTpl: '{title}',
+								width: 300,
+								docked: 'left',
+								hidden: true,
+								displayField: 'title'
+
+							},
+							{
+								title: 'home',
+								id: 'resourceList',
+								xtype: 'nestedlist',
+								hidden: true,
 								itemTpl: '{title}',
 								width: 300,
 								docked: 'left',

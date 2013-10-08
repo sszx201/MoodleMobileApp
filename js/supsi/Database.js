@@ -217,7 +217,6 @@
 		},
 		_removeMeta: function(args){
 			var that = this;
-			console.log('_removeMetadata, args = ', args);
 			this.__showMeta(args);
 			args.tx.executeSql('SELECT id FROM RESOURCE where RESOURCE.url = ? and RESOURCE.scormid in (SELECT id from SCORM WHERE url = ?)', [args.resId, args.scormId], function(tx, results){
 				var resId = results.rows.item(0).id;

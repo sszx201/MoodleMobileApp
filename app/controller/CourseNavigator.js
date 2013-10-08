@@ -42,14 +42,14 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		},
 
 		control: {
-			appBarButton: { tap: 'toggleSideMenu'},
-			homeButton: { tap: 'goHome'},
-			settingsButton: { tap: 'showSettings'},
+			appBarButton: { tap: 'toggleSideMenu' },
+			homeButton: { tap: 'goHome' },
+			settingsButton: { tap: 'showSettings' },
 			partecipantsButton: { tap: 'showPartecipants' },
 			gradesButton: { tap: 'showGrades' },
 			calendarButton: { tap: 'showCalendarEvents' },
-			navigator:  { pop: 'clearStoreFilters', },
-			courseList: { itemtap: 'selectCourse', },
+			navigator:  { pop: 'clearStoreFilters' },
+			courseList: { itemtap: 'selectCourse' },
 			moduleList: { itemtap: 'selectModule' },
 			contactPartecipantsButton: { tap: 'contactPartecipants' },
 			clearPartecipantsSelectionButton: { tap: 'clearPartecipantsSelection' },
@@ -108,19 +108,13 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		);
 
 		// display modules
-		if(typeof this.getModuleList() == 'object') {
-			this.getModuleList().setStore(modules);
-			this.getNavigator().push(this.getModuleList());
-		} else {
-			this.getNavigator().push({
-				xtype: 'modulelist',	
-				store: modules
-			});
-		}
+		if(typeof this.getModuleList() == 'object') { this.getModuleList().destroy(); }
 
-		// update the title
-		this.getNavigator().down('titlebar').setTitle(record.get('name'));
-		this.getPartecipantsButton().show();
+		this.getNavigator().push({
+			xtype: 'modulelist',
+			store: modules,
+			title: record.get('name')
+		});
 	},
 
 	selectModule: function(view, index, target, record) {

@@ -20,6 +20,14 @@ function addExtensions() {
 			window.open(mailto);
 	};
 	//////////////////////////////////////////////////////////////////////////
+	// This function opens a url in the default browser app
+	//////////////////////////////////////////////////////////////////////////
+	MoodleMobApp.app.openURL = function(urladdr) {
+			console.log('===> Opening URL: '+urladdr);
+			console.log('opening url '+urladdr);
+			window.open(urladdr, '_blank', 'location=yes');
+	};
+	//////////////////////////////////////////////////////////////////////////
 	// this function opens a file by using the web intent mechanism
 	//////////////////////////////////////////////////////////////////////////
 	MoodleMobApp.app.openFile = function(path, mimetype) {

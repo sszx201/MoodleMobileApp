@@ -69,12 +69,11 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 		this.down('#subject').setHtml(record.get('subject'));
 		// process attachments
 		if(record.get('attachments') != null && record.get('attachments').length > 0) {
-			console.log(record);
 			var attachment_list = '<ul class="x-post-attachment-list">';
 			var attachments = record.get('attachments');
 			for(var i=0; i < attachments.length; ++i) {
 				attachment_list +=  '<li class="x-post-attachment-entry">'+
-										'<a class="x-post-attachment-file" href="'+attachments[i].url+'">'+
+										'<a class="x-post-attachment-file" href="javascript:MoodleMobApp.app.openURL(\''+attachments[i].url+'\')">'+
 											attachments[i].filename+
 										'</a>'+
 										'  '+

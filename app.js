@@ -129,10 +129,6 @@ Ext.application({
 		);
 	},
 
-	openURL: function(urladdr){
-		window.open(urladdr, '_blank', 'location=yes');
-	},
-
 	isLoadMaskVisible: function() {
 		return Ext.Viewport.getActiveItem().getMasked() == null || Ext.Viewport.getActiveItem().getMasked().isHidden();
 	},
@@ -218,6 +214,8 @@ Ext.application({
 	},
 
 	sendEmail: function(to, subject, body) { },
+
+	openURL: function(urladdr) { },
 
 	unzip: function(filePath, successFunc, failFunc) { },
 

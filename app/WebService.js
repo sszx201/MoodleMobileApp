@@ -292,9 +292,11 @@ Ext.define('MoodleMobApp.WebService', {
 
 							var fileTransfer = new FileTransfer();
 
-							var progressBar = '<div class="progress-bar"><span style="width: 0%"></span></div>';
+							var progressBar = '<div class="progress-bar"><span></span></div>';
 
 							Ext.Msg.alert('Downloading', progressBar);
+
+							document.querySelector('div.progress-bar span').setAttribute('style', 'width: 0%');
 
 							Ext.Msg.setButtons({
 								xtype: 'button',

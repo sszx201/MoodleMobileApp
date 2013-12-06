@@ -93,6 +93,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 
 	selectCourse: function(view, index, target, record) {
 		// update the app bar
+		this.getHomeButton().show();
 		this.getGradesButton().show();
 		this.getCalendarButton().show();
 		// store the current course
@@ -204,6 +205,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 	clearStoreFilters: function(controller, view, opts) {
 		switch(view.getId()) {
 			case 'module_list':
+				this.getHomeButton().hide();
 				this.getPartecipantsButton().hide();
 				this.getGradesButton().hide();
 				this.getCalendarButton().hide();

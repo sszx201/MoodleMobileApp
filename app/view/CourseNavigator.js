@@ -57,7 +57,8 @@ Ext.define("MoodleMobApp.view.CourseNavigator", {
 					{
 						xtype: 'button',
 						id: 'homeAppBtn',
-						iconCls: 'home'
+						iconCls: 'home',
+						hidden: true
 					},
 					{
 						xtype: 'button',
@@ -82,8 +83,7 @@ Ext.define("MoodleMobApp.view.CourseNavigator", {
 						iconCls: 'calendar',
 						hidden: true,
 					},
-
-				]
+				],
 			}
 		]
 	}

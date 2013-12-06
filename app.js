@@ -95,6 +95,10 @@ Ext.application({
 		} else {
 			Ext.Viewport.add(Ext.create('MoodleMobApp.view.CourseNavigator'));
 		}
+		// ios 7 bar fix
+		if (parseInt(window.device.version) === 7) {
+			document.getElementById('appNavBar').style.marginTop = "20px";
+		}
     },
 
     onUpdated: function() {

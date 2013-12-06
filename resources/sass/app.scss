@@ -39,6 +39,13 @@ $active-color: #C35817;
 	}
 }
 
+.x-navigationview-inner {
+	-webkit-transition: margin-right 0.3s;
+	-moz-transition: margin-right 0.3s;
+	-o-transition: margin-right 0.3s;
+	transition: margin-right 0.3s;	
+}
+
 .x-course,
 .x-calendar-event,
 .x-module,

@@ -65,8 +65,11 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 	toggleSideMenu: function() {
 		console.log('toggling the side menu');
 		if(this.getAppBar().getRight() == null || this.getAppBar().getRight() == '-200px') {
+			// resize the container
+			document.getElementsByClassName('x-navigationview-inner')[0].setAttribute('style', 'margin-right: 100px');
 			this.getAppBar().setRight('0px');
 		} else {
+			document.getElementsByClassName('x-navigationview-inner')[0].setAttribute('style', 'margin-right: 0px');
 			this.getAppBar().setRight('-200px');
 		}
 	},

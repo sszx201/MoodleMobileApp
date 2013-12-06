@@ -8,6 +8,7 @@ Ext.define("MoodleMobApp.view.CourseNavigator", {
 
 	config: {
 		id: 'course_navigator',
+		cls: 'course-navigator',
 		autoDestroy: false,
 		navigationBar: {
 			items: [

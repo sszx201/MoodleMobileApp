@@ -231,7 +231,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 		});
 		
 		// create the stat
-		var modstat = 'modules: '+all_modules.getCount();
+		var modstat = '';
 		if(updated_modules.getCount() > 0) {
 			modstat+= ' | updated: '+updated_modules.getCount();
 		}

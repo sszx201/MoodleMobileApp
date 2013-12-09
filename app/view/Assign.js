@@ -27,13 +27,13 @@ Ext.define("MoodleMobApp.view.Assign", {
 				var duedate = new Date(this.config.settings.duedate * 1000);
 				var availabledate = new Date(this.config.settings.allowsubmissionsfromdate * 1000);
 
-				if(today > duedate) {
+				if(today > duedate && this.config.settings.duedate > 0) {
 					this.child('fieldset').hide();
 					this.child('panel[name=toolate]').show();
 					return;
 				}
 
-				if(today < availabledate) {
+				if(today < availabledate  && this.config.settings.allowsubmissionsfromdate > 0) {
 					this.child('fieldset').hide();
 					this.child('panel[name=toosoon]').show();
 					return;
@@ -60,13 +60,23 @@ Ext.define("MoodleMobApp.view.Assign", {
 			show: function(){
 				// display the parent post
 				var data = this.getRecord().getData();
+				var from_date = null;
+				var to_date = null;
 				// prepare the html
 				var intro_html = '<div class="x-form-fieldset-title x-docked-top">'+data.name+'</div>';
 					intro_html+= '<div class="intro">'+ data.intro + '</div>';
+				// date block
+				if(this.config.settings.allowsubmissionsfromdate > 0 || this.config.settings.duedate > 0) {
 					intro_html+= '<div class="dates">';
-					intro_html+= '<div class="date">Available from date: </br>'+ MoodleMobApp.app.formatDate(this.config.settings.allowsubmissionsfromdate) + '</div>';
-					intro_html+= '<div class="date">Deadline date: </br>'+ MoodleMobApp.app.formatDate(this.config.settings.duedate) + '</div>';
+					if(this.config.settings.allowsubmissionsfromdate > 0) {
+						intro_html+= '<div class="date">Available from date: </br>'+ MoodleMobApp.app.formatDate(this.config.settings.allowsubmissionsfromdate) + '</div>';
+					}
+
+					if(this.config.settings.duedate > 0) {
+						intro_html+= '<div class="date">Deadline date: </br>'+ MoodleMobApp.app.formatDate(this.config.settings.duedate) + '</div>';
+					}
 					intro_html+= '</div>';
+				}
 
 				if(this.config.lastSubmission != null && this.config.lastSubmission.id > 0) {
 					intro_html += '<div class="last-submission">Previously submitted files: ';

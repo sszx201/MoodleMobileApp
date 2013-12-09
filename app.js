@@ -96,7 +96,7 @@ Ext.application({
 			Ext.Viewport.add(Ext.create('MoodleMobApp.view.CourseNavigator'));
 		}
 		// ios 7 bar fix
-		if (parseInt(window.device.version) === 7) {
+		if (navigator.userAgent.match(/(iPhone|iPod|iPad)/) && parseInt(window.device.version) === 7) {
 			document.getElementById('appNavBar').style.marginTop = "20px";
 		}
     },
@@ -214,7 +214,7 @@ Ext.application({
 
 	formatDate: function(timestamp) {
 		var date = new Date(timestamp*1000);
-		return Ext.Date.format(date, "l d F Y h:m");
+		return date.toLocaleString();
 	},
 
 	sendEmail: function(to, subject, body) { },

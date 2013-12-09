@@ -227,4 +227,22 @@ Ext.application({
 
 	calculateDownloadPercentage: function(progressEvent) { },
 
+	isConnectionAvailable: function() {
+		if (
+			navigator.userAgent.match(/(iPhone|iPod|iPad)/) ||
+			navigator.userAgent.match(/Android/)
+		) { // check connection
+			if(navigator.connection.type == Connection.NONE || navigator.connection.type == Connection.UNKNOWN ) {
+				Ext.Msg.alert(
+					'Connection',
+					'No connection available. Cannot contact the server.'
+				);
+				return false;
+			} else {
+				return true;
+			}
+		} else { // assume the app runs on a pc
+			return true;
+		}
+	}
 });

@@ -12,41 +12,44 @@ Ext.define('MoodleMobApp.WebService', {
 	// Generic webservice request function
 	//************************************	
 	request: function(params, rmodel, method) {
-		// add response format
-		params.moodlewsrestformat = 'json';
-		// send the request for content
-		var content_store = Ext.create('Ext.data.Store', {
-			model: rmodel,
-			proxy: {
-				type: 'ajax',
-				url: MoodleMobApp.Config.getWebServiceUrl(),
-				extraParams: params,
-				pageParam: false,
-				startParam: false,
-				limitParam: false,
-				noCache: false,
-				actionMethods: {read: method},
-				reader: {
-					type: 'json'
+		// proceed if the connection is available
+		if(MoodleMobApp.app.isConnectionAvailable()) {
+			// add response format
+			params.moodlewsrestformat = 'json';
+			// send the request for content
+			var content_store = Ext.create('Ext.data.Store', {
+				model: rmodel,
+				proxy: {
+					type: 'ajax',
+					url: MoodleMobApp.Config.getWebServiceUrl(),
+					extraParams: params,
+					pageParam: false,
+					startParam: false,
+					limitParam: false,
+					noCache: false,
+					actionMethods: {read: method},
+					reader: {
+						type: 'json'
+					}
 				}
-			}
-		});
+			});
 
-		// get the content
-		return content_store.load({
-			callback: function(records, operation, success) {
-				// check if there are any exceptions 
-				if( this.first() != undefined && this.first().raw.exception != undefined ) {
-					// hide the loading mask if visible
-					MoodleMobApp.app.hideLoadMask();
-					// display the error	
-					Ext.Msg.alert(
-						this.first().raw.exception,
-						this.first().raw.message
-					);
+			// get the content
+			return content_store.load({
+				callback: function(records, operation, success) {
+					// check if there are any exceptions 
+					if( this.first() != undefined && this.first().raw.exception != undefined ) {
+						// hide the loading mask if visible
+						MoodleMobApp.app.hideLoadMask();
+						// display the error	
+						Ext.Msg.alert(
+							this.first().raw.exception,
+							this.first().raw.message
+						);
+					}
 				}
-			}
-		});
+			});
+		}
 	},
 		
 	//*****************************	

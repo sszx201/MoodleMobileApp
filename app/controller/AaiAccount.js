@@ -40,7 +40,10 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 			// Update the form with account data.
 			form.setRecord( Ext.create('MoodleMobApp.model.AaiAccount', MoodleMobApp.Session.getAaiAccountStore().first().getData()) );
 		}
-		this.loadHomeOrganisationValues();
+		// proceed if the connection is available
+		if(MoodleMobApp.app.isConnectionAvailable()) {
+			this.loadHomeOrganisationValues();
+		}
 	},
 
 	saveAccountData: function () {
@@ -84,7 +87,10 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 
 			var auth_url = MoodleMobApp.Config.getAaiAuthUrl();
 
-			this.authenticate(auth_url, parameters);
+			// proceed if the connection is available
+			if(MoodleMobApp.app.isConnectionAvailable()) {
+				this.authenticate(auth_url, parameters);
+			}
 		}
 	},
   

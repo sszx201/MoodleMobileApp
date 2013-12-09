@@ -764,5 +764,4 @@ Ext.define('MoodleMobApp.controller.Main', {
 			{single: true}
 		);
 	},
-
 });

@@ -70,8 +70,10 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 			parameters.password = MoodleMobApp.Session.getManualAccountStore().first().get('password');
 
 			var auth_url = MoodleMobApp.Config.getManualAuthUrl();
-
-			this.authenticate(auth_url, parameters);
+			// proceed if the connection is available
+			if(MoodleMobApp.app.isConnectionAvailable()) {
+				this.authenticate(auth_url, parameters);
+			}
 		}
 	},
 

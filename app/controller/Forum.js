@@ -58,29 +58,32 @@ Ext.define('MoodleMobApp.controller.Forum', {
 
 	selectForum: function(forum) {
 		this.selected_forum = forum;
-		this.filterForumDiscussions();	
+		var forum_discussions = this.getForumDiscussions();
 		
 		// display discussions
 		if(typeof this.getDiscussionList() == 'object') {
+			this.getDiscussionList().setStore(forum_discussions);
 			this.getNavigator().push(this.getDiscussionList());
 		} else {
 			this.getNavigator().push({
 				xtype: 'forumdiscussionlist',	
-				store: MoodleMobApp.Session.getForumDiscussionsStore()
+				store: forum_discussions
 			});
 		}
 		this.checkIfEditable();
 	},
 
-	filterForumDiscussions: function(){
-		// filter discussions
-		MoodleMobApp.Session.getForumDiscussionsStore().clearFilter();
-		MoodleMobApp.Session.getForumDiscussionsStore().filterBy(
+	getForumDiscussions: function() {
+		// filter modules
+		var forum_discussions = Ext.create('Ext.data.Store', { model: 'MoodleMobApp.model.ForumDiscussion' });
+		MoodleMobApp.Session.getForumDiscussionsStore().each(
 			function(record) {
-				return record.get('forum') === this.selected_forum.get('instanceid');
-			},
-			this
+				if( parseInt(record.get('forum')) === parseInt(this.selected_forum.get('instanceid')) ) {
+						forum_discussions.add(record);
+				}
+			}, this
 		);
+		return forum_discussions;
 	},
 
 	checkIfEditable: function() {
@@ -146,7 +149,6 @@ Ext.define('MoodleMobApp.controller.Forum', {
 							MoodleMobApp.app.hideLoadMask();
 							this.checkIfEditable();
 							this.getNavigator().pop();
-							this.filterForumDiscussions();
 						},
 						this,
 						{single:true}
@@ -187,17 +189,10 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			MoodleMobApp.Session.getForumDiscussionsStore().sync();
 		}
 
-		var discussionid = record.get('id');
-		// filter discussions / restrict the range
-		MoodleMobApp.Session.getForumPostsStore().clearFilter();
-		MoodleMobApp.Session.getForumPostsStore().filterBy(
-			function(post) {
-				return post.get('discussion') === discussionid;
-			}
-		);
+		var raw_forum_posts = this.getForumPosts(record.get('id'));	
 	
 		// pre sort
-		MoodleMobApp.Session.getForumPostsStore().sort([
+		raw_forum_posts.sort([
 			{
 				property: 'parent',
 				direction: 'ASC',
@@ -210,9 +205,9 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		
 		this.posts = Ext.create('Ext.data.Store', {model: 'MoodleMobApp.model.ForumPost'});
 		this.posts.removeAll();
-		var root = MoodleMobApp.Session.getForumPostsStore().first();
+		var root = raw_forum_posts.first();
 		// append and sort posts
-		this.appendPosts(root);
+		this.appendPosts(root, raw_forum_posts);
 
 		if(typeof this.getPostList() == 'object'){
 			this.getPostList().setStore(this.posts);
@@ -225,15 +220,31 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		}
 	},
 
-	appendPosts: function(node){
+	getForumPosts: function(discussionid) {
+		// filter modules
+		var forum_posts = Ext.create('Ext.data.Store', { model: 'MoodleMobApp.model.ForumPost' });
+		MoodleMobApp.Session.getForumPostsStore().each(
+			function(record) {
+				if( parseInt(record.get('discussion')) === parseInt(discussionid) ) {
+						forum_posts.add(record);
+				}
+			}, this
+		);
+		return forum_posts;
+	},
+
+	appendPosts: function(node, selection){
 		if(this.posts.findExact('id', node.get('id')) == -1){
 			this.posts.add(node);
 		}
-		var subnodes = MoodleMobApp.Session.getForumPostsStore().queryBy(function(record){
-			return record.get('parent') == node.get('id');
-		});
 
-		subnodes.each(function(subnode){ this.appendPosts(subnode); }, this);
+		var subnodes = selection.queryBy(
+			function(record){
+				return record.get('parent') == node.get('id');
+			}
+		);
+
+		subnodes.each(function(subnode){ this.appendPosts(subnode, selection); }, this);
 	},
 
 	replyToPost: function(button){

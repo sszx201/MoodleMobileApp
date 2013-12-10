@@ -38,7 +38,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			selectAllPartecipantsButton: '#partecipants button[action=selectall]',
 			contactPartecipantsButton: '#partecipants button[action=contactpartecipants]',
 			grades: '#grades',
-			calendarEvents: '#calendarevents',
+			calendar: '#calendarevents',
 		},
 
 		control: {
@@ -95,6 +95,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		// update the app bar
 		this.getHomeButton().show();
 		this.getGradesButton().show();
+		this.getPartecipantsButton().show();
 		this.getCalendarButton().show();
 		// store the current course
 		this.current_course = record;
@@ -142,30 +143,33 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 	},
 
 	showPartecipants: function(button) {
-		this.filterPartecipants();
+		var partecipants = this.getCoursePartecipants();
 		// display modules
 		if(typeof this.getPartecipants() == 'object') {
+			this.getPartecipants().setStore(partecipants);
 			this.getNavigator().push(this.getPartecipants());
 		} else {
 			this.getNavigator().push({
 				xtype: 'partecipants',	
-				store: MoodleMobApp.Session.getUsersStore()
+				store: partecipants
 			});
 		}
 	},
 
-	filterPartecipants: function() {
-		MoodleMobApp.Session.getEnrolledUsersStore().filterBy(
-			function(enrolled_user) {
-				return parseInt(enrolled_user.get('courseid')) == parseInt(this.current_course.get('id'))
+	getCoursePartecipants: function() {
+		// filter modules
+		var partecipants = Ext.create('Ext.data.Store', { model: 'MoodleMobApp.model.EnrolledUser' });
+		MoodleMobApp.Session.getEnrolledUsersStore().each(
+			function(record) {
+				if( parseInt(record.get('courseid')) == parseInt(this.current_course.get('id')) ) {
+					if (record.get('userid') != null) {
+						var user = MoodleMobApp.Session.getUsersStore().findRecord('id', record.get('userid'));
+						partecipants.add(user);
+					}
+				}
 			}, this
 		);
-		MoodleMobApp.Session.getUsersStore().filterBy(
-			function(user) {
-				// if the value is different from -1 than the user is in the enrolled users
-				return MoodleMobApp.Session.getEnrolledUsersStore().findExact('userid', user.get('id')) != -1;
-			}, this
-		);
+		return partecipants;
 	},
 
 	contactPartecipants: function(button) {
@@ -233,42 +237,57 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 	},
 
 	showGrades: function(button) {
-		MoodleMobApp.Session.getGradeItemsStore().filterBy(
-			function(record) { 
-				return parseInt(record.get('courseid')) == parseInt(this.current_course.get('id')) && record.get('hidden') == 0;
-			}, this
-		);
-
+		var grade_items = this.getGradeItems();	
 		// display modules
 		if(typeof this.getGrades() == 'object') {
+			this.getGrades().setStore(grade_items);
 			this.getNavigator().push(this.getGrades());
 		} else {
 			this.getNavigator().push({
 				xtype: 'grades',
-				store: MoodleMobApp.Session.getGradeItemsStore()
+				store: grade_items
 			});
 		}
+	},
+
+	getGradeItems: function() {
+		// filter modules
+		var grade_items = Ext.create('Ext.data.Store', { model: 'MoodleMobApp.model.GradeItem' });
+		MoodleMobApp.Session.getGradeItemsStore().each(
+			function(record) {
+				if( parseInt(record.get('courseid')) == parseInt(this.current_course.get('id')) && record.get('hidden') == 0 ) {
+						grade_items.add(record);
+				}
+			}, this
+		);
+		return grade_items;
 	},
 
 	showCalendarEvents: function(button) {
-		this.filterCalendarEvents();
+		var calendar_events = this.getCalendarEvents();
 		// display modules
-		if(typeof this.getCalendarEvents() == 'object') {
-			this.getNavigator().push(this.getCalendarEvents());
+		if(typeof this.getCalendar() == 'object') {
+			this.getCalendar().setStore(calendar_events);
+			this.getNavigator().push(this.getCalendar());
 		} else {
 			this.getNavigator().push({
 				xtype: 'calendarevents',	
-				store: MoodleMobApp.Session.getCalendarEventsStore()
+				store: calendar_events
 			});
 		}
 	},
 
-	filterCalendarEvents: function() {
-		MoodleMobApp.Session.getCalendarEventsStore().filterBy(
-			function(calendar_event) {
-				return parseInt(calendar_event.get('courseid')) == parseInt(this.current_course.get('id'))
+	getCalendarEvents: function() {
+		// filter modules
+		var calendar_events = Ext.create('Ext.data.Store', { model: 'MoodleMobApp.model.CalendarEvent' });
+		MoodleMobApp.Session.getCalendarEventsStore().each(
+			function(record) {
+				if( parseInt(record.get('courseid')) == parseInt(this.current_course.get('id')) ) {
+						calendar_events.add(record);
+				}
 			}, this
 		);
-	},
+		return calendar_events;
+	}
 
 });

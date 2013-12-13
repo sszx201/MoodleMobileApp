@@ -19,9 +19,9 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		],
 
 		refs: {
-			navigator: '#course_navigator',
-			module: '#module_list',
-			discussionList: '#forum_discussion_list',
+			navigator: 'coursenavigator',
+			module: 'modulelist',
+			discussionList: 'forum_discussion_list',
 			editDiscussionForm: '#forum_discussion_edit_form',
 			saveDiscussionButton: 'button[action=savediscussion]',
 			addDiscussionButton: 'button[action=adddiscussion]',

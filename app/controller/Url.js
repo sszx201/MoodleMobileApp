@@ -3,8 +3,8 @@ Ext.define('MoodleMobApp.controller.Url', {
     
     config: {
         refs: {
-			navigator: '#course_navigator',
-			module: '#module_list',
+			navigator: 'coursenavigator',
+			module: 'modulelist',
         },
         control: {
 			// generic controls

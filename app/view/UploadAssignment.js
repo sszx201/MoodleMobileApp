@@ -15,13 +15,12 @@ Ext.define("MoodleMobApp.view.UploadAssignment", {
 	controllers: [ ],
 
 	config: {
-		title: ' Upload Assignment',
+		title: 'Upload Assignment',
 		cls: 'assignment',
 		autoDestroy: true,
 		listeners: {
 			initialize: function() {
 				// check the data
-				console.log(this.config.lastSubmission);
 				if(this.config.settings.preventlate == 1) { // check the dates
 					var today = new Date();
 					var duedate = new Date(this.config.settings.timedue * 1000);
@@ -112,10 +111,6 @@ Ext.define("MoodleMobApp.view.UploadAssignment", {
 								flex: 1,
 							},
 						] 
-					},
-					{
-						xtype: 'hiddenfield',	
-						name: 'id',
 					},
 					{
 						xtype: 'hiddenfield',	

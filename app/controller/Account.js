@@ -65,6 +65,8 @@ Ext.define('MoodleMobApp.controller.Account', {
 						});
 					} else {
 						this.each(function(course) {
+								//course.set('modulestatus', 'unsync');
+								course.set('modulestatus', '<img src="resources/images/sync.png" />');
 								if(MoodleMobApp.Session.getCoursesStore().find('id', course.get('id')) == -1) {
 									course.set('isnew', true);
 								} else {

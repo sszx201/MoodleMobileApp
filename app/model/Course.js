@@ -11,8 +11,9 @@ Ext.define('MoodleMobApp.model.Course', {
 			{ name: 'token', type: 'string' },
 			{ name: 'modules', type: 'int', defaultValue: 0 },
 			{ name: 'isnew', type: 'boolean' },
+			{ name: 'synchronized', type: 'boolean', defaultValue: false },
 			{ name: 'newmodules', type: 'int', defaultValue: 0 },
-			{ name: 'modulestatus', type: 'string', defaultValue: 'counting modules...' },
+			{ name: 'modulestatus', type: 'string', defaultValue: '<img src="resources/images/sync.png" />' },
 		]
 	}
 });

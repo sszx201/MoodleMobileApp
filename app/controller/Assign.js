@@ -14,8 +14,8 @@ Ext.define('MoodleMobApp.controller.Assign', {
 		],
 
 		refs: {
-			navigator: '#course_navigator',
-			moduleList: '#module_list',
+			navigator: 'coursenavigator',
+			moduleList: 'modulelist',
 			assign: 'assign',
 			addFileSlotButton: 'assign button[action=addfile]',
 			submitButton: 'assign button[action=submit]',

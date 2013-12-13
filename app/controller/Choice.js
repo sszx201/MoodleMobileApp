@@ -12,10 +12,10 @@ Ext.define('MoodleMobApp.controller.Choice', {
 		],
 
 		refs: {
-			navigator: '#course_navigator',
-			moduleList: '#module_list',
-			choice: '#choice',
-			submitBtn: '#choice button[action=submit]',
+			navigator: 'coursenavigator',
+			moduleList: 'modulelist',
+			choice: 'choice',
+			submitBtn: 'choice button[action=submit]',
 		},
 
 		control: {

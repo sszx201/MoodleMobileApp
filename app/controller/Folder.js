@@ -10,9 +10,9 @@ Ext.define('MoodleMobApp.controller.Folder', {
 
 
 		refs: {
-			navigator: '#course_navigator',
-			module: '#module_list',
-			folder: '#folder',
+			navigator: 'coursenavigator',
+			module: 'modulelist',
+			folder: 'folder',
 		},
 
 		control: {

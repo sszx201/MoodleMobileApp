@@ -74,17 +74,8 @@ Ext.define("MoodleMobApp.view.SingleUploadAssignment", {
 				title: 'Submit the file',
 				items: [	
 					{
-						xtype: 'textfield',
-						disabled: false,
+						xtype: 'filefield',
 						name: 'filepath',
-						component: { 
-							xtype: 'file',
-							disabled: false,
-						}
-					},
-					{
-						xtype: 'hiddenfield',	
-						name: 'id',
 					},
 					{
 						xtype: 'hiddenfield',	
@@ -123,6 +114,6 @@ Ext.define("MoodleMobApp.view.SingleUploadAssignment", {
 				html: 'No resubmit allowed.'
 			}
 		]
-	},
+	}
 
 });

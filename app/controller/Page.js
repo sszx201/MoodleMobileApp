@@ -7,8 +7,8 @@ Ext.define('MoodleMobApp.controller.Page', {
 		],
 
         refs: {
-			navigator: '#course_navigator',
-			module: '#module_list',
+			navigator: 'coursenavigator',
+			module: 'modulelist',
 			page: 'page',
         },
         control: {

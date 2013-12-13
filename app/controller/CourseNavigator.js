@@ -28,17 +28,17 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			gradesButton: 'button#gradesAppBtn',
 			calendarButton: 'button#calendarAppBtn',
 			// views
-			navigator: '#course_navigator',
+			navigator: 'coursenavigator',
 			settings: 'settings',
-			courseList: '#course_list',
-			moduleList: '#module_list',
-			partecipants: '#partecipants',
-			partecipantsSelectors: '#partecipants checkbox',
-			clearPartecipantsSelectionButton: '#partecipants button[action=clearselection]',
-			selectAllPartecipantsButton: '#partecipants button[action=selectall]',
-			contactPartecipantsButton: '#partecipants button[action=contactpartecipants]',
-			grades: '#grades',
-			calendar: '#calendarevents',
+			courseList: 'courselist',
+			moduleList: 'modulelist',
+			partecipants: 'partecipants',
+			partecipantsSelectors: 'partecipants checkbox',
+			clearPartecipantsSelectionButton: 'partecipants button[action=clearselection]',
+			selectAllPartecipantsButton: 'partecipants button[action=selectall]',
+			contactPartecipantsButton: 'partecipants button[action=contactpartecipants]',
+			grades: 'grades',
+			calendar: 'calendarevents',
 		},
 
 		control: {
@@ -48,7 +48,10 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			partecipantsButton: { tap: 'showPartecipants' },
 			gradesButton: { tap: 'showGrades' },
 			calendarButton: { tap: 'showCalendarEvents' },
-			navigator:  { pop: 'clearStoreFilters' },
+			navigator:  {
+				pop: 'updateSideMenuStatus',
+				courseUpdated: 'showCourse'
+			},
 			courseList: { itemtap: 'selectCourse' },
 			moduleList: { itemtap: 'selectModule' },
 			contactPartecipantsButton: { tap: 'contactPartecipants' },
@@ -63,7 +66,6 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 	},
 
 	toggleSideMenu: function() {
-		console.log('toggling the side menu');
 		if(this.getAppBar().getRight() == null || this.getAppBar().getRight() == '-200px') {
 			// resize the container
 			document.getElementsByClassName('x-navigationview-inner')[0].setAttribute('style', 'margin-right: 100px');
@@ -101,7 +103,14 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		this.current_course = record;
 		// set the course token inside the session
 		MoodleMobApp.Session.setCourse(record);
+		if(record.get('synchronized') != true) {
+			this.getNavigator().fireEvent('updateCourse', record);
+		} else {
+			this.showCourse();
+		}
+	},
 
+	showCourse: function() {
 		// filter modules
 		var modules = Ext.create('Ext.data.Store', { model: 'MoodleMobApp.model.Module' });
 		MoodleMobApp.Session.getModulesStore().each(
@@ -111,15 +120,18 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 				}
 			}, this
 		);
-
 		// display modules
-		if(typeof this.getModuleList() == 'object') { this.getModuleList().destroy(); }
-
-		this.getNavigator().push({
-			xtype: 'modulelist',
-			store: modules,
-			title: record.get('name')
-		});
+		if(typeof this.getModuleList() == 'object') {
+			this.getModuleList().setStore(modules);
+			this.getNavigator().push(this.getModuleList());
+			this.getNavigator().down('#topBar').setTitle(this.current_course.get('name'));
+		} else {
+			this.getNavigator().push({
+				xtype: 'modulelist',
+				store: modules,
+				title: this.current_course.get('name')
+			});
+		}
 	},
 
 	selectModule: function(view, index, target, record) {
@@ -206,33 +218,14 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		});
 	},
 
-	clearStoreFilters: function(controller, view, opts) {
-		switch(view.getId()) {
-			case 'module_list':
+	updateSideMenuStatus: function(controller, view, opts) {
+		switch(view.xtype) {
+			case 'modulelist':
 				this.getHomeButton().hide();
 				this.getPartecipantsButton().hide();
 				this.getGradesButton().hide();
 				this.getCalendarButton().hide();
-				MoodleMobApp.Session.getModulesStore().clearFilter();
-				break;
-			case 'forum_discussions_list':
-				MoodleMobApp.Session.getForumDiscussionsStore().clearFilter();
-				break;
-			case 'offline_assignment_form':
-				MoodleMobApp.Session.getOfflineAssignmentSubmissionsStore().clearFilter();
-				break;
-			case 'folder':
-				MoodleMobApp.Session.getFoldersStore().clearFilter();
-				break;
-			case 'partecipants':
-				MoodleMobApp.Session.getUsersStore().clearFilter();
-				MoodleMobApp.Session.getEnrolledUsersStore().clearFilter();
-				break;
-			case 'grades':
-				MoodleMobApp.Session.getGradeItemsStore().clearFilter();
-				break;
-			default:
-				console.log('no instructions on how to clear stores for view: '+view.getId());
+			break;
 		}
 	},
 

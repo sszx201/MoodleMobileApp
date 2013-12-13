@@ -17,8 +17,8 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 		],
 
 		refs: {
-			navigator: '#course_navigator',
-			moduleList: '#module_list',
+			navigator: 'coursenavigator',
+			moduleList: 'modulelist',
 			onlineAssignment: 'onlineassignment',
 			onlineAssignmentSubmit: 'onlineassignment button[action=submit]',
 			offlineAssignment: 'offlineassignment',
@@ -92,11 +92,9 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 				// set the xtype
 				aconf.xtype = 'uploadassignment';
 			break;
-
 			default:
 				Ext.Msg.alert( 'Assignment type error', 'Unknown assignment type.');
 			break;
-
 		}
 
 		var assignment_store = MoodleMobApp.WebService.getAssignmentById(assignment.get('instanceid'), MoodleMobApp.Session.getCourse().get('token'));
@@ -215,11 +213,7 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 				layout: 'hbox',
 				items: [
 					{
-						xtype: 'textfield',
-						component: { 
-							xtype: 'file',
-							disabled: false,
-						},
+						xtype: 'filefield',
 						flex: 4,
 					},
 					{

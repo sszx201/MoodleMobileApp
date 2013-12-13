@@ -18,9 +18,9 @@
 		config: {
 			refs: {
 				readPercent: '#readPercent',
-				navigator: '#course_navigator',
+				navigator: 'coursenavigator',
+				module: 'modulelist',
 				bookmarkBtn: '#bookmarkBtn',
-				module: '#module_list',
 				navBackBtn: '#navBack',
 //				mainView: 'scormreader',
 				hidePanelBtn: '#hidePanelBtn',

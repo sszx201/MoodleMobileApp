@@ -11,6 +11,7 @@ Ext.define("MoodleMobApp.view.CourseNavigator", {
 		cls: 'course-navigator',
 		autoDestroy: false,
 		navigationBar: {
+			itemId: 'topBar',
 			items: [
 				{
 					xtype: 'button',

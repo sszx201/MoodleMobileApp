@@ -107,10 +107,6 @@ Ext.define("MoodleMobApp.view.Assign", {
 				items: [
 					{
 						xtype: 'hiddenfield',	
-						name: 'id',
-					},
-					{
-						xtype: 'hiddenfield',	
 						name: 'instanceid',
 					},
 					{

@@ -1,5 +1,5 @@
 Ext.define("MoodleMobApp.view.OfflineAssignment", {
-	extend: 'Ext.form.Panel',
+	extend: 'Ext.Panel',
 	xtype: 'offlineassignment',
 	fullscreen: true,
 	

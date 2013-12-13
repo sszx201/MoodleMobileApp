@@ -37,9 +37,11 @@ Ext.define('MoodleMobApp.controller.Folder', {
 		if(typeof this.getFolder() == 'object') {
 			this.getFolder().setStore(folder_tree);
 			this.getNavigator().push(this.getFolder());
+			this.getNavigator().down('#topBar').setTitle(folder.get('name'));
 		} else {
 			this.getNavigator().push({
 				xtype: 'folder',	
+				title: folder.get('name'),
 				store: folder_tree
 			});
 		}

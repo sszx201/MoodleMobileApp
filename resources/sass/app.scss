@@ -56,11 +56,16 @@ $active-color: #C35817;
 	border-bottom: 1px solid #dedede;
 }
 
-.x-module-section {
+.x-course-section {
 	background-color: white;
 	padding-top: 10px;
 	padding-left: 3px;
 	border-bottom: 2px solid #dedede;
+	.summary {
+		margin-top: 10px;
+		margin-bottom: 5px;
+		font-size: small;
+	}
 }
 
 .x-module,

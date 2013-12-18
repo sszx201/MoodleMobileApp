@@ -16,6 +16,7 @@ Ext.define('MoodleMobApp.model.Module', {
 			{ name: 'type', type: 'string' },
 			{ name: 'timemodified', type: 'int' },
 			{ name: 'section', type: 'int' },
+			{ name: 'order', type: 'int' },
 			{ name: 'isnew', type: 'boolean' },
 			{ name: 'isupdated', type: 'boolean' },
 		]

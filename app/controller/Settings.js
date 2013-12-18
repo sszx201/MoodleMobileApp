@@ -39,6 +39,10 @@ Ext.define('MoodleMobApp.controller.Settings', {
 	purgeData: function() {
 		MoodleMobApp.Session.getCoursesStore().removeAll();
 		MoodleMobApp.Session.getCoursesStore().getProxy().clear();
+		MoodleMobApp.Session.getCalendarEventsStore().removeAll();
+		MoodleMobApp.Session.getCalendarEventsStore().getProxy().clear();
+		MoodleMobApp.Session.getCourseSectionsStore().removeAll();
+		MoodleMobApp.Session.getCourseSectionsStore().getProxy().clear();
 		MoodleMobApp.Session.getModulesStore().removeAll();
 		MoodleMobApp.Session.getModulesStore().getProxy().clear();
 		MoodleMobApp.Session.getUsersStore().removeAll();

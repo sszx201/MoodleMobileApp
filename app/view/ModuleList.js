@@ -20,7 +20,7 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 
 	dropSectionLabels: function(){
 		// remove old sections labels
-		Ext.select('.x-module-section').each(function(section_label){
+		Ext.select('.x-course-section').each(function(section_label){
 			section_label.destroy();
 		});
 	},
@@ -33,22 +33,52 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 		var date_format = 'd M';
 		var begin_day = course_start_date;
 		var end_day = course_start_date + week;
-		
+		// get course sections
+		// filter course sections
+		var course_sections = Ext.create('Ext.data.Store', { model: 'MoodleMobApp.model.CourseSection', sorters: 'number' });
+		MoodleMobApp.Session.getCourseSectionsStore().each(
+			function(record) {
+				if( parseInt(record.get('courseid')) == parseInt(MoodleMobApp.Session.getCourse().get('id')) ) {
+					course_sections.add(record);
+				}
+			}, this
+		);
 		// add section labels
-		var number_of_sections = 50;
+		var number_of_sections = course_sections.getCount();
 		for(var i=1; i < number_of_sections; ++i){
 			var element = Ext.select('.x-module-section-'+i).first();
 			if(element == null) {
 				break;
 			} else {
+				var title = null;
+				var summary = null;
+				if(course_sections.getAt(i).get('title') != null) {
+					title = course_sections.getAt(i).get('title');
+				}
+
+				if(course_sections.getAt(i).get('summary') != null) {
+					summary = course_sections.getAt(i).get('summary');
+				}
+
 				if(course_format == 'weeks') {
-					label = Ext.Date.format(new Date(begin_day), date_format) + ' - ' + Ext.Date.format(new Date(end_day), date_format);
+					if(title == null) {
+						title = Ext.Date.format(new Date(begin_day), date_format) + ' - ' + Ext.Date.format(new Date(end_day), date_format);
+					}
 					begin_day = end_day + day;
 					end_day = begin_day + week;
-					Ext.DomHelper.insertBefore(element, '<div class="x-module-section">'+label+'</div>');
 				} else {
-					Ext.DomHelper.insertBefore(element, '<div class="x-module-section">section '+i+'</div>');
+					if(title == null) {
+						title = 'Section ' + i;
+					}
 				}
+				var section_label = '';
+				if(summary == null) {
+					section_label = '<div class="x-course-section">'+title+'</div>';
+				} else {
+					section_label = '<div class="x-course-section">'+title+'<div class="summary">'+summary+'</div></div>';
+				}
+				// add the section title
+				Ext.DomHelper.insertBefore(element, section_label);
 			}
 		}
 	}

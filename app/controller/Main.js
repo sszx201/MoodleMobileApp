@@ -33,6 +33,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 		this.updateStatus = {
 			'users': false,
 			'calendarEvents': false,
+			'courseSections': false,
 			'courseModules': false,
 			'forumDiscussions': false,
 			'forumPosts': false,
@@ -134,6 +135,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 
 	updateDataStores: function(course) {
 		this.updateCalendarEvents(course);
+		this.updateCourseSections(course);
 		this.updateCourseModules(course);
 	},
 
@@ -155,9 +157,36 @@ Ext.define('MoodleMobApp.controller.Main', {
 				);
 
 				cstore.each(function(record){ MoodleMobApp.Session.getCalendarEventsStore().add(record); });
-				MoodleMobApp.Session.getModulesStore().sync();
+				MoodleMobApp.Session.getCalendarEventsStore().sync();
 				// calendar events updated
 				this.updateStatus['calendarEvents'] = true;
+			},
+			this,
+			{single: true}
+		);
+	},
+
+	updateCourseSections: function(course){
+		MoodleMobApp.WebService.getCourseSections(course.getData()).on(
+			'load', 
+			function(sstore){
+				// -log-
+				if(MoodleMobApp.Config.getVerbose()) {
+					MoodleMobApp.log('UPDATING COURSE SECTIONS: ' + course.get('name') + '; ID: ' + course.get('id'));
+				}
+				MoodleMobApp.Session.getCourseSectionsStore().each(
+					function(record){
+						if(record.get('courseid') == course.get('id')) {
+							MoodleMobApp.Session.getCourseSectionsStore().remove(record);
+							return true;
+						}
+					}
+				);
+
+				sstore.each(function(record){ MoodleMobApp.Session.getCourseSectionsStore().add(record); });
+				MoodleMobApp.Session.getCourseSectionsStore().sync();
+				// course sections updated
+				this.updateStatus['courseSections'] = true;
 			},
 			this,
 			{single: true}

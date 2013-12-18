@@ -67,6 +67,17 @@ Ext.define('MoodleMobApp.WebService', {
 		return course_modules_store;
 	},
 
+	getCourseSections: function(course) {
+		// set parameters
+		var params = new Object();
+		params.wsfunction = 'local_uniappws_course_get_course_sections';
+		params.wstoken = course.token;
+		params.courseid = course.id;
+		// request
+		var course_sections_store = this.request(params, 'MoodleMobApp.model.CourseSection', 'GET');
+		return course_sections_store;
+	},
+
 	getCalendarEvents: function(course) {
 		// set parameters
 		var params = new Object();

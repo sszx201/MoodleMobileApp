@@ -14,6 +14,7 @@ Ext.define('MoodleMobApp.controller.Init', {
 			'MoodleMobApp.store.EnrolledUsers',
 			'MoodleMobApp.store.Courses',
 			'MoodleMobApp.store.CalendarEvents',
+			'MoodleMobApp.store.CourseSections',
 			'MoodleMobApp.store.Modules',
 			'MoodleMobApp.store.Resources',
 			'MoodleMobApp.store.Choices',
@@ -83,6 +84,11 @@ Ext.define('MoodleMobApp.controller.Init', {
 		var calendar_events_store = Ext.create('MoodleMobApp.store.CalendarEvents');
 		calendar_events_store.load();
 		MoodleMobApp.Session.setCalendarEventsStore(calendar_events_store);
+
+		// create coursesections store
+		var course_sections_store = Ext.create('MoodleMobApp.store.CourseSections');
+		course_sections_store.load();
+		MoodleMobApp.Session.setCourseSectionsStore(course_sections_store);
 
 		// create modules store
 		var modules_store = Ext.create('MoodleMobApp.store.Modules');

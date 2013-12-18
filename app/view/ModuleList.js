@@ -12,7 +12,7 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 		listeners: {
 			painted: function(){
 				this.dropSectionLabels();
-				// wait 100ms for the classes to load
+				// wait some time for the modules to load
 				Ext.defer(this.addSectionLabels, 250, this);
 			},
 		}
@@ -46,7 +46,8 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 		// add section labels
 		var number_of_sections = course_sections.getCount();
 		for(var i=1; i < number_of_sections; ++i){
-			var element = Ext.select('.x-module-section-'+i).first();
+			var section_number = course_sections.getAt(i).get('number');
+			var element = Ext.select('.x-module-section-' + section_number).first();
 			if(element == null) {
 				break;
 			} else {
@@ -62,10 +63,10 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 
 				if(course_format == 'weeks') {
 					if(title == null) {
-						title = Ext.Date.format(new Date(begin_day), date_format) + ' - ' + Ext.Date.format(new Date(end_day), date_format);
+						section_begin_day = begin_day + (section_number-1)*(week + day);
+						section_end_day = end_day + (section_number-1)*(week + day);
+						title = Ext.Date.format(new Date(section_begin_day), date_format) + ' - ' + Ext.Date.format(new Date(section_end_day), date_format);
 					}
-					begin_day = end_day + day;
-					end_day = begin_day + week;
 				} else {
 					if(title == null) {
 						title = 'Section ' + i;

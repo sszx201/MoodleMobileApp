@@ -78,6 +78,30 @@ Ext.define('MoodleMobApp.WebService', {
 		return course_sections_store;
 	},
 
+	getGroups: function(course, user) {
+		// set parameters
+		var params = new Object();
+		params.wsfunction = 'local_uniappws_group_get_user_course_groups';
+		params.wstoken = course.token;
+		params.courseid = course.id;
+		params.userid = user.id;
+		// request
+		var groups_store = this.request(params, 'MoodleMobApp.model.Group', 'GET');
+		return groups_store;
+	},
+
+	getGroupings: function(course, user) {
+		// set parameters
+		var params = new Object();
+		params.wsfunction = 'local_uniappws_group_get_user_course_groupings';
+		params.wstoken = course.token;
+		params.courseid = course.id;
+		params.userid = user.id;
+		// request
+		var groupings_store = this.request(params, 'MoodleMobApp.model.Grouping', 'GET');
+		return groupings_store;
+	},
+
 	getCalendarEvents: function(course) {
 		// set parameters
 		var params = new Object();

@@ -21,7 +21,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		refs: {
 			navigator: 'coursenavigator',
 			module: 'modulelist',
-			discussionList: 'forum_discussion_list',
+			discussionList: 'forumdiscussionlist',
 			editDiscussionForm: '#forum_discussion_edit_form',
 			saveDiscussionButton: 'button[action=savediscussion]',
 			addDiscussionButton: 'button[action=adddiscussion]',
@@ -51,7 +51,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 	},
 
 	selectModule: function(view, index, target, record) {
-		if(record.get('modname') === 'forum'){
+		if(record.get('modname') === 'forum') {
 			this.selectForum(record);
 		}
 	},
@@ -59,7 +59,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 	selectForum: function(forum) {
 		this.selected_forum = forum;
 		var forum_discussions = this.getForumDiscussions();
-		
+
 		// display discussions
 		if(typeof this.getDiscussionList() == 'object') {
 			this.getDiscussionList().setStore(forum_discussions);
@@ -73,24 +73,54 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		this.checkIfEditable();
 	},
 
+	// you are here; next step is to implement the support for grupings.
+	// Right now only support for groups is available.
 	getForumDiscussions: function() {
 		// filter modules
 		var forum_discussions = Ext.create('Ext.data.Store', { model: 'MoodleMobApp.model.ForumDiscussion' });
-		MoodleMobApp.Session.getForumDiscussionsStore().each(
-			function(record) {
-				if( parseInt(record.get('forum')) === parseInt(this.selected_forum.get('instanceid')) ) {
+		if(this.selected_forum.get('groupmode') == MoodleMobApp.Config.getSeparatedGroupsFlag()) {
+			var groups = this.getGroups();
+			MoodleMobApp.Session.getForumDiscussionsStore().each(
+				function(record) {
+					if( parseInt(record.get('forum')) === parseInt(this.selected_forum.get('instanceid')) ) {
+						for(var i=0; i < groups.getCount(); ++i) {
+							if(groups.getAt(i).get('id') == record.get('groupid')) {
+								forum_discussions.add(record);
+								break;
+							}
+						}
+					}
+				}, this
+			);
+		} else {
+			MoodleMobApp.Session.getForumDiscussionsStore().each(
+				function(record) {
+					if( parseInt(record.get('forum')) === parseInt(this.selected_forum.get('instanceid')) ) {
 						forum_discussions.add(record);
+					}
+				}, this
+			);
+		}
+		return forum_discussions;
+	},
+
+	getGroups: function() {
+		var groups = Ext.create('Ext.data.Store', { model: 'MoodleMobApp.model.Group' });
+		MoodleMobApp.Session.getGroupsStore().each(
+			function(record) {
+				if( parseInt(record.get('courseid')) === parseInt(this.selected_forum.get('courseid')) ) {
+					groups.add(record);
 				}
 			}, this
 		);
-		return forum_discussions;
+		return groups;
 	},
 
 	checkIfEditable: function() {
 		switch(this.selected_forum.get('type')){
 			case 'general':	
 				this.getAddDiscussionButton().setHidden(false);
-				break;
+			break;
 			case 'eachuser':
 				// get user data
 				var index = MoodleMobApp.Session.getUsersStore().findExact('username', MoodleMobApp.Session.getUsername());
@@ -105,9 +135,10 @@ Ext.define('MoodleMobApp.controller.Forum', {
 				} else {
 					this.getAddDiscussionButton().setHidden(true);
 				}
-				break;
+			break;
 			default:
 				this.getAddDiscussionButton().setHidden(true);
+			break;
 		}
 	},
 
@@ -172,6 +203,8 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		
 		this.selected_discussion = record;
 		this.selected_discussion_target = target;
+		console.log('discussion selected');
+		console.log(record.getData());
 		// update the status
 		update_status = false;
 		if(record.get('isnew') == true) {

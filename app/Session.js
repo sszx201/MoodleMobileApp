@@ -8,10 +8,13 @@ Ext.define('MoodleMobApp.Session', {
 
 	config : {
 		username: '',
+		user: null,
 		course: null,
 		settingsStore: null,
 		usersStore: null,
 		enrolledUsersStore: null,
+		groupsStore: null,
+		groupingsStore: null,
 		manualAccountStore: null,
 		aaiAccountStore: null,
 		coursesStore: null,

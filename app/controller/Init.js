@@ -12,6 +12,8 @@ Ext.define('MoodleMobApp.controller.Init', {
 			'MoodleMobApp.store.AaiAccount',
 			'MoodleMobApp.store.Users',
 			'MoodleMobApp.store.EnrolledUsers',
+			'MoodleMobApp.store.Groups',
+			'MoodleMobApp.store.Groupings',
 			'MoodleMobApp.store.Courses',
 			'MoodleMobApp.store.CalendarEvents',
 			'MoodleMobApp.store.CourseSections',
@@ -74,6 +76,16 @@ Ext.define('MoodleMobApp.controller.Init', {
 		var enrolled_users_store = Ext.create('MoodleMobApp.store.EnrolledUsers');
 		enrolled_users_store.load();
 		MoodleMobApp.Session.setEnrolledUsersStore(enrolled_users_store);
+
+		// create groups store
+		var groups_store = Ext.create('MoodleMobApp.store.Groups');
+		groups_store.load();
+		MoodleMobApp.Session.setGroupsStore(groups_store);
+
+		// create groupingings store
+		var groupings_store = Ext.create('MoodleMobApp.store.Groupings');
+		groupings_store.load();
+		MoodleMobApp.Session.setGroupingsStore(groupings_store);
 	
 		// create courses store
 		var courses_store = Ext.create('MoodleMobApp.store.Courses');

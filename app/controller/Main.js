@@ -32,6 +32,8 @@ Ext.define('MoodleMobApp.controller.Main', {
 		});
 		this.updateStatus = {
 			'users': false,
+			'groups': false,
+			'groupings': false,
 			'calendarEvents': false,
 			'courseSections': false,
 			'courseModules': false,
@@ -88,6 +90,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 					}
 					
 					store.each(function(record){
+						if(record.get('username') == MoodleMobApp.Session.getUsername()) {
+							MoodleMobApp.Session.setUser(record);
+						}
 						MoodleMobApp.Session.getEnrolledUsersStore().add({'courseid': course.get('id'), 'userid': record.get('id')});
 						// if this user is not in the store add it 
 						// else 
@@ -134,14 +139,77 @@ Ext.define('MoodleMobApp.controller.Main', {
 	},
 
 	updateDataStores: function(course) {
+		this.updateGroups(course);
+		this.updateGroupings(course);
 		this.updateCalendarEvents(course);
 		this.updateCourseSections(course);
 		this.updateCourseModules(course);
 	},
 
+	updateGroups: function(course){
+		MoodleMobApp.WebService.getGroups(course.getData(), MoodleMobApp.Session.getUser().getData()).on(
+			'load',
+			function(gstore){
+				// -log-
+				if(MoodleMobApp.Config.getVerbose()) {
+					MoodleMobApp.log('UPDATING COURSE GROUPS: ' + course.get('name') + '; ID: ' + course.get('id'));
+				}
+				MoodleMobApp.Session.getGroupsStore().each(
+					function(record){
+						if(record.get('courseid') == course.get('id')) {
+							MoodleMobApp.Session.getGroupsStore().remove(record);
+							return true;
+						}
+					}
+				);
+
+				gstore.each(function(record){
+					record.set('courseid', course.get('id'));
+					MoodleMobApp.Session.getGroupsStore().add(record);
+				});
+				MoodleMobApp.Session.getGroupsStore().sync();
+				// groups events updated
+				this.updateStatus['groups'] = true;
+			},
+			this,
+			{single: true}
+		);
+	},
+
+	updateGroupings: function(course){
+		MoodleMobApp.WebService.getGroupings(course.getData(), MoodleMobApp.Session.getUser().getData()).on(
+			'load',
+			function(gstore){
+				// -log-
+				if(MoodleMobApp.Config.getVerbose()) {
+					MoodleMobApp.log('UPDATING COURSE GROUPS: ' + course.get('name') + '; ID: ' + course.get('id'));
+				}
+				MoodleMobApp.Session.getGroupingsStore().each(
+					function(record){
+						if(record.get('courseid') == course.get('id')) {
+							MoodleMobApp.Session.getGroupingsStore().remove(record);
+							return true;
+						}
+					}
+				);
+
+				gstore.each(function(record){
+					record.set('courseid', course.get('id'));
+					MoodleMobApp.Session.getGroupingsStore().add(record);
+				});
+				MoodleMobApp.Session.getGroupingsStore().sync();
+				// groupings events updated
+				this.updateStatus['groupings'] = true;
+			},
+			this,
+			{single: true}
+		);
+	},
+
+
 	updateCalendarEvents: function(course){
 		MoodleMobApp.WebService.getCalendarEvents(course.getData()).on(
-			'load', 
+			'load',
 			function(cstore){
 				// -log-
 				if(MoodleMobApp.Config.getVerbose()) {
@@ -168,7 +236,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 
 	updateCourseSections: function(course){
 		MoodleMobApp.WebService.getCourseSections(course.getData()).on(
-			'load', 
+			'load',
 			function(sstore){
 				// -log-
 				if(MoodleMobApp.Config.getVerbose()) {
@@ -196,7 +264,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 	updateCourseModules: function(course) {
 		// update modules
 		MoodleMobApp.WebService.getCourseModules(course.getData()).on(
-			'load', 
+			'load',
 			function(mstore){
 				// -log-
 				if(MoodleMobApp.Config.getVerbose()) {
@@ -826,7 +894,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 			MoodleMobApp.log('UPDATING GRADEITEMS STORE');
 		}
 
-		var user = MoodleMobApp.Session.getUsersStore().findRecord('username', MoodleMobApp.Session.getUsername(), null, false, true, true);
+		//var user = MoodleMobApp.Session.getUsersStore().findRecord('username', MoodleMobApp.Session.getUsername(), null, false, true, true);
 
 		MoodleMobApp.WebService.getGradeItems(course.getData(), course.get('token')).on(
 			'load',
@@ -886,7 +954,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 			MoodleMobApp.log('UPDATING GRADES STORE');
 		}
 
-		var user = MoodleMobApp.Session.getUsersStore().findRecord('username', MoodleMobApp.Session.getUsername(), null, false, true, true);
+		//var user = MoodleMobApp.Session.getUsersStore().findRecord('username', MoodleMobApp.Session.getUsername(), null, false, true, true);
 
 		MoodleMobApp.WebService.getGrades(course.getData(), course.get('token')).on(
 			'load',

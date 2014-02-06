@@ -17,6 +17,7 @@ Ext.define('MoodleMobApp.model.Module', {
 			{ name: 'section', type: 'int' },
 			{ name: 'order', type: 'int' },
 			{ name: 'groupmode', type: 'int' }, // 0: no groups, 1: separated groups, 2: visible groups
+			{ name: 'groupingid', type: 'int' },
 			{ name: 'timemodified', type: 'int' },
 			{ name: 'isnew', type: 'boolean' },
 			{ name: 'isupdated', type: 'boolean' },

@@ -73,20 +73,32 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		this.checkIfEditable();
 	},
 
-	// you are here; next step is to implement the support for grupings.
-	// Right now only support for groups is available.
 	getForumDiscussions: function() {
 		// filter modules
 		var forum_discussions = Ext.create('Ext.data.Store', { model: 'MoodleMobApp.model.ForumDiscussion' });
 		if(this.selected_forum.get('groupmode') == MoodleMobApp.Config.getSeparatedGroupsFlag()) {
+			// groups check
 			var groups = this.getGroups();
+			var groupings = this.getGroupings();
 			MoodleMobApp.Session.getForumDiscussionsStore().each(
 				function(record) {
 					if( parseInt(record.get('forum')) === parseInt(this.selected_forum.get('instanceid')) ) {
+						var visibleByGroup = false;
 						for(var i=0; i < groups.getCount(); ++i) {
-							if(groups.getAt(i).get('id') == record.get('groupid')) {
+							if(	parseInt(groups.getAt(i).get('id')) == parseInt(record.get('groupid')) ) {
 								forum_discussions.add(record);
+								visibleByGroup = true;
 								break;
+							}
+						}
+
+						// if the discusison is not visible by any group the check the grouping
+						if(!visibleByGroup && parseInt(record.get('groupid')) == -1) {
+							for(var i=0; i < groupings.getCount(); ++i) {
+								if(	parseInt(groupings.getAt(i).get('id')) == parseInt(this.selected_forum.get('groupingid')) ) {
+									forum_discussions.add(record);
+									break;
+								}
 							}
 						}
 					}
@@ -114,6 +126,18 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			}, this
 		);
 		return groups;
+	},
+
+	getGroupings: function() {
+		var groupings = Ext.create('Ext.data.Store', { model: 'MoodleMobApp.model.Group' });
+		MoodleMobApp.Session.getGroupingsStore().each(
+			function(record) {
+				if( parseInt(record.get('courseid')) === parseInt(this.selected_forum.get('courseid')) ) {
+					groupings.add(record);
+				}
+			}, this
+		);
+		return groupings;
 	},
 
 	checkIfEditable: function() {

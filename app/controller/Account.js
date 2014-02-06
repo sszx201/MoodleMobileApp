@@ -20,19 +20,13 @@ Ext.define('MoodleMobApp.controller.Account', {
 	// in the localestorage. If the server responds with
 	// an exception then an alert message is displayed.
 	authenticate: function(auth_url, parameters) {
-		
-		var url_encoded_params = '?';
-		Ext.iterate(parameters, function(key, value){
-			url_encoded_params += key+'='+value+'&';	
-		});
-		// remove the last & char
-		url_encoded_params = url_encoded_params.slice(0,-1);
-
 		var store = Ext.create('Ext.data.Store', {
-			model: 'MoodleMobApp.model.Course',
+			model: 'MoodleMobApp.model.Profile',
 			proxy: {
 				type: 'ajax',
-				url : auth_url+url_encoded_params, 
+				actionMethods: { read : 'POST' },
+				url: auth_url,
+				extraParams: parameters,
 				pageParam: false,
 				startParam: false,
 				limitParam: false,
@@ -43,47 +37,28 @@ Ext.define('MoodleMobApp.controller.Account', {
 			}
 		});
 
-
 		store.on('load',
 			function(store, records, success) {
 				// check if there are any exceptions 
 				if(this.first() == undefined){
 					Ext.Msg.alert(
 						'Authentication Failed',
-						'The Authentication has failed. Please check your user data.'
+						'The Authentication has failed. Please check your username and password.'
 					);
-				} else if( this.first().raw.exception == undefined) {
+				} else if( this.first().get('user') != undefined) {
 					// store the username in the Session
-					MoodleMobApp.Session.setUsername(parameters.username);
+					MoodleMobApp.Session.setUser(Ext.create('MoodleMobApp.model.User', this.first().get('user')));
 
-					var courses_number = MoodleMobApp.Session.getCoursesStore().getCount();
+					// remove old entries
+					MoodleMobApp.Session.getCoursesStore().removeAll();
+					MoodleMobApp.Session.getCoursesStore().getProxy().clear();
 
-					if(courses_number == 0) {
-						this.each(function(course) {
-								course.set('isnew', true);
-								MoodleMobApp.Session.getCoursesStore().add(course);
-						});
-					} else {
-						this.each(function(course) {
-								//course.set('modulestatus', 'unsync');
-								course.set('modulestatus', '<img src="resources/images/sync.png" />');
-								if(MoodleMobApp.Session.getCoursesStore().find('id', course.get('id')) == -1) {
-									course.set('isnew', true);
-								} else {
-									course.set('isnew', false);
-								}
-						});
-						
-						// remove old entries
-						MoodleMobApp.Session.getCoursesStore().removeAll();
-						MoodleMobApp.Session.getCoursesStore().getProxy().clear();
-
-						this.each(function(course) {
-							course.setDirty();
-							MoodleMobApp.Session.getCoursesStore().add(course);
-						});
+					var courses = this.first().get('courses');
+					// add the new entries
+					for(var id in courses) {
+						courses[id].modulestatus = '<img src="resources/images/sync.png" />';
+						MoodleMobApp.Session.getCoursesStore().add(courses[id]);
 					}
-
 					// store data
 					MoodleMobApp.Session.getCoursesStore().sync();
 				} else {

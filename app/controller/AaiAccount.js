@@ -80,15 +80,15 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 		// if the account is the active one
 		// authenticate and get the course data
 		if( this.isActiveAccount() ) {
-			var parameters = new Object();
-			parameters.username = MoodleMobApp.Session.getAaiAccountStore().first().get('username');
-			parameters.password = MoodleMobApp.Session.getAaiAccountStore().first().get('password');
-			parameters.idp = MoodleMobApp.Session.getAaiAccountStore().first().get('homeorganisation');
-
-			var auth_url = MoodleMobApp.Config.getAaiAuthUrl();
-
 			// proceed if the connection is available
 			if(MoodleMobApp.app.isConnectionAvailable()) {
+				var parameters = {
+					username: MoodleMobApp.Session.getAaiAccountStore().first().get('username'),
+					password: MoodleMobApp.Session.getAaiAccountStore().first().get('password'),
+					idp: MoodleMobApp.Session.getAaiAccountStore().first().get('homeorganisation')
+				};
+				var auth_url = MoodleMobApp.Config.getAaiAuthUrl();
+
 				this.authenticate(auth_url, parameters);
 			}
 		}

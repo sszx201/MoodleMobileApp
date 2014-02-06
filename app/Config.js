@@ -28,7 +28,5 @@ Ext.define('MoodleMobApp.Config', {
 		noGroupsFlag: 0,
 		separatedGroupsFlag: 1,
 		visibleGroupsFlag: 2,
-		// debuging
-		verbose: false
 	}
 });

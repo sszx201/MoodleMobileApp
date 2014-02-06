@@ -64,14 +64,14 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 		// if the account is the active one
 		// authenticate and get the course data
 		if(this.isActiveAccount()) {
-
-			var parameters = new Object();
-			parameters.username = MoodleMobApp.Session.getManualAccountStore().first().get('username');
-			parameters.password = MoodleMobApp.Session.getManualAccountStore().first().get('password');
-
-			var auth_url = MoodleMobApp.Config.getManualAuthUrl();
 			// proceed if the connection is available
 			if(MoodleMobApp.app.isConnectionAvailable()) {
+				var parameters = {
+					username: MoodleMobApp.Session.getManualAccountStore().first().get('username'),
+					password: MoodleMobApp.Session.getManualAccountStore().first().get('password')
+				};
+				var auth_url = MoodleMobApp.Config.getManualAuthUrl();
+
 				this.authenticate(auth_url, parameters);
 			}
 		}

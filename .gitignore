@@ -2,3 +2,5 @@
 resources/sass/.sass-cache/*
 data/
 .git-ftp-ignore
+build
+bootstrap.js

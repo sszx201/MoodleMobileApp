@@ -6,7 +6,7 @@ Ext.define("MoodleMobApp.view.Choice", {
 	requires: [
 		'Ext.TitleBar',
 		'Ext.form.FieldSet',
-		'Ext.form.Radio',
+		'Ext.form.Radio'
 	],
 	
 	config: {

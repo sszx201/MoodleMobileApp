@@ -2,7 +2,7 @@ Ext.define('MoodleMobApp.controller.Account', {
 	extend: 'Ext.app.Controller',
 
 	requires: [
-		'MoodleMobApp.model.Course',
+		'MoodleMobApp.model.Course'
 	],
    	
 	config: {

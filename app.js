@@ -2,7 +2,7 @@
 Ext.Loader.setPath({
     'Ext': 'touch/src',
     'MoodleMobApp': 'app',
-    'Supsi':   'js/supsi'
+    'Supsi':   'extensions/supsi'
 });
 //</debug>
 

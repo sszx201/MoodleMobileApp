@@ -320,7 +320,7 @@
 			this.docContainer.dom.src = scormPage;
 		},
 		loadTemplate: function(){
-			this.docContainer.dom.src = localStorage['filesystemOrigin'] + 'ScormPanelTemplate.html';
+			this.docContainer.dom.src = localStorage['filesystemOrigin'] + 'extensions/supsi/template/ScormPanelTemplate.html';
 		},
 		/**
 		 * @private

@@ -122,19 +122,11 @@
 		Supsi.Utils.log('files unzipped in ',  dir);
 		var scormExtractedFileFlag = dir + '/_scorm_extracted_';
 		// success function
-		var downloadSuccessFunc = function(result){
-			MoodleMobApp.app.hideLoadMask('');
+		var downloadSuccessFunc = function(file) {
+			MoodleMobApp.app.showLoadMask('Extracting');
 			console.log('download success function start');
-			//MoodleMobApp.app.hideLoadMask();
-			var filePath = dir + '/' + file.name;
 			var extractionSuccessFunc = function(targetPath) {
-				var astr = '';
-					for(var k = 0, l = arguments.length; k < l; k++){
-						astr += arguments[k] + ',';
-					}
-					console.log('extractionSuccessFunc arguments ' + astr);
-					
-					console.log('extractionSuccessFunc ' + targetPath);
+					MoodleMobApp.app.hideLoadMask('');
 					window.requestFileSystem(
 						LocalFileSystem.PERSISTENT, 0,
 						function onFileSystemSuccess(fileSystem) {
@@ -147,13 +139,13 @@
 										exclusive: false
 									},
 									function() {
-										// console.log('finalized the scorm path = ', sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1) );
-										// console.log('before parseScorm ' + targetPath);
-
 										that.parseScorm(targetPath + '/');
 									},
 									function() {
-										console.log('cannot finalize the scorm');
+										Ext.Msg.alert(
+											'Scorm registering',
+											'Failed to register the downloaded score. Please check the storage available space.'
+										);
 									}
 								);
 						},
@@ -163,14 +155,33 @@
 								'File system error',
 								'Cannot access the local filesystem.'
 							);
-						});
+						}
+					);
 			};
 			var extractionFailFunc = function(error) {
-					Supsi.Utils.log('ERROR ', error);
+					MoodleMobApp.app.hideLoadMask('');
+					Ext.Msg.alert(
+						'Archive extracting',
+						'Extracting the archive has failed. Please check the storage available space.'
+					);
 			};
-						// start the extraction
 
-			MoodleMobApp.app.unzip(filePath, extractionSuccessFunc, extractionFailFunc);
+			// start the extraction
+			var outputDirectory = file.fullPath.substring(0, file.fullPath.lastIndexOf('/'));
+			zip.unzip(
+				file.fullPath,
+				outputDirectory,
+				function(arg){
+					console.log(' >>>>>>>>>>> callback called with arg: ' + arg);
+					console.log(' >>>>>>>>>>> extracting filepath: ' + file.fullPath);
+					console.log(' >>>>>>>>>>> extracting directory output: ' + outputDirectory);
+					if(arg == 0) { // success
+						extractionSuccessFunc(outputDirectory);
+					} else {
+						extractionFailFunc();
+					}
+				}
+			);
 		};
 
 		MoodleMobApp.WebService.getScorm(

@@ -34,6 +34,7 @@ function addExtensions() {
 			failFunc
 		);
 	};
+
 	//////////////////////////////////////////////////////////////////////////
 	// This function opens a url in the default browser app
 	//////////////////////////////////////////////////////////////////////////
@@ -42,6 +43,7 @@ function addExtensions() {
 			console.log('opening url '+urladdr);
 			window.open(urladdr, '_blank', 'enableViewportScale=yes');
 	};
+
 	//////////////////////////////////////////////////////////////////////////
 	// this function opens a file by using the web intent mechanism
 	//////////////////////////////////////////////////////////////////////////
@@ -74,26 +76,6 @@ function addExtensions() {
 			function () {
 				Ext.Msg.alert('URL Error', 'Failed to open:'+path+' via Android Intent');
 			});
-	};
-
-	//////////////////////////////////////////////////////////////////////////
-	// this function extracts a compressed zip archive 
-	//////////////////////////////////////////////////////////////////////////
-	MoodleMobApp.app.unzip = function(filePath, successFunc, failFunc) {
-		// Implementend in a separated javascript file because depends on 
-		// the external plugin. The plugin is platform related.	
-
-		var ZipClient = new ExtractZipFilePlugin();
-		console.log('**************************** before unzip, filePath = ' + filePath);
-		ZipClient.extractFile('sdcard/'+filePath,
-			function(){
-				var targetPath = '/sdcard/'+filePath;
-				targetPath = targetPath.substring(0, targetPath.lastIndexOf('/'));
-				console.log('23) **************************** targetPath = ' + targetPath);
-				successFunc(targetPath);
-			},
-			failFunc
-		);
 	};
 
 	MoodleMobApp.app.calculateDownloadPercentage = function(progressEvent) {

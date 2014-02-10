@@ -356,14 +356,15 @@ Ext.define('MoodleMobApp.WebService', {
 									document.querySelector('div.progress-bar span').setAttribute('style', 'width: '+percentage+'%');
 								}
 							};
-							//console.log('downloading from: ' + url);
-							//console.log('to: ' + sPath + dir + '/' + file.name);
+							console.log('downloading from: ' + url);
+							console.log('to: ' + sPath + dir + '/' + file.name);
 							fileTransfer.download(
 								url,
 								sPath + dir + '/' + file.name,
 								function(theFile) {
+									console.log('SUCCESS !! from webservice');
 									Ext.Msg.hide();
-									successFunc();
+									successFunc(theFile);
 								},
 								function(error) {
 									Ext.Msg.alert(

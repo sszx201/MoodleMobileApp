@@ -25,6 +25,6 @@ Ext.define('MoodleMobApp.controller.UsageAgreement', {
 
 	registerDisagreement: function() {
 		console.log('user disagreed');
-	},
+	}
 	
 });

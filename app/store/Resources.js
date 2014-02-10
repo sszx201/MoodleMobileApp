@@ -4,7 +4,7 @@ Ext.define('MoodleMobApp.store.Resources', {
 	requires: [
 		'MoodleMobApp.model.Resource',
 		'Ext.data.proxy.LocalStorage'
-		],
+	],
 
 	config: {
 		storeId: 'resources',
@@ -13,7 +13,7 @@ Ext.define('MoodleMobApp.store.Resources', {
 		autoSync: true,
 		proxy : {
 			id: 'resource',
-			type: 'localstorage',
+			type: 'localstorage'
 		}
 	}
 });

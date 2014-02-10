@@ -4,7 +4,7 @@ Ext.define('MoodleMobApp.store.Choices', {
 	requires: [
 		'MoodleMobApp.model.Choice',
 		'Ext.data.proxy.LocalStorage'
-		],
+	],
 
 	config: {
 		storeId: 'choices',
@@ -13,7 +13,7 @@ Ext.define('MoodleMobApp.store.Choices', {
 		autoSync: true,
 		proxy : {
 			id: 'choice',
-			type: 'localstorage',
+			type: 'localstorage'
 		}
 	}
 });

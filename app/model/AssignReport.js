@@ -4,7 +4,7 @@ Ext.define('MoodleMobApp.model.AssignReport', {
 	config: {
 		fields: [
 			{ name: 'assign', type: 'auto' },
-			{ name: 'submission', type: 'auto' },
+			{ name: 'submission', type: 'auto' }
 		]
 	}
 });

@@ -9,7 +9,7 @@ Ext.define("MoodleMobApp.view.UploadAssignment", {
 		'Ext.Button',
 		'Ext.field.Text',
 		'Ext.field.Hidden',
-		'Ext.field.File',
+		'Ext.field.File'
 	],
 
 	controllers: [ ],
@@ -74,7 +74,7 @@ Ext.define("MoodleMobApp.view.UploadAssignment", {
 			{
 				xtype: 'panel',	
 				name: 'intro',
-				html: '',
+				html: ''
 			},
 			{
 				xtype: 'fieldset',
@@ -84,38 +84,38 @@ Ext.define("MoodleMobApp.view.UploadAssignment", {
 						xtype: 'checkboxfield',
 						name: 'isfinal',
 						value: 1,
-						label: 'Final Submission',
+						label: 'Final Submission'
 					},
 					{
 						xtype: 'container',
-						name: 'filelist',
+						name: 'filelist'
 					},
 					{
 						xtype: 'container',
 						layout: 'hbox', 
 						defaults: {
-							padding: 10,
+							padding: 10
 						},
 						items: [
 							{
 								xtype: 'button',
 								text: 'Add File',
 								action: 'addfile',
-								flex: 1,
+								flex: 1
 							},
 							{
 								xtype: 'button',
 								text: 'Submit',
 								ui: 'confirm',
 								action: 'submit',	
-								flex: 1,
-							},
+								flex: 1
+							}
 						] 
 					},
 					{
 						xtype: 'hiddenfield',	
-						name: 'instanceid',
-					},
+						name: 'instanceid'
+					}
 				]
 			},
 			{
@@ -151,6 +151,5 @@ Ext.define("MoodleMobApp.view.UploadAssignment", {
 				html: 'The last submission was the final one.'
 			}
 		]
-	},
-
+	}
 });

@@ -9,7 +9,7 @@ Ext.define("MoodleMobApp.view.ForumPostReply", {
 		'Ext.Button',
 		'Ext.field.Text',
 		'Ext.field.TextArea',
-		'Ext.field.Hidden',
+		'Ext.field.Hidden'
 	],
 
 	controllers: [ ],
@@ -46,7 +46,7 @@ Ext.define("MoodleMobApp.view.ForumPostReply", {
 			{
 				xtype: 'panel',
 				name: 'parentpost',	
-				html: '',
+				html: ''
 			},
 			{
 				xtype: 'fieldset',
@@ -55,29 +55,29 @@ Ext.define("MoodleMobApp.view.ForumPostReply", {
 					{
 						xtype: 'textfield',
 						name: 'subject',
-						label: 'Subject',
+						label: 'Subject'
 					},
 					{
 						xtype: 'textareafield',
 						name: 'reply',
-						label: 'Message',
+						label: 'Message'
 					},
 					{
 						xtype: 'hiddenfield',
-						name: 'id',
+						name: 'id'
 					},
 					{
 						xtype: 'hiddenfield',
-						name: 'discussion',
+						name: 'discussion'
 					},
 					{
 						xtype: 'button',
 						text: 'Save',
 						ui: 'confirm',
-						action: 'savereply',	
-					},
+						action: 'savereply'	
+					}
 				]
-			},
+			}
 		]
 	}
 });

@@ -12,7 +12,7 @@ Ext.define('MoodleMobApp.model.Url', {
 			{ name: 'name', type: 'string' },
 			{ name: 'intro', type: 'string' },
 			{ name: 'timemodified', type: 'int' },
-			{ name: 'url', type: 'string' },
+			{ name: 'url', type: 'string' }
 		]
 	}
 });

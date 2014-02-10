@@ -5,7 +5,7 @@ Ext.define('MoodleMobApp.controller.Settings', {
 		refs: {
 			settings: 'settings',
 			purgeData: 'settings button[action=purgedata]',
-			purgeFiles: 'settings button[action=purgefiles]',
+			purgeFiles: 'settings button[action=purgefiles]'
 		},
 
 		control: {

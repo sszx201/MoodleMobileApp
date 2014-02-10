@@ -509,6 +509,5 @@ Ext.define('MoodleMobApp.WebService', {
 		// request
 		var grade_store = this.request(params, 'MoodleMobApp.model.Grade', 'GET');
 		return grade_store;
-	},
-
+	}
 });

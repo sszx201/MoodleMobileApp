@@ -8,7 +8,7 @@ Ext.define("MoodleMobApp.view.AaiAccount", {
 		'Ext.form.FieldSet',
 		'Ext.field.Text',
 		'Ext.field.Password',
-		'Ext.field.Select',
+		'Ext.field.Select'
 	],
 
 	controllers: [
@@ -47,9 +47,8 @@ Ext.define("MoodleMobApp.view.AaiAccount", {
 						xtype: 'button',
 						text: 'Save',
 						ui: 'confirm',
-						action: 'save',	
+						action: 'save'
 					}
-
 				]
 			}
 		]

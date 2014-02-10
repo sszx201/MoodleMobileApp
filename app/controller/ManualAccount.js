@@ -2,7 +2,7 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 	extend: 'MoodleMobApp.controller.Account',
 
 	requires: [
-		'MoodleMobApp.model.ManualAccount',
+		'MoodleMobApp.model.ManualAccount'
 	],
    	
 	config: {
@@ -75,6 +75,5 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 				this.authenticate(auth_url, parameters);
 			}
 		}
-	},
-
+	}
 });

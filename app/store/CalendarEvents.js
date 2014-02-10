@@ -4,7 +4,7 @@ Ext.define('MoodleMobApp.store.CalendarEvents', {
 	requires: [
 		'MoodleMobApp.model.CalendarEvent',
 		'Ext.data.proxy.LocalStorage'
-		],
+	],
 
 	config: {
 		storeId: 'calendarevents',
@@ -14,7 +14,7 @@ Ext.define('MoodleMobApp.store.CalendarEvents', {
 		//autoSync: true,
 		proxy : {
 			id: 'calendarevent',
-			type: 'localstorage',
+			type: 'localstorage'
 		}
 	}
 });

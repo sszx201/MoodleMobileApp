@@ -10,7 +10,7 @@ Ext.define('MoodleMobApp.model.AssignSubmission', {
 			{ name: 'userfiles', type: 'auto' } ,
 			{ name: 'timecreated', type: 'int' },
 			{ name: 'timemodified', type: 'int' },
-			{ name: 'status', type: 'int' },
+			{ name: 'status', type: 'int' }
 		]
 	}
 });

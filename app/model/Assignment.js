@@ -25,7 +25,7 @@ Ext.define('MoodleMobApp.model.Assignment', {
 			{ name: 'timedue', type: 'int' },
 			{ name: 'timeavailable', type: 'int' },
 			{ name: 'grade', type: 'int' },
-			{ name: 'timemodified', type: 'int' },
+			{ name: 'timemodified', type: 'int' }
 		]
 	}
 });

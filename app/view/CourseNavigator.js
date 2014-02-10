@@ -3,7 +3,7 @@ Ext.define("MoodleMobApp.view.CourseNavigator", {
 	xtype: 'coursenavigator',
 	
 	views:[
-		'MoodleMobApp.view.CourseList',
+		'MoodleMobApp.view.CourseList'
 	],
 
 	config: {
@@ -18,7 +18,7 @@ Ext.define("MoodleMobApp.view.CourseNavigator", {
 					id: 'appBarBtn',
 					//iconCls: 'home',
 					align: 'right',
-					text: 'App Bar',
+					text: 'App Bar'
 				},
 				/*
 				{
@@ -33,7 +33,7 @@ Ext.define("MoodleMobApp.view.CourseNavigator", {
 		},
 		items: [
 			{
-				xtype: 'courselist',
+				xtype: 'courselist'
 			},
 			{
 				xtype: 'container',
@@ -70,21 +70,21 @@ Ext.define("MoodleMobApp.view.CourseNavigator", {
 						xtype: 'button',
 						id: 'partecipantsAppBtn',
 						iconCls: 'team',
-						hidden: true,
+						hidden: true
 					},
 					{
 						xtype: 'button',
 						id: 'gradesAppBtn',
 						iconCls: 'compose',
-						hidden: true,
+						hidden: true
 					},
 					{
 						xtype: 'button',
 						id: 'calendarAppBtn',
 						iconCls: 'calendar',
-						hidden: true,
-					},
-				],
+						hidden: true
+					}
+				]
 			}
 		]
 	}

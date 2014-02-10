@@ -13,7 +13,7 @@ Ext.define('MoodleMobApp.model.Choice', {
 			{ name: 'intro', type: 'string' },
 			{ name: 'options', type: 'auto' },
 			{ name: 'answer', type: 'int' },
-			{ name: 'timemodified', type: 'int' },
+			{ name: 'timemodified', type: 'int' }
 		]
 	}
 });

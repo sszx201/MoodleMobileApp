@@ -14,11 +14,12 @@ Ext.define('MoodleMobApp.controller.Shell', {
    			clear_forum_discussions: 'button[action=clear_forum_discussions_db]',
    			clear_forum_posts: 'button[action=clear_forum_posts_db]',
    			test_child_browser: 'button[action=test_child_browser]',
-   			test_web_intent: 'button[action=test_web_intent]',
+   			test_web_intent: 'button[action=test_web_intent]'
 		},
+
 		control: {
 			run:{ tap: 'runCode' },
-			clear_all: { tap: 'clearAll' },
+			clear_all: { tap: 'clearAll' }
 		}
 	},
 
@@ -80,5 +81,5 @@ Ext.define('MoodleMobApp.controller.Shell', {
 	clearResources: function() {
 		MoodleMobApp.Session.getResourcesStore().removeAll();
 		MoodleMobApp.Session.getResourcesStore().getProxy().clear();
-	},
+	}
 });

@@ -11,7 +11,7 @@ Ext.define('MoodleMobApp.model.Folder', {
 			{ name: 'size', type: 'int' },
 			{ name: 'mime', type: 'string' },
 			{ name: 'type', type: 'string' },
-			{ name: 'url', type: 'string' },
+			{ name: 'url', type: 'string' }
 		]
 	}
 });

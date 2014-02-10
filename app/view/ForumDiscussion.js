@@ -8,14 +8,14 @@ Ext.define("MoodleMobApp.view.ForumDiscussion", {
 			{
 				itemId: 'name',
 				xtype: 'component',
-				cls: 'x-forum-discussion-name',
+				cls: 'x-forum-discussion-name'
 			},
 			{
 				itemId: 'stat',
 				xtype: 'component',
-				cls: 'x-forum-discussion-stat',
+				cls: 'x-forum-discussion-stat'
 			}
-		],
+		]
 	},
 
 	updateRecord: function(record) {

@@ -9,21 +9,19 @@ Ext.define("MoodleMobApp.view.Grade", {
 			{
 				itemId: 'itemname',
 				xtype: 'component',
-				cls: 'x-module-name',
+				cls: 'x-module-name'
 			},
 			{
 				itemId: 'score',
 				xtype: 'component',
-				cls: 'x-module-score',
+				cls: 'x-module-score'
 			},
 			{
 				itemId: 'modName',
 				xtype: 'component',
-				cls: 'x-module-modname',
+				cls: 'x-module-modname'
 			}
-
 		]
-		
 	},
 
 	updateRecord: function(record){
@@ -66,6 +64,6 @@ Ext.define("MoodleMobApp.view.Grade", {
 			score+= '</div>';
 		this.down('#score').setHtml(score);
 		this.down('#modName').setHtml(record.get('itemmodule'));
-	},
+	}
 });
 

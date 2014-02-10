@@ -4,14 +4,14 @@ Ext.define('MoodleMobApp.store.Grades', {
 	requires: [
 		'MoodleMobApp.model.Grade',
 		'Ext.data.proxy.LocalStorage'
-		],
+	],
 
 	config: {
 		storeId: 'grades',
 		model: 'MoodleMobApp.model.Grade',
 		proxy : {
 			id: 'grade',
-			type: 'localstorage',
+			type: 'localstorage'
 		}
 	}
 });

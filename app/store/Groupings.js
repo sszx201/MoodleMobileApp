@@ -4,7 +4,7 @@ Ext.define('MoodleMobApp.store.Groupings', {
 	requires: [
 		'MoodleMobApp.model.Grouping',
 		'Ext.data.proxy.LocalStorage'
-		],
+	],
 
 	config: {
 		storeId: 'groupings',
@@ -14,7 +14,7 @@ Ext.define('MoodleMobApp.store.Groupings', {
 		//autoSync: true,
 		proxy : {
 			id: 'grouping',
-			type: 'localstorage',
+			type: 'localstorage'
 		}
 	}
 });

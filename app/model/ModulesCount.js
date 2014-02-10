@@ -5,7 +5,7 @@ Ext.define('MoodleMobApp.model.ModulesCount', {
 		fields: [
 			{
 				name: 'courseid', type: 'int',
-				name: 'modulescount', type: 'int',
+				name: 'modulescount', type: 'int'
 			}
 		]
 	}

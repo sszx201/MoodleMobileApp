@@ -4,7 +4,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 	config: {
 		models: [
 			'MoodleMobApp.model.Module',
-			'MoodleMobApp.model.ModulesCount',
+			'MoodleMobApp.model.ModulesCount'
 		],
 
 		views: [
@@ -15,7 +15,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			'MoodleMobApp.view.Grades',
 			'MoodleMobApp.view.Grade',
 			'MoodleMobApp.view.CalendarEvents',
-			'MoodleMobApp.view.CalendarEvent',
+			'MoodleMobApp.view.CalendarEvent'
 		],
 
 		refs: {
@@ -38,7 +38,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			selectAllPartecipantsButton: 'partecipants button[action=selectall]',
 			contactPartecipantsButton: 'partecipants button[action=contactpartecipants]',
 			grades: 'grades',
-			calendar: 'calendarevents',
+			calendar: 'calendarevents'
 		},
 
 		control: {
@@ -56,7 +56,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			moduleList: { itemtap: 'selectModule' },
 			contactPartecipantsButton: { tap: 'contactPartecipants' },
 			clearPartecipantsSelectionButton: { tap: 'clearPartecipantsSelection' },
-			selectAllPartecipantsButton: { tap: 'selectAllPartecipants' },
+			selectAllPartecipantsButton: { tap: 'selectAllPartecipants' }
 		}
 	},
 

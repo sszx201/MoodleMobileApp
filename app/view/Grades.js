@@ -8,6 +8,6 @@ Ext.define("MoodleMobApp.view.Grades", {
 		emptyText: 'No grades available.',
 		useComponents: true,
 		defaultType: 'grade',
-		grouped: true,
-	},
+		grouped: true
+	}
 });

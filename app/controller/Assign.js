@@ -6,11 +6,11 @@ Ext.define('MoodleMobApp.controller.Assign', {
 			'MoodleMobApp.model.Assign',
 			'MoodleMobApp.model.AssignSubmission',
 			'MoodleMobApp.model.AssignReport',
-			'MoodleMobApp.model.FileUploadResponse',
+			'MoodleMobApp.model.FileUploadResponse'
 		],
 
 		views: [
-			'MoodleMobApp.view.Assign',
+			'MoodleMobApp.view.Assign'
 		],
 
 		refs: {
@@ -18,14 +18,14 @@ Ext.define('MoodleMobApp.controller.Assign', {
 			moduleList: 'modulelist',
 			assign: 'assign',
 			addFileSlotButton: 'assign button[action=addfile]',
-			submitButton: 'assign button[action=submit]',
+			submitButton: 'assign button[action=submit]'
 		},
 
 		control: {
 			// generic controls
 			moduleList: { itemtap: 'selectModule' },
 			addFileSlotButton: { tap: 'addFileSlot' },
-			submitButton: { tap: 'submitAssign' },
+			submitButton: { tap: 'submitAssign' }
 		}
 	},
 
@@ -34,7 +34,7 @@ Ext.define('MoodleMobApp.controller.Assign', {
 	},
 
 	selectModule: function(view, index, target, record) {
-		if(record.get('modname') === 'assign'){
+		if(record.get('modname') === 'assign') {
 			this.selectAssign(record);
 		}
 	},
@@ -209,9 +209,5 @@ Ext.define('MoodleMobApp.controller.Assign', {
 				submit(submission_data);
 			}
 		}
-
-
-	},
-
-
+	}
 });

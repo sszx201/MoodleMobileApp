@@ -3,24 +3,24 @@ Ext.define('MoodleMobApp.controller.Choice', {
 
 	config: {
 		models: [
-			'MoodleMobApp.model.Choice',
+			'MoodleMobApp.model.Choice'
 		],
 
 		views: [
 			'MoodleMobApp.view.Module',
-			'MoodleMobApp.view.Choice',
+			'MoodleMobApp.view.Choice'
 		],
 
 		refs: {
 			navigator: 'coursenavigator',
 			moduleList: 'modulelist',
 			choice: 'choice',
-			submitBtn: 'choice button[action=submit]',
+			submitBtn: 'choice button[action=submit]'
 		},
 
 		control: {
 			moduleList: { itemtap: 'selectModule' },
-			submitBtn: { tap: 'submitChoice' },
+			submitBtn: { tap: 'submitChoice' }
 		}
 	},
 
@@ -105,5 +105,5 @@ Ext.define('MoodleMobApp.controller.Choice', {
 	backToTheCourseModulesList: function() {
 		// remove the view from the navigator
 		this.getNavigator().pop();
-	},
+	}
 });

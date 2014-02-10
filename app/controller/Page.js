@@ -3,17 +3,17 @@ Ext.define('MoodleMobApp.controller.Page', {
     
     config: {
 		views: [
-			'MoodleMobApp.view.Page',
+			'MoodleMobApp.view.Page'
 		],
 
         refs: {
 			navigator: 'coursenavigator',
 			module: 'modulelist',
-			page: 'page',
+			page: 'page'
         },
         control: {
 			// generic controls
-			module: { itemtap: 'selectModule' },
+			module: { itemtap: 'selectModule' }
         }
     },
     
@@ -30,8 +30,8 @@ Ext.define('MoodleMobApp.controller.Page', {
 			var page = MoodleMobApp.Session.getPageStore().findRecord('id', record.get('instanceid'));
 			this.getNavigator().push({
 				xtype: 'page',
-				record: page,
+				record: page
 			});
 		}
-	},
+	}
 });

@@ -14,18 +14,18 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 						xtype: 'image',
 						height: 35,
 						width: 35,
-						cls: 'x-avatar',
+						cls: 'x-avatar'
 					},
 					{
 						itemId: 'firstname',
 						xtype: 'component',
-						cls: 'x-post-firstname',
+						cls: 'x-post-firstname'
 					},
 					{
 						itemId: 'lastname',
 						xtype: 'component',
-						cls: 'x-post-lastname',
-					},
+						cls: 'x-post-lastname'
+					}
 				],
 				layout: {
 					type: 'hbox',
@@ -35,12 +35,12 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 			{
 				itemId: 'subject',
 				xtype: 'component',
-				cls: 'x-post-subject',
+				cls: 'x-post-subject'
 			},
 			{
 				itemId: 'message',
 				xtype: 'component',
-				cls: 'x-post-message',
+				cls: 'x-post-message'
 			},
 			{
 				itemId: 'replyButton',
@@ -50,11 +50,9 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 				docked: 'bottom',
 				ui: 'confirm',
 				hidden: true,
-				cls: 'x-post-message',
+				cls: 'x-post-message'
 			}
-		],
-
-
+		]
 	},
 
 	updateRecord: function(record){
@@ -88,7 +86,6 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 		} else {
 			this.down('#message').setHtml(record.get('message'));
 		}
-	},
-
+	}
 });
 

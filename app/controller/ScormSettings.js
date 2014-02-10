@@ -20,11 +20,13 @@ Ext.define('MoodleMobApp.controller.ScormSettings', {
 			}
 		}
 	},
+
 	increaseFont: function(){
 		var currentFontSize = Math.min(+(localStorage['ScormReaderFontSize'] || '1') +.1, 1.5);
 		this.getScormPanel().setFontSize(currentFontSize);
 		localStorage['ScormReaderFontSize'] = currentFontSize;
 	},
+
 	reduceFont: function(){
 		var currentFontSize = Math.max(+(localStorage['ScormReaderFontSize'] || '1') -.1, .8);
 		this.getScormPanel().setFontSize(currentFontSize);

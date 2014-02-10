@@ -19,24 +19,24 @@ Ext.define("MoodleMobApp.view.Partecipants", {
 					{
 						xtype: 'button',	
 						text: 'Clear',
-						action: 'clearselection',
+						action: 'clearselection'
 					},
 					{
 						xtype: 'button',	
 						text: 'All',
-						action: 'selectall',
+						action: 'selectall'
 					},
 					{
 						xtype: 'button',	
 						text: 'Contact',
-						action: 'contactpartecipants',
+						action: 'contactpartecipants'
 					},
 					{
 						xtype: 'spacer'
-					},
+					}
 				]
-			},
-		],
-	},
+			}
+		]
+	}
 });
 

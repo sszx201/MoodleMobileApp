@@ -4,7 +4,7 @@ Ext.define('MoodleMobApp.store.Folders', {
 	requires: [
 		'MoodleMobApp.model.Folder',
 		'Ext.data.proxy.LocalStorage'
-		],
+	],
 
 	config: {
 		storeId: 'folders',
@@ -13,7 +13,7 @@ Ext.define('MoodleMobApp.store.Folders', {
 		autoSync: true,
 		proxy : {
 			id: 'folder',
-			type: 'localstorage',
+			type: 'localstorage'
 		}
 	}
 });

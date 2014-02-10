@@ -20,7 +20,7 @@ Ext.define('MoodleMobApp.model.Grade', {
 			{ name: 'timecreated', type: 'int' },
 			{ name: 'timemodified', type: 'int' },
 			{ name: 'isnew', type: 'boolean' },
-			{ name: 'isupdated', type: 'boolean' },
+			{ name: 'isupdated', type: 'boolean' }
 		]
 	}
 });

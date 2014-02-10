@@ -9,14 +9,14 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 			{
 				itemId: 'name',
 				xtype: 'component',
-				cls: 'x-folder-entry-name',
+				cls: 'x-folder-entry-name'
 			},
 			{
 				itemId: 'mime',
 				xtype: 'component',
-				cls: 'x-folder-entry-mime',
+				cls: 'x-folder-entry-mime'
 			}
-		],
+		]
 	},
 
 	updateRecord: function(record) {

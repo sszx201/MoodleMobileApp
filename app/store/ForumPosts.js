@@ -4,7 +4,7 @@ Ext.define('MoodleMobApp.store.ForumPosts', {
 	requires: [
 		'MoodleMobApp.model.ForumPost',
 		'Ext.data.proxy.LocalStorage'
-		],
+	],
 
 	config: {
 		storeId: 'forumposts',
@@ -13,7 +13,7 @@ Ext.define('MoodleMobApp.store.ForumPosts', {
 		//autoSync: true,
 		proxy : {
 			id: 'forumpost',
-			type: 'localstorage',
-		},
+			type: 'localstorage'
+		}
 	}
 });

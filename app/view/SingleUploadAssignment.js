@@ -9,7 +9,7 @@ Ext.define("MoodleMobApp.view.SingleUploadAssignment", {
 		'Ext.Button',
 		'Ext.field.Text',
 		'Ext.field.Hidden',
-		'Ext.field.File',
+		'Ext.field.File'
 	],
 
 	controllers: [ ],
@@ -67,7 +67,7 @@ Ext.define("MoodleMobApp.view.SingleUploadAssignment", {
 			{
 				xtype: 'panel',	
 				name: 'intro',
-				html: '',
+				html: ''
 			},
 			{
 				xtype: 'fieldset',
@@ -75,18 +75,18 @@ Ext.define("MoodleMobApp.view.SingleUploadAssignment", {
 				items: [	
 					{
 						xtype: 'filefield',
-						name: 'filepath',
+						name: 'filepath'
 					},
 					{
 						xtype: 'hiddenfield',	
-						name: 'instanceid',
+						name: 'instanceid'
 					},
 					{
 						xtype: 'button',
 						text: 'Submit',
 						ui: 'confirm',
-						action: 'submit',	
-					},
+						action: 'submit'
+					}
 				]
 			},
 			{
@@ -115,5 +115,4 @@ Ext.define("MoodleMobApp.view.SingleUploadAssignment", {
 			}
 		]
 	}
-
 });

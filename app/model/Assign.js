@@ -29,7 +29,7 @@ Ext.define('MoodleMobApp.model.Assign', {
 			{ name: 'revealidentities', type: 'int' },
 			{ name: 'grade', type: 'int' },
 			{ name: 'plugconf', type: 'auto' },
-			{ name: 'timemodified', type: 'int' },
+			{ name: 'timemodified', type: 'int' }
 		]
 	}
 });

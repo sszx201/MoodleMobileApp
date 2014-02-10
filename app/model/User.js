@@ -17,7 +17,7 @@ Ext.define('MoodleMobApp.model.User', {
 			{ name: 'country', type: 'string' },
 			{ name: 'lang', type: 'string' },
 			{ name: 'avatar', type: 'string' },
-			{ name: 'timemodified', type: 'string' },
+			{ name: 'timemodified', type: 'string' }
 		]
 	}
 });

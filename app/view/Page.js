@@ -4,7 +4,7 @@ Ext.define("MoodleMobApp.view.Page", {
 	fullscreen: true,
 	
 	requires: [
-		'Ext.TitleBar',
+		'Ext.TitleBar'
 	],
 	
 	config: {
@@ -16,20 +16,20 @@ Ext.define("MoodleMobApp.view.Page", {
 				xtype: 'panel',	
 				name: 'name',
 				cls: 'name',
-				html: '',
+				html: ''
 			},
 			{
 				xtype: 'panel',	
 				name: 'intro',
 				cls: 'intro',
-				html: '',
+				html: ''
 			},
 			{
 				xtype: 'panel',	
 				name: 'content',
 				cls: 'content',
-				html: '',
-			},
+				html: ''
+			}
 		],
 		listeners: {
 			initialize: function() {

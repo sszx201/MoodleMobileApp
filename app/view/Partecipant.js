@@ -16,18 +16,18 @@ Ext.define("MoodleMobApp.view.Partecipant", {
 						height: 35,
 						width: 35,
 						docked: 'left',
-						cls: 'x-avatar',
+						cls: 'x-avatar'
 					},
 					{
 						itemId: 'firstname',
 						xtype: 'component',
-						cls: 'x-partecipant-firstname',
+						cls: 'x-partecipant-firstname'
 					},
 					{
 						itemId: 'lastname',
 						xtype: 'component',
-						cls: 'x-partecipant-lastname',
-					},
+						cls: 'x-partecipant-lastname'
+					}
 				],
 				layout: {
 					type: 'hbox',
@@ -37,16 +37,15 @@ Ext.define("MoodleMobApp.view.Partecipant", {
 			{
 				itemId: 'email',
 				xtype: 'component',
-				cls: 'x-partecipant-email',
+				cls: 'x-partecipant-email'
 			},
 			{
 				itemId: 'selection',
 				xtype: 'checkboxfield',
 				docked: 'right',
-				cls: 'x-partecipant-select',
-			},
-		],
-		
+				cls: 'x-partecipant-select'
+			}
+		]
 	},
 
 	updateRecord: function(record) {
@@ -59,6 +58,5 @@ Ext.define("MoodleMobApp.view.Partecipant", {
 		this.down('#lastname').setHtml(record.get('lastname'));
 		this.down('#email').setHtml(record.get('email'));
 	}
-
 });
 

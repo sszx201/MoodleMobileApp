@@ -5,20 +5,20 @@ Ext.define('MoodleMobApp.controller.Folder', {
 		models: [ ],
 		views: [
 			'MoodleMobApp.view.Folder',
-			'MoodleMobApp.view.FolderEntry',
+			'MoodleMobApp.view.FolderEntry'
 		],
 
 
 		refs: {
 			navigator: 'coursenavigator',
 			module: 'modulelist',
-			folder: 'folder',
+			folder: 'folder'
 		},
 
 		control: {
 			// generic controls
 			module: { itemtap: 'selectModule' },
-			folder: { itemtap: 'selectFolderEntry' },
+			folder: { itemtap: 'selectFolderEntry' }
 		}
 	},
 
@@ -77,7 +77,7 @@ Ext.define('MoodleMobApp.controller.Folder', {
 			'rootid': folder.get('rootid'),
 			'parent': folder.get('name'),
 			'mime': folder.get('mime'),
-			'type': folder.get('type'),
+			'type': folder.get('type')
 		});
 		folders_store.add(upper_folder_entry);
 		folders_store.sort([{property: 'type'}, {property: 'name'}]);
@@ -137,7 +137,7 @@ Ext.define('MoodleMobApp.controller.Folder', {
 				'rootid': currentFolder.get('rootid'),
 				'parent': currentFolder.get('name'),
 				'mime': currentFolder.get('mime'),
-				'type': currentFolder.get('type'),
+				'type': currentFolder.get('type')
 			};
 			var upper_folder_entry = Ext.create('MoodleMobApp.model.Folder', upper_folder_model);
 			MoodleMobApp.Session.getFoldersStore().add(upper_folder_entry);

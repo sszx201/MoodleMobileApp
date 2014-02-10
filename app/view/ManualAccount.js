@@ -32,9 +32,8 @@ Ext.define("MoodleMobApp.view.ManualAccount", {
 						xtype: 'button',
 						text: 'Save',
 						ui: 'confirm',
-						action: 'save',	
+						action: 'save'
 					}
-
 				]
 			}
 		]

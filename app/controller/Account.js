@@ -73,5 +73,5 @@ Ext.define('MoodleMobApp.controller.Account', {
 		);
 
 		store.load(); 
-	},
+	}
 });

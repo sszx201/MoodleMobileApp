@@ -4,7 +4,7 @@ Ext.define("MoodleMobApp.view.OfflineAssignment", {
 	fullscreen: true,
 	
 	requires: [
-		'Ext.TitleBar',
+		'Ext.TitleBar'
 	],
 
 	controllers: [ ],
@@ -48,7 +48,7 @@ Ext.define("MoodleMobApp.view.OfflineAssignment", {
 			{
 				xtype: 'panel',	
 				name: 'intro',
-				html: '',
+				html: ''
 			},
 			{
 				xtype: 'panel',
@@ -65,7 +65,7 @@ Ext.define("MoodleMobApp.view.OfflineAssignment", {
 				docked: 'top',
 				hidden: true,
 				html: 'This assignment has been closed.'
-			},
+			}
 		]
 	}
 });

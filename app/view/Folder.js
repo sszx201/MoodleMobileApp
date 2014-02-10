@@ -7,6 +7,6 @@ Ext.define("MoodleMobApp.view.Folder", {
 	   	title: 'Folder Content', 
 		emptyText: 'No content in this folder.',
 		useComponents: true,
-		defaultType: 'folderentry',
-	},
+		defaultType: 'folderentry'
+	}
 });

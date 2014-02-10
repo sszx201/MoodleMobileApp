@@ -18,7 +18,7 @@ Ext.define('MoodleMobApp.model.CalendarEvent', {
 			{ name: 'modname', type: 'string' },
 			{ name: 'eventtype', type: 'string' },
 			{ name: 'timestart', type: 'int' },
-			{ name: 'timeduration', type: 'int' },
+			{ name: 'timeduration', type: 'int' }
 		]
 	}
 });

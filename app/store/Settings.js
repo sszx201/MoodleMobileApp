@@ -4,7 +4,7 @@ Ext.define('MoodleMobApp.store.Settings', {
 	requires: [
 		'MoodleMobApp.model.Settings',
 		'Ext.data.proxy.LocalStorage'
-		],
+	],
 
 	config: {
 		storeId: 'settings_store',
@@ -14,6 +14,6 @@ Ext.define('MoodleMobApp.store.Settings', {
 		proxy: {
 			type: 'localstorage',	
 			id: 'settings'
-		},
+		}
 	}
 });

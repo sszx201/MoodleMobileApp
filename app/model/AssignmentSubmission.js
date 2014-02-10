@@ -11,7 +11,7 @@ Ext.define('MoodleMobApp.model.AssignmentSubmission', {
 			{ name: 'submissioncomment', type: 'string' },
 			{ name: 'isfinal', type: 'boolean' },
 			{ name: 'grade', type: 'float' },
-			{ name: 'timemodified', type: 'auto' },
+			{ name: 'timemodified', type: 'auto' }
 		]
 	}
 });

@@ -12,7 +12,7 @@ Ext.define('MoodleMobApp.model.Page', {
 			{ name: 'name', type: 'string' },
 			{ name: 'intro', type: 'string' },
 			{ name: 'timemodified', type: 'int' },
-			{ name: 'content', type: 'string' },
+			{ name: 'content', type: 'string' }
 		]
 	}
 });

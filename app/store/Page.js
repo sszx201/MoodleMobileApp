@@ -4,7 +4,7 @@ Ext.define('MoodleMobApp.store.Page', {
 	requires: [
 		'MoodleMobApp.model.Page',
 		'Ext.data.proxy.LocalStorage'
-		],
+	],
 
 	config: {
 		storeId: 'page',
@@ -13,7 +13,7 @@ Ext.define('MoodleMobApp.store.Page', {
 		autoSync: true,
 		proxy : {
 			id: 'page',
-			type: 'localstorage',
+			type: 'localstorage'
 		}
 	}
 });

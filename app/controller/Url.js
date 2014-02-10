@@ -4,11 +4,11 @@ Ext.define('MoodleMobApp.controller.Url', {
     config: {
         refs: {
 			navigator: 'coursenavigator',
-			module: 'modulelist',
+			module: 'modulelist'
         },
         control: {
 			// generic controls
-			module: { itemtap: 'selectModule' },
+			module: { itemtap: 'selectModule' }
         }
     },
     

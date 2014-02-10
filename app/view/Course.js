@@ -9,12 +9,12 @@ Ext.define("MoodleMobApp.view.Course", {
 			{
 				itemId: 'name',
 				xtype: 'component',
-				cls: 'x-course-name',
+				cls: 'x-course-name'
 			},
 			{
 				itemId: 'modulestatus',
 				xtype: 'component',
-				cls: 'x-course-module-status',
+				cls: 'x-course-module-status'
 			}
 		]
 	},

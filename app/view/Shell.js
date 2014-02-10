@@ -8,7 +8,7 @@ Ext.define("MoodleMobApp.view.Shell", {
 		'Ext.form.FieldSet',
 		'Ext.field.Text',
 		'Ext.field.TextArea',
-		'Ext.Button',
+		'Ext.Button'
 	],
 
 	controllers: [
@@ -43,15 +43,14 @@ Ext.define("MoodleMobApp.view.Shell", {
 						xtype: 'button',
 						text: 'Run',
 						ui: 'confirm',
-						action: 'run',	
+						action: 'run'
 					},
 					{
 						xtype: 'button',
 						text: 'Clear Databases',
 						ui: 'confirm',
-						action: 'clear_all_db',	
-					},
-
+						action: 'clear_all_db'
+					}
 				]
 			}
 		]

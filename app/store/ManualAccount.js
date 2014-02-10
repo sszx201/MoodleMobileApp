@@ -4,7 +4,7 @@ Ext.define('MoodleMobApp.store.ManualAccount', {
 	requires: [
 		'MoodleMobApp.model.ManualAccount',
 		'Ext.data.proxy.LocalStorage'
-		],
+	],
 
 	config: {
 		storeId: 'manualaccount_store',
@@ -14,6 +14,6 @@ Ext.define('MoodleMobApp.store.ManualAccount', {
 		proxy: {
 			type: 'localstorage',	
 			id: 'manualaccount'
-		},
+		}
 	}
 });

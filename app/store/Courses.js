@@ -4,7 +4,7 @@ Ext.define('MoodleMobApp.store.Courses', {
 	requires: [
 		'MoodleMobApp.model.Course',
 		'Ext.data.proxy.LocalStorage'
-		],
+	],
 
 	config: {
 		storeId: 'courses',
@@ -13,7 +13,7 @@ Ext.define('MoodleMobApp.store.Courses', {
 		//autoSync: true,
 		proxy : {
 			id: 'course',
-			type: 'localstorage',
+			type: 'localstorage'
 		}
 	}
 });

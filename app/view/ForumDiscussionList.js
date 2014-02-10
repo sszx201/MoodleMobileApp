@@ -15,8 +15,8 @@ Ext.define("MoodleMobApp.view.ForumDiscussionList", {
 				docked: 'top',
 				ui: 'confirm',
 				action: 'adddiscussion',
-				hidden: true,
+				hidden: true
 			}
 		]
-	},
+	}
 });

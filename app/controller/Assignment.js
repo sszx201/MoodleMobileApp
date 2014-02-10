@@ -6,14 +6,14 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 			'MoodleMobApp.model.Assignment',
 			'MoodleMobApp.model.AssignmentSubmission',
 			'MoodleMobApp.model.SubmissionResponse',
-			'MoodleMobApp.model.FileUploadResponse',
+			'MoodleMobApp.model.FileUploadResponse'
 		],
 
 		views: [
 			'MoodleMobApp.view.OnlineAssignment',
 			'MoodleMobApp.view.OfflineAssignment',
 			'MoodleMobApp.view.SingleUploadAssignment',
-			'MoodleMobApp.view.UploadAssignment',
+			'MoodleMobApp.view.UploadAssignment'
 		],
 
 		refs: {
@@ -26,7 +26,7 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 			singleUploadAssignmentSubmit: 'singleuploadassignment button[action=submit]',
 			uploadAssignment: 'uploadassignment',
 			uploadAssignmentAddFile: 'uploadassignment button[action=addfile]',
-			uploadAssignmentSubmit: 'uploadassignment button[action=submit]',
+			uploadAssignmentSubmit: 'uploadassignment button[action=submit]'
 		},
 
 		control: {
@@ -37,7 +37,7 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 			onlineAssignmentSubmit: { tap: 'submitOnlineAssignment' },
 			singleUploadAssignmentSubmit: { tap: 'submitSingleUploadAssignment' },
 			uploadAssignmentAddFile: { tap: 'addFileSlot' },
-			uploadAssignmentSubmit: { tap: 'submitUploadAssignment' },
+			uploadAssignmentSubmit: { tap: 'submitUploadAssignment' }
 		}
 	},
 
@@ -325,5 +325,4 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 			{single: true}
 		);
 	}
-
 });

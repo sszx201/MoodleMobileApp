@@ -9,17 +9,17 @@ Ext.define("MoodleMobApp.view.CalendarEvent", {
 			{
 				itemId: 'description',
 				xtype: 'component',
-				cls: 'x-calendar-event-description',
+				cls: 'x-calendar-event-description'
 			},
 			{
 				itemId: 'timestart',
 				xtype: 'component',
-				cls: 'x-calendar-event-timestart',
+				cls: 'x-calendar-event-timestart'
 			},
 			{
 				itemId: 'timeduration',
 				xtype: 'component',
-				cls: 'x-calendar-event-timeduration',
+				cls: 'x-calendar-event-timeduration'
 			}
 		]
 	},
@@ -42,6 +42,5 @@ Ext.define("MoodleMobApp.view.CalendarEvent", {
 			this.down('#timestart').setHtml(MoodleMobApp.app.formatDate(record.get('timestart')));
 		}
 	}
-	
 });
 

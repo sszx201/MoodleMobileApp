@@ -4,11 +4,11 @@ Ext.define('MoodleMobApp.controller.Resource', {
     config: {
         refs: {
 			navigator: 'coursenavigator',
-			module: 'modulelist',
+			module: 'modulelist'
         },
         control: {
 			// generic controls
-			module: { itemtap: 'selectModule' },
+			module: { itemtap: 'selectModule' }
         }
     },
     
@@ -31,7 +31,7 @@ Ext.define('MoodleMobApp.controller.Resource', {
 			var file = {
 				'name': resource.get('filename'),
 				'fileid': resource.get('fileid'),
-				'mime': resource.get('filemime'),
+				'mime': resource.get('filemime')
 			};
 			MoodleMobApp.app.downloadFile(file);
 		}

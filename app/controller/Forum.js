@@ -15,7 +15,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			'MoodleMobApp.view.ForumDiscussionEdit',
 			'MoodleMobApp.view.ForumPostList',
 			'MoodleMobApp.view.ForumPost',
-			'MoodleMobApp.view.ForumPostReply',
+			'MoodleMobApp.view.ForumPostReply'
 		],
 
 		refs: {
@@ -29,7 +29,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			postList: '#forum_post_list',
 			postReplyButton: 'button[action=postreply]',
 			replyForm: 'forumpostreply',
-			saveReplyButton: 'button[action=savereply]',
+			saveReplyButton: 'button[action=savereply]'
 		},
 
 		control: {
@@ -42,7 +42,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			replyForm: { deactivate: 'replyToPostCancelled' },
 			postReplyButton: { tap: 'replyToPost' },
 			saveReplyButton: { tap: 'saveReplyToPost' },
-			post: { getattachment: function() { console.log('attachment clicked'); } },
+			post: { getattachment: function() { console.log('attachment clicked'); } }
 		}
 	},
 
@@ -66,7 +66,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			this.getNavigator().push(this.getDiscussionList());
 		} else {
 			this.getNavigator().push({
-				xtype: 'forumdiscussionlist',	
+				xtype: 'forumdiscussionlist',
 				store: forum_discussions
 			});
 		}
@@ -369,5 +369,4 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		// remove the view from the navigator
 		this.getNavigator().pop();
 	}
-
 });

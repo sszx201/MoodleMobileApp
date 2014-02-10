@@ -94,8 +94,9 @@ Ext.define("MoodleMobApp.view.Assign", {
 
 				// display the intro
 				this.child('panel[name=intro]').setHtml(intro_html);
-			},
+			}
 		},
+
 		items: [	
 			{
 				xtype: 'panel',	
@@ -107,25 +108,25 @@ Ext.define("MoodleMobApp.view.Assign", {
 				items: [
 					{
 						xtype: 'hiddenfield',	
-						name: 'instanceid',
+						name: 'instanceid'
 					},
 					{
 						xtype: 'textareafield',
 						label: 'Text to submit',
 						name: 'onlinetext',
 						labelAlign: 'top',
-						hidden: true,
+						hidden: true
 					},
 					{
 						xtype: 'checkboxfield',
 						name: 'teamsubmission',
 						value: 1,
 						label: 'Teamsubmission',
-						hidden: true,
+						hidden: true
 					},
 					{
 						xtype: 'container',
-						cls: 'filelist',
+						cls: 'filelist'
 					},
 					{
 						xtype: 'container',
@@ -137,19 +138,17 @@ Ext.define("MoodleMobApp.view.Assign", {
 								text: 'Add File',
 								action: 'addfile',	
 								flex: 1,
-								hidden: true,
+								hidden: true
 							},
-
 							{
 								xtype: 'button',
 								text: 'Submit',
 								ui: 'confirm',
 								action: 'submit',	
-								flex: 1,
-							},
+								flex: 1
+							}
 						] 
 					}
-					
 				]
 			},
 			{

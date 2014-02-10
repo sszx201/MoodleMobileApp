@@ -4,7 +4,7 @@ Ext.define('MoodleMobApp.store.AssignSubmissions', {
 	requires: [
 		'MoodleMobApp.model.AssignSubmission',
 		'Ext.data.proxy.LocalStorage'
-		],
+	],
 
 	config: {
 		storeId: 'assignsubmissions',
@@ -13,7 +13,7 @@ Ext.define('MoodleMobApp.store.AssignSubmissions', {
 		//autoSync: true,
 		proxy : {
 			id: 'assignsubmission',
-			type: 'localstorage',
+			type: 'localstorage'
 		}
 	}
 });

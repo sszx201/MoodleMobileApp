@@ -11,6 +11,6 @@ Ext.define("MoodleMobApp.view.CalendarEvents", {
 		store: 'calendar_events',
 		emptyText: 'No events available.',
 		useComponents: true,
-		defaultType: 'calendarevent',	
-	},
+		defaultType: 'calendarevent'
+	}
 });

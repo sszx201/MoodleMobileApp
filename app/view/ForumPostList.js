@@ -23,9 +23,8 @@ Ext.define("MoodleMobApp.view.ForumPostList", {
 					dataview.selectedItem.addCls('forum-post-selected');
 				}
 				target.down('#replyButton').show();
-			},
+			}
 		}
-
-	},
+	}
 });
 

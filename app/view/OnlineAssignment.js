@@ -9,7 +9,7 @@ Ext.define("MoodleMobApp.view.OnlineAssignment", {
 		'Ext.Button',
 		'Ext.field.TextArea',
 		'Ext.field.Hidden',
-		'Ext.field.File',
+		'Ext.field.File'
 	],
 
 	controllers: [ ],
@@ -67,7 +67,7 @@ Ext.define("MoodleMobApp.view.OnlineAssignment", {
 			{
 				xtype: 'panel',	
 				name: 'intro',
-				html: '',
+				html: ''
 			},
 			{
 				xtype: 'fieldset',
@@ -75,22 +75,22 @@ Ext.define("MoodleMobApp.view.OnlineAssignment", {
 				items: [	
 					{
 						xtype: 'textareafield',	
-						name: 'submission',
+						name: 'submission'
 					},
 					{
 						xtype: 'hiddenfield',	
-						name: 'id',
+						name: 'id'
 					},
 					{
 						xtype: 'hiddenfield',	
-						name: 'instanceid',
+						name: 'instanceid'
 					},
 					{
 						xtype: 'button',
 						text: 'Submit',
 						ui: 'confirm',
-						action: 'submit',	
-					},
+						action: 'submit'
+					}
 				]
 			},
 			{
@@ -118,5 +118,5 @@ Ext.define("MoodleMobApp.view.OnlineAssignment", {
 				html: 'No resubmit allowed.'
 			}
 		]
-	},
+	}
 });

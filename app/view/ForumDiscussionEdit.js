@@ -9,7 +9,7 @@ Ext.define("MoodleMobApp.view.ForumDiscussionEdit", {
 		'Ext.Button',
 		'Ext.field.Text',
 		'Ext.field.TextArea',
-		'Ext.field.Hidden',
+		'Ext.field.Hidden'
 	],
 
 	controllers: [ ],
@@ -27,17 +27,17 @@ Ext.define("MoodleMobApp.view.ForumDiscussionEdit", {
 					{
 						xtype: 'textfield',
 						name: 'name',
-						label: 'Subject',
+						label: 'Subject'
 					},
 					{
 						xtype: 'textareafield',
 						name: 'intro',
-						label: 'Message',
+						label: 'Message'
 					},
 					{
 						xtype: 'hiddenfield',
 						name: 'forumid',
-						value: 0,
+						value: 0
 					},
 					{
 						xtype: 'hiddenfield',
@@ -64,9 +64,9 @@ Ext.define("MoodleMobApp.view.ForumDiscussionEdit", {
 						text: 'Save',
 						ui: 'confirm',
 						action: 'savediscussion',	
-					},
+					}
 				]
-			},
+			}
 		]
 	}
 });

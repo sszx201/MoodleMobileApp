@@ -16,12 +16,12 @@ Ext.define("MoodleMobApp.view.Choice", {
 			{
 				xtype: 'panel',	
 				name: 'intro',
-				html: '',
+				html: ''
 			},
 			{
 				xtype: 'panel',	
 				name: 'status',
-				html: '',
+				html: ''
 			},
 			{
 				xtype: 'fieldset',
@@ -33,8 +33,8 @@ Ext.define("MoodleMobApp.view.Choice", {
 				xtype: 'button',
 				text: 'Submit',
 				ui: 'confirm',
-				action: 'submit',	
-			},
+				action: 'submit'
+			}
 		]
 	}
 });

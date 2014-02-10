@@ -3,7 +3,7 @@ Ext.define("MoodleMobApp.view.Main", {
 
 	requires: [
 		'MoodleMobApp.view.CourseNavigator',
-		'MoodleMobApp.view.CourseList',
+		'MoodleMobApp.view.CourseList'
 	],
 
 	config: {
@@ -18,8 +18,8 @@ Ext.define("MoodleMobApp.view.Main", {
 			{
 				title: 'Settings',
 				iconCls: 'settings',
-				xtype: 'settings',
-			},
+				xtype: 'settings'
+			}
 		]
 	}
 });

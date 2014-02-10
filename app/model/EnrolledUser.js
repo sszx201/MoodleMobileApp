@@ -5,7 +5,7 @@ Ext.define('MoodleMobApp.model.EnrolledUser', {
 		identifier: 'uuid',
 		fields: [
 			{ name: 'courseid', type: 'int' },
-			{ name: 'userid', type: 'int' },
+			{ name: 'userid', type: 'int' }
 		]
 	}
 });

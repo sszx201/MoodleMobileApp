@@ -14,7 +14,7 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 				this.dropSectionLabels();
 				// wait some time for the modules to load
 				Ext.defer(this.addSectionLabels, 250, this);
-			},
+			}
 		}
 	},
 

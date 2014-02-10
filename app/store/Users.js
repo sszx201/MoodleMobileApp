@@ -4,7 +4,7 @@ Ext.define('MoodleMobApp.store.Users', {
 	requires: [
 		'MoodleMobApp.model.User',
 		'Ext.data.proxy.LocalStorage'
-		],
+	],
 
 	config: {
 		storeId: 'users',
@@ -13,7 +13,7 @@ Ext.define('MoodleMobApp.store.Users', {
 		//autoSync: true,
 		proxy : {
 			id: 'user',
-			type: 'localstorage',
+			type: 'localstorage'
 		}
 	}
 });

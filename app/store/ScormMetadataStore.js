@@ -3,7 +3,7 @@ Ext.define('MoodleMobApp.store.ScormMetadataStore', {
 
 	requires: [
 		'MoodleMobApp.model.ScormMetadata'
-		],
+	],
 
 	config: {
 		storeId: 'scormmetadatastore',

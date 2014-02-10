@@ -15,7 +15,7 @@ Ext.define('MoodleMobApp.model.Resource', {
 			{ name: 'fileid', type: 'int' },
 			{ name: 'filename', type: 'string' },
 			{ name: 'filemime', type: 'string' },
-			{ name: 'filesize', type: 'int' },
+			{ name: 'filesize', type: 'int' }
 		]
 	}
 });

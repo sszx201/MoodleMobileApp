@@ -50,13 +50,16 @@
 		_overlay: null,
 		_currentHighlightNode: null,
 		_bookmarked: false,
+
 		onHightlightRemovalPanelHide: function(){
 			this._currentHighlightNode = null;
 		},
+
 		showHighlightRemovalPanel: function(target){
 			this._currentHighlightNode = target;
 			this.getHighlightRemovalPanel().showBy(this.getMarkerBtn());
 		},
+
 		syncBookmarkBtn: function(){
 			var that = this, scormPanel = this.getScormPanel();
 			// todo: serve una select resources by resource id.
@@ -81,21 +84,25 @@
 				}
 			});
 		},
+
 		onDocLoaded: function(){
 			this.getBookmarkBtn().setDisabled(false);
 			this.getFindBtn().setDisabled(false);
 			this.syncBookmarkBtn();
 
 		},
+
 		setBookmarkPresent: function(){
 			this.getBookmarkBtn().setStyle('color:red');
 			this._bookmarked = true;
 //			this.syncBookmarkBtn();
 		},
+
 		setBookmarkNotPresent: function(){
 			this.getBookmarkBtn().setStyle('color:white');
 			this._bookmarked = false;
 		},
+
 		/**
 		 * handle the text highlight removal
 		 * */
@@ -131,6 +138,7 @@
 				});
 			}, 100)
 		},
+
 		/**
 		 * handle the text highlight
 		 * */
@@ -170,24 +178,30 @@
 				}
 			}
 		},
+
 		checkDocHighlights: function(){
 			// le marcature possono essere meno restrittive
 			// per adesso lascio che si comportino esattamente come le annotazioni
 
 		},
+
 		checkDocSelection: function(isValid){
 			this.getMarkerBtn().setDisabled(!isValid);
 			this.getAnnotateBtn().setDisabled(!isValid);
 		},
+
 		onSetLocation: function(location){
 			this.getScormPanel().setURI(Supsi.Constants.get('RELATIVE_DOCS_LOCATION') + location);
 		},
+
 		onSearchText: function(text){
 			this.getScormPanel().searchText(text);
 		},
+
 		showSearchDialog: function(){
 			this.getScormPanel().showSearchDialog();
 		},
+
 		toggleBookmark: function(){
 			// todo: save the bookmark metadata (or remove it)
 			var that = this,
@@ -213,9 +227,11 @@
 			});
 
 		},
+
 		onAnnotationChange: function(node, val){
 			node.setAttribute(Supsi.Constants.get('SCORM_ANNOTATION_ATTRIBUTE'), val);
 		},
+
 		/**
 		 * @description handle the annotation removal
 		 * @arguments {Node} annotationNode the node containing the annotation itself
@@ -244,6 +260,7 @@
 
 
 		},
+
 		onAnnotationEnd: function(text){
 			var range = this.getScormPanel().getSelectionRange(),
 				highlightNode = this._createNoteNode(text),
@@ -278,6 +295,7 @@
 				}
 			}
 		},
+
 		/**
 		 * @private
 		 * create a highlight node wrapper
@@ -330,6 +348,7 @@
 			}
 			sp.showAnnotationDialog();
 		},
+
 		//called when the Application is launched, remove if not needed
 		launch: function(app) {
 			// var sp = this.getScormPanel();

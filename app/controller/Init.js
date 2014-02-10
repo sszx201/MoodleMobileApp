@@ -3,7 +3,7 @@ Ext.define('MoodleMobApp.controller.Init', {
 	
 	config: {
 		models: [
-			'MoodleMobApp.model.Settings',
+			'MoodleMobApp.model.Settings'
 		],
 
 		stores: [
@@ -26,7 +26,7 @@ Ext.define('MoodleMobApp.controller.Init', {
 			'MoodleMobApp.store.ForumPosts',
 			'MoodleMobApp.store.Folders',
 			'MoodleMobApp.store.GradeItems',
-			'MoodleMobApp.store.Grades',
+			'MoodleMobApp.store.Grades'
 		],
 		refs: {
 			

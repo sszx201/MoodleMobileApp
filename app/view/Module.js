@@ -9,12 +9,12 @@ Ext.define("MoodleMobApp.view.Module", {
 			{
 				itemId: 'name',
 				xtype: 'component',
-				cls: 'x-course-name',
+				cls: 'x-course-name'
 			},
 			{
 				itemId: 'modname',
 				xtype: 'component',
-				cls: 'x-course-module-status',
+				cls: 'x-course-module-status'
 			}
 		]
 	},
@@ -45,7 +45,6 @@ Ext.define("MoodleMobApp.view.Module", {
 		} else {
 			this.down('#modname').setHtml(record.get('modname'));
 		}
-	},
-
+	}
 });
 

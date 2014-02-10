@@ -5,15 +5,15 @@ Ext.define("MoodleMobApp.view.Settings", {
 	requires: [
 		'Ext.TitleBar',
 		'MoodleMobApp.view.AaiAccount',
-		'MoodleMobApp.view.ManualAccount',
+		'MoodleMobApp.view.ManualAccount'
 	],
 
 	config: {
 		layout: {
-			type: "vbox",
+			type: "vbox"
 		},
 		defaults: { 
-			flex: 1,
+			flex: 1
 		},
 		items: [
 			{
@@ -34,11 +34,11 @@ Ext.define("MoodleMobApp.view.Settings", {
 				items: [
 					{
 						title: 'AAI/NetID account',
-						xtype: 'aaiaccount',
+						xtype: 'aaiaccount'
 					},
 					{
 						title: 'External User account',
-						xtype: 'manualaccount',
+						xtype: 'manualaccount'
 					}
 				]
 			},
@@ -46,30 +46,29 @@ Ext.define("MoodleMobApp.view.Settings", {
 				xtype: 'formpanel',
 				items: [
 					{
-					xtype: 'fieldset',
-					title: 'Local cache',
-					instructions: 'Purge the downloaded data and the downloaded files from the smartphone memory. This does not affect the data and the files on the iCorsi platform. <span style="color: red">NOTE: Purging the downloaded files will also clear all the scorm notes.</span>',
-					defaults: {
-						margin: 10,
-					},
-					items: [
-						{
-							xtype: 'button',
-							text: 'Purge data',
-							ui: 'decline',
-							action: 'purgedata',
+						xtype: 'fieldset',
+						title: 'Local cache',
+						instructions: 'Purge the downloaded data and the downloaded files from the smartphone memory. This does not affect the data and the files on the iCorsi platform. <span style="color: red">NOTE: Purging the downloaded files will also clear all the scorm notes.</span>',
+						defaults: {
+							margin: 10
 						},
-						{
-							xtype: 'button',
-							text: 'Purge files',
-							ui: 'decline',
-							action: 'purgefiles',	
-						}
-					]
-				}
-			]
-			},
-
+						items: [
+							{
+								xtype: 'button',
+								text: 'Purge data',
+								ui: 'decline',
+								action: 'purgedata'
+							},
+							{
+								xtype: 'button',
+								text: 'Purge files',
+								ui: 'decline',
+								action: 'purgefiles'
+							}
+						]
+					}
+				]
+		 	}
 		]
 	}
 });

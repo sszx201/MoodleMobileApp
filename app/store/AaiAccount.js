@@ -6,7 +6,7 @@ Ext.define('MoodleMobApp.store.AaiAccount', {
 	],
 
 	models: [
-		'MoodleMobApp.model.AaiAccount',
+		'MoodleMobApp.model.AaiAccount'
 	],
 
 	config: {

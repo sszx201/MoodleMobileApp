@@ -3,7 +3,7 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 
 	config: {
 		models: [
-			'MoodleMobApp.model.AaiAccount',
+			'MoodleMobApp.model.AaiAccount'
 		],
 
 		refs: {
@@ -13,7 +13,7 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 
 		control: {
 			form: {
-				initialize: 'loadAccountData',
+				initialize: 'loadAccountData'
 			},
    			save: {
 				tap: 'saveAccountData'
@@ -92,6 +92,6 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 				this.authenticate(auth_url, parameters);
 			}
 		}
-	},
+	}
   
 });

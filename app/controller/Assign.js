@@ -54,7 +54,7 @@ Ext.define('MoodleMobApp.controller.Assign', {
 			xtype: 'assign',
 			record: assign,
 			settings: null,
-			lastSubmission: null,
+			lastSubmission: null
 		};
 		var assign_store = MoodleMobApp.WebService.getAssignById(assign.get('instanceid'), MoodleMobApp.Session.getCourse().get('token'));
 		assign_store.on(
@@ -93,9 +93,9 @@ Ext.define('MoodleMobApp.controller.Assign', {
 							xtype: 'textfield',
 							component: { 
 								xtype: 'file',
-								disabled: false,
+								disabled: false
 							},
-							flex: 4,
+							flex: 4
 						},
 						{
 							xtype: 'button',

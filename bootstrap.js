@@ -17,7 +17,8 @@ Ext.Loader.addClassPathMappings({
   "Ext.device.sqlite.SQLResultSetRowList": "touch/src/device/sqlite/Sencha.js",
   "Ext.device.sqlite.SQLTransaction": "touch/src/device/sqlite/Sencha.js",
   "Ext.draw.engine.SvgContext.Gradient": "touch/src/draw/engine/SvgContext.js",
-  "MoodleMobApp": "app"
+  "MoodleMobApp": "app",
+  "Supsi": "extensions/supsi"
 });
 Ext.ClassManager.addNameAlternateMappings({
   "Ext.AbstractComponent": [],
@@ -743,7 +744,128 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.viewport.WindowsPhone": [
     "Ext.viewport.WP"
   ],
-  "MoodleMobApp.view.Main": []
+  "MoodleMobApp.Config": [],
+  "MoodleMobApp.Session": [],
+  "MoodleMobApp.WebService": [],
+  "MoodleMobApp.controller.AaiAccount": [],
+  "MoodleMobApp.controller.Account": [],
+  "MoodleMobApp.controller.Assign": [],
+  "MoodleMobApp.controller.Assignment": [],
+  "MoodleMobApp.controller.Choice": [],
+  "MoodleMobApp.controller.CourseNavigator": [],
+  "MoodleMobApp.controller.Folder": [],
+  "MoodleMobApp.controller.Forum": [],
+  "MoodleMobApp.controller.Init": [],
+  "MoodleMobApp.controller.Main": [],
+  "MoodleMobApp.controller.ManualAccount": [],
+  "MoodleMobApp.controller.Page": [],
+  "MoodleMobApp.controller.Resource": [],
+  "MoodleMobApp.controller.Scorm": [],
+  "MoodleMobApp.controller.ScormMetadataPanel": [],
+  "MoodleMobApp.controller.ScormPlayer": [],
+  "MoodleMobApp.controller.ScormSettings": [],
+  "MoodleMobApp.controller.Settings": [],
+  "MoodleMobApp.controller.Shell": [],
+  "MoodleMobApp.controller.Url": [],
+  "MoodleMobApp.controller.UsageAgreement": [],
+  "MoodleMobApp.model.AaiAccount": [],
+  "MoodleMobApp.model.Assign": [],
+  "MoodleMobApp.model.AssignReport": [],
+  "MoodleMobApp.model.AssignSubmission": [],
+  "MoodleMobApp.model.Assignment": [],
+  "MoodleMobApp.model.AssignmentSubmission": [],
+  "MoodleMobApp.model.CalendarEvent": [],
+  "MoodleMobApp.model.Choice": [],
+  "MoodleMobApp.model.Course": [],
+  "MoodleMobApp.model.CourseSection": [],
+  "MoodleMobApp.model.EnrolledUser": [],
+  "MoodleMobApp.model.FileUploadResponse": [],
+  "MoodleMobApp.model.Folder": [],
+  "MoodleMobApp.model.ForumCreateDiscussionResponse": [],
+  "MoodleMobApp.model.ForumCreatePostResponse": [],
+  "MoodleMobApp.model.ForumDiscussion": [],
+  "MoodleMobApp.model.ForumPost": [],
+  "MoodleMobApp.model.Grade": [],
+  "MoodleMobApp.model.GradeItem": [],
+  "MoodleMobApp.model.Group": [],
+  "MoodleMobApp.model.Grouping": [],
+  "MoodleMobApp.model.HomeOrg": [],
+  "MoodleMobApp.model.ManualAccount": [],
+  "MoodleMobApp.model.Module": [],
+  "MoodleMobApp.model.ModulesCount": [],
+  "MoodleMobApp.model.Page": [],
+  "MoodleMobApp.model.Profile": [],
+  "MoodleMobApp.model.Resource": [],
+  "MoodleMobApp.model.ScormMetadata": [],
+  "MoodleMobApp.model.ScormResource": [],
+  "MoodleMobApp.model.Settings": [],
+  "MoodleMobApp.model.SubmissionResponse": [],
+  "MoodleMobApp.model.Url": [],
+  "MoodleMobApp.model.User": [],
+  "MoodleMobApp.store.AaiAccount": [],
+  "MoodleMobApp.store.AssignSubmissions": [],
+  "MoodleMobApp.store.CalendarEvents": [],
+  "MoodleMobApp.store.Choices": [],
+  "MoodleMobApp.store.CourseSections": [],
+  "MoodleMobApp.store.Courses": [],
+  "MoodleMobApp.store.EnrolledUsers": [],
+  "MoodleMobApp.store.Folders": [],
+  "MoodleMobApp.store.ForumDiscussions": [],
+  "MoodleMobApp.store.ForumPosts": [],
+  "MoodleMobApp.store.GradeItems": [],
+  "MoodleMobApp.store.Grades": [],
+  "MoodleMobApp.store.Groupings": [],
+  "MoodleMobApp.store.Groups": [],
+  "MoodleMobApp.store.HomeOrgs": [],
+  "MoodleMobApp.store.ManualAccount": [],
+  "MoodleMobApp.store.Modules": [],
+  "MoodleMobApp.store.Page": [],
+  "MoodleMobApp.store.Resources": [],
+  "MoodleMobApp.store.ScormMetadataStore": [],
+  "MoodleMobApp.store.Settings": [],
+  "MoodleMobApp.store.Url": [],
+  "MoodleMobApp.store.Users": [],
+  "MoodleMobApp.util.Link": [],
+  "MoodleMobApp.view.AaiAccount": [],
+  "MoodleMobApp.view.Assign": [],
+  "MoodleMobApp.view.CalendarEvent": [],
+  "MoodleMobApp.view.CalendarEvents": [],
+  "MoodleMobApp.view.Choice": [],
+  "MoodleMobApp.view.Course": [],
+  "MoodleMobApp.view.CourseList": [],
+  "MoodleMobApp.view.CourseNavigator": [],
+  "MoodleMobApp.view.Folder": [],
+  "MoodleMobApp.view.FolderEntry": [],
+  "MoodleMobApp.view.ForumDiscussion": [],
+  "MoodleMobApp.view.ForumDiscussionEdit": [],
+  "MoodleMobApp.view.ForumDiscussionList": [],
+  "MoodleMobApp.view.ForumPost": [],
+  "MoodleMobApp.view.ForumPostList": [],
+  "MoodleMobApp.view.ForumPostReply": [],
+  "MoodleMobApp.view.Grade": [],
+  "MoodleMobApp.view.Grades": [],
+  "MoodleMobApp.view.Main": [],
+  "MoodleMobApp.view.ManualAccount": [],
+  "MoodleMobApp.view.Module": [],
+  "MoodleMobApp.view.ModuleList": [],
+  "MoodleMobApp.view.OfflineAssignment": [],
+  "MoodleMobApp.view.OnlineAssignment": [],
+  "MoodleMobApp.view.Page": [],
+  "MoodleMobApp.view.Partecipant": [],
+  "MoodleMobApp.view.Partecipants": [],
+  "MoodleMobApp.view.Scorm": [],
+  "MoodleMobApp.view.Settings": [],
+  "MoodleMobApp.view.Shell": [],
+  "MoodleMobApp.view.SingleUploadAssignment": [],
+  "MoodleMobApp.view.UploadAssignment": [],
+  "MoodleMobApp.view.UsageAgreement": [],
+  "Supsi.Constants": [],
+  "Supsi.Database": [],
+  "Supsi.Filesystem": [],
+  "Supsi.MetaPanel": [],
+  "Supsi.ScormPanel": [],
+  "Supsi.SettingsPanel": [],
+  "Supsi.Utils": []
 });
 Ext.ClassManager.addNameAliasMappings({
   "Ext.AbstractComponent": [],
@@ -1687,7 +1809,196 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.viewport.Ios": [],
   "Ext.viewport.Viewport": [],
   "Ext.viewport.WindowsPhone": [],
-  "MoodleMobApp.view.Main": [
-    "widget.main"
-  ]
+  "MoodleMobApp.Config": [],
+  "MoodleMobApp.Session": [],
+  "MoodleMobApp.WebService": [],
+  "MoodleMobApp.controller.AaiAccount": [],
+  "MoodleMobApp.controller.Account": [],
+  "MoodleMobApp.controller.Assign": [],
+  "MoodleMobApp.controller.Assignment": [],
+  "MoodleMobApp.controller.Choice": [],
+  "MoodleMobApp.controller.CourseNavigator": [],
+  "MoodleMobApp.controller.Folder": [],
+  "MoodleMobApp.controller.Forum": [],
+  "MoodleMobApp.controller.Init": [],
+  "MoodleMobApp.controller.Main": [],
+  "MoodleMobApp.controller.ManualAccount": [],
+  "MoodleMobApp.controller.Page": [],
+  "MoodleMobApp.controller.Resource": [],
+  "MoodleMobApp.controller.Scorm": [],
+  "MoodleMobApp.controller.ScormMetadataPanel": [],
+  "MoodleMobApp.controller.ScormPlayer": [],
+  "MoodleMobApp.controller.ScormSettings": [],
+  "MoodleMobApp.controller.Settings": [],
+  "MoodleMobApp.controller.Shell": [],
+  "MoodleMobApp.controller.Url": [],
+  "MoodleMobApp.controller.UsageAgreement": [],
+  "MoodleMobApp.model.AaiAccount": [],
+  "MoodleMobApp.model.Assign": [],
+  "MoodleMobApp.model.AssignReport": [],
+  "MoodleMobApp.model.AssignSubmission": [],
+  "MoodleMobApp.model.Assignment": [],
+  "MoodleMobApp.model.AssignmentSubmission": [],
+  "MoodleMobApp.model.CalendarEvent": [],
+  "MoodleMobApp.model.Choice": [],
+  "MoodleMobApp.model.Course": [],
+  "MoodleMobApp.model.CourseSection": [],
+  "MoodleMobApp.model.EnrolledUser": [],
+  "MoodleMobApp.model.FileUploadResponse": [],
+  "MoodleMobApp.model.Folder": [],
+  "MoodleMobApp.model.ForumCreateDiscussionResponse": [],
+  "MoodleMobApp.model.ForumCreatePostResponse": [],
+  "MoodleMobApp.model.ForumDiscussion": [],
+  "MoodleMobApp.model.ForumPost": [],
+  "MoodleMobApp.model.Grade": [],
+  "MoodleMobApp.model.GradeItem": [],
+  "MoodleMobApp.model.Group": [],
+  "MoodleMobApp.model.Grouping": [],
+  "MoodleMobApp.model.HomeOrg": [],
+  "MoodleMobApp.model.ManualAccount": [],
+  "MoodleMobApp.model.Module": [],
+  "MoodleMobApp.model.ModulesCount": [],
+  "MoodleMobApp.model.Page": [],
+  "MoodleMobApp.model.Profile": [],
+  "MoodleMobApp.model.Resource": [],
+  "MoodleMobApp.model.ScormMetadata": [],
+  "MoodleMobApp.model.ScormResource": [],
+  "MoodleMobApp.model.Settings": [],
+  "MoodleMobApp.model.SubmissionResponse": [],
+  "MoodleMobApp.model.Url": [],
+  "MoodleMobApp.model.User": [],
+  "MoodleMobApp.store.AaiAccount": [],
+  "MoodleMobApp.store.AssignSubmissions": [],
+  "MoodleMobApp.store.CalendarEvents": [],
+  "MoodleMobApp.store.Choices": [],
+  "MoodleMobApp.store.CourseSections": [],
+  "MoodleMobApp.store.Courses": [],
+  "MoodleMobApp.store.EnrolledUsers": [],
+  "MoodleMobApp.store.Folders": [],
+  "MoodleMobApp.store.ForumDiscussions": [],
+  "MoodleMobApp.store.ForumPosts": [],
+  "MoodleMobApp.store.GradeItems": [],
+  "MoodleMobApp.store.Grades": [],
+  "MoodleMobApp.store.Groupings": [],
+  "MoodleMobApp.store.Groups": [],
+  "MoodleMobApp.store.HomeOrgs": [],
+  "MoodleMobApp.store.ManualAccount": [],
+  "MoodleMobApp.store.Modules": [],
+  "MoodleMobApp.store.Page": [],
+  "MoodleMobApp.store.Resources": [],
+  "MoodleMobApp.store.ScormMetadataStore": [],
+  "MoodleMobApp.store.Settings": [],
+  "MoodleMobApp.store.Url": [],
+  "MoodleMobApp.store.Users": [],
+  "MoodleMobApp.util.Link": [],
+  "MoodleMobApp.view.AaiAccount": [
+    "widget.aaiaccount"
+  ],
+  "MoodleMobApp.view.Assign": [
+    "widget.assign"
+  ],
+  "MoodleMobApp.view.CalendarEvent": [
+    "widget.calendarevent"
+  ],
+  "MoodleMobApp.view.CalendarEvents": [
+    "widget.calendarevents"
+  ],
+  "MoodleMobApp.view.Choice": [
+    "widget.choice"
+  ],
+  "MoodleMobApp.view.Course": [
+    "widget.course"
+  ],
+  "MoodleMobApp.view.CourseList": [
+    "widget.courselist"
+  ],
+  "MoodleMobApp.view.CourseNavigator": [
+    "widget.coursenavigator"
+  ],
+  "MoodleMobApp.view.Folder": [
+    "widget.folder"
+  ],
+  "MoodleMobApp.view.FolderEntry": [
+    "widget.folderentry"
+  ],
+  "MoodleMobApp.view.ForumDiscussion": [
+    "widget.forumdiscussion"
+  ],
+  "MoodleMobApp.view.ForumDiscussionEdit": [
+    "widget.forumdiscussionedit"
+  ],
+  "MoodleMobApp.view.ForumDiscussionList": [
+    "widget.forumdiscussionlist"
+  ],
+  "MoodleMobApp.view.ForumPost": [
+    "widget.forumpost"
+  ],
+  "MoodleMobApp.view.ForumPostList": [
+    "widget.forumpostlist"
+  ],
+  "MoodleMobApp.view.ForumPostReply": [
+    "widget.forumpostreply"
+  ],
+  "MoodleMobApp.view.Grade": [
+    "widget.grade"
+  ],
+  "MoodleMobApp.view.Grades": [
+    "widget.grades"
+  ],
+  "MoodleMobApp.view.Main": [],
+  "MoodleMobApp.view.ManualAccount": [
+    "widget.manualaccount"
+  ],
+  "MoodleMobApp.view.Module": [
+    "widget.module"
+  ],
+  "MoodleMobApp.view.ModuleList": [
+    "widget.modulelist"
+  ],
+  "MoodleMobApp.view.OfflineAssignment": [
+    "widget.offlineassignment"
+  ],
+  "MoodleMobApp.view.OnlineAssignment": [
+    "widget.onlineassignment"
+  ],
+  "MoodleMobApp.view.Page": [
+    "widget.page"
+  ],
+  "MoodleMobApp.view.Partecipant": [
+    "widget.partecipant"
+  ],
+  "MoodleMobApp.view.Partecipants": [
+    "widget.partecipants"
+  ],
+  "MoodleMobApp.view.Scorm": [
+    "widget.scorm"
+  ],
+  "MoodleMobApp.view.Settings": [
+    "widget.settings"
+  ],
+  "MoodleMobApp.view.Shell": [
+    "widget.shell"
+  ],
+  "MoodleMobApp.view.SingleUploadAssignment": [
+    "widget.singleuploadassignment"
+  ],
+  "MoodleMobApp.view.UploadAssignment": [
+    "widget.uploadassignment"
+  ],
+  "MoodleMobApp.view.UsageAgreement": [
+    "widget.usageagreement"
+  ],
+  "Supsi.Constants": [],
+  "Supsi.Database": [],
+  "Supsi.Filesystem": [],
+  "Supsi.MetaPanel": [
+    "widget.metapanel"
+  ],
+  "Supsi.ScormPanel": [
+    "widget.scormpanel"
+  ],
+  "Supsi.SettingsPanel": [
+    "widget.settingspanel"
+  ],
+  "Supsi.Utils": []
 });

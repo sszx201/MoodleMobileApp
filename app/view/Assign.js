@@ -10,7 +10,7 @@ Ext.define("MoodleMobApp.view.Assign", {
 		'Ext.field.Text',
 		'Ext.field.TextArea',
 		'Ext.field.Hidden',
-		'Ext.field.File',
+		'Ext.field.File'
 	],
 
 	controllers: [ ],
@@ -101,7 +101,7 @@ Ext.define("MoodleMobApp.view.Assign", {
 			{
 				xtype: 'panel',	
 				name: 'intro',
-				html: '',
+				html: ''
 			},
 			{
 				xtype: 'fieldset',

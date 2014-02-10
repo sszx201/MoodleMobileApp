@@ -19,16 +19,7 @@ Ext.define("MoodleMobApp.view.CourseNavigator", {
 					//iconCls: 'home',
 					align: 'right',
 					text: 'App Bar'
-				},
-				/*
-				{
-					xtype: 'button',
-					id: 'helpbutton',
-					iconCls: 'action',
-					align: 'right',
-					hidden: true,
 				}
-				*/
 			]
 		},
 		items: [

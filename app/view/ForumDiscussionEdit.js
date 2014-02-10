@@ -63,7 +63,7 @@ Ext.define("MoodleMobApp.view.ForumDiscussionEdit", {
 						xtype: 'button',
 						text: 'Save',
 						ui: 'confirm',
-						action: 'savediscussion',	
+						action: 'savediscussion'
 					}
 				]
 			}

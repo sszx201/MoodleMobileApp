@@ -343,7 +343,7 @@ Ext.define('MoodleMobApp.WebService', {
 								handler: function() {
 									Ext.Msg.hide();
 									fileTransfer.abort();
-								},
+								}
 							});
 
 							//self.fileTransfer.onprogress = progressFunc;

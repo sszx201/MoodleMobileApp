@@ -56,7 +56,7 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 		var aconf = {
 			record: assignment,
 			settings: null,
-			lastSubmission: null,
+			lastSubmission: null
 		};
 		// display discussions
 		switch(assignment.get('type')) {
@@ -214,7 +214,7 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 				items: [
 					{
 						xtype: 'filefield',
-						flex: 4,
+						flex: 4
 					},
 					{
 						xtype: 'button',

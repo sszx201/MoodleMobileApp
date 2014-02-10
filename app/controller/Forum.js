@@ -36,7 +36,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			// generic controls
 			module: { itemtap: 'selectModule' },
 			// specific controls
-			discussionList: { itemtap: 'selectDiscussion', },
+			discussionList: { itemtap: 'selectDiscussion' },
 			addDiscussionButton: { tap: 'editDiscussion' },
 			saveDiscussionButton: { tap: 'saveDiscussion' },
 			replyForm: { deactivate: 'replyToPostCancelled' },
@@ -171,7 +171,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			this.getNavigator().push(this.getEditDiscussionForm());
 		} else {
 			this.getNavigator().push({
-				xtype: 'forumdiscussionedit',
+				xtype: 'forumdiscussionedit'
 			});
 		}
 	},
@@ -252,11 +252,11 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		raw_forum_posts.sort([
 			{
 				property: 'parent',
-				direction: 'ASC',
+				direction: 'ASC'
 			},
 			{
 				property: 'creation',
-				direction: 'ASC',
+				direction: 'ASC'
 			}
 		]);
 		
@@ -314,7 +314,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		} else {
 			this.getNavigator().push({
 				xtype: 'forumpostreply',
-				record: parentRecord,
+				record: parentRecord
 			});
 		}
 	},

@@ -32,7 +32,7 @@ Ext.define("MoodleMobApp.view.Partecipant", {
 				layout: {
 					type: 'hbox',
 					align: 'center'
-				},
+				}
 			},
 			{
 				itemId: 'email',

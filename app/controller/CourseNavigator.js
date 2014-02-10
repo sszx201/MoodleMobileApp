@@ -88,7 +88,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			this.getNavigator().push(this.getSettings());
 		} else {
 			this.getNavigator().push({
-				xtype: 'settings',	
+				xtype: 'settings'
 			});
 		}
 	},

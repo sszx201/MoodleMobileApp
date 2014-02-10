@@ -30,7 +30,7 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 				layout: {
 					type: 'hbox',
 					align: 'center'
-				},
+				}
 			},
 			{
 				itemId: 'subject',

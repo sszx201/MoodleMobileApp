@@ -89,7 +89,8 @@
 							},
 							function(args){
 								// poco bello, ma funziona
-								self.parseScorm(args.fullPath.replace(/_scorm_extracted_$/, '').replace(/file:\/\//, ''));
+								var path = args.fullPath.replace(/_scorm_extracted_$/, '').replace(/file:\/\//, '');
+								self.parseScorm(path);
 							},
 							// error callback: notify the error
 							function() {
@@ -139,7 +140,8 @@
 										exclusive: false
 									},
 									function() {
-										that.parseScorm(targetPath + '/');
+										var path = targetPath.replace(/file:\/\//, '') + '/';
+										that.parseScorm(path);
 									},
 									function() {
 										Ext.Msg.alert(

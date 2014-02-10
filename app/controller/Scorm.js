@@ -22,7 +22,6 @@
 				module: 'modulelist',
 				bookmarkBtn: '#bookmarkBtn',
 				navBackBtn: '#navBack',
-//				mainView: 'scormreader',
 				hidePanelBtn: '#hidePanelBtn',
 				showPanelBtn: '#showPanelBtn',
 				metaBtn: '#metaBtn',

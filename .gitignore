@@ -4,3 +4,4 @@ data/
 .git-ftp-ignore
 build
 bootstrap.js
+.DS_Store

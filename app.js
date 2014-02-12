@@ -30,12 +30,10 @@ Ext.application({
 	views: [
 		'MoodleMobApp.view.UsageAgreement',
 		'MoodleMobApp.view.Settings',
-		'MoodleMobApp.view.Scorm',
-		'MoodleMobApp.view.Main',
-		'MoodleMobApp.view.Course',
+		'MoodleMobApp.view.CourseNavigator',
 		'MoodleMobApp.view.CourseList',
-		'MoodleMobApp.view.Shell'
-
+		'MoodleMobApp.view.Course',
+		'MoodleMobApp.view.Scorm'
 	],
 
 	controllers: [
@@ -58,8 +56,7 @@ Ext.application({
 		'MoodleMobApp.controller.Scorm',
 		'MoodleMobApp.controller.ScormMetadataPanel',
 		'MoodleMobApp.controller.ScormSettings',
-		'MoodleMobApp.controller.ScormPlayer',
-		'MoodleMobApp.controller.Shell'
+		'MoodleMobApp.controller.ScormPlayer'
 	],
 
     icon: {
@@ -97,8 +94,9 @@ Ext.application({
 			Ext.Viewport.add(Ext.create('MoodleMobApp.view.CourseNavigator'));
 		}
 		// ios 7 bar fix
-		if (navigator.userAgent.match(/(iPhone|iPod|iPad)/) && parseInt(window.device.version) === 7) {
-			document.getElementById('appNavBar').style.marginTop = "20px";
+		if( window.device != undefined && parseInt(window.device.version) > 6 ) {
+			document.body.style.backgroundColor = "white";
+			document.getElementById('course_navigator').style.marginTop = "20px";
 		}
     },
 

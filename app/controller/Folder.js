@@ -125,9 +125,8 @@ Ext.define('MoodleMobApp.controller.Folder', {
 	},
 
 	addUpperFolderEntry: function(currentFolder){
-		var position = MoodleMobApp.Session.getFoldersStore().findExact('name', '..');
-		if(position != -1){
-			var upper_folder_entry = MoodleMobApp.Session.getFoldersStore().getAt(position);
+		var upper_folder_entry = MoodleMobApp.Session.getFoldersStore().findRecord('name', '..');
+		if(upper_folder_entry != null){
 			upper_folder_entry.set('rootid', currentFolder.get('rootid'));
 			upper_folder_entry.set('parent', currentFolder.get('name'));
 		} else {
@@ -139,7 +138,7 @@ Ext.define('MoodleMobApp.controller.Folder', {
 				'mime': currentFolder.get('mime'),
 				'type': currentFolder.get('type')
 			};
-			var upper_folder_entry = Ext.create('MoodleMobApp.model.Folder', upper_folder_model);
+			upper_folder_entry = Ext.create('MoodleMobApp.model.Folder', upper_folder_model);
 			MoodleMobApp.Session.getFoldersStore().add(upper_folder_entry);
 		}
 	}

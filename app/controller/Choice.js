@@ -44,8 +44,7 @@ Ext.define('MoodleMobApp.controller.Choice', {
 		}
 		
 		// get choice data
-		var pos = MoodleMobApp.Session.getChoicesStore().findExact('id', module.get('instanceid'));
-		this.choice = MoodleMobApp.Session.getChoicesStore().getAt(pos);
+		this.choice = MoodleMobApp.Session.getChoicesStore().findRecord('id', module.get('instanceid'));
 			
 		// set intro
 		var intro_html = '<div class="x-form-fieldset-title x-docked-top">'+ this.choice.get('name') +'</div>'+ 

@@ -147,8 +147,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			break;
 			case 'eachuser':
 				// get user data
-				var index = MoodleMobApp.Session.getUsersStore().findExact('username', MoodleMobApp.Session.getUsername());
-				var user = MoodleMobApp.Session.getUsersStore().getAt(index).getData();
+				var user = MoodleMobApp.Session.getUsersStore().findRecord('username', MoodleMobApp.Session.getUsername());
 				// check if a discussion has been created 
 				var index = MoodleMobApp.Session.getForumDiscussionsStore().findBy(function(record){
 					return record.get('forum') == this.selected_forum.get('instanceid') && record.get('userid') == user.id;
@@ -229,22 +228,6 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		this.selected_discussion_target = target;
 		console.log('discussion selected');
 		console.log(record.getData());
-		// update the status
-		update_status = false;
-		if(record.get('isnew') == true) {
-			record.set('isnew', false);
-			update_status = true;
-		}
-
-		if(record.get('isupdated') == true) {
-			record.set('isupdated', false);
-			update_status = true;
-		}
-
-		if(update_status) {
-			target.down('#stat').setHtml('');
-			MoodleMobApp.Session.getForumDiscussionsStore().sync();
-		}
 
 		var raw_forum_posts = this.getForumPosts(record.get('id'));	
 	

@@ -22,29 +22,15 @@ Ext.define("MoodleMobApp.view.Module", {
 	updateRecord: function(record){
 		// this function is called also when a DataItem is destroyed or the record is removed from the store
 		// the check bellow avoids the running of the function when it is null
-		if(record == null) { return; } 
+		if(record != null) {
+			var classes = 'x-module';
+				classes+= ' x-module-icon-'+record.get('modname'); 
+				classes+= ' x-module-section-'+record.get('section'); 
+			this.setCls(classes);
 
-		this.down('#name').setHtml(record.get('name'));
-		var classes = 'x-module';
-			classes+= ' x-module-icon-'+record.get('modname'); 
-			classes+= ' x-module-section-'+record.get('section'); 
-		this.setCls(classes);
-
-		if(record.get('isnew') == true) {
-			var notification = record.get('modname');
-			notification += ' | <span class="x-module-new">new</span>';
-			this.down('#modname').setHtml(notification);
-		} else {
+			this.down('#name').setHtml(record.get('name'));
 			this.down('#modname').setHtml(record.get('modname'));
-		}
-
-		if(this.getRecord().get('isupdated') == true) {
-			var notification = record.get('modname');
-			notification += ' | <span class="x-module-updated">updated</span>';
-			this.down('#modname').setHtml(notification);
-		} else {
-			this.down('#modname').setHtml(record.get('modname'));
-		}
+		} 
 	}
 });
 

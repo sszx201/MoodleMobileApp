@@ -21,9 +21,7 @@ Ext.define('MoodleMobApp.model.GradeItem', {
 			{ name: 'scale', type: 'auto' },
 			{ name: 'locked', type: 'int' }, // 1 if locked 0 if not
 			{ name: 'hidden', type: 'int' }, // 1 if hidden 0 if not
-			{ name: 'timemodified', type: 'int' },
-			{ name: 'isnew', type: 'boolean' },
-			{ name: 'isupdated', type: 'boolean' }
+			{ name: 'timemodified', type: 'int' }
 		]
 	}
 });

@@ -63,8 +63,18 @@ Ext.define('MoodleMobApp.WebService', {
 		params.courseid = course.id;
 		// request
 		var course_modules_store = this.request(params, 'MoodleMobApp.model.Module', 'GET');
-		course_modules_store.setGroupField('modname');
 		return course_modules_store;
+	},
+
+	getRecentActivity: function(course) {
+		// set parameters
+		var params = new Object();
+		params.wsfunction = 'local_uniappws_course_get_recent_activity';
+		params.wstoken = course.token;
+		params.courseid = course.id;
+		// request
+		var recent_activity_store = this.request(params, 'MoodleMobApp.model.RecentActivity', 'GET');
+		return recent_activity_store;
 	},
 
 	getCourseSections: function(course) {

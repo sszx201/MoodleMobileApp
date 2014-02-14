@@ -21,19 +21,9 @@ Ext.define("MoodleMobApp.view.ForumDiscussion", {
 	updateRecord: function(record) {
 		// this function is called also when a DataItem is destroyed or the record is removed from the store
 		// the check bellow avoids the running of the function when it is null
-		if(record == null) { return; } 
-
-		this.down('#name').setHtml(record.get('name'));
-
-		var notification = '';
-		if(record.get('isnew') == true) {
-			notification = ' <span class="x-module-new">new</span>';
-		}
-
-		if(record.get('isupdated') == true) {
-			notification = ' <span class="x-module-updated">updated</span>';
-		}
-		this.down('#stat').setHtml(notification);
+		if(record != null) {
+			this.down('#name').setHtml(record.get('name'));
+		} 
 	}
 });
 

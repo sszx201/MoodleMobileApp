@@ -18,9 +18,7 @@ Ext.define('MoodleMobApp.model.Grade', {
 			{ name: 'feedback', type: 'auto' },
 			{ name: 'feedbackformat', type: 'int' },
 			{ name: 'timecreated', type: 'int' },
-			{ name: 'timemodified', type: 'int' },
-			{ name: 'isnew', type: 'boolean' },
-			{ name: 'isupdated', type: 'boolean' }
+			{ name: 'timemodified', type: 'int' }
 		]
 	}
 });

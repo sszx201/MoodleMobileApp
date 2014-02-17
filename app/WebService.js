@@ -58,7 +58,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getCourseModules: function(course) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_course_get_course_modules';
+		params.wsfunction = 'uniappws_course_get_course_modules';
 		params.wstoken = course.token;
 		params.courseid = course.id;
 		// request
@@ -69,7 +69,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getRecentActivity: function(course) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_course_get_recent_activity';
+		params.wsfunction = 'uniappws_course_get_recent_activity';
 		params.wstoken = course.token;
 		params.courseid = course.id;
 		// request
@@ -80,7 +80,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getCourseSections: function(course) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_course_get_course_sections';
+		params.wsfunction = 'uniappws_course_get_course_sections';
 		params.wstoken = course.token;
 		params.courseid = course.id;
 		// request
@@ -91,7 +91,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getGroups: function(course, user) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_group_get_user_course_groups';
+		params.wsfunction = 'uniappws_group_get_user_course_groups';
 		params.wstoken = course.token;
 		params.courseid = course.id;
 		params.userid = user.id;
@@ -103,7 +103,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getGroupings: function(course, user) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_group_get_user_course_groupings';
+		params.wsfunction = 'uniappws_group_get_user_course_groupings';
 		params.wstoken = course.token;
 		params.courseid = course.id;
 		params.userid = user.id;
@@ -115,7 +115,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getCalendarEvents: function(course) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_calendar_get_events';
+		params.wsfunction = 'uniappws_calendar_get_events';
 		params.wstoken = course.token;
 		params.courseid = course.id;
 		// request
@@ -126,7 +126,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getForumDiscussions: function(forum, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_forum_get_forum_discussions';
+		params.wsfunction = 'uniappws_forum_get_forum_discussions';
 		params.wstoken = token;
 		params.forumid = forum.instanceid;
 		// request
@@ -138,7 +138,7 @@ Ext.define('MoodleMobApp.WebService', {
 		// set parameters
 		var params = new Object();
 		params.discussion = Array()
-		params.wsfunction = 'local_uniappws_forum_create_discussion';
+		params.wsfunction = 'uniappws_forum_create_discussion';
 		params.wstoken = token;
 		params['discussion[forumid]'] = post.forumid;
 		params['discussion[name]'] = post.name;
@@ -151,7 +151,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getPostsByDiscussion: function(discussion, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_forum_get_posts_by_discussionid';
+		params.wsfunction = 'uniappws_forum_get_posts_by_discussionid';
 		params.wstoken = token;
 		params.discid = discussion.id;
 		// request
@@ -162,7 +162,7 @@ Ext.define('MoodleMobApp.WebService', {
 	createForumPost: function(post, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_forum_create_post';
+		params.wsfunction = 'uniappws_forum_create_post';
 		params.wstoken = token;
 		params.parentid = post.id;
 		params.subject = post.subject;
@@ -176,7 +176,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getEnrolledUsers: function(course) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_user_get_users_by_courseid';
+		params.wsfunction = 'uniappws_user_get_users_by_courseid';
 		params.wstoken = course.token;
 		params.courseid = course.id;
 		// request
@@ -187,7 +187,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getUserById: function(userid, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_user_get_user_by_id';
+		params.wsfunction = 'uniappws_user_get_user_by_id';
 		params.wstoken = token;
 		params.userid = userid;
 		// request
@@ -198,7 +198,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getAssignmentById: function(assigid, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_assignment_get_assignment_by_id';
+		params.wsfunction = 'uniappws_assignment_get_assignment_by_id';
 		params.wstoken = token;
 		params.assigid = assigid;
 		// request
@@ -209,7 +209,7 @@ Ext.define('MoodleMobApp.WebService', {
 	submitOnlineAssignment: function(assignment, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_assignment_submit_online';
+		params.wsfunction = 'uniappws_assignment_submit_online';
 		params.wstoken = token;
 		params.assigid = assignment.instanceid;
 		params.data = assignment.submission;
@@ -221,7 +221,7 @@ Ext.define('MoodleMobApp.WebService', {
 	submitSingleUploadAssignment: function(assignment, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_assignment_submit_singleupload';
+		params.wsfunction = 'uniappws_assignment_submit_singleupload';
 		params.wstoken = token;
 		params.courseid = assignment.courseid;
 		params.assigid = assignment.instanceid;
@@ -234,7 +234,7 @@ Ext.define('MoodleMobApp.WebService', {
 	submitUploadAssignment: function(assignment, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_assignment_submit_upload';
+		params.wsfunction = 'uniappws_assignment_submit_upload';
 		params.wstoken = token;
 		params.assigid = assignment.instanceid;
 		params.isfinal = assignment.isfinal;
@@ -249,7 +249,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getAssignmentSubmission: function(assigid, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_assignment_get_submission_by_assignid';
+		params.wsfunction = 'uniappws_assignment_get_submission_by_assignid';
 		params.wstoken = token;
 		params.assigid = assigid;
 		// request
@@ -260,7 +260,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getAssignById: function(assigid, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_assign_get_assign_by_id';
+		params.wsfunction = 'uniappws_assign_get_assign_by_id';
 		params.wstoken = token;
 		params.assigid = assigid;
 		// request
@@ -271,7 +271,7 @@ Ext.define('MoodleMobApp.WebService', {
 	submitAssign: function(assign, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_assign_submit_assign';
+		params.wsfunction = 'uniappws_assign_submit_assign';
 		params.wstoken = token;
 		params.assigid = assign.instanceid;
 		params.onlinetext = assign.onlinetext;
@@ -293,7 +293,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getAssignSubmission: function(assigid, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_assign_get_submission_by_assignid';
+		params.wsfunction = 'uniappws_assign_get_submission_by_assignid';
 		params.wstoken = token;
 		params.assigid = assigid;
 		// request
@@ -304,7 +304,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getFolder: function(folder, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_folder_get_folder_by_id';
+		params.wsfunction = 'uniappws_folder_get_folder_by_id';
 		params.wstoken = token;
 		params.folderid = folder.instanceid;
 		// request
@@ -413,7 +413,7 @@ Ext.define('MoodleMobApp.WebService', {
 		var params = new Object();
 		// add response format
 		params.moodlewsrestformat = 'json';
-		params.wsfunction = 'local_uniappws_files_get_file';
+		params.wsfunction = 'uniappws_files_get_file';
 		params.wstoken = token;
 		params.fileid = file.fileid;
 		this.fetchFile(file, dir, successFunc, params);
@@ -423,7 +423,7 @@ Ext.define('MoodleMobApp.WebService', {
 		var params = new Object();
 		// add response format
 		params.moodlewsrestformat = 'json';
-		params.wsfunction = 'local_uniappws_files_upload_draft_file';
+		params.wsfunction = 'uniappws_files_upload_draft_file';
 		params.wstoken = token;
 		params.itemid = file.draftid;
 		params.filename = file.filename;
@@ -438,7 +438,7 @@ Ext.define('MoodleMobApp.WebService', {
 		var params = new Object();
 		// add response format
 		params.moodlewsrestformat = 'json';
-		params.wsfunction = 'local_uniappws_scorm_get_package';
+		params.wsfunction = 'uniappws_scorm_get_package';
 		params.wstoken = token;
 		params.scormid = file.scormid;
 		this.fetchFile(file, dir, successFunc, params);
@@ -447,7 +447,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getResource: function(resource, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_resource_get_resource';
+		params.wsfunction = 'uniappws_resource_get_resource';
 		params.wstoken = token;
 		params.resourceid = resource.instanceid;
 		// request
@@ -458,7 +458,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getChoice: function(choice, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_choice_get_choice';
+		params.wsfunction = 'uniappws_choice_get_choice';
 		params.wstoken = token;
 		params.choiceid = choice.instanceid;
 		// request
@@ -469,7 +469,7 @@ Ext.define('MoodleMobApp.WebService', {
 	submitChoice: function(choice, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_choice_submit_choice';
+		params.wsfunction = 'uniappws_choice_submit_choice';
 		params.wstoken = token;
 		params.choiceid = choice.instanceid;
 		params.optionid = choice.optionid;
@@ -481,7 +481,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getUrl: function(resource, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_url_get_url';
+		params.wsfunction = 'uniappws_url_get_url';
 		params.wstoken = token;
 		params.urlid = resource.instanceid;
 		// request
@@ -492,7 +492,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getPage: function(resource, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_page_get_page';
+		params.wsfunction = 'uniappws_page_get_page';
 		params.wstoken = token;
 		params.pageid = resource.instanceid;
 		// request
@@ -503,7 +503,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getGradeItems: function(course, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_get_grade_items_by_courseid';
+		params.wsfunction = 'uniappws_get_grade_items_by_courseid';
 		params.wstoken = token;
 		params.courseid = course.id;
 		// request
@@ -514,7 +514,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getGrades: function(course, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'local_uniappws_get_user_grades_by_courseid';
+		params.wsfunction = 'uniappws_get_user_grades_by_courseid';
 		params.wstoken = token;
 		params.courseid = course.id;
 		// request

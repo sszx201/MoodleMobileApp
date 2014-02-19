@@ -211,9 +211,34 @@ Ext.application({
 		);
 	},
 
-	formatDate: function(timestamp) {
+	formatDate: function(timestamp) {	
 		var date = new Date(timestamp*1000);
-		return date.toLocaleString();
+		//return date.toLocaleString();
+		var curr_day = date.getDate();
+		var sup = "";
+		if (curr_day == 1 || curr_day == 21 || curr_day ==31) {
+		   sup = "st";
+		} else if (curr_day == 2 || curr_day == 22) {
+		   sup = "nd";
+		} else if (curr_day == 3 || curr_day == 23) {
+		   sup = "rd";
+		} else {
+		   sup = "th";
+		}
+		var curr_month = date.getMonth();
+		var curr_year = date.getFullYear();
+		var curr_hour = date.getHours();
+		if(curr_hour < 10) {
+			curr_hour = '0' + curr_hour;
+		}
+		var curr_min = date.getMinutes();
+		if(curr_min < 10) {
+			curr_min = '0' + curr_min;
+		}
+		var formated_date = curr_day + "<sup>" + sup + "</sup> ";
+			formated_date+= Ext.Date.monthNames[curr_month] + " " + curr_year + " ";
+			formated_date+= curr_hour + ":" + curr_min;
+		return formated_date;
 	},
 
 	sendEmail: function(to, subject, body) { },

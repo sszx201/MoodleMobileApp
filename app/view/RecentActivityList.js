@@ -13,7 +13,9 @@ Ext.define("MoodleMobApp.view.RecentActivityList", {
 				this.dropActivityLabels();
 				// wait some time for the modules to load
 				Ext.defer(this.addActivityLabels, 250, this);
-			}
+			},
+
+			itemtap: 'jumpTo'
 		}
 	},
 
@@ -43,5 +45,9 @@ Ext.define("MoodleMobApp.view.RecentActivityList", {
 			// add the section title
 			Ext.DomHelper.insertBefore(element, label);
 		}
+	},
+
+	jumpTo: function(view, index, target, record) {
+		this.fireEvent('checkActivity', record);
 	}
 });

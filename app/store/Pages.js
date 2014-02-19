@@ -1,4 +1,4 @@
-Ext.define('MoodleMobApp.store.Page', {
+Ext.define('MoodleMobApp.store.Pages', {
 	extend: 'Ext.data.Store',
 
 	requires: [
@@ -7,12 +7,12 @@ Ext.define('MoodleMobApp.store.Page', {
 	],
 
 	config: {
-		storeId: 'page',
+		storeId: 'pages',
 		model: 'MoodleMobApp.model.Page',
 		autoLoad: true,
 		autoSync: true,
 		proxy : {
-			id: 'page',
+			id: 'pages',
 			type: 'localstorage'
 		}
 	}

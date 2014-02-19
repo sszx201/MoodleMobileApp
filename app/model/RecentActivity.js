@@ -8,8 +8,9 @@ Ext.define('MoodleMobApp.model.RecentActivity', {
 		fields: [
 			{ name: 'localid', type: 'auto' },
 			{ name: 'operation', type: 'string' },
-			{ name: 'id', type: 'int' },
-			{ name: 'ref', type: 'int' },
+			{ name: 'instanceid', type: 'int' },
+			{ name: 'moduleid', type: 'int' },
+			{ name: 'reference', type: 'int' },
 			{ name: 'courseid', type: 'int' },
 			{ name: 'name', type: 'string' },
 			{ name: 'modname', type: 'string' },

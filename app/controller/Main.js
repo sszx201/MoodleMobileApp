@@ -524,14 +524,6 @@ Ext.define('MoodleMobApp.controller.Main', {
 						var parent_indentation = parent_post.get('indentation');
 						post.set('indentation', parent_indentation + 1);
 					}
-
-					// add user info
-					var user = MoodleMobApp.Session.getUsersStore().findRecord('id', post.get('userid'), null, false, true, true);
-					if( user != null) {
-						post.set('firstname', user.get('firstname'));
-						post.set('lastname', user.get('lastname'));
-						post.set('avatar', user.get('avatar'));
-					}
 				}, this);
 	},
 
@@ -729,15 +721,15 @@ Ext.define('MoodleMobApp.controller.Main', {
 				MoodleMobApp.WebService.getPage(page.getData(), course.get('token')).on(
 					'load',
 					function(response) {
-						var previous_record = MoodleMobApp.Session.getPageStore().findRecord('id', response.first().get('id'));
+						var previous_record = MoodleMobApp.Session.getPagesStore().findRecord('id', response.first().get('id'));
 
 						if(previous_record == null) { // add the new page; this page has not been recorded previously
 							response.first().setDirty();
-							MoodleMobApp.Session.getPageStore().add(response.first());
+							MoodleMobApp.Session.getPagesStore().add(response.first());
 						} else if(previous_record.get('timemodified') != response.first().get('timemodified')) { // page modified; drop the old one
-							MoodleMobApp.Session.getPageStore().remove(previous_record);
+							MoodleMobApp.Session.getPagesStore().remove(previous_record);
 							response.first().setDirty();
-							MoodleMobApp.Session.getPageStore().add(response.first());
+							MoodleMobApp.Session.getPagesStore().add(response.first());
 						}
 					},
 					this,

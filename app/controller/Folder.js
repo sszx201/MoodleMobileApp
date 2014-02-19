@@ -12,13 +12,24 @@ Ext.define('MoodleMobApp.controller.Folder', {
 		refs: {
 			navigator: 'coursenavigator',
 			module: 'modulelist',
-			folder: 'folder'
+			folder: 'folder',
+			recentActivity: 'recentactivitylist'
 		},
 
 		control: {
 			// generic controls
 			module: { itemtap: 'selectModule' },
-			folder: { itemtap: 'selectFolderEntry' }
+			folder: { itemtap: 'selectFolderEntry' },
+			recentActivity: {
+				checkActivity: function(record) {
+					if(record.get('modname') == 'folder') {
+						var folder_record = MoodleMobApp.Session.getModulesStore().findRecord('id', record.get('moduleid'));
+						if(folder_record != undefined) {
+							this.selectFolder(folder_record);
+						}
+					}
+				}
+			}
 		}
 	},
 

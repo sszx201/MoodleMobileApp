@@ -26,7 +26,8 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 			singleUploadAssignmentSubmit: 'singleuploadassignment button[action=submit]',
 			uploadAssignment: 'uploadassignment',
 			uploadAssignmentAddFile: 'uploadassignment button[action=addfile]',
-			uploadAssignmentSubmit: 'uploadassignment button[action=submit]'
+			uploadAssignmentSubmit: 'uploadassignment button[action=submit]',
+			recentActivity: 'recentactivitylist'
 		},
 
 		control: {
@@ -37,7 +38,17 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 			onlineAssignmentSubmit: { tap: 'submitOnlineAssignment' },
 			singleUploadAssignmentSubmit: { tap: 'submitSingleUploadAssignment' },
 			uploadAssignmentAddFile: { tap: 'addFileSlot' },
-			uploadAssignmentSubmit: { tap: 'submitUploadAssignment' }
+			uploadAssignmentSubmit: { tap: 'submitUploadAssignment' },
+			recentActivity: {
+				checkActivity: function(record) {
+					if(record.get('modname') == 'assignment') {
+						var assignment_record = MoodleMobApp.Session.getModulesStore().findRecord('id', record.get('moduleid'));
+						if(assignment_record != undefined) {
+							this.selectAssignment(assignment_record);
+						}
+					}
+				}
+			}
 		}
 	},
 

@@ -29,20 +29,35 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			postList: '#forum_post_list',
 			postReplyButton: 'button[action=postreply]',
 			replyForm: 'forumpostreply',
-			saveReplyButton: 'button[action=savereply]'
+			saveReplyButton: 'button[action=savereply]',
+			recentActivity: 'recentactivitylist'
 		},
 
 		control: {
 			// generic controls
 			module: { itemtap: 'selectModule' },
 			// specific controls
-			discussionList: { itemtap: 'selectDiscussion' },
+			discussionList: {
+				itemtap: function(view, index, target, record) {
+					this.selectDiscussion(record);
+				}
+			},
 			addDiscussionButton: { tap: 'editDiscussion' },
 			saveDiscussionButton: { tap: 'saveDiscussion' },
 			replyForm: { deactivate: 'replyToPostCancelled' },
 			postReplyButton: { tap: 'replyToPost' },
 			saveReplyButton: { tap: 'saveReplyToPost' },
-			post: { getattachment: function() { console.log('attachment clicked'); } }
+			recentActivity: {
+				checkActivity: function(record) {
+					if(record.get('modname') == 'forum') {
+						var discussion_record = MoodleMobApp.Session.getForumDiscussionsStore().findRecord('id', record.get('instanceid'));
+						if(discussion_record != undefined) {
+							this.selectDiscussion(discussion_record);
+						}
+					}
+				}
+
+			}
 		}
 	},
 
@@ -222,12 +237,9 @@ Ext.define('MoodleMobApp.controller.Forum', {
  		);
 	},
 
-	selectDiscussion: function(view, index, target, record) {
-		
+	selectDiscussion: function(record) {
 		this.selected_discussion = record;
-		this.selected_discussion_target = target;
-		console.log('discussion selected');
-		console.log(record.getData());
+		//console.log('discussion selected'); console.log(record.getData());
 
 		var raw_forum_posts = this.getForumPosts(record.get('id'));	
 	
@@ -328,7 +340,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 						function(){
 							MoodleMobApp.app.hideLoadMask();
 							// refresh posts
-							this.selectDiscussion(null, 0, this.selected_discussion_target, this.selected_discussion);
+							this.selectDiscussion(this.selected_discussion);
 							// show posts
 							this.getNavigator().pop();
 						},

@@ -15,12 +15,23 @@ Ext.define('MoodleMobApp.controller.Choice', {
 			navigator: 'coursenavigator',
 			moduleList: 'modulelist',
 			choice: 'choice',
-			submitBtn: 'choice button[action=submit]'
+			submitBtn: 'choice button[action=submit]',
+			recentActivity: 'recentactivitylist'
 		},
 
 		control: {
 			moduleList: { itemtap: 'selectModule' },
-			submitBtn: { tap: 'submitChoice' }
+			submitBtn: { tap: 'submitChoice' },
+			recentActivity: {
+				checkActivity: function(record) {
+					if(record.get('modname') == 'choice') {
+						var choice_record = MoodleMobApp.Session.getChoicesStore().findRecord('id', record.get('instanceid'));
+						if(choice_record != undefined) {
+							this.showChoices(choice_record);
+						}
+					}
+				}
+			}
 		}
 	},
 
@@ -31,11 +42,13 @@ Ext.define('MoodleMobApp.controller.Choice', {
 
 	selectModule: function(view, index, target, record) {
 		if(record.get('modname') === 'choice') {
-			this.showChoices(record);
+			// get choice data
+			this.showChoices(MoodleMobApp.Session.getChoicesStore().findRecord('id', module.get('instanceid')));
 		}
 	},
 
-	showChoices: function(module) {
+	showChoices: function(record) {
+		this.choice = record;
 		// display choice
 		if(typeof this.getChoice() == 'object') {
 			this.getNavigator().push(this.getChoice());
@@ -43,9 +56,6 @@ Ext.define('MoodleMobApp.controller.Choice', {
 			this.getNavigator().push({ xtype: 'choice' });
 		}
 		
-		// get choice data
-		this.choice = MoodleMobApp.Session.getChoicesStore().findRecord('id', module.get('instanceid'));
-			
 		// set intro
 		var intro_html = '<div class="x-form-fieldset-title x-docked-top">'+ this.choice.get('name') +'</div>'+ 
 							'<div class="choice-intro">'+ this.choice.get('intro') +'</div>';

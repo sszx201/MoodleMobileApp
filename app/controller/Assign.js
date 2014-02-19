@@ -18,14 +18,26 @@ Ext.define('MoodleMobApp.controller.Assign', {
 			moduleList: 'modulelist',
 			assign: 'assign',
 			addFileSlotButton: 'assign button[action=addfile]',
-			submitButton: 'assign button[action=submit]'
+			submitButton: 'assign button[action=submit]',
+			recentActivity: 'recentactivitylist'
 		},
 
 		control: {
 			// generic controls
 			moduleList: { itemtap: 'selectModule' },
 			addFileSlotButton: { tap: 'addFileSlot' },
-			submitButton: { tap: 'submitAssign' }
+			submitButton: { tap: 'submitAssign' },
+			recentActivity: {
+				checkActivity: function(record) {
+					if(record.get('modname') == 'assign') {
+						var assign_record = MoodleMobApp.Session.getModulesStore().findRecord('id', record.get('moduleid'));
+						console.log(assign_record);
+						if(assign_record != undefined) {
+							this.selectAssign(assign_record);
+						}
+					}
+				}
+			}
 		}
 	},
 

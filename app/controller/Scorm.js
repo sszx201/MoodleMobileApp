@@ -34,7 +34,8 @@
 				scorm: 'scorm',
 				scormToolbar: '#scormToolbar',
 				metadataList: '#metadataList',
-				scormPanel: 'scormpanel'//,
+				scormPanel: 'scormpanel',
+				recentActivity: 'recentactivitylist'
 
 			},
 			control: {
@@ -64,48 +65,62 @@
 				},
 				metaBtn: {
 					tap: 'showMetaPanel'
+				},
+				recentActivity: {
+					checkActivity: function(record) {
+						if(record.get('modname') == 'scorm') {
+							var scorm_record = MoodleMobApp.Session.getModulesStore().findRecord('id', record.get('moduleid'));
+							if(scorm_record != undefined) {
+								this.getArchive(scorm_record);
+							}
+						}
+					}
 				}
 			}
 		},
+
 	path: '',
+
 	selectModule: function(view, index, target, record) {
 		if(record.get('modname') === 'scorm'){
-			
-			if(typeof this.getScorm() != 'object') {
-				var scorm = Ext.create('MoodleMobApp.view.Scorm');
-			}
-			
-			var scormExtractedFileFlag = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/scorm/' + record.get('id') + '/_scorm_extracted_';
-			var self = this;
-			window.requestFileSystem(
-				LocalFileSystem.PERSISTENT, 0,
-				function onFileSystemSuccess(fileSystem) {
-						// get the filesystem
-						fileSystem.root.getFile(
-							scormExtractedFileFlag, 
-							{
-								create: false,
-								exclusive: false
-							},
-							function(args){
-								// poco bello, ma funziona
-								var path = args.fullPath.replace(/_scorm_extracted_$/, '').replace(/file:\/\//, '');
-								self.parseScorm(path);
-							},
-							// error callback: notify the error
-							function() {
-								self.downloadArchive(record);
-							}
-						);
-				},
-				// error callback: notify the error
-				function(){
-					Ext.Msg.alert(
-						'File system error',
-						'Cannot access the local filesystem.'
-					);
-			});
+			this.getArchive(record);
 		}
+	},
+
+	getArchive: function(record) {
+		if(typeof this.getScorm() != 'object') {
+			var scorm = Ext.create('MoodleMobApp.view.Scorm');
+		}
+		var scormExtractedFileFlag = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/scorm/' + record.get('id') + '/_scorm_extracted_';
+		var self = this;
+		window.requestFileSystem(
+			LocalFileSystem.PERSISTENT, 0,
+			function onFileSystemSuccess(fileSystem) {
+					// get the filesystem
+					fileSystem.root.getFile(
+						scormExtractedFileFlag,
+						{
+							create: false,
+							exclusive: false
+						},
+						function(args){
+							// archive available, open the scorm
+							var path = args.fullPath.replace(/_scorm_extracted_$/, '').replace(/file:\/\//, '');
+							self.parseScorm(path);
+						},
+						// archive not available, download it first
+						function() {
+							self.downloadArchive(record);
+						}
+					);
+			},
+			// error callback: notify the error
+			function(){
+				Ext.Msg.alert(
+					'File system error',
+					'Cannot access the local filesystem.'
+				);
+		});
 	},
 
 	downloadArchive: function(module){

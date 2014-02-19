@@ -9,29 +9,38 @@ Ext.define('MoodleMobApp.controller.Page', {
         refs: {
 			navigator: 'coursenavigator',
 			module: 'modulelist',
-			page: 'page'
+			page: 'page',
+			recentActivity: 'recentactivitylist'
         },
         control: {
 			// generic controls
-			module: { itemtap: 'selectModule' }
+			module: { itemtap: 'selectModule' },
+			recentActivity: {
+				checkActivity: function(record) {
+					if(record.get('modname') == 'page') {
+						var page_record = MoodleMobApp.Session.getPagesStore().findRecord('id', record.get('instanceid'));
+						if(page_record != undefined) {
+							this.showPage(page_record);
+						}
+					}
+				}
+			}
         }
     },
     
-    //called when the Application is launched, remove if not needed
-    launch: function(app) {
-        
-    },
-
 	selectModule: function(view, index, target, record) {
 		if(record.get('modname') === 'page'){
-			if(typeof this.getPage() == 'object') {
-				this.getPage().destroy(); // if the previous instance is still there remove it
-			}
-			var page = MoodleMobApp.Session.getPageStore().findRecord('id', record.get('instanceid'));
-			this.getNavigator().push({
-				xtype: 'page',
-				record: page
-			});
+			this.showPage(MoodleMobApp.Session.getPagesStore().findRecord('id', record.get('instanceid')));
 		}
+	},
+
+	showPage: function(page) {
+		if(typeof this.getPage() == 'object') {
+			this.getPage().destroy(); // if the previous instance is still there remove it
+		}
+		this.getNavigator().push({
+			xtype: 'page',
+			record: page
+		});
 	}
 });

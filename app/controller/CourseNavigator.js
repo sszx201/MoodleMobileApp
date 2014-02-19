@@ -82,8 +82,8 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 	},
 
 	goHome: function() {
-		//this.toggleSideMenu();
-		this.getNavigator().pop(10);
+		// go back to the course list
+		this.getNavigator().pop('courselist');
 	},
 
 	showSettings: function() {
@@ -104,22 +104,9 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		// set the course token inside the session
 		MoodleMobApp.Session.setCourse(record);
 
-		// filter activity
-		this.course_recent_activity = Ext.create('Ext.data.Store', { model: 'MoodleMobApp.model.RecentActivity' });
-		MoodleMobApp.Session.getRecentActivitiesStore().each(
-			function(record) { 
-				if( parseInt(record.get('courseid')) == parseInt(this.current_course.get('id')) ) {
-					this.course_recent_activity.add(record);
-				}
-			}, this
-		);
-
 		// update the app bar
 		this.getHomeButton().show();
 		this.getRecentActivityButton().show();
-		if(this.course_recent_activity.getCount() > 0) {
-			this.getRecentActivityButton().setBadgeText(this.course_recent_activity.getCount());
-		}
 		this.getGradesButton().show();
 		this.getPartecipantsButton().show();
 		this.getCalendarButton().show();
@@ -132,7 +119,21 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		}
 	},
 
-	showCourse: function() {	
+	showCourse: function() {
+		// filter activity
+		var recent_activity = Ext.create('Ext.data.Store', { model: 'MoodleMobApp.model.RecentActivity' });
+		MoodleMobApp.Session.getRecentActivitiesStore().each(
+			function(activity) {
+				if( parseInt(activity.get('courseid')) == parseInt(this.current_course.get('id')) ) {
+					recent_activity.add(activity);
+				}
+			}, this
+		);
+		if(recent_activity.getCount() > 0) {
+			this.getRecentActivityButton().setBadgeText(recent_activity.getCount());
+		}
+		this.course_recent_activity = recent_activity;
+
 		// filter modules
 		var modules = Ext.create('Ext.data.Store', { model: 'MoodleMobApp.model.Module' });
 		MoodleMobApp.Session.getModulesStore().each(

@@ -61,9 +61,13 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 		if(record == null) { return; } 
 
 		this.setCls('forum-post x-post-indentation-' + record.get('indentation'));	
-		this.down('#avatar').setSrc(record.get('avatar'));
-		this.down('#firstname').setHtml(record.get('firstname'));
-		this.down('#lastname').setHtml(record.get('lastname'));
+		// get user info
+		var user = MoodleMobApp.Session.getUsersStore().findRecord('id', record.get('userid'), null, false, true, true);
+		// set user info
+		this.down('#avatar').setSrc(user.get('avatar'));
+		this.down('#firstname').setHtml(user.get('firstname'));
+		this.down('#lastname').setHtml(user.get('lastname'));
+		// set post info
 		this.down('#subject').setHtml(record.get('subject'));
 		// process attachments
 		if(record.get('attachments') != null && record.get('attachments').length > 0) {

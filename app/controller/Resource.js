@@ -4,27 +4,34 @@ Ext.define('MoodleMobApp.controller.Resource', {
     config: {
         refs: {
 			navigator: 'coursenavigator',
-			module: 'modulelist'
+			module: 'modulelist',
+			recentActivity: 'recentactivitylist'
         },
         control: {
 			// generic controls
-			module: { itemtap: 'selectModule' }
+			module: { itemtap: 'selectModule' },
+			recentActivity: {
+				checkActivity: function(record) {
+					if(record.get('modname') == 'resource') {
+						var resource_record = MoodleMobApp.Session.getResourcesStore().findRecord('id', record.get('instanceid'));
+						console.log(resource_record.getData());
+						if(resource_record != undefined) {
+							this.getFile(resource_record);
+						}
+					}
+				}
+			}
         }
     },
     
-    //called when the Application is launched, remove if not needed
-    launch: function(app) {
-        
-    },
-
 	selectModule: function(view, index, target, record) {
 		if(record.get('modname') === 'resource'){
-			this.getFile(record);
+			var resource = MoodleMobApp.Session.getResourcesStore().findRecord('id', record.get('instanceid'), 0, false, true, true);
+			this.getFile(resource);
 		}
 	},
 
-	getFile: function(module){
-		var resource = MoodleMobApp.Session.getResourcesStore().findRecord('id', module.get('instanceid'), 0, false, true, true);
+	getFile: function(resource){
 		if(resource.get('filemime').indexOf('html') !== -1) {
 			MoodleMobApp.app.openURL(MoodleMobApp.Config.getResourceViewUrl()+'?id='+module.get('id'));
 		} else {

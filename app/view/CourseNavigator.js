@@ -54,11 +54,6 @@ Ext.define("MoodleMobApp.view.CourseNavigator", {
 					},
 					{
 						xtype: 'button',
-						id: 'settingsAppBtn',
-						iconCls: 'settings'
-					},
-					{
-						xtype: 'button',
 						id: 'recentActivityAppBtn',
 						iconCls: 'bullhorn',
 						badgeText: null,
@@ -81,6 +76,11 @@ Ext.define("MoodleMobApp.view.CourseNavigator", {
 						id: 'calendarAppBtn',
 						iconCls: 'calendar',
 						hidden: true
+					},
+					{
+						xtype: 'button',
+						id: 'settingsAppBtn',
+						iconCls: 'settings'
 					}
 				]
 			}

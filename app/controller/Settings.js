@@ -39,6 +39,8 @@ Ext.define('MoodleMobApp.controller.Settings', {
 	purgeData: function() {
 		MoodleMobApp.Session.getCoursesStore().removeAll();
 		MoodleMobApp.Session.getCoursesStore().getProxy().clear();
+		MoodleMobApp.Session.getRecentActivitiesStore().removeAll();
+		MoodleMobApp.Session.getRecentActivitiesStore().getProxy().clear();
 		MoodleMobApp.Session.getGroupsStore().removeAll();
 		MoodleMobApp.Session.getGroupsStore().getProxy().clear();
 		MoodleMobApp.Session.getGroupingsStore().removeAll();
@@ -65,8 +67,8 @@ Ext.define('MoodleMobApp.controller.Settings', {
 		MoodleMobApp.Session.getChoicesStore().getProxy().clear();
 		MoodleMobApp.Session.getUrlStore().removeAll();
 		MoodleMobApp.Session.getUrlStore().getProxy().clear();
-		MoodleMobApp.Session.getPageStore().removeAll();
-		MoodleMobApp.Session.getPageStore().getProxy().clear();
+		MoodleMobApp.Session.getPagesStore().removeAll();
+		MoodleMobApp.Session.getPagesStore().getProxy().clear();
 		MoodleMobApp.Session.getGradeItemsStore().removeAll();
 		MoodleMobApp.Session.getGradeItemsStore().getProxy().clear();
 		MoodleMobApp.Session.getGradesStore().removeAll();

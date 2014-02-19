@@ -22,11 +22,9 @@ Ext.define('MoodleMobApp.Config', {
 		resourceViewUrl : '/mod/resource/view.php',
 		//paths
 		fileCacheDir: 'iCorsi',
-		//system
-		memoryStorage: 'iCorsi',
 		//Flags
 		noGroupsFlag: 0,
 		separatedGroupsFlag: 1,
-		visibleGroupsFlag: 2,
+		visibleGroupsFlag: 2
 	}
 });

@@ -48,7 +48,7 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 			var section_number = course_sections.getAt(i).get('number');
 			var element = Ext.select('.x-module-section-' + section_number).first();
 			if(element == null) {
-				break;
+				continue;
 			} else {
 				var title = null;
 				var summary = null;

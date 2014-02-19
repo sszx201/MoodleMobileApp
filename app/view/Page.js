@@ -1,5 +1,5 @@
 Ext.define("MoodleMobApp.view.Page", {
-	extend: 'Ext.form.Panel',
+	extend: 'Ext.Panel',
 	xtype: 'page',
 	fullscreen: true,
 	
@@ -11,6 +11,7 @@ Ext.define("MoodleMobApp.view.Page", {
 		id: 'page',
 		cls: 'page',
 		title: 'Page',
+		scrollable: 'vertical',
 		items: [
 			{
 				xtype: 'panel',	
@@ -28,6 +29,7 @@ Ext.define("MoodleMobApp.view.Page", {
 				xtype: 'panel',	
 				name: 'content',
 				cls: 'content',
+				styleHtmlContent: true,
 				html: ''
 			}
 		],

@@ -1,6 +1,6 @@
-/* 
+/*
  * This file contains the extensions for the MoodleMobApp app.
- * 
+ *
  * All the functions added here are platform dependant.
  *
  * This file contains the android related functions.
@@ -25,8 +25,8 @@ function addExtensions() {
 
 		window.plugins.webintent.startActivity(
 			{
+				action: window.plugins.webintent.ACTION_SEND,
 				url: to,
-				action: WebIntent.ACTION_SEND,
 				type: 'text/plain',
 				extras: extras
 			},
@@ -52,7 +52,7 @@ function addExtensions() {
 		var store = 'sdcard';
 		window.plugins.webintent.startActivity(
 			{
-				action: WebIntent.ACTION_VIEW,
+				action: window.plugins.webintent.ACTION_VIEW,
 				type: mimetype,
 				url: protocol+store+path
 			},
@@ -69,7 +69,7 @@ function addExtensions() {
 
 		window.plugins.webintent.startActivity(
 			{
-				action: WebIntent.ACTION_VIEW,
+				action: window.plugins.webintent.ACTION_VIEW,
 				url: urladdr
 			},
 			function () {},

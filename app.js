@@ -117,8 +117,9 @@ Ext.application({
 	downloadFile: function(file) {
 		// success function
 		var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + file.fileid;
+
 		var successFunc = function(result) {
-			MoodleMobApp.app.hideLoadMask();
+			//MoodleMobApp.app.hideLoadMask();
 			var filePath = '/'+dirPath+'/'+file.name;
 			MoodleMobApp.app.openFile(filePath, file.mime);
 		};
@@ -211,7 +212,7 @@ Ext.application({
 		);
 	},
 
-	formatDate: function(timestamp) {	
+	formatDate: function(timestamp) {
 		var date = new Date(timestamp*1000);
 		//return date.toLocaleString();
 		var curr_day = date.getDate();

@@ -373,6 +373,7 @@ Ext.define('MoodleMobApp.WebService', {
 								sPath + dir + '/' + file.name,
 								function(theFile) {
 									console.log('SUCCESS !! from webservice');
+									document.querySelector('div.progress-bar span').setAttribute('style', 'width: 0%');
 									Ext.Msg.hide();
 									successFunc(theFile);
 								},

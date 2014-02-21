@@ -118,8 +118,6 @@ Ext.application({
 		var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + file.fileid;
 		if(MoodleMobApp.app.isConnectionAvailable()) {
 			// success function
-			var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + file.fileid;
-
 			var successFunc = function(result) {
 				//MoodleMobApp.app.hideLoadMask();
 				var filePath = '/'+dirPath+'/'+file.name;

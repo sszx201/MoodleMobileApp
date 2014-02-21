@@ -36,9 +36,9 @@ Ext.define('MoodleMobApp.controller.Resource', {
 			MoodleMobApp.app.openURL(MoodleMobApp.Config.getResourceViewUrl()+'?id='+module.get('id'));
 		} else {
 			var file = {
-				'name': resource.get('filename'),
-				'fileid': resource.get('fileid'),
-				'mime': resource.get('filemime')
+				name: resource.get('filename'),
+				fileid: resource.get('fileid'),
+				mime: resource.get('filemime')
 			};
 			MoodleMobApp.app.downloadFile(file);
 		}

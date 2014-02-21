@@ -115,22 +115,61 @@ Ext.application({
 	// file is an object such as:
 	// {"name": "filename", "id": "file id number", "mime":"mime/type"}
 	downloadFile: function(file) {
-		// success function
 		var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + file.fileid;
+		if(MoodleMobApp.app.isConnectionAvailable()) {
+			// success function
+			var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + file.fileid;
 
-		var successFunc = function(result) {
-			//MoodleMobApp.app.hideLoadMask();
-			var filePath = '/'+dirPath+'/'+file.name;
-			MoodleMobApp.app.openFile(filePath, file.mime);
-		};
+			var successFunc = function(result) {
+				//MoodleMobApp.app.hideLoadMask();
+				var filePath = '/'+dirPath+'/'+file.name;
+				MoodleMobApp.app.openFile(filePath, file.mime);
+			};
 
+			MoodleMobApp.WebService.getFile(
+				file,
+				dirPath,
+				successFunc,
+				MoodleMobApp.Session.getCourse().get('token')
+			);
+		} else {
+			MoodleMobApp.app.openCacheFile(file, dirPath);
+		}
+	},
 
-		MoodleMobApp.WebService.getFile(
-			file,
-			dirPath,
-			successFunc,
-			MoodleMobApp.Session.getCourse().get('token')
-		);
+	openCacheFile: function(file, dir) {
+		var self = this;
+		window.requestFileSystem(
+			LocalFileSystem.PERSISTENT, 0,
+			function onFileSystemSuccess(fileSystem) {
+				// get the filesystem
+				fileSystem.root.getFile(
+					dir + '/' + file.name,
+					{
+						create: false,
+						exclusive: false
+					},
+					// success callback: remove the previous file
+					function gotFileEntry(fileEntry) {
+						var filePath = '/'+dir+'/'+file.name;
+						MoodleMobApp.app.openFile(filePath, file.mime);
+					},
+					// error callback: notify the error
+					function(){
+						Ext.Msg.alert(
+							'File not available',
+							'The file' + file.name + ' is not available in the cache. No connection available so it is not possibile to download it at this time.'
+						);
+					}
+				);
+			},
+			// error callback: notify the error
+			function(){
+				Ext.Msg.alert(
+					'File system error',
+					'Cannot access the local filesystem.'
+				);
+			});
 	},
 
 	isLoadMaskVisible: function() {
@@ -258,15 +297,19 @@ Ext.application({
 			navigator.userAgent.match(/Android/)
 		) { // check connection
 			if(navigator.connection.type == Connection.NONE || navigator.connection.type == Connection.UNKNOWN ) {
-				Ext.Msg.alert(
-					'Connection',
-					'No connection available. Cannot contact the server.'
-				);
+				if(!MoodleMobApp.Session.getConnectionAvailabilityWarningIssued()) {
+					Ext.Msg.alert(
+						'Connection',
+						'No connection available. Cannot contact the server.'
+					);
+					MoodleMobApp.Session.setConnectionAvailabilityWarningIssued(true);
+				}
 				return false;
 			} else {
+				MoodleMobApp.Session.setConnectionAvailabilityWarningIssued(false);
 				return true;
 			}
-		} else { // assume the app runs on a pc
+		} else { // assume the app runs on the pc browser
 			return true;
 		}
 	}

@@ -4,6 +4,7 @@ Ext.define("MoodleMobApp.view.Settings", {
 
 	requires: [
 		'Ext.TitleBar',
+		'Ext.TabPanel',
 		'MoodleMobApp.view.AaiAccount',
 		'MoodleMobApp.view.ManualAccount'
 	],
@@ -33,42 +34,43 @@ Ext.define("MoodleMobApp.view.Settings", {
     			},
 				items: [
 					{
-						title: 'AAI/NetID account',
+						title: 'AAI/NetID',
 						xtype: 'aaiaccount'
 					},
 					{
-						title: 'External User account',
+						title: 'External User',
 						xtype: 'manualaccount'
-					}
-				]
-			},
-			{
-				xtype: 'formpanel',
-				items: [
+					},
 					{
-						xtype: 'fieldset',
-						title: 'Local cache',
-						instructions: 'Purge the downloaded data and the downloaded files from the smartphone memory. This does not affect the data and the files on the iCorsi platform. <span style="color: red">NOTE: Purging the downloaded files will also clear all the scorm notes.</span>',
-						defaults: {
-							margin: 10
-						},
+						title: 'Cache',
+						xtype: 'formpanel',
 						items: [
 							{
-								xtype: 'button',
-								text: 'Purge data',
-								ui: 'decline',
-								action: 'purgedata'
-							},
-							{
-								xtype: 'button',
-								text: 'Purge files',
-								ui: 'decline',
-								action: 'purgefiles'
+								xtype: 'fieldset',
+								title: 'Local cache',
+								instructions: 'Purge the downloaded data and the downloaded files from the smartphone memory. This does not affect the data and the files on the iCorsi platform. <span style="color: red">NOTE: Purging the downloaded files will also clear all the scorm notes.</span>',
+								defaults: {
+									margin: 10
+								},
+								items: [
+									{
+										xtype: 'button',
+										text: 'Purge data',
+										ui: 'decline',
+										action: 'purgedata'
+									},
+									{
+										xtype: 'button',
+										text: 'Purge files',
+										ui: 'decline',
+										action: 'purgefiles'
+									}
+								]
 							}
 						]
 					}
 				]
-		 	}
+			}	
 		]
 	}
 });

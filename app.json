@@ -103,7 +103,7 @@
      * Extra resources to be copied along when build
      */
     "resources": [
-        "js"
+        "js",
         "resources/images"
     ],
 

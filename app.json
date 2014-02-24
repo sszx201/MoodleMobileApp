@@ -103,9 +103,8 @@
      * Extra resources to be copied along when build
      */
     "resources": [
-        "resources/images",
-        "resources/icons",
-        "resources/startup"
+        "js"
+        "resources/images"
     ],
 
     /**

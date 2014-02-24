@@ -43,7 +43,7 @@ Ext.define('MoodleMobApp.controller.Choice', {
 	selectModule: function(view, index, target, record) {
 		if(record.get('modname') === 'choice') {
 			// get choice data
-			this.showChoices(MoodleMobApp.Session.getChoicesStore().findRecord('id', module.get('instanceid')));
+			this.showChoices(MoodleMobApp.Session.getChoicesStore().findRecord('id', record.get('instanceid')));
 		}
 	},
 

@@ -33,7 +33,7 @@ Ext.define('MoodleMobApp.controller.Resource', {
 
 	getFile: function(resource){
 		if(resource.get('filemime').indexOf('html') !== -1) {
-			MoodleMobApp.app.openURL(MoodleMobApp.Config.getResourceViewUrl()+'?id='+module.get('id'));
+			MoodleMobApp.app.openURL(MoodleMobApp.Config.getResourceViewUrl()+'?id='+resource.get('id'));
 		} else {
 			var file = {
 				name: resource.get('filename'),

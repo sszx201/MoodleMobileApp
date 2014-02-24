@@ -249,7 +249,7 @@ Ext.define('MoodleMobApp.WebService', {
 	getAssignmentSubmission: function(assigid, token) {
 		// set parameters
 		var params = new Object();
-		params.wsfunction = 'uniappws_get_submission_by_assignid';
+		params.wsfunction = 'uniappws_get_submission_by_assignmentid';
 		params.wstoken = token;
 		params.assigid = assigid;
 		// request

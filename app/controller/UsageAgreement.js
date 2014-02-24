@@ -24,7 +24,15 @@ Ext.define('MoodleMobApp.controller.UsageAgreement', {
 	},
 
 	registerDisagreement: function() {
-		console.log('user disagreed');
+		Ext.Msg.confirm(
+			'Exit',
+			'Would you like to close the app?',
+			function(btn) {
+				if(btn == 'yes') {
+					navigator.app.exitApp();
+				}
+			}
+		);
 	}
 	
 });

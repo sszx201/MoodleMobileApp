@@ -20,8 +20,7 @@ Ext.define("MoodleMobApp.view.Settings", {
 			{
 				docked: 'top',
 				xtype: 'titlebar',
-				title: 'Settings',
-				iconCls: 'user'
+				title: 'Settings'
 			},
 			{
 				xtype: 'tabpanel',
@@ -70,7 +69,13 @@ Ext.define("MoodleMobApp.view.Settings", {
 						]
 					}
 				]
-			}	
+			},
+			{
+				xtype: 'panel',
+				cls: 'version',
+				docked: 'bottom',
+				html: MoodleMobApp.Config.getVersion()
+			}
 		]
 	}
 });

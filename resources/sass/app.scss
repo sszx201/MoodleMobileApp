@@ -40,6 +40,13 @@ $active-color: #C35817;
 	}
 }
 
+.version {
+	color: gray;
+	font-size: small;
+	text-align: right;
+	padding-right: 5px;
+}
+
 .x-navigationview-inner {
 	-webkit-transition: margin-right 0.3s;
 	-moz-transition: margin-right 0.3s;

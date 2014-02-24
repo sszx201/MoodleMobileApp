@@ -103,6 +103,7 @@
      * Extra resources to be copied along when build
      */
     "resources": [
+        "config.xml",
         "js",
         "resources/images"
     ],

@@ -105,7 +105,8 @@
     "resources": [
         "config.xml",
         "js",
-        "resources/images"
+        "resources/images",
+        "extensions/supsi/template"
     ],
 
     /**

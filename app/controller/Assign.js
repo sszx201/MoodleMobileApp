@@ -102,11 +102,7 @@ Ext.define('MoodleMobApp.controller.Assign', {
 					layout: 'hbox',
 					items: [
 						{
-							xtype: 'textfield',
-							component: { 
-								xtype: 'file',
-								disabled: false
-							},
+							xtype: 'filefield',
 							flex: 4
 						},
 						{

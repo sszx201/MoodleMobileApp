@@ -340,7 +340,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 		MoodleMobApp.Session.getCoursesStore().sync();
 	},
 
-	updateForumDiscussionsStore: function (course) {
+	updateForumDiscussionsStore: function (course, callback) {
 		var courseid = course.get('id');
 		//MoodleMobApp.log('UPDATING FORUM DISCUSSIONS STORE FOR COURSE: '+courseid);
 
@@ -390,6 +390,9 @@ Ext.define('MoodleMobApp.controller.Main', {
 						if(forum_counter == forums.length) {
 							this.updateStatus['forumDiscussions'] = true;
 							this.updateStatus['forumPosts'] = true;
+							if(callback != undefined) {
+								callback();
+							}
 						} else {
 							++forum_counter;
 						}

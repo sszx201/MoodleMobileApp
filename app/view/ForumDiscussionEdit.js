@@ -15,7 +15,6 @@ Ext.define("MoodleMobApp.view.ForumDiscussionEdit", {
 	controllers: [ ],
 
 	config: {
-		id: 'forum_discussion_edit_form',
 		title: 'Form Discussion Edit',
 		listeners: {
 		},

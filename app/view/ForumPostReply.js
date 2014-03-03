@@ -21,20 +21,21 @@ Ext.define("MoodleMobApp.view.ForumPostReply", {
 			initialize: function(){
 				// display the parent post
 				var data = this.getRecord().getData();
+				var user = MoodleMobApp.Session.getUsersStore().findRecord('id', data.userid, null, false, true, true);
 				// prepare the html
 				var parent_post_html = '<div class="x-form-fieldset-title x-docked-top">Reply To</div>'+ 
 										'<div class="parent-post">'+ 
 											'<div class="userinfo">'+
-												'<img src="'+data.avatar+'" /> '+
-												'<span class="username">'+data.firstname + ' ' + data.lastname+'</span>'+
+												'<img src="'+ user.get('avatar') +'" /> '+
+												'<span class="username">'+ user.get('firstname') + ' ' + user.get('lastname') +'</span>'+
 											'</div>'+
 											'<div class="content">'+
 												'<div class="subject">'+
-													'<span class="label">Subject:</span> '+'<span class="text">'+data.subject+'</div>'+
+													'<span class="label">Subject:</span> '+'<span class="text">'+ data.subject +'</div>'+
 												'</div>'+
 												'<div class="message">'+
 													'<div class="label">Message:</div>'+
-													'<div class="text">'+data.message+'</div>'+
+													'<div class="text">'+ data.message +'</div>'+
 												'</div>'+
 											'</div>'+
 										'</div>';

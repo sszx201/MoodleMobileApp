@@ -22,7 +22,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			navigator: 'coursenavigator',
 			module: 'modulelist',
 			discussionList: 'forumdiscussionlist',
-			editDiscussionForm: '#forum_discussion_edit_form',
+			editDiscussionForm: 'forumdiscussionedit',
 			saveDiscussionButton: 'button[action=savediscussion]',
 			addDiscussionButton: 'button[action=adddiscussion]',
 			post: 'forumpost',
@@ -42,7 +42,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 					this.selectDiscussion(record);
 				}
 			},
-			addDiscussionButton: { tap: 'editDiscussion' },
+			addDiscussionButton: { tap: 'editNewDiscussion' },
 			saveDiscussionButton: { tap: 'saveDiscussion' },
 			replyForm: { deactivate: 'replyToPostCancelled' },
 			postReplyButton: { tap: 'replyToPost' },
@@ -180,14 +180,14 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		}
 	},
 
-	editDiscussion: function(button){
+	editNewDiscussion: function(button){
 		if(typeof this.getEditDiscussionForm() == 'object'){ 
-			this.getNavigator().push(this.getEditDiscussionForm());
-		} else {
-			this.getNavigator().push({
-				xtype: 'forumdiscussionedit'
-			});
+			this.getEditDiscussionForm().destroy();
 		}
+
+		this.getNavigator().push({
+			xtype: 'forumdiscussionedit'
+		});
 	},
 
 	saveDiscussion: function(button) {
@@ -201,30 +201,14 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			'load', 
 			function(store, records){
 				if( store.first().raw.exception == undefined) {
-
-					MoodleMobApp.Session.getForumDiscussionsStore().on(
-						'refresh',
-						function(){
-							var course = MoodleMobApp.Session.getCoursesStore().getById(this.selected_forum.get('courseid'));
-							this.getApplication().getController('Main').updateForumDiscussionsStore(course);
-						},
-						this,
-						{single:true}
-					);
-
-					MoodleMobApp.Session.getForumDiscussionsStore().on(
-						'write',
-						function(){
-							MoodleMobApp.app.hideLoadMask();
-							this.checkIfEditable();
-							this.getNavigator().pop();
-						},
-						this,
-						{single:true}
-					);
-					// clearFilters triggers the refresh event and starts the update
-					// of the forum discussions store
-					MoodleMobApp.Session.getForumDiscussionsStore().clearFilter();
+					var scope = this;
+					this.getApplication().getController('Main').updateForumDiscussionsStore(MoodleMobApp.Session.getCourse(), function() {
+						MoodleMobApp.app.hideLoadMask();
+						var forum_discussions = scope.getForumDiscussions();
+						scope.getDiscussionList().setStore(forum_discussions);
+						scope.checkIfEditable();
+						scope.getNavigator().pop();
+					});
 				} else {
 					Ext.Msg.alert(
 						store.first().raw.exception,
@@ -304,14 +288,13 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		// remove the previous forum_post_reply_form view
 		// if exists
 		if(typeof this.getReplyForm() == 'object'){ 
-			this.getReplyForm().setRecord(parentRecord);
-			this.getNavigator().push(this.getReplyForm());
-		} else {
-			this.getNavigator().push({
-				xtype: 'forumpostreply',
-				record: parentRecord
-			});
+			this.getReplyForm().destroy()
 		}
+
+		this.getNavigator().push({
+			xtype: 'forumpostreply',
+			record: parentRecord
+		});
 	},
 
 	saveReplyToPost: function(button){
@@ -339,10 +322,10 @@ Ext.define('MoodleMobApp.controller.Forum', {
 						'write',
 						function(){
 							MoodleMobApp.app.hideLoadMask();
-							// refresh posts
-							this.selectDiscussion(this.selected_discussion);
 							// show posts
 							this.getNavigator().pop();
+							// refresh posts
+							this.selectDiscussion(this.selected_discussion);
 						},
 						this,
 						{single:true}

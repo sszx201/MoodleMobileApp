@@ -310,5 +310,9 @@ Ext.application({
 		} else { // assume the app runs on the pc browser
 			return true;
 		}
+	},
+
+	dump: function(obj) {
+		console.log(JSON.stringify(obj));
 	}
 });

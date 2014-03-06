@@ -172,30 +172,23 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 
 	submitSingleUploadAssignment: function(button) {
 		var self = this;
-		var submission_data = this.getSingleUploadAssignment().getValues();
-		var comp = button.getParent().child('textfield').getComponent();
-		var files = comp.input.dom.files;
-		submission_data.filename = files[0].name;
-		submission_data.draftid = Math.round(Math.random() * 1000000000);
-
-		var reader = new FileReader();
-		reader.onload = function(e) {
-			var content = e.target.result;
-			successFunc(content, submission_data);
-		}
+		this.submission_data = this.getSingleUploadAssignment().getValues();
+		var file = this.getSingleUploadAssignment().child('fieldset').child('filefield').getFiles().item(0);
+		this.submission_data.filename = file.name;
+		this.submission_data.draftid = Math.round(Math.random() * 1000000000);
 		
 		MoodleMobApp.app.showLoadMask('Submitting...');
 		// function to execute if the file is read successfully
-		var successFunc = function(filedata, params) {
-				params.filedata = filedata;
+		var uploadDraftFile = function(filedata) {
+				self.submission_data.filedata = filedata;
 				// get the filename
-				var file_upload_response_store = MoodleMobApp.WebService.uploadDraftFile(params, MoodleMobApp.Session.getCourse().get('token'));
+				var file_upload_response_store = MoodleMobApp.WebService.uploadDraftFile(self.submission_data, MoodleMobApp.Session.getCourse().get('token'));
 				file_upload_response_store.on(
 					'load', 
 					function(status_store){
 						var sub_params = {};
 						sub_params.courseid = MoodleMobApp.Session.getCourse().get('id');
-						sub_params.instanceid = submission_data.instanceid;
+						sub_params.instanceid = self.submission_data.instanceid;
 						sub_params.fileid = status_store.first().get('fileid');
 						var assignment_submission_store = MoodleMobApp.WebService.submitSingleUploadAssignment(sub_params,  MoodleMobApp.Session.getCourse().get('token'));
 						assignment_submission_store.on(
@@ -213,7 +206,13 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 				);
 		};
 
-		reader.readAsDataURL(files[0]);
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			var content = e.target.result;
+			uploadDraftFile(content);
+		}
+
+		reader.readAsDataURL(file);
 	},	
 
 	addFileSlot: function() {
@@ -225,7 +224,12 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 				items: [
 					{
 						xtype: 'filefield',
-						flex: 4
+						flex: 4,
+						listeners: {
+							change: function() {
+								this.setHtml('<div class="filefield-file-name"> Load file: ' + this.getFiles().item(0).name + '</div>');
+							}
+						}
 					},
 					{
 						xtype: 'button',
@@ -245,21 +249,23 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 	},
 
 	submitUploadAssignment: function(button) {
+		var self = this;
 		// check and prepare the files to be uploaded as drafts
-		var submission_data = this.getUploadAssignment().getValues();
-		submission_data.uploadFile = new Array();
-		submission_data.files = new Array();
-		submission_data.filenames = new Array();
-		submission_data.draftid = Math.round(Math.random() * 1000000000);
+		this.submission_data = this.getUploadAssignment().getValues();
+		this.submission_data.courseid = MoodleMobApp.Session.getCourse().get('id');
+		this.submission_data.uploadFile = new Array();
+		this.submission_data.files = new Array();
+		this.submission_data.filenames = new Array();
+		this.submission_data.draftid = Math.round(Math.random() * 1000000000);
 		var filelist = this.getUploadAssignment().child('fieldset').child('container[name=filelist]');
 		var fileEntries = filelist.getItems().getCount();
 		var files = {}; // this object is used to control the files; avoid duplicates and empty submissions
 		for(var i=0; i < fileEntries; ++i) {
-			var file = filelist.getAt(i).child('textfield').getComponent().input.dom.files;
-			if(file.length > 0) { // ignore file is the slot is empty
-				if(files[file[0].name] == undefined) {
-					files[file[0].name] = file;
-					submission_data.uploadFile.push(file);
+			var file = filelist.getAt(i).getAt(0).getFiles().item(0);
+			if(file != null) { // ignore file is the slot is empty
+				if(files[file.name] == undefined) {
+					files[file.name] = file;
+					this.submission_data.uploadFile.push(file);
 				}
 			}
 		}
@@ -269,14 +275,13 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 			return;
 		}
 
-		var self = this;
 		MoodleMobApp.app.showLoadMask('Submitting...');
 		// function to execute if the file is read successfully
-		var submit = function(params) {
-			params.courseid = MoodleMobApp.Session.getCourse().get('id');
-			params.instanceid = submission_data.instanceid;
-			if(params.isfinal == null) params.isfinal = 0;
-			var assignment_submission_store = MoodleMobApp.WebService.submitUploadAssignment(params,  MoodleMobApp.Session.getCourse().get('token'));
+		this.submit = function() {
+			if(self.submission_data.isfinal == null) {
+				self.submission_data.isfinal = 0;
+			}
+			var assignment_submission_store = MoodleMobApp.WebService.submitUploadAssignment(self.submission_data,  MoodleMobApp.Session.getCourse().get('token'));
 			assignment_submission_store.on(
 				'load',
 				function(status_store){
@@ -288,22 +293,24 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 			);
 		};
 
-		var uploadDraftFile = function(fdata, params) {
-			//update params
-			params.filedata = fdata;
-			var file_upload_response_store = MoodleMobApp.WebService.uploadDraftFile(params, MoodleMobApp.Session.getCourse().get('token'));
+		this.uploadDraftFile = function(fdata) {
+			//update self.submission_data
+			self.submission_data.filedata = fdata;
+			var file_upload_response_store = MoodleMobApp.WebService.uploadDraftFile(self.submission_data, MoodleMobApp.Session.getCourse().get('token'));
 			file_upload_response_store.on(
 				'load',
 				function(status_store) {
-					params.files.push(status_store.first().get('fileid'));
-					if(params.uploadFile.length > 0) {
-						var file = params.uploadFile.pop();
-						params.filename = file[0].name;
-						params.filenames.push(params.filename);
-						reader.readAsDataURL(file[0]);
+					self.submission_data.files.push(status_store.first().get('fileid'));
+					if(self.submission_data.uploadFile.length > 0) {
+						var file = self.submission_data.uploadFile.pop();
+						self.submission_data.filename = file.name;
+						self.submission_data.filenames.push(self.submission_data.filename);
+						self.reader = new FileReader();
+						self.reader.onload = self.draftUploaded;
+						self.reader.readAsDataURL(file);
 					} else { // all draft files have been updated
 						// final step: submission
-						submit(params);
+						self.submit();
 					}
 				},
 				null,
@@ -311,18 +318,20 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 			);
 		};
 
-		var reader = new FileReader();
-		reader.onload = function(e) {
+		this.draftUploaded = function(e) {
 			var content = e.target.result;
-			uploadDraftFile(content, submission_data);
+			self.uploadDraftFile(content);
 		}
 
+		this.reader = new FileReader();
+		this.reader.onload = this.draftUploaded;
+
 		// start the draft uploading chain
-		var first_file = submission_data.uploadFile.pop();
-		submission_data.filename = first_file[0].name;
+		var first_file = this.submission_data.uploadFile.pop();
+		this.submission_data.filename = first_file.name;
 		// store the filenames for the assignment submission report
-		submission_data.filenames.push(submission_data.filename);
-		reader.readAsDataURL(first_file[0]);
+		this.submission_data.filenames.push(this.submission_data.filename);
+		this.reader.readAsDataURL(first_file);
 	},
 
 	getPreviousSubmission: function(assignmentid, successFunc) {

@@ -8,6 +8,7 @@ Ext.define("MoodleMobApp.view.ForumDiscussionList", {
 		emptyText: 'No discussions available in this forum.',
 		useComponents: true,
 		defaultType: 'forumdiscussion',
+		intro: null,
 		items: [
 			{
 				xtype: 'button',
@@ -16,7 +17,22 @@ Ext.define("MoodleMobApp.view.ForumDiscussionList", {
 				ui: 'confirm',
 				action: 'adddiscussion',
 				hidden: true
+			},
+			{
+				xtype: 'container',
+				cls: 'forum-intro',
+				scrollDock: 'top',
+				styleHtmlContent: true,
+				html: ''
 			}
 		]
+	},
+
+	getIntro: function() {
+		return this.down('container[cls=forum-intro]').getHtml();
+	},
+
+	setIntro: function(intro) {
+		this.down('container[cls=forum-intro]').setHtml(intro);
 	}
 });

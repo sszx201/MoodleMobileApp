@@ -74,6 +74,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 	selectForum: function(forum) {
 		this.selected_forum = forum;
 		var forum_discussions = this.getForumDiscussions();
+		console.log(forum.getData());
 
 		// display discussions
 		if(typeof this.getDiscussionList() == 'object') {
@@ -82,7 +83,8 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		} else {
 			this.getNavigator().push({
 				xtype: 'forumdiscussionlist',
-				store: forum_discussions
+				store: forum_discussions,
+				intro: this.selected_forum.get('intro')
 			});
 		}
 		this.checkIfEditable();

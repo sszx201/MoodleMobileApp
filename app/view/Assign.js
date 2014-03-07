@@ -18,7 +18,8 @@ Ext.define("MoodleMobApp.view.Assign", {
 	config: {
 		title: 'Assignment',
 		cls: 'assignment',
-		//autoDestroy: true,
+		autoDestroy: true,
+		scrollable: 'vertical',
 		listeners: {
 			initialize: function() {
 				Ext.av = this;
@@ -101,10 +102,12 @@ Ext.define("MoodleMobApp.view.Assign", {
 			{
 				xtype: 'panel',	
 				name: 'intro',
+				styleHtmlContent: true,
 				html: ''
 			},
 			{
 				xtype: 'fieldset',
+				title: 'Your Submission',
 				items: [
 					{
 						xtype: 'hiddenfield',	
@@ -112,10 +115,18 @@ Ext.define("MoodleMobApp.view.Assign", {
 					},
 					{
 						xtype: 'textareafield',
-						label: 'Text to submit',
 						name: 'onlinetext',
-						labelAlign: 'top',
-						hidden: true
+						hidden: true,
+						listeners: {
+							focus: function(comp, e, eopts) {
+								var self = this;
+								setTimeout(function() {
+									//var ost = comp.element.dom.offsetTop;
+									//self.getParent().getParent().getScrollable().getScroller().scrollTo(0, ost);
+									self.getParent().getParent().getScrollable().getScroller().scrollToEnd();
+								}, 1500)
+							}
+						}
 					},
 					{
 						xtype: 'checkboxfield',

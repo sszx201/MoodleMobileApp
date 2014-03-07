@@ -18,6 +18,7 @@ Ext.define("MoodleMobApp.view.OnlineAssignment", {
 		title: 'Online Assignment',
 		cls: 'assignment',
 		autoDestroy: true,
+		scrollable: 'vertical',
 		listeners: {
 			initialize: function() {
 				// check the data
@@ -67,6 +68,7 @@ Ext.define("MoodleMobApp.view.OnlineAssignment", {
 			{
 				xtype: 'panel',	
 				name: 'intro',
+				styleHtmlContent: true,
 				html: ''
 			},
 			{
@@ -75,7 +77,17 @@ Ext.define("MoodleMobApp.view.OnlineAssignment", {
 				items: [	
 					{
 						xtype: 'textareafield',	
-						name: 'submission'
+						name: 'submission',
+						listeners: {
+							focus: function(comp, e, eopts) {
+								var self = this;
+								setTimeout(function() {
+									//var ost = comp.element.dom.offsetTop;
+									//self.getParent().getParent().getScrollable().getScroller().scrollTo(0, ost);
+									self.getParent().getParent().getScrollable().getScroller().scrollToEnd();
+								}, 1500)
+							}
+						}
 					},
 					{
 						xtype: 'hiddenfield',	

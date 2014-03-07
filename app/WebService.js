@@ -72,6 +72,7 @@ Ext.define('MoodleMobApp.WebService', {
 		params.wsfunction = 'uniappws_get_recent_activity';
 		params.wstoken = course.token;
 		params.courseid = course.id;
+		params.lastaccess = course.lastaccess;
 		// request
 		var recent_activity_store = this.request(params, 'MoodleMobApp.model.RecentActivity', 'GET');
 		return recent_activity_store;

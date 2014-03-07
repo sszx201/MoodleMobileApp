@@ -135,7 +135,6 @@ Ext.define('MoodleMobApp.controller.Assign', {
 		// check files number; must be at least one file to submit
 		this.submission_data = this.getAssign().getValues();
 		self.submission_data.courseid = MoodleMobApp.Session.getCourse().get('id');
-		MoodleMobApp.app.showLoadMask('Submitting...');
 		// function to execute if the file is read successfully
 		this.submit = function() {
 			if(self.submission_data.teamsubmission == null) {
@@ -216,7 +215,9 @@ Ext.define('MoodleMobApp.controller.Assign', {
 			this.submission_data.filename = first_file.name;
 			// store the filenames for the assignment submission report
 			this.submission_data.filenames.push(this.submission_data.filename);
-			self.reader.readAsDataURL(first_file);
+			// start the submission process
+			MoodleMobApp.app.showLoadMask('Submitting...');
+			this.reader.readAsDataURL(first_file);
 		} else {
 			if(this.submission_data.onlinetext === "") {
 				Ext.Msg.alert("Submission empty", "The submission cannot be empty. Please write some text before submitting.");

@@ -27,10 +27,31 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 		if(homeOrgField.getStore() == null) {
 				var homeorgs_store = Ext.create('MoodleMobApp.store.HomeOrgs');
 				// wait for the interface to be shown; fix for the first time the application is loaded
-				//setTimeout(function() { MoodleMobApp.app.showLoadMask('Loading Home Organisations.'); }, 200);
-				//homeorgs_store.on('load', function(store){ MoodleMobApp.app.hideLoadMask(); }, this, {single: true});
+				setTimeout(function() {
+					if(homeorgs_store.getCount() == 0) {
+						MoodleMobApp.app.showLoadMask('Loading Home Organisations.');
+					}
+				}, 200);
+				homeorgs_store.on('load', function(store){
+					MoodleMobApp.app.hideLoadMask();
+					homeOrgField.setStore(store);
+					this.selectHomeOrganisation();
+				},
+				this,
+				{single: true});
+				// ask for home organisations list
 				homeorgs_store.load();
-				homeOrgField.setStore(homeorgs_store);
+		} else {
+			this.selectHomeOrganisation();
+		}
+	},
+
+	selectHomeOrganisation: function () {
+		var homeOrgField = this.getForm().down('#homeorganisation');
+		if(MoodleMobApp.Session.getAaiAccountStore() == null || MoodleMobApp.Session.getAaiAccountStore().getCount() == 0) {
+			homeOrgField.setValue(MoodleMobApp.Config.getDefaultIDP());
+		} else {
+			homeOrgField.setValue(MoodleMobApp.Session.getAaiAccountStore().first().get('homeorganisation'));
 		}
 	},
 

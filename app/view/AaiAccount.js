@@ -41,7 +41,7 @@ Ext.define("MoodleMobApp.view.AaiAccount", {
 						usePicker: false,
 						displayField: 'name',
 						valueField: 'url',
-						value: 'https://login2.usi.ch/idp/shibboleth'
+						value: MoodleMobApp.Session.getAaiAccountStore() == null ? MoodleMobApp.Config.getDefaultIDP() : MoodleMobApp.Session.getAaiAccountStore().first().get('homeorganisation')
 					},
 					{
 						xtype: 'button',

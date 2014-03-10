@@ -20,6 +20,7 @@ Ext.define('MoodleMobApp.Config', {
 		manualAuthUrl : '/auth/mobilemanual/authenticate.php',
 		webServiceUrl : '/webservice/rest/server.php',
 		resourceViewUrl : '/mod/resource/view.php',
+		defaultIDP: 'https://login2.usi.ch/idp/shibboleth',
 		//paths
 		fileCacheDir: 'iCorsi',
 		//Flags

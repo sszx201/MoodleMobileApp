@@ -12,7 +12,7 @@ Ext.define('MoodleMobApp.store.HomeOrgs', {
 		//autoSync: true,
 		proxy: {
 			type: 'ajax',	
-			url: MoodleMobApp.Config.getHomeOrgsUrl(),
+			//url: MoodleMobApp.Config.getHomeOrgsUrl(),
 			reader: {
 				type: 'json'
 			}

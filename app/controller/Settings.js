@@ -94,8 +94,8 @@ Ext.define('MoodleMobApp.controller.Settings', {
 						},
 						// success callback: remove the previous file
 						function gotFileEntry(fileEntry) {
-							var sPath = fileEntry.fullPath.replace("dummy.html","") + MoodleMobApp.Config.getFileCacheDir();
-							sPath = sPath.replace("file://","");
+							var sPath = fileEntry.toURL().replace("dummy.html","") + MoodleMobApp.Config.getFileCacheDir();
+							sPath = sPath.replace("cdvfile://localhost/persistent/","");
 							fileEntry.remove();
 							fileSystem.root.getDirectory(
 								sPath,

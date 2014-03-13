@@ -1,13 +1,12 @@
 //require(['js/supsi/Constants'], function(Constants){
 ;(function(){
-	var
-		isReady = false,
+	var isReady = false,
 		cbacks = [],
 		/**
 		 * @private
 		 * */
-			existsCallback = function(evt){
-		};
+		existsCallback = function(evt){ };
+
 	Ext.define('Supsi.Filesystem', {
 		singleton: true,
 		requires: [
@@ -20,12 +19,40 @@
 			return this;
 		},
 
-		getDirectory: function(directory){
-			var dirs = directory.split('/'), dirName = '';
-			for(var i = 0, l = dirs.length; i < l; i++){
-				dirName += '/' + dirs[i];
-				this.fileSystem.root.getDirectory(dirName, { create: true, exclusive: false });
+		createDirectory: function(dirName, callback) {
+			this.fileSystem.root.getDirectory(
+					dirName,
+					{ create: true, exclusive: false },
+					function(dir) {
+						console.log('Directory created: %s ', dirName);
+						console.log(dir);
+						callback();
+					},
+					function(error) {
+						console.log('ERROR: Directory could not be created: %s ', dirName);
+						console.log(error);
+					}
+				);
+		},
+
+		getDirectory: function(directory, callback){
+			var dirs = directory.split('/');
+			var dirName = dirs.shift();
+			console.log('creating directories: ');
+			console.log(dirs);
+			var self = this;
+			// subdirectory created callback
+			var dirCreated = function() {
+				var newDir = dirs.shift();
+				if(newDir != undefined) {
+					dirName += '/' + newDir;
+					self.createDirectory(dirName, dirCreated);
+				} else {
+					// final callback; last directory created
+					callback();
+				}
 			}
+			this.createDirectory(dirName, dirCreated);
 		},
 		/**
 		 * @arguments {String} path
@@ -35,14 +62,31 @@
 		 *
 		 * */
 		getFile: function(path, create, success, failure){
-			console.log('[Filesystem] trying %s...', path);
 			// var fullPath = Supsi.Constants.get('CLONED_BASE') + path;
-			var fullPath = path;
-			this.getDirectory(fullPath.substr(0, fullPath.lastIndexOf("/")));
-			this.fileSystem.root.getFile(path, {
-				create: create,
-				exclusive: false
-			}, success, failure);
+			var fullPath = path.replace(/cdvfile:\/\/localhost\/persistent\//, '');
+			var dirPath = fullPath.substr(0, fullPath.lastIndexOf("/"));
+			console.log('[Filesystem] trying %s...', path);
+			console.log('[Filesystem] filered to %s...', fullPath);
+			console.log('-create- flag value: ' + create);
+			var self = this;
+			// attempt to create the final directory
+			// otherwise create all the path from scratch
+			this.fileSystem.root.getDirectory(
+					dirPath,
+					{ create: true, exclusive: false },
+					function(dir) {
+						console.log('Final directory created: %s ', dirPath);
+						console.log('Getting the file: ' + fullPath);
+						self.fileSystem.root.getFile(fullPath, { create: create, exclusive: false }, success, failure);
+					},
+					function(error) {
+						console.log('NOTICE! Final directory does not exist; RECURSIVE CREATION: %s ', dirPath);
+						self.getDirectory(dirPath, function() {
+							console.log('Getting the file: ' + fullPath);
+							self.fileSystem.root.getFile(fullPath, { create: create, exclusive: false }, success, failure);
+						});
+					}
+				);
 		},
 		/**
 		 * check the file existence
@@ -51,6 +95,8 @@
 		 * */
 		exists: function(file, cback){
 			var reader = new FileReader();
+			console.log('testing file existence: ');
+			console.log(file);
 //			reader.addEventListener('loadend', cback);
 //			console.log('testing...', cback)
 			reader.onloadend = cback;
@@ -65,6 +111,8 @@
 		 * @arguments {Function} cback
 		 * */
 		ready: function(cback){
+			console.log('callback: ');
+			console.log(cback);
 			if(isReady){
 				cback();
 			}else{
@@ -77,13 +125,14 @@
 		_fileSystemRequestSuccess: function(fileSystem){
 			this.fileSystem = fileSystem;
 			console.log('Filesystem obtained');
+			/*
 			console.log('getting ', Supsi.Constants.get('CLONED_BASE'));
-
 			var dirs = Supsi.Constants.get('CLONED_BASE').split('/'), dirName = '';
 			for(var i = 0, l = dirs.length; i < l; i++){
 				dirName += '/' + dirs[i];
 				fileSystem.root.getDirectory(dirName, { create: true, exclusive: false });
 			}
+			*/
 			while(cbacks.length){
 				cbacks.pop()();
 			}
@@ -96,7 +145,7 @@
 		},
 		initialize: function(){
 			var that = this;
-			this.exists(Supsi.Constants.get('CLONED_BASE'), existsCallback);
+			//this.exists(Supsi.Constants.get('CLONED_BASE'), existsCallback);
 			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(){ that._fileSystemRequestSuccess.apply(that, arguments); }, this._fileSystemRequestError);
 		}
 	});

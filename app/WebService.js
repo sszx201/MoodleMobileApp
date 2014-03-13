@@ -336,7 +336,7 @@ Ext.define('MoodleMobApp.WebService', {
 						},
 						// success callback: remove the previous file
 						function gotFileEntry(fileEntry) {
-							var sPath = fileEntry.fullPath.replace("dummy.html","");
+							var sPath = fileEntry.toURL().replace("dummy.html","");
 							fileEntry.remove();
 
 							var fileTransfer = new FileTransfer();

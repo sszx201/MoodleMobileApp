@@ -71,7 +71,7 @@
 						if(record.get('modname') == 'scorm') {
 							var scorm_record = MoodleMobApp.Session.getModulesStore().findRecord('id', record.get('moduleid'));
 							if(scorm_record != undefined) {
-								this.getArchive(scorm_record);
+								this.processScorm(scorm_record);
 							}
 						}
 					}
@@ -83,11 +83,11 @@
 
 	selectModule: function(view, index, target, record) {
 		if(record.get('modname') === 'scorm'){
-			this.getArchive(record);
+			this.processScorm(record);
 		}
 	},
 
-	getArchive: function(record) {
+	processScorm: function(record) {
 		if(typeof this.getScorm() != 'object') {
 			var scorm = Ext.create('MoodleMobApp.view.Scorm');
 		}
@@ -103,9 +103,10 @@
 							create: false,
 							exclusive: false
 						},
-						function(args){
+						function(fileEntry){
 							// archive available, open the scorm
-							var path = args.fullPath.replace(/_scorm_extracted_$/, '').replace(/file:\/\//, '');
+							//var path = fileEntry.toURL().replace(/_scorm_extracted_$/, '').replace(/cdvfile:\/\//, '');
+							var path = fileEntry.toURL().replace(/_scorm_extracted_$/, '');
 							self.parseScorm(path);
 						},
 						// archive not available, download it first
@@ -136,6 +137,8 @@
 		// Once extracted all the content is going to be contained in one directory.
 		var dir = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/scorm/' + module.get('id');
 		Supsi.Utils.log('files unzipped in ',  dir);
+		// this file notifies the sucessful extraction
+		// if not present the archive is going to be downloaded again
 		var scormExtractedFileFlag = dir + '/_scorm_extracted_';
 		// success function
 		var downloadSuccessFunc = function(file) {
@@ -155,8 +158,8 @@
 										exclusive: false
 									},
 									function() {
-										var path = targetPath.replace(/file:\/\//, '') + '/';
-										that.parseScorm(path);
+										//that.parseScorm(targetPath);
+										that.processScorm(module);
 									},
 									function() {
 										Ext.Msg.alert(
@@ -184,9 +187,9 @@
 			};
 
 			// start the extraction
-			var outputDirectory = file.fullPath.substring(0, file.fullPath.lastIndexOf('/'));
+			var outputDirectory = file.toURL().substring(0, file.toURL().lastIndexOf('/'));
 			zip.unzip(
-				file.fullPath,
+				file.toURL(),
 				outputDirectory,
 				function(arg){
 					console.log(' >>>>>>>>>>> callback called with arg: ' + arg);
@@ -335,9 +338,10 @@
 		resourceTocList: null,
 		resourceList: null,
 
-		loadManifest: function(manifest){
+		loadManifest: function(manifest) {
 //			this.getScormPanel().setSCORMId(manifest);
 			// bloccata per ora, visto che di fatto è inutile leggere il manifest
+			console.log('LOADING MANIFEST: %s', manifest);
 			Ext.Ajax.request({
 				url: manifest,
 				method: 'GET',
@@ -350,6 +354,8 @@
 		},
 		manifestLoaded: function(data){
 			var root = data.responseXML.documentElement;
+			console.log('Manifest root: ');
+			console.log(root);
 
 			this.parseManifest(root);
 		},
@@ -399,6 +405,8 @@
 			data.title = 'manifest';
 			data.leaf = false;
 //        this.fireEvent('itemsUpdated', itemsNodes);
+			console.log('Manifest parsed; data is here');
+			console.log(data);
 			this.setListData(data);
 		},
 
@@ -504,7 +512,22 @@
 					that.resourceTocList.setHidden(true);
 
 					scormPanel.setSCORMId(path);
-					that.loadManifest(path + 'imsmanifest.xml');
+					console.log('mani');
+					var manifestPath = path.replace('cdvfile://localhost/persistent/', '') + '/imsmanifest.xml';
+					console.log('Manifest path:');
+					console.log(manifestPath);
+					Supsi.Filesystem.fileSystem.root.getFile(
+						manifestPath,
+						{ create: false, exclusive: false },
+						function(fileEntry) {
+							console.log('got the file entry, calling loadManifest function');
+							console.log(that);
+							that.loadManifest(fileEntry.nativeURL);
+						},
+						function() {
+							console.log('cannot load the manifest file');
+						}
+					);
 				};
 
 			/*

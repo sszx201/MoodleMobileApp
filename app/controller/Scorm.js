@@ -158,8 +158,8 @@
 										exclusive: false
 									},
 									function() {
-										//that.parseScorm(targetPath);
-										that.processScorm(module);
+										that.parseScorm(targetPath+'/');
+										//that.processScorm(module);
 									},
 									function() {
 										Ext.Msg.alert(
@@ -493,6 +493,7 @@
 			// pulisco la situazione eventualmente lasciata da un altro documento
 			this.getNavBackBtn().hide();
 			var scormPanel = this.getScormPanel(), that = this,
+				// callback for special TATA scorms
 				tatacback = function(){
 					Supsi.Utils.log('++++++++++ TATA CBACK, setting SCORMID = ', path + Supsi.Constants.get('TOC_LOCATION'));
 					_navHistory.push('toc.js');
@@ -505,6 +506,7 @@
 					scormPanel.loadTemplate();
 					that.loadToc(path + Supsi.Constants.get('TOC_LOCATION') + 'toc.js');
 				},
+				// call back for the standard scorm packages
 				scormcback = function(){
 					Supsi.Utils.log('++++++++++ STANDARD CBACK');
 					scormPanel.standard = true;
@@ -512,7 +514,6 @@
 					that.resourceTocList.setHidden(true);
 
 					scormPanel.setSCORMId(path);
-					console.log('mani');
 					var manifestPath = path.replace('cdvfile://localhost/persistent/', '') + '/imsmanifest.xml';
 					console.log('Manifest path:');
 					console.log(manifestPath);
@@ -549,17 +550,33 @@
 			//nr 18-07-2013e
 		},
 		loadSpine: function(spineSrc, success, fallback){
-			var that = this, _spineTransport = document.createElement('script');
-			// guarda cosa mi tocca fare...
+			var that = this;
+			// empty the previous compendio
 			window.compendio = {};
-			_spineTransport.type = 'text/javascript';
-			_spineTransport.src = spineSrc;
-			_spineTransport.onload = function(){
-				success();
-				that.updateSpineLength()
-			};
-			_spineTransport.onerror = fallback;
-			document.body.appendChild(_spineTransport);
+			// load the next compendio
+			var spinePath = spineSrc.replace('cdvfile://localhost/persistent/', '');
+			console.log('trying to load spine: ' + spinePath);
+			Supsi.Filesystem.fileSystem.root.getFile(
+				spinePath,
+				{ create: false, exclusive: false },
+				function(fileEntry) {
+					console.log('adding script element: ' + fileEntry.nativeURL);
+					var _spineTransport = document.createElement('script');
+					_spineTransport.name = 'compendio';
+					_spineTransport.type = 'text/javascript';
+					_spineTransport.src = fileEntry.nativeURL;
+					_spineTransport.onload = function(){
+						success();
+						that.updateSpineLength()
+					};
+					_spineTransport.onerror = fallback;
+					document.body.appendChild(_spineTransport);
+				},
+				function() {
+					console.log('cannot load the book.spine.js file; falling back');
+					fallback();
+				}
+			);
 		},
 		updateReadLength: function(val){
 			this.getReadPercent().setHtml(((val*100)|0) + '&#37;');

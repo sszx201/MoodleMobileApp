@@ -1,4 +1,4 @@
-define([localStorage['filesystemOrigin'] + 'js/supsi/ConstantsOrig.js'], function(Constants){
+define([localStorage['filesystemOrigin'] + 'extensions/supsi/ConstantsOrig.js'], function(Constants){
     var Core = {
         init: function(){
             this.addListeners();

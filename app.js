@@ -99,7 +99,7 @@ Ext.application({
 				} else {
 					e.preventDefault();
 					var href = e.target.getAttribute('href');
-					window.open(href);
+					window.open(href, '_blank');
 				}
 			}, false);
 		}

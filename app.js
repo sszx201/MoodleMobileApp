@@ -92,6 +92,16 @@ Ext.application({
 			Ext.Viewport.add(Ext.create('MoodleMobApp.view.Settings'));
 		} else {
 			Ext.Viewport.add(Ext.create('MoodleMobApp.view.CourseNavigator'));
+			// Catch anchor clicks. Force opening in new windows.
+			Ext.Viewport.element.dom.addEventListener('click', function (e) {
+				if (e.target.tagName !== 'A') {
+					return;
+				} else {
+					e.preventDefault();
+					var href = e.target.getAttribute('href');
+					window.open(href);
+				}
+			}, false);
 		}
 		// ios 7 bar fix
 		if( window.device != undefined && parseInt(window.device.version) > 6 ) {

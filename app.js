@@ -14,6 +14,7 @@ Ext.application({
 		'Ext.TitleBar',
 		'Ext.Img',
 		'Ext.data.identifier.Uuid',
+		'MoodleMobApp.FileSystem',
 		'MoodleMobApp.Config',
 		'MoodleMobApp.Session',
 		'MoodleMobApp.WebService',
@@ -33,7 +34,8 @@ Ext.application({
 		'MoodleMobApp.view.CourseNavigator',
 		'MoodleMobApp.view.CourseList',
 		'MoodleMobApp.view.Course',
-		'MoodleMobApp.view.Scorm'
+		'MoodleMobApp.view.Scorm',
+		'MoodleMobApp.view.FileSlot'
 	],
 
 	controllers: [

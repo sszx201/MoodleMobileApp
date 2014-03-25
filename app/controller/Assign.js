@@ -95,35 +95,12 @@ Ext.define('MoodleMobApp.controller.Assign', {
 	addFileSlot: function() {
 		var filelist = this.getAssign().child('fieldset').child('container[cls=filelist]');
 		if(filelist.getItems().getCount() < this.getAssign().config.settings.plugconf.files.assignsubmission.maxfilesubmissions) {
-			filelist.add(
-				{
-					xtype: 'container',
-					layout: 'hbox',
-					items: [
-						{
-							xtype: 'filefield',
-							flex: 4,
-							listeners: {
-								change: function() {
-									this.setHtml('<div class="filefield-file-name"> Load file: ' + this.getFiles().item(0).name + '</div>');
-								}
-							}
-						},
-						{
-							xtype: 'button',
-							text: 'Drop',
-							ui: 'decline',
-							flex: 1,
-							margin: 10,
-							listeners: {
-								tap: function(self) {
-									self.getParent().destroy();
-								}
-							}
-						}
-					]
-				}
-			);
+			filelist.add({
+				xtype: 'fileslot',
+				label: 'File Entry',
+				clickToSelect: false,
+				droppable: true
+			});
 		} else {
 			Ext.Msg.alert("Submission max file number", "The max number of file allowed in this assignment has been reached. No more files can be attached.");
 		}
@@ -160,7 +137,7 @@ Ext.define('MoodleMobApp.controller.Assign', {
 			var fileEntries = filelist.getItems().getCount();
 			var files = {}; // this object is used to control the files; avoid duplicates and empty submissions
 			for(var i=0; i < fileEntries; ++i) {
-				var file = filelist.getAt(i).getAt(0).getFiles().item(0);
+				var file = filelist.getAt(i).getFile();
 				if(file != null) { // ignore file is the slot is empty
 					if(files[file.name] == undefined) {
 						files[file.name] = file;

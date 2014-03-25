@@ -81,59 +81,15 @@ Ext.define('MoodleMobApp.controller.Settings', {
 	},
 
 	purgeFiles: function() {
-		var self = this;
-		window.requestFileSystem(
-			LocalFileSystem.PERSISTENT, 0,
-			function onFileSystemSuccess(fileSystem) {
-					// get the filesystem
-					fileSystem.root.getFile(
-						'dummy.html', 
-						{
-							create: true,
-							exclusive: false
-						},
-						// success callback: remove the previous file
-						function gotFileEntry(fileEntry) {
-							var sPath = fileEntry.toURL().replace("dummy.html","") + MoodleMobApp.Config.getFileCacheDir();
-							sPath = sPath.replace("cdvfile://localhost/persistent/","");
-							fileEntry.remove();
-							fileSystem.root.getDirectory(
-								sPath,
-								{
-									create : true, 
-									exclusive : false
-								},
-								function(entry) {
-									entry.removeRecursively(
-										function() {
-											console.log("Remove Recursively Succeeded");
-										},
-										function() {
-											console.log("Remove Recursively Failed");
-										});
-								}, 
-								function() {
-									Ext.Msg.alert(
-										'File system error',
-										'Cannot delete the iCorsi directory.'
-									);
-								});
-						},
-						// error callback: notify the error
-						function(){
-							Ext.Msg.alert(
-								'File system error',
-								'Directory does not exist yet: ' + dir 
-							);
-						}
-					);
+		MoodleMobApp.FileSystem.removeDirectory(
+			MoodleMobApp.Config.getFileCacheDir(),
+			function() {
+				console.log("File cache directory purged");
 			},
-			// error callback: notify the error
-			function(){
-				Ext.Msg.alert(
-					'File system error',
-					'Cannot access the local filesystem.'
-				);
-			});	
+			function(error) {
+				console.log("ERROR: File cache directory was not purged");
+				MoodleMobApp.dump(error);
+			}
+		);
 	}
 });

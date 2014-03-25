@@ -323,92 +323,72 @@ Ext.define('MoodleMobApp.WebService', {
 		url_encoded_params = url_encoded_params.slice(0,-1);
 		// build the url
 		var url = MoodleMobApp.Config.getWebServiceUrl() + url_encoded_params;
-		var self = this;
-		window.requestFileSystem(
-			LocalFileSystem.PERSISTENT, 0,
-			function onFileSystemSuccess(fileSystem) {
-					// get the filesystem
-					fileSystem.root.getFile(
-						'dummy.html', 
-						{
-							create: true,
-							exclusive: false
-						},
-						// success callback: remove the previous file
-						function gotFileEntry(fileEntry) {
-							var sPath = fileEntry.toURL().replace("dummy.html","");
-							fileEntry.remove();
+		// success callback: got the file access; start downloading the file
+		function gotAccess(sPath, fileSystem) {
+			var fileTransfer = new FileTransfer();
 
-							var fileTransfer = new FileTransfer();
+			var progressBar = '<div class="progress-bar"><span></span></div>';
 
-							var progressBar = '<div class="progress-bar"><span></span></div>';
+			Ext.Msg.alert('Downloading', progressBar);
 
-							Ext.Msg.alert('Downloading', progressBar);
+			document.querySelector('div.progress-bar span').setAttribute('style', 'width: 0%');
 
-							document.querySelector('div.progress-bar span').setAttribute('style', 'width: 0%');
-
-							Ext.Msg.setButtons({
-								xtype: 'button',
-								ui: 'action',
-								text: 'Stop',
-								handler: function() {
-									Ext.Msg.hide();
-									fileTransfer.abort();
-								}
-							});
-
-							//self.fileTransfer.onprogress = progressFunc;
-							var prev_percentage = 0;
-							fileTransfer.onprogress = function(progressEvent) {
-								var percentage = MoodleMobApp.app.calculateDownloadPercentage(progressEvent);
-								// avoid updating the bar for the same percentage values
-								if(percentage != prev_percentage) {
-									prev_percentage = percentage;
-									document.querySelector('div.progress-bar span').setAttribute('style', 'width: '+percentage+'%');
-								}
-							};
-							console.log('downloading from: ' + url);
-							console.log('to: ' + sPath + dir + '/' + file.name);
-							fileTransfer.download(
-								url,
-								sPath + dir + '/' + file.name,
-								function(theFile) {
-									console.log('SUCCESS !! from webservice');
-									document.querySelector('div.progress-bar span').setAttribute('style', 'width: 0%');
-									Ext.Msg.hide();
-									successFunc(theFile);
-								},
-								function(error) {
-									Ext.Msg.alert(
-										'File download error',
-										'Failed to download the file: ' + file.name
-									);
-									/*
-									console.log("download error source " + error.source);
-									console.log("download error target " + error.target);
-									console.log("download error code: " + error.code);
-									console.log("download http status: " + error.http_status);
-									*/
-								},
-								true // trust the site; https fix
-							);
-						},
-						// error callback: notify the error
-						function(){
-							Ext.Msg.alert(
-								'File system error',
-								'Directory does not exist yet: ' + dir 
-							);
-						}
-					);
-			},
-			// error callback: notify the error
-			function(){
-				Ext.Msg.alert(
-					'File system error',
-					'Cannot access the local filesystem.'
-				);
+			Ext.Msg.setButtons({
+				xtype: 'button',
+				ui: 'action',
+				text: 'Stop',
+				handler: function() {
+					Ext.Msg.hide();
+					fileTransfer.abort();
+				}
 			});
+
+			var prev_percentage = 0;
+			fileTransfer.onprogress = function(progressEvent) {
+				var percentage = MoodleMobApp.app.calculateDownloadPercentage(progressEvent);
+				// avoid updating the bar for the same percentage values
+				if(percentage != prev_percentage) {
+					prev_percentage = percentage;
+					document.querySelector('div.progress-bar span').setAttribute('style', 'width: '+percentage+'%');
+				}
+			};
+			var filePath = fileSystem.root.toURL() + sPath + dir + '/' + file.name;
+			console.log('downloading from: ' + url);
+			console.log('to: ' + filePath);
+			fileTransfer.download(
+				url,
+				filePath,
+				function(theFile) {
+					console.log('SUCCESS !! from webservice');
+					document.querySelector('div.progress-bar span').setAttribute('style', 'width: 0%');
+					Ext.Msg.hide();
+					successFunc(theFile);
+				},
+				function(error) {
+					Ext.Msg.alert(
+						'File download error',
+						'Failed to download the file: ' + file.name
+					);
+					/*
+					console.log("download error source " + error.source);
+					console.log("download error target " + error.target);
+					console.log("download error code: " + error.code);
+					console.log("download http status: " + error.http_status);
+					*/
+				},
+				true // trust the site; https fix
+			);
+		}
+
+		var noAccess = function(error){
+			Ext.Msg.alert(
+				'File system error',
+				'Directory does not exist yet: ' + dir
+			);
+			MoodleMobApp.app.dump(error);
+		}
+
+		MoodleMobApp.FileSystem.access(gotAccess, noAccess);
 	},
 
 	getFile: function(file, dir, successFunc, token) {

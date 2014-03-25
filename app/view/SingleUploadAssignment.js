@@ -74,13 +74,7 @@ Ext.define("MoodleMobApp.view.SingleUploadAssignment", {
 				title: 'Submit the file',
 				items: [	
 					{
-						xtype: 'filefield',
-						name: 'filepath',
-						listeners: {
-							change: function() {
-								this.setHtml('<div class="filefield-file-name"> Load file: ' + this.getFiles().item(0).name + '</div>');
-							}
-						}
+						xtype: 'fileslot'
 					},
 					{
 						xtype: 'hiddenfield',	

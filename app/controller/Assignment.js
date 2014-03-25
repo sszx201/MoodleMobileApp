@@ -173,7 +173,7 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 	submitSingleUploadAssignment: function(button) {
 		var self = this;
 		this.submission_data = this.getSingleUploadAssignment().getValues();
-		var file = this.getSingleUploadAssignment().child('fieldset').child('filefield').getFiles().item(0);
+		var file = this.getSingleUploadAssignment().child('fieldset').child('fileslot').getFile();
 		this.submission_data.filename = file.name;
 		this.submission_data.draftid = Math.round(Math.random() * 1000000000);
 		
@@ -217,35 +217,12 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 
 	addFileSlot: function() {
 		var filelist = this.getUploadAssignment().child('fieldset').child('container[name=filelist]');
-		filelist.add(
-			{
-				xtype: 'container',
-				layout: 'hbox',
-				items: [
-					{
-						xtype: 'filefield',
-						flex: 4,
-						listeners: {
-							change: function() {
-								this.setHtml('<div class="filefield-file-name"> Load file: ' + this.getFiles().item(0).name + '</div>');
-							}
-						}
-					},
-					{
-						xtype: 'button',
-						text: 'Drop',
-						ui: 'decline',
-						flex: 1,
-						margin: 10,
-						listeners: {
-							tap: function(self) {
-								self.getParent().destroy();
-							}
-						}
-					}
-				]
-			}
-		);
+		filelist.add({
+			xtype: 'fileslot',
+			label: 'File Entry',
+			clickToSelect: false,
+			droppable: true
+		});
 	},
 
 	submitUploadAssignment: function(button) {
@@ -261,7 +238,7 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 		var fileEntries = filelist.getItems().getCount();
 		var files = {}; // this object is used to control the files; avoid duplicates and empty submissions
 		for(var i=0; i < fileEntries; ++i) {
-			var file = filelist.getAt(i).getAt(0).getFiles().item(0);
+			var file = filelist.getAt(i).getFile();
 			if(file != null) { // ignore file is the slot is empty
 				if(files[file.name] == undefined) {
 					files[file.name] = file;

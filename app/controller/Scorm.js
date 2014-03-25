@@ -93,35 +93,29 @@
 		}
 		var scormExtractedFileFlag = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/scorm/' + record.get('id') + '/_scorm_extracted_';
 		var self = this;
-		window.requestFileSystem(
-			LocalFileSystem.PERSISTENT, 0,
-			function onFileSystemSuccess(fileSystem) {
-					// get the filesystem
-					fileSystem.root.getFile(
-						scormExtractedFileFlag,
-						{
-							create: false,
-							exclusive: false
-						},
-						function(fileEntry){
-							// archive available, open the scorm
-							//var path = fileEntry.toURL().replace(/_scorm_extracted_$/, '').replace(/cdvfile:\/\//, '');
-							var path = fileEntry.toURL().replace(/_scorm_extracted_$/, '');
-							self.parseScorm(path);
-						},
-						// archive not available, download it first
-						function() {
-							self.downloadArchive(record);
-						}
-					);
-			},
-			// error callback: notify the error
-			function(){
-				Ext.Msg.alert(
-					'File system error',
-					'Cannot access the local filesystem.'
-				);
-		});
+		var successCallback = function(sPath, fileSystem) {
+			fileSystem.root.getFile(
+				scormExtractedFileFlag,
+				{
+					create: false,
+					exclusive: false
+				},
+				function(fileEntry){
+					// archive available, open the scorm
+					//var path = fileEntry.toURL().replace(/_scorm_extracted_$/, '').replace(/cdvfile:\/\//, '');
+					var path = fileEntry.toURL().replace(/_scorm_extracted_$/, '');
+					self.parseScorm(path);
+				},
+				// archive not available, download it first
+				function() {
+					self.downloadArchive(record);
+				}
+			);
+		}
+		var failCallback = function(error) {
+			MoodleMobApp.app.dump(error);
+		}
+		MoodleMobApp.FileSystem.access(successCallback, failCallback);
 	},
 
 	downloadArchive: function(module){
@@ -146,37 +140,33 @@
 			console.log('download success function start');
 			var extractionSuccessFunc = function(targetPath) {
 					MoodleMobApp.app.hideLoadMask('');
-					window.requestFileSystem(
-						LocalFileSystem.PERSISTENT, 0,
-						function onFileSystemSuccess(fileSystem) {
-								// get the filesystem
-								console.log('requestFileSystem callback ' + targetPath);
-								fileSystem.root.getFile(
-									scormExtractedFileFlag,
-									{
-										create: true,
-										exclusive: false
-									},
-									function() {
-										that.parseScorm(targetPath+'/');
-										//that.processScorm(module);
-									},
-									function() {
-										Ext.Msg.alert(
-											'Scorm registering',
-											'Failed to register the downloaded score. Please check the storage available space.'
-										);
-									}
+					var successCallback = function(sPath, fileSystem) {
+						// get the filesystem
+						console.log('requestFileSystem callback ' + targetPath);
+						fileSystem.root.getFile(
+							scormExtractedFileFlag,
+							{
+								create: true,
+								exclusive: false
+							},
+							function() {
+								that.parseScorm(targetPath+'/');
+								//that.processScorm(module);
+							},
+							function() {
+								Ext.Msg.alert(
+									'Scorm registering',
+									'Failed to register the downloaded score. Please check the storage available space.'
 								);
-						},
-						// error callback: notify the error
-						function(){
-							Ext.Msg.alert(
-								'File system error',
-								'Cannot access the local filesystem.'
-							);
-						}
-					);
+							}
+						);
+					}
+
+					var failCallback = function(error) {
+						MoodleMobApp.app.dump(error);
+					}
+
+					MoodleMobApp.FileSystem.access(successCallback, failCallback);
 			};
 			var extractionFailFunc = function(error) {
 					MoodleMobApp.app.hideLoadMask('');

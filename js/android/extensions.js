@@ -48,13 +48,18 @@ function addExtensions() {
 	// this function opens a file by using the web intent mechanism
 	//////////////////////////////////////////////////////////////////////////
 	MoodleMobApp.app.openFile = function(path, mimetype) {
-		var protocol = 'file:///';
-		var store = 'sdcard';
+		// ************************************************
+		// temporary fix; webintent plugins has problems
+		// with the cdvfile:// and file:///data/data paths
+		// ************************************************
+		MoodleMobApp.app.openURL(path); return;
+		// ************************************************
+
 		window.plugins.webintent.startActivity(
 			{
 				action: window.plugins.webintent.ACTION_VIEW,
 				type: mimetype,
-				url: protocol+store+path
+				url: path
 			},
 			function () {},
 			function () {

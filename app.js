@@ -130,10 +130,9 @@ Ext.application({
 		var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + file.fileid;
 		if(MoodleMobApp.app.isConnectionAvailable()) {
 			// success function
-			var successFunc = function(result) {
+			var successFunc = function(fileEntry) {
 				//MoodleMobApp.app.hideLoadMask();
-				var filePath = '/'+dirPath+'/'+file.name;
-				MoodleMobApp.app.openFile(filePath, file.mime);
+				MoodleMobApp.app.openFile(fileEntry.toNativeURL(), file.mime);
 			};
 
 			MoodleMobApp.WebService.getFile(
@@ -161,8 +160,7 @@ Ext.application({
 					},
 					// success callback: remove the previous file
 					function gotFileEntry(fileEntry) {
-						var filePath = '/'+dir+'/'+file.name;
-						MoodleMobApp.app.openFile(filePath, file.mime);
+						MoodleMobApp.app.openFile(fileEntry.toNativeURL(), file.mime);
 					},
 					// error callback: notify the error
 					function(){

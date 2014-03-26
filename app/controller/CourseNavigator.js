@@ -112,7 +112,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		this.getCalendarButton().show();
 		// check the course status
 		// display if the course has already been synchronized
-		if(record.get('synchronized') != true && Moodle.app.isConnectionAvailable()) {
+		if(record.get('synchronized') != true && MoodleMobApp.app.isConnectionAvailable()) {
 			this.getNavigator().fireEvent('updateCourse', record);
 		} else {
 			this.showCourse();

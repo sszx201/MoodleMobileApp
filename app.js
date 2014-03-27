@@ -196,7 +196,9 @@ Ext.application({
 	},
 
 	hideLoadMask: function() {
-		Ext.Viewport.getActiveItem().setMasked(false);
+		if(Ext.Viewport.getActiveItem().setMasked != undefined) {
+			Ext.Viewport.getActiveItem().setMasked(false);
+		}
 	},
 
 	readFile: function(path, successFunc, params) {
@@ -310,6 +312,9 @@ Ext.application({
 						'Connection',
 						'No connection available. Cannot contact the server.'
 					);
+					// hide the loading screen if available
+					// in order to avoid the loading screen blocking the app
+					MoodleMobApp.app.hideLoadMask();
 					MoodleMobApp.Session.setConnectionAvailabilityWarningIssued(true);
 				}
 				return false;

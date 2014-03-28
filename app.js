@@ -110,6 +110,9 @@ Ext.application({
 			document.body.style.backgroundColor = "white";
 			document.getElementById('course_navigator').style.marginTop = "20px";
 		}
+
+		// periodic network checker
+		setInterval(MoodleMobApp.app.isConnectionAvailable, 1000);
     },
 
     onUpdated: function() {

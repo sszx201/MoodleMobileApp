@@ -41,7 +41,6 @@ Ext.define("MoodleMobApp.view.CourseNavigator", {
 					margin: 10,
 					width: '80%',
 					height: '70px',
-					ui: 'black_buttons',
 					cls: 'app_bar_button'
 
 				},

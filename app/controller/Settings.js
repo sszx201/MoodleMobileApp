@@ -68,6 +68,7 @@ Ext.define('MoodleMobApp.controller.Settings', {
 		MoodleMobApp.Session.getUrlStore().removeAll();
 		MoodleMobApp.Session.getUrlStore().getProxy().clear();
 		MoodleMobApp.Session.getPagesStore().removeAll();
+		MoodleMobApp.Session.getBooksStore().removeAll();
 		MoodleMobApp.Session.getPagesStore().getProxy().clear();
 		MoodleMobApp.Session.getGradeItemsStore().removeAll();
 		MoodleMobApp.Session.getGradeItemsStore().getProxy().clear();

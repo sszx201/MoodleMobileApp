@@ -44,6 +44,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 			'choices': false,
 			'url': false,
 			'pages': false,
+			'books': false,
 			'gradeItems': false,
 			'grades': false
 		};
@@ -304,7 +305,8 @@ Ext.define('MoodleMobApp.controller.Main', {
 					MoodleMobApp.Session.getModulesStore().on('write', this.updateResourcesStore(course), this, {single:true});
 					MoodleMobApp.Session.getModulesStore().on('write', this.updateChoicesStore(course), this, {single:true});
 					MoodleMobApp.Session.getModulesStore().on('write', this.updateUrlStore(course), this, {single:true});
-					MoodleMobApp.Session.getModulesStore().on('write', this.updatePageStore(course), this, {single:true});
+					MoodleMobApp.Session.getModulesStore().on('write', this.updatePagesStore(course), this, {single:true});
+					MoodleMobApp.Session.getModulesStore().on('write', this.updateBooksStore(course), this, {single:true});
 					MoodleMobApp.Session.getModulesStore().on('write', this.updateGradeItemsStore(course), this, {single:true});
 					MoodleMobApp.Session.getModulesStore().on('write', this.updateGradesStore(course), this, {single:true});
 					// sync
@@ -316,7 +318,8 @@ Ext.define('MoodleMobApp.controller.Main', {
 					this.updateResourcesStore(course);
 					this.updateChoicesStore(course);
 					this.updateUrlStore(course);
-					this.updatePageStore(course);
+					this.updatePagesStore(course);
+					this.updateBooksStore(course);
 					this.updateGradeItemsStore(course);
 					this.updateGradesStore(course);
 				}
@@ -709,7 +712,7 @@ Ext.define('MoodleMobApp.controller.Main', {
 		}
 	},
 
-	updatePageStore: function (course) {
+	updatePagesStore: function (course) {
 		var courseid = course.get('id');
 		//MoodleMobApp.log('UPDATING PAGE STORE FOR COURSE: '+courseid);
 
@@ -749,6 +752,49 @@ Ext.define('MoodleMobApp.controller.Main', {
 			}, this);
 		} else {
 			this.updateStatus['pages'] = true;
+		}
+	},
+
+	updateBooksStore: function (course) {
+		var courseid = course.get('id');
+		//MoodleMobApp.log('UPDATING PAGE STORE FOR COURSE: '+courseid);
+
+		var books = MoodleMobApp.Session.getModulesStore().queryBy(function(record, id) {
+			if(record.get('modname') == 'book' && record.get('courseid') == courseid) {
+				return true;
+			}
+		});
+		if(books.length) {
+			var book_counter = 1;
+			books.each(function(book) {
+				MoodleMobApp.WebService.getBook(book.getData(), course.get('token')).on(
+					'load',
+					function(response) {
+						var previous_record = MoodleMobApp.Session.getBooksStore().findRecord('id', response.first().get('id'));
+
+						if(previous_record == null) { // add the new book; this book has not been recorded previously
+							response.first().setDirty();
+							MoodleMobApp.Session.getBooksStore().add(response.first());
+						} else if(previous_record.get('timemodified') != response.first().get('timemodified')) { // book modified; drop the old one
+							MoodleMobApp.Session.getBooksStore().remove(previous_record);
+							response.first().setDirty();
+							MoodleMobApp.Session.getBooksStore().add(response.first());
+						}
+					},
+					this,
+					{single: true}
+				);
+
+				if(book_counter == books.length) {
+					// books updated
+					this.updateStatus['books'] = true;
+				} else {
+					++book_counter;
+				}
+
+			}, this);
+		} else {
+			this.updateStatus['books'] = true;
 		}
 	},
 

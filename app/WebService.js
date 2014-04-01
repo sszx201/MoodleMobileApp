@@ -482,6 +482,17 @@ Ext.define('MoodleMobApp.WebService', {
 		return page_content_store;
 	},
 
+	getBook: function(resource, token) {
+		// set parameters
+		var params = new Object();
+		params.wsfunction = 'uniappws_get_book';
+		params.wstoken = token;
+		params.bookid = resource.instanceid;
+		// request
+		var book_content_store = this.request(params, 'MoodleMobApp.model.Book', 'GET');
+		return book_content_store;
+	},
+
 	getGradeItems: function(course, token) {
 		// set parameters
 		var params = new Object();

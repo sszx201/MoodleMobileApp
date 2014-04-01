@@ -26,6 +26,7 @@ Ext.define('MoodleMobApp.Session', {
 		choicesStore: null,
 		urlStore: null,
 		pagesStore: null,
+		booksStore: null,
 		forumDiscussionsStore: null,
 		forumPostsStore: null,
 		foldersStore: null,

@@ -1,5 +1,6 @@
 $base-color: #525252;
 $active-color: #C35817;
+$border-color: #dedede;
 
 // The following two lines import the default Sencha Touch theme. If you are building
 // a new theme, remove them and the add your own CSS on top of the base CSS (which
@@ -14,6 +15,7 @@ $active-color: #C35817;
 @include icon('home');
 @include icon('user');
 @include icon('info');
+@include icon('list');
 @import 'scorm_panel';
 
 // scorm reader icons
@@ -23,6 +25,13 @@ $active-color: #C35817;
 @include icon('leftarrow', '\e001', 'icoMoon');
 @include icon('rightarrow', '\e002', 'icoMoon');
 @include icon('marker', '\e003', 'icoMoon');
+
+.version {
+	color: gray;
+	font-size: small;
+	text-align: right;
+	padding-right: 5px;
+}
 
 .appbar {
 	opacity: 0.9;
@@ -40,13 +49,6 @@ $active-color: #C35817;
 	}
 }
 
-.version {
-	color: gray;
-	font-size: small;
-	text-align: right;
-	padding-right: 5px;
-}
-
 .x-navigationview-inner {
 	-webkit-transition: margin-right 0.3s;
 	-moz-transition: margin-right 0.3s;
@@ -62,14 +64,14 @@ $active-color: #C35817;
 .x-folder-entry,
 .x-forum-discussion {
 	padding: 5px;
-	border-bottom: 1px solid #dedede;
+	border-bottom: 1px solid $border-color;
 }
 
 .x-course-section {
 	background-color: white;
 	padding-top: 10px;
 	padding-left: 3px;
-	border-bottom: 2px solid #dedede;
+	border-bottom: 2px solid $border-color;
 	.summary {
 		margin-top: 10px;
 		margin-bottom: 5px;
@@ -83,7 +85,7 @@ $active-color: #C35817;
 	padding-top: 10px;
 	padding-bottom: 3px;
 	padding-left: 3px;
-	border-bottom: 2px solid #dedede;
+	border-bottom: 2px solid $border-color;
 }
 
 .x-module,
@@ -155,6 +157,13 @@ $active-color: #C35817;
 	background-position-y: 5px;
 }
 
+.x-module-icon-book {
+	background:url('../images/book.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
 .x-module-icon-scorm {
 	background:url('../images/scorm.png');
 	background-repeat: no-repeat;
@@ -205,7 +214,7 @@ $active-color: #C35817;
 }
 
 .partecipant {
-	border-bottom: 1px solid #dedede;
+	border-bottom: 1px solid $border-color;
 	background-color: white;
 	padding: 5px;
 	padding-top: 10px;
@@ -252,7 +261,7 @@ $active-color: #C35817;
 .forum-intro,
 .forum-post {
 	margin-bottom: 10px;
-	border: 1px solid #dedede;
+	border: 1px solid $border-color;
 	padding: 5px;
 }
 
@@ -460,4 +469,36 @@ $active-color: #C35817;
 	box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
     -webkit-transition: width .4s ease-in-out;
     transition: width .4s ease-in-out;    
+}
+
+/*
+ *
+ * Book related classes
+ *
+ * */
+.book{
+	.x-floating {
+		background-color: white !important;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+		border-radius: 0;
+	}
+	.index {
+		font-size: normal;
+		border-right: 1px solid $border-color;
+		background-color: white;
+		-webkit-transition: left 0.5s;
+		-moz-transition: left 0.5s;
+		-o-transition: left 0.5s;
+		transition: left 0.5s;
+		.chapter { }
+		.subchapter { margin-left: 10px; }
+	}
+
+	.content {
+		-webkit-transition: width 0.5s, left 0.5s;
+		-moz-transition: width 0.5s, left 0.5s;
+		-o-transition: width 0.5s, left 0.5s;
+		transition: width 0.5s, left 0.5s;
+	}
 }

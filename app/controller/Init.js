@@ -23,6 +23,7 @@ Ext.define('MoodleMobApp.controller.Init', {
 			'MoodleMobApp.store.Choices',
 			'MoodleMobApp.store.Url',
 			'MoodleMobApp.store.Pages',
+			'MoodleMobApp.store.Books',
 			'MoodleMobApp.store.ForumDiscussions',
 			'MoodleMobApp.store.ForumPosts',
 			'MoodleMobApp.store.Folders',
@@ -132,6 +133,12 @@ Ext.define('MoodleMobApp.controller.Init', {
 		var pages_store = Ext.create('MoodleMobApp.store.Pages');
 		pages_store.load();
 		MoodleMobApp.Session.setPagesStore(pages_store);
+
+		// create books store
+		var books_store = Ext.create('MoodleMobApp.store.Books');
+		books_store.load();
+		MoodleMobApp.Session.setBooksStore(books_store);
+
 
 		// create forumdiscussions store
 		var forum_discussions_store = Ext.create('MoodleMobApp.store.ForumDiscussions');

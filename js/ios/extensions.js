@@ -11,22 +11,13 @@ function addExtensions() {
 	// this function sends a mail to a list of users
 	//////////////////////////////////////////////////////////////////////////
 	MoodleMobApp.app.sendEmail = function(to, subject, body) {
-			console.log('sending mail to ' + to);
-			console.log('subject ' + subject);
-			console.log('body ' + body);
-			var mailto = 'mailto:'+to;
-					mailto = mailto + '?subject=' + subject;
-					mailto = mailto + '&body=' + body;
-			window.open(mailto);
-	};
-
-	//////////////////////////////////////////////////////////////////////////
-	// This function opens a url in the default browser app
-	//////////////////////////////////////////////////////////////////////////
-	MoodleMobApp.app.openURL = function(urladdr) {
-			console.log('===> Opening URL: '+urladdr);
-			console.log('opening url '+urladdr);
-			window.open(urladdr, '_blank', 'location=yes');
+		console.log('sending mail to ' + to);
+		console.log('subject ' + subject);
+		console.log('body ' + body);
+		var mailto = 'mailto:'+to;
+				mailto = mailto + '?subject=' + subject;
+				mailto = mailto + '&body=' + body;
+		window.open(mailto);
 	};
 
 	//////////////////////////////////////////////////////////////////////////

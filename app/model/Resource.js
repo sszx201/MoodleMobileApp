@@ -11,11 +11,11 @@ Ext.define('MoodleMobApp.model.Resource', {
 			{ name: 'course', type: 'int' },
 			{ name: 'name', type: 'string' },
 			{ name: 'intro', type: 'string' },
-			{ name: 'timemodified', type: 'int' },
 			{ name: 'fileid', type: 'int' },
 			{ name: 'filename', type: 'string' },
 			{ name: 'filemime', type: 'string' },
-			{ name: 'filesize', type: 'int' }
+			{ name: 'filesize', type: 'int' },
+			{ name: 'timemodified', type: 'int' }
 		]
 	}
 });

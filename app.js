@@ -297,7 +297,11 @@ Ext.application({
 
 	sendEmail: function(to, subject, body) { },
 
-	openURL: function(urladdr) { },
+	openURL: function(urladdr) {
+		console.log('===> Opening URL: '+urladdr);
+		return window.open(urladdr, '_blank', 'location=yes,enableViewportScale=yes');
+		return ref;
+	},
 
 	unzip: function(filePath, successFunc, failFunc) { },
 
@@ -333,5 +337,60 @@ Ext.application({
 
 	dump: function(obj) {
 		console.log(JSON.stringify(obj));
+	},
+
+	// processes the page and extracts the content the best way possible
+	openMoodlePage: function(urladdr, displayMode) {
+		console.log('===> PROCESSING URL: '+urladdr);
+		MoodleMobApp.app.showLoadMask('Loading Resource');
+		var winref = window.open(urladdr, '_blank', 'location=yes,hidden=yes,enableViewportScale=yes');
+		Ext.winref = winref;
+		winref.addEventListener('loaderror', function(error) {
+			console.log(error);
+			MoodleMobApp.app.hideLoadMask();
+			Ext.Msg.alert(
+				'ERROR: ppening platform page',
+				'Opening the platform page was not possible due to an error.'
+			);
+		});
+		winref.addEventListener('loadstop', function() {
+			var iframe_check = "document.getElementsByTagName('iframe').length == 0 ? null : document.getElementsByTagName('iframe').item(0).src";
+			winref.executeScript({code: iframe_check}, function(result) {
+				var url = result.pop();
+				if(url == null) {
+					console.log('NO IFRAME FILTERING THE PAGE !!');
+					var filter = "#page-header, #region-pre, #region-pre-logo, #region-post, #page-footer, .navbar { display: none}";
+					winref.insertCSS({code: filter}, function(result) {
+						var anchor_check = 'var anchor, workaround = document.getElementsByClassName("resourceworkaround");';
+							anchor_check+= 'if(workaround.length == 0) {';
+							anchor_check+= '	null;';
+							anchor_check+= '} else {';
+							anchor_check+= '	anchor = workaround.item(0).getElementsByTagName("a");';
+							anchor_check+= '	if(anchor == null) {';
+							anchor_check+= '		null;';
+							anchor_check+= '	} else {';
+							anchor_check+= '		anchor.item(0).href;';
+							anchor_check+= '	}';
+							anchor_check+= '}';
+						winref.executeScript({code: anchor_check}, function(result) {
+							var href = result.pop();
+							if(href == null) {
+								console.log('NOTHING TO SEE HERE MOVE ON !!');
+								MoodleMobApp.app.hideLoadMask();
+								winref.show();
+							} else {
+								console.log('FOUND A REDIRECT ANCHOR !!');
+								MoodleMobApp.app.hideLoadMask();
+								MoodleMobApp.app.openURL(href);
+							}
+						});
+					});
+				} else {
+					console.log('FOUND A IFRAME !!');
+					MoodleMobApp.app.hideLoadMask();
+					MoodleMobApp.app.openURL(url);
+				}
+			});
+		});
 	}
 });

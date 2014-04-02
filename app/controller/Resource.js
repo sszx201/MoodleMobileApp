@@ -25,22 +25,24 @@ Ext.define('MoodleMobApp.controller.Resource', {
     },
     
 	selectModule: function(view, index, target, record) {
+		console.log('record: ');
+		console.log(record);
 		if(record.get('modname') === 'resource'){
 			var resource = MoodleMobApp.Session.getResourcesStore().findRecord('id', record.get('instanceid'), 0, false, true, true);
-			this.getFile(resource);
+			if(resource.get('filemime').indexOf('html') !== -1) {
+				winref = MoodleMobApp.app.openMoodlePage(MoodleMobApp.Config.getResourceViewUrl()+'?id='+record.get('id'), record.get('display'));
+			} else {
+				this.getFile(resource);
+			}
 		}
 	},
 
 	getFile: function(resource){
-		if(resource.get('filemime').indexOf('html') !== -1) {
-			MoodleMobApp.app.openURL(MoodleMobApp.Config.getResourceViewUrl()+'?id='+resource.get('id'));
-		} else {
-			var file = {
-				name: resource.get('filename'),
-				fileid: resource.get('fileid'),
-				mime: resource.get('filemime')
-			};
-			MoodleMobApp.app.downloadFile(file);
-		}
+		var file = {
+			name: resource.get('filename'),
+			fileid: resource.get('fileid'),
+			mime: resource.get('filemime')
+		};
+		MoodleMobApp.app.downloadFile(file);
 	}
 });

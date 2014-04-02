@@ -24,40 +24,7 @@ function addExtensions() {
 	// this function opens a file by using the web intent mechanism
 	//////////////////////////////////////////////////////////////////////////
 	MoodleMobApp.app.openFile = function(path, mimetype) {
-		window.requestFileSystem(
-			LocalFileSystem.PERSISTENT, 0,
-			function onFileSystemSuccess(fileSystem) {
-					// get the filesystem
-					fileSystem.root.getFile(
-						'dummy.html', 
-						{
-							create: true,
-							exclusive: false
-						},
-						// success callback: remove the previous file
-						function gotFileEntry(fileEntry) {
-							var sPath = fileEntry.toURL().replace("/dummy.html","");
-							fileEntry.remove();
-							console.log('opening file');
-							console.log(sPath+path);
-							window.open(sPath+path, '_blank', 'enableViewportScale=yes');
-						},
-						// error callback: notify the error
-						function(){
-							Ext.Msg.alert(
-								'File system error',
-								'Cannot write on the filesystem'
-							);
-						}
-					);
-			},
-			// error callback: notify the error
-			function(){
-				Ext.Msg.alert(
-					'File system error',
-					'Cannot access the local filesystem.'
-				);
-			});
+		window.open(path, '_blank', 'location=yes,hidden=no,enableViewportScale=yes');
 	};
 
 	MoodleMobApp.app.calculateDownloadPercentage = function(progressEvent) {

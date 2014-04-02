@@ -11,6 +11,16 @@ function addExtensions() {
 	// this function sends a mail to a list of users
 	//////////////////////////////////////////////////////////////////////////
 	MoodleMobApp.app.sendEmail = function(to, subject, body) {
+		console.log('sending mail to ' + to);
+		console.log('subject ' + subject);
+		console.log('body ' + body);
+		var mailto = 'mailto:'+to;
+			mailto = mailto + '?subject=' + subject;
+			mailto = mailto + '&body=' + body;
+		window.open(mailto, '_system');
+	};
+	/*
+	MoodleMobApp.app.sendEmail = function(to, subject, body) {
 		var extras = {};
 		extras[WebIntent.EXTRA_SUBJECT] = subject;
 		extras[WebIntent.EXTRA_TEXT] = body;
@@ -26,6 +36,7 @@ function addExtensions() {
 		window.plugins.webintent.startActivity(
 			{
 				action: window.plugins.webintent.ACTION_SEND,
+				//url: 'mailto:' + to,
 				url: to,
 				type: 'text/plain',
 				extras: extras
@@ -34,6 +45,7 @@ function addExtensions() {
 			failFunc
 		);
 	};
+	*/
 
 	//////////////////////////////////////////////////////////////////////////
 	// this function opens a file by using the web intent mechanism

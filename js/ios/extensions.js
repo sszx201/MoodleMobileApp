@@ -15,9 +15,9 @@ function addExtensions() {
 		console.log('subject ' + subject);
 		console.log('body ' + body);
 		var mailto = 'mailto:'+to;
-				mailto = mailto + '?subject=' + subject;
-				mailto = mailto + '&body=' + body;
-		window.open(mailto);
+			mailto = mailto + '?subject=' + subject;
+			mailto = mailto + '&body=' + body;
+		window.open(mailto, '_system');
 	};
 
 	//////////////////////////////////////////////////////////////////////////

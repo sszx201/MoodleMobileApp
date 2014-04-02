@@ -357,7 +357,7 @@ Ext.application({
 			var iframe_check = "document.getElementsByTagName('iframe').length == 0 ? null : document.getElementsByTagName('iframe').item(0).src";
 			winref.executeScript({code: iframe_check}, function(result) {
 				var url = result.pop();
-				if(url == null) {
+				if(url == null || url == '') {
 					console.log('NO IFRAME FILTERING THE PAGE !!');
 					var filter = "#page-header, #region-pre, #region-pre-logo, #region-post, #page-footer, .navbar { display: none}";
 					winref.insertCSS({code: filter}, function(result) {
@@ -366,7 +366,7 @@ Ext.application({
 							anchor_check+= '	null;';
 							anchor_check+= '} else {';
 							anchor_check+= '	anchor = workaround.item(0).getElementsByTagName("a");';
-							anchor_check+= '	if(anchor == null) {';
+							anchor_check+= '	if(anchor == null || anchor.length == 0) {';
 							anchor_check+= '		null;';
 							anchor_check+= '	} else {';
 							anchor_check+= '		anchor.item(0).href;';

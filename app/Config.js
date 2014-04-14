@@ -29,6 +29,6 @@ Ext.define('MoodleMobApp.Config', {
 		noGroupsFlag: 0,
 		separatedGroupsFlag: 1,
 		visibleGroupsFlag: 2,
-		version: '0.1 alpha 14'
+		version: '0.1 alpha 15'
 	}
 });

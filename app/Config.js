@@ -8,6 +8,7 @@ Ext.define('MoodleMobApp.Config', {
 		this.config.manualAuthUrl = this.config.moodleUrl + this.config.manualAuthUrl;
 		this.config.webServiceUrl = this.config.moodleUrl + this.config.webServiceUrl;
 		this.config.resourceViewUrl = this.config.moodleUrl + this.config.resourceViewUrl;
+		this.config.quizViewUrl = this.config.moodleUrl + this.config.quizViewUrl;
 
 		this.initConfig(config);
 		return this;
@@ -20,6 +21,7 @@ Ext.define('MoodleMobApp.Config', {
 		manualAuthUrl : '/auth/mobilemanual/authenticate.php',
 		webServiceUrl : '/webservice/rest/server.php',
 		resourceViewUrl : '/mod/resource/view.php',
+		quizViewUrl : '/mod/quiz/view.php',
 		defaultIDP: 'https://login2.usi.ch/idp/shibboleth',
 		//paths
 		fileCacheDir: 'iCorsi',

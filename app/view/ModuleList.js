@@ -45,39 +45,56 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 		// add section labels
 		var number_of_sections = course_sections.getCount();
 		for(var i=1; i < number_of_sections; ++i){
+			// prepare the section label content
 			var section_number = course_sections.getAt(i).get('number');
-			var element = Ext.select('.x-module-section-' + section_number).first();
-			if(element == null) {
-				continue;
+			var title = null;
+			var summary = null;
+			if(course_sections.getAt(i).get('title') != null) {
+				title = course_sections.getAt(i).get('title');
+			}
+
+			if(course_sections.getAt(i).get('summary') != null) {
+				summary = course_sections.getAt(i).get('summary');
+			}
+
+			if(course_format == 'weeks') {
+				if(title == null) {
+					section_begin_day = begin_day + (section_number-1)*(week + day);
+					section_end_day = end_day + (section_number-1)*(week + day);
+					title = Ext.Date.format(new Date(section_begin_day), date_format) + ' - ' + Ext.Date.format(new Date(section_end_day), date_format);
+				}
 			} else {
-				var title = null;
-				var summary = null;
-				if(course_sections.getAt(i).get('title') != null) {
-					title = course_sections.getAt(i).get('title');
+				if(title == null) {
+					title = 'Section ' + i;
+				}
+			}
+			var section_label = '';
+			if(summary == null) {
+				section_label = '<div class="x-course-section">'+title+'</div>';
+			} else {
+				section_label = '<div class="x-course-section">'+title+'<div class="summary">'+summary+'</div></div>';
+			}
+
+			var element = Ext.select('.x-module-section-' + section_number).first();
+			if(element == null) { // add before the first element of the next section
+				// empty section block
+				var next_section_number = parseInt(section_number) + 1;
+				element = Ext.select('.x-module-section-' + next_section_number).first();
+				if(element == null) { // add after the last element of the previous section
+					var previous_section_number = parseInt(section_number) - 1;
+					element = Ext.select('.x-module-section-' + previous_section_number).last();
 				}
 
-				if(course_sections.getAt(i).get('summary') != null) {
-					summary = course_sections.getAt(i).get('summary');
+				if(element == null) { // add after the last section label
+					element = Ext.select('.x-course-section').last();
 				}
 
-				if(course_format == 'weeks') {
-					if(title == null) {
-						section_begin_day = begin_day + (section_number-1)*(week + day);
-						section_end_day = end_day + (section_number-1)*(week + day);
-						title = Ext.Date.format(new Date(section_begin_day), date_format) + ' - ' + Ext.Date.format(new Date(section_end_day), date_format);
-					}
-				} else {
-					if(title == null) {
-						title = 'Section ' + i;
-					}
+				if(element == null) { // add after the last module of the course
+					element = Ext.select('.x-module').last();
 				}
-				var section_label = '';
-				if(summary == null) {
-					section_label = '<div class="x-course-section">'+title+'</div>';
-				} else {
-					section_label = '<div class="x-course-section">'+title+'<div class="summary">'+summary+'</div></div>';
-				}
-				// add the section title
+				Ext.DomHelper.insertAfter(element, section_label);
+			} else {
+				// regular section; not empty
 				Ext.DomHelper.insertBefore(element, section_label);
 			}
 		}

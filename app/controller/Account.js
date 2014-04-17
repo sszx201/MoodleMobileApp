@@ -36,16 +36,9 @@ Ext.define('MoodleMobApp.controller.Account', {
 				}
 			}
 		});
-
 		store.on('load',
 			function(store, records, success) {
-				// check if there are any exceptions 
-				if(this.first() == undefined){
-					Ext.Msg.alert(
-						'Authentication Failed',
-						'The Authentication has failed. Please check your username and password.'
-					);
-				} else if( this.first().get('user') != undefined) {
+				if( this.first().get('user') != undefined) {
 					// store the username in the Session
 					MoodleMobApp.Session.setUser(Ext.create('MoodleMobApp.model.User', this.first().get('user')));
 
@@ -64,7 +57,10 @@ Ext.define('MoodleMobApp.controller.Account', {
 				} else {
 					Ext.Msg.alert(
 						this.first().raw.exception,
-						this.first().raw.message
+						this.first().raw.message,
+						function() {
+							MoodleMobApp.app.getController('CourseNavigator').showSettings();
+						}
 					);
 				}
 			},

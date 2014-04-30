@@ -60,7 +60,12 @@ Ext.application({
 		'MoodleMobApp.controller.ScormMetadataPanel',
 		'MoodleMobApp.controller.ScormSettings',
 		'MoodleMobApp.controller.ScormPlayer',
-		'MoodleMobApp.controller.Quiz'
+		'MoodleMobApp.controller.Quiz',
+		'MoodleMobApp.controller.Workshop',
+		'MoodleMobApp.controller.Database',
+		'MoodleMobApp.controller.Glossary',
+		'MoodleMobApp.controller.Wiki',
+		'MoodleMobApp.controller.Feedback'
 	],
 
     icon: {

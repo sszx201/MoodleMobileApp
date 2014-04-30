@@ -1,4 +1,4 @@
-Ext.define('MoodleMobApp.controller.Quiz', {
+Ext.define('MoodleMobApp.controller.Wiki', {
     extend: 'Ext.app.Controller',
     
     config: {
@@ -12,8 +12,8 @@ Ext.define('MoodleMobApp.controller.Quiz', {
 			module: { itemtap: 'selectModule' },
 			recentActivity: {
 				checkActivity: function(record) {
-					if(record.get('modname') == 'quiz') {
-						this.openQuiz(record);
+					if(record.get('modname') == 'wiki') {
+						this.openWiki(record);
 					}
 				}
 			}
@@ -21,18 +21,18 @@ Ext.define('MoodleMobApp.controller.Quiz', {
     },
 
 	selectModule: function(view, index, target, record) {
-		if(record.get('modname') === 'quiz'){
-			this.openQuiz(record);
+		if(record.get('modname') === 'wiki'){
+			this.openWiki(record);
 		}
 	},
     
 	// processes the page and extracts the content the best way possible
-	openQuiz: function(record) {
-		console.log('===> PROCESSING Quiz: ');
+	openWiki: function(record) {
+		console.log('===> PROCESSING Wiki: ');
 		console.log(record.getData());
 		if(MoodleMobApp.app.isConnectionAvailable()) {
-			MoodleMobApp.app.showLoadMask('Loading Quiz');
-			var winref = window.open(MoodleMobApp.Config.getQuizViewUrl()+'?id='+record.get('id'), '_blank', 'location=yes,hidden=yes,enableViewportScale=yes');
+			MoodleMobApp.app.showLoadMask('Loading Wiki');
+			var winref = window.open(MoodleMobApp.Config.getWikiViewUrl()+'?id='+record.get('id'), '_blank', 'location=yes,hidden=yes,enableViewportScale=yes');
 			Ext.winref = winref;
 
 			//winref.addEventListener('loadstart', function(error) { MoodleMobApp.app.showLoadMask('Contacting the server'); });

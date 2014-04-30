@@ -14,7 +14,6 @@ Ext.define('MoodleMobApp.controller.Resource', {
 				checkActivity: function(record) {
 					if(record.get('modname') == 'resource') {
 						var resource_record = MoodleMobApp.Session.getResourcesStore().findRecord('id', record.get('instanceid'));
-						console.log(resource_record.getData());
 						if(resource_record != undefined) {
 							this.getFile(resource_record);
 						}

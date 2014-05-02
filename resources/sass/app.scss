@@ -276,6 +276,10 @@ $border-color: #dedede;
 	margin-bottom: 7px;
 }
 
+.x-partecipant-networks {
+	height: 16px;
+}
+
 .partecipant-selected {
 	background-color: white;
 }
@@ -542,5 +546,40 @@ $border-color: #dedede;
 		-moz-transition: width 0.5s, left 0.5s;
 		-o-transition: width 0.5s, left 0.5s;
 		transition: width 0.5s, left 0.5s;
+	}
+}
+
+/*
+ *
+ * Network Picker related classes
+ *
+ * */
+.networkpicker {
+	.skype {
+		margin: 10px;
+		background:url('../images/skype_picker.png');
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+
+	.phone {
+		margin: 10px;
+		background:url('../images/phone_picker.png');
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+
+	.sms {
+		margin: 10px;
+		background:url('../images/sms_picker.png');
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+
+	.email {
+		margin: 10px;
+		background:url('../images/email_picker.png');
+		background-position: center;
+		background-repeat: no-repeat;
 	}
 }

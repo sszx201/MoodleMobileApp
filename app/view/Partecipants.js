@@ -3,7 +3,6 @@ Ext.define("MoodleMobApp.view.Partecipants", {
 	xtype: 'partecipants',
 	requires: [ ],
 	config: {
-		id: 'partecipants',
 	   	title: 'Partecipants', 
 		emptyText: 'No partecipants in this course.',
 		useComponents: true,

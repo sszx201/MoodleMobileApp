@@ -1,4 +1,4 @@
-Ext.define('MoodleMobApp.controller.Main', {
+Ext.define('MoodleMobApp.controller.Updater', {
 	extend: 'Ext.app.Controller',
 	
 	config: {

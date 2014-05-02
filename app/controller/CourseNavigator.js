@@ -17,7 +17,8 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			'MoodleMobApp.view.Grades',
 			'MoodleMobApp.view.Grade',
 			'MoodleMobApp.view.CalendarEvents',
-			'MoodleMobApp.view.CalendarEvent'
+			'MoodleMobApp.view.CalendarEvent',
+			'MoodleMobApp.view.NetworkPicker'
 		],
 
 		refs: {
@@ -41,6 +42,8 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			clearPartecipantsSelectionButton: 'partecipants button[action=clearselection]',
 			selectAllPartecipantsButton: 'partecipants button[action=selectall]',
 			contactPartecipantsButton: 'partecipants button[action=contactpartecipants]',
+			networkPicker: 'networkpicker',
+			networkPickerButton: 'networkpicker button',
 			grades: 'grades',
 			calendar: 'calendarevents'
 		},
@@ -61,7 +64,8 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			//moduleList: { itemtap: 'selectModule' },
 			contactPartecipantsButton: { tap: 'contactPartecipants' },
 			clearPartecipantsSelectionButton: { tap: 'clearPartecipantsSelection' },
-			selectAllPartecipantsButton: { tap: 'selectAllPartecipants' }
+			selectAllPartecipantsButton: { tap: 'selectAllPartecipants' },
+			networkPickerButton: { tap: 'contactPartecipantsWithSelectedNetwork' }
 		}
 	},
 
@@ -203,23 +207,108 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 
 	contactPartecipants: function(button) {
 		// extract the list of selected users
-		var list = '';
+		this.list = new Array();
 		var separator = ';';
 		var partecipants = this.getPartecipants().getInnerItems()[1].getInnerItems();
+		var skypeAvailable = true;
+		var phoneAvailable = true;
+		var smsAvailable = true;
+		var partecipantsToContact = 0;
 		Ext.each(partecipants, function(partecipant) {
 			if(partecipant.down('#selection').isChecked()) {
-				list += partecipant.getRecord().get('email') + separator;
-			}
-		});
+				++partecipantsToContact;
+				// skype check
+				if(partecipant.getRecord().get('skype') == "") {
+					skypeAvailable = false;
+				}
+				// phone number check --> enable only if just one contact has been selected
+				if(partecipant.getRecord().get('phone') == "" || partecipantsToContact > 1) {
+					phoneAvailable = false;
+				}
+				// sms check
+				if(partecipant.getRecord().get('phone') == "") {
+					smsAvailable = false;
+				}
 
-		if(list == '') {
+				this.list.push(partecipant.getRecord());
+			}
+		}, this);
+
+		if(this.list.length == 0) {
 			// no partecipants selected
 			Ext.Msg.alert( 'Partecipants List Empty', 'No partecipants have been selected. Please select some of the partecipants and try again.');		
 			return;
 		} else {
-			MoodleMobApp.app.sendEmail(list, '', '');	
+			if(skypeAvailable || phoneAvailable) {
+				this.chooseNetwork(skypeAvailable, phoneAvailable, smsAvailable);
+			} else {
+				this.sendEmail();
+			}
 		}
 	},
+
+	chooseNetwork: function(skypeAvailable, phoneAvailable, smsAvailable) {
+		if(typeof this.getNetworkPicker() == 'object') {
+			this.getNetworkPicker().setSkype(skypeAvailable);
+			this.getNetworkPicker().setPhone(phoneAvailable);
+			this.getNetworkPicker().setSms(smsAvailable);
+			this.getNetworkPicker().show();
+		} else {
+			this.getNavigator().push({
+				xtype: 'networkpicker',
+				skype: skypeAvailable,
+				phone: phoneAvailable,
+				sms: smsAvailable
+			});
+		}
+	},
+
+	contactPartecipantsWithSelectedNetwork: function(button) {
+		console.log('contacting the partecipants with:' + button.getItemId());
+		switch(button.getItemId()) {
+			case 'skype':
+				this.startSkype();
+			break;
+			case 'phone':
+				this.startPhoneCall();
+			break;
+			case 'sms':
+				this.sendSms();
+			break;
+			case 'email':
+				this.sendEmail();
+			break;
+		}
+	},
+
+	sendEmail: function() {
+		var separator = ';';
+		var list = '';
+		for(var i = 0; this.list.length > i; ++i) {
+			list += this.list[i].get('email') + separator;
+		}
+		MoodleMobApp.app.sendEmail(list);
+	},
+
+	sendSms: function() {
+		var separator = ';';
+		var list = '';
+		for(var i = 0; this.list.length > i; ++i) {
+			list += this.list[i].get('phone') + separator;
+		}
+		MoodleMobApp.app.sendSms(list);
+	},
+
+	startSkype: function() {
+		var separator = ';';
+		var list = '';
+		for(var i = 0; this.list.length > i; ++i) {
+			list += this.list[i].get('skype') + separator;
+		}
+		MoodleMobApp.app.startSkype(list);
+	},
+
+	startPhoneCall: function() { MoodleMobApp.app.phone(this.list.pop().get('phone')); },
 
 	clearPartecipantsSelection: function() {
 		var partecipants = this.getPartecipants().getInnerItems()[1].getInnerItems();

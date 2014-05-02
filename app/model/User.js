@@ -13,6 +13,8 @@ Ext.define('MoodleMobApp.model.User', {
 			{ name: 'firstname', type: 'string' },
 			{ name: 'lastname', type: 'string' },
 			{ name: 'email', type: 'string' },
+			{ name: 'phone', type: 'string' },
+			{ name: 'skype', type: 'string' },
 			{ name: 'city', type: 'string' },
 			{ name: 'country', type: 'string' },
 			{ name: 'lang', type: 'string' },

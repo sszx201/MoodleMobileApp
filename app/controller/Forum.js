@@ -204,7 +204,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			function(store, records){
 				if( store.first().raw.exception == undefined) {
 					var scope = this;
-					this.getApplication().getController('Main').updateForumDiscussionsStore(MoodleMobApp.Session.getCourse(), function() {
+					this.getApplication().getController('Updater').updateForumDiscussionsStore(MoodleMobApp.Session.getCourse(), function() {
 						MoodleMobApp.app.hideLoadMask();
 						var forum_discussions = scope.getForumDiscussions();
 						scope.getDiscussionList().setStore(forum_discussions);
@@ -332,7 +332,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 						this,
 						{single:true}
 					);
-					this.getApplication().getController('Main').updateForumPostsStore(this.selected_discussion, token);
+					this.getApplication().getController('Updater').updateForumPostsStore(this.selected_discussion, token);
 				} else {
 					Ext.Msg.alert(
 						store.first().raw.exception,

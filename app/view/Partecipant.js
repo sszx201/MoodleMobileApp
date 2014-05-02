@@ -44,7 +44,13 @@ Ext.define("MoodleMobApp.view.Partecipant", {
 				xtype: 'checkboxfield',
 				docked: 'right',
 				cls: 'x-partecipant-select'
-			}
+			},
+			{
+				itemId: 'networks',
+				docked: 'bottom',
+				xtype: 'component',
+				cls: 'x-partecipant-networks'
+			},
 		]
 	},
 
@@ -57,6 +63,14 @@ Ext.define("MoodleMobApp.view.Partecipant", {
 		this.down('#firstname').setHtml(record.get('firstname'));
 		this.down('#lastname').setHtml(record.get('lastname'));
 		this.down('#email').setHtml(record.get('email'));
+		var networks = '';
+		if(record.get('phone') != null && record.get('phone') != '') {
+			networks += '<img src="resources/images/phone.png" />';
+		} 
+		if(record.get('skype') != null && record.get('skype') != '') {
+			networks += '<img src="resources/images/skype.png" />';
+		} 
+		this.down('#networks').setHtml(networks);
 	}
 });
 

@@ -40,7 +40,7 @@ Ext.application({
 
 	controllers: [
 		'MoodleMobApp.controller.Init',
-		'MoodleMobApp.controller.Main',
+		'MoodleMobApp.controller.Updater',
 		'MoodleMobApp.controller.UsageAgreement',
 		'MoodleMobApp.controller.Settings',
 		'MoodleMobApp.controller.Account',

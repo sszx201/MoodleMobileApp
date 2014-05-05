@@ -113,7 +113,7 @@ function addExtensions() {
 	};
 
 	MoodleMobApp.app.onBackKeyDown = function(e) {
-		if( MoodleMobApp.app.getController('Main').getNavigator() == undefined || MoodleMobApp.app.getController('Main').getNavigator().pop() == undefined) {
+		if( MoodleMobApp.app.getController('CourseNavigator').getNavigator() == undefined || MoodleMobApp.app.getController('CourseNavigator').getNavigator().pop() == undefined) {
 			navigator.app.exitApp();
 			/*
 			Ext.Msg.confirm(

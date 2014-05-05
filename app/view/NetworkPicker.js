@@ -7,9 +7,10 @@ Ext.define("MoodleMobApp.view.NetworkPicker", {
 		modal: true,
 		centered: true,
 		hideOnMaskTap: true,
-		width: 400,
-		height: 144,
-		layout: 'hbox',
+		layout: 'vbox',
+		width: '90%',
+		maxWidth: 300,
+		height: 300,
 		skype: true,
 		sms: true,
 		phone: true,
@@ -23,29 +24,47 @@ Ext.define("MoodleMobApp.view.NetworkPicker", {
 				docked: 'top'
 			},
 			{
-				xtype: 'button',
-				itemId: 'skype',
-				cls: 'skype',
-				baseCls: 'network_selector'
+				xtype: 'container',
+				layout: 'hbox',
+				defaults: {
+					flex: 1
+				},
+				items: [
+					{
+						xtype: 'button',
+						itemId: 'skype',
+						cls: 'skype',
+						baseCls: 'network_selector'
+					},
+					{
+						xtype: 'button',
+						itemId: 'phone',
+						cls: 'phone',
+						baseCls: 'network_selector'
+					}
+				]
 			},
 			{
-				xtype: 'button',
-				itemId: 'phone',
-				cls: 'phone',
-				baseCls: 'network_selector'
+				xtype: 'container',
+				layout: 'hbox',
+				defaults: {
+					flex: 1
+				},
+				items: [
+					{
+						xtype: 'button',
+						itemId: 'sms',
+						cls: 'sms',
+						baseCls: 'network_selector'
+					},
+					{
+						xtype: 'button',
+						itemId: 'email',
+						cls: 'email',
+						baseCls: 'network_selector'
+					}
+				]
 			},
-			{
-				xtype: 'button',
-				itemId: 'sms',
-				cls: 'sms',
-				baseCls: 'network_selector'
-			},
-			{
-				xtype: 'button',
-				itemId: 'email',
-				cls: 'email',
-				baseCls: 'network_selector'
-			}
 		]
 	},
 

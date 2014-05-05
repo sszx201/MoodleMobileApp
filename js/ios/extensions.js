@@ -10,14 +10,37 @@ function addExtensions() {
 	//////////////////////////////////////////////////////////////////////////
 	// this function sends a mail to a list of users
 	//////////////////////////////////////////////////////////////////////////
-	MoodleMobApp.app.sendEmail = function(to, subject, body) {
+	MoodleMobApp.app.sendEmail = function(to) {
 		console.log('sending mail to ' + to);
-		console.log('subject ' + subject);
-		console.log('body ' + body);
 		var mailto = 'mailto:'+to;
+			/*
 			mailto = mailto + '?subject=' + subject;
 			mailto = mailto + '&body=' + body;
+			*/
 		window.open(mailto, '_system');
+	};
+	//////////////////////////////////////////////////////////////////////////
+	// this function sends a sms to a list of users
+	//////////////////////////////////////////////////////////////////////////
+	MoodleMobApp.app.sendSMS = function(to) {
+		var smsto = 'sms:'+to;
+		window.open(smsto, '_system');
+	};
+	//////////////////////////////////////////////////////////////////////////
+	// this function starts skype conference with a number of users
+	//////////////////////////////////////////////////////////////////////////
+	MoodleMobApp.app.startSkype = function(list) {
+		//var skypeto = 'skype:'+list;
+		var skypeto = 'skype:'+list+'?chat';
+		console.log('skyping:::::' + skypeto);
+		window.open(skypeto, '_system');
+	};
+	//////////////////////////////////////////////////////////////////////////
+	// this function starts phone call
+	//////////////////////////////////////////////////////////////////////////
+	MoodleMobApp.app.phone = function(num) {
+		var phone = 'phone:'+num;
+		window.open(phone, '_system');
 	};
 
 	//////////////////////////////////////////////////////////////////////////

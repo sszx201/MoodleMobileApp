@@ -50,7 +50,7 @@ function addExtensions() {
 	//////////////////////////////////////////////////////////////////////////
 	// this function sends a sms to a list of users
 	//////////////////////////////////////////////////////////////////////////
-	MoodleMobApp.app.sendSMS = function(to) {
+	MoodleMobApp.app.sendSms = function(to) {
 		var smsto = 'sms:'+to;
 		window.open(smsto, '_system');
 	};
@@ -67,7 +67,8 @@ function addExtensions() {
 	// this function starts phone call
 	//////////////////////////////////////////////////////////////////////////
 	MoodleMobApp.app.phone = function(num) {
-		var phone = 'phone:'+num;
+		var phone = 'tel:'+num;
+		console.log('phone:::::' + num);
 		window.open(phone, '_system');
 	};
 

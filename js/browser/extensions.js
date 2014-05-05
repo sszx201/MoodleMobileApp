@@ -29,7 +29,7 @@ function addExtensions() {
 	// this function starts phone call
 	//////////////////////////////////////////////////////////////////////////
 	MoodleMobApp.app.phone = function(num) {
-		console.log('phone:' + num);
+		console.log('tel:' + num);
 	};
 	//////////////////////////////////////////////////////////////////////////
 	// this function opens a file by using the web intent mechanism

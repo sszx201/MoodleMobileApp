@@ -22,7 +22,7 @@ function addExtensions() {
 	//////////////////////////////////////////////////////////////////////////
 	// this function sends a sms to a list of users
 	//////////////////////////////////////////////////////////////////////////
-	MoodleMobApp.app.sendSMS = function(to) {
+	MoodleMobApp.app.sendSms = function(to) {
 		var smsto = 'sms:'+to;
 		window.open(smsto, '_system');
 	};

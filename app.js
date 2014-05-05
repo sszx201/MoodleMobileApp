@@ -301,7 +301,10 @@ Ext.application({
 		return formated_date;
 	},
 
-	sendEmail: function(to, subject, body) { },
+	sendEmail: function(to) { },
+	sendSms: function(to) { },
+	phone: function(num) { },
+	startSkype: function(list) { },
 
 	openURL: function(urladdr) {
 		console.log('===> Opening URL: '+urladdr);

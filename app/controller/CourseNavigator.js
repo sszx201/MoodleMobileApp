@@ -265,6 +265,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 
 	contactPartecipantsWithSelectedNetwork: function(button) {
 		console.log('contacting the partecipants with:' + button.getItemId());
+		this.getNetworkPicker().hide();
 		switch(button.getItemId()) {
 			case 'skype':
 				this.startSkype();

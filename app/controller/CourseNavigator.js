@@ -3,8 +3,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 
 	config: {
 		models: [
-			'MoodleMobApp.model.Module',
-			'MoodleMobApp.model.ModulesCount'
+			'MoodleMobApp.model.Module'
 		],
 
 		views: [

@@ -8,6 +8,7 @@ Ext.define('MoodleMobApp.store.Folders', {
 
 	config: {
 		storeId: 'folders',
+		groupField: 'rootid',
 		model: 'MoodleMobApp.model.Folder',
 		autoLoad: true,
 		autoSync: true,

@@ -8,7 +8,7 @@ Ext.define('MoodleMobApp.model.Assignment', {
 		fields: [
 			{ name: 'localid', type: 'auto' },
 			{ name: 'id', type: 'int' },
-			{ name: 'course', type: 'int' },
+			{ name: 'courseid', type: 'int' },
 			{ name: 'name', type: 'string' },
 			{ name: 'intro', type: 'string' },
 			{ name: 'introformat', type: 'int' },

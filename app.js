@@ -23,7 +23,6 @@ Ext.application({
 
 	models: [
 		"MoodleMobApp.model.Settings",
-		"MoodleMobApp.model.Profile",
 		"MoodleMobApp.model.AaiAccount",
 		"MoodleMobApp.model.ManualAccount"
 	],

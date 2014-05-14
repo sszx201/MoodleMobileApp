@@ -8,7 +8,7 @@ Ext.define('MoodleMobApp.model.Page', {
 		fields: [
 			{ name: 'localid', type: 'auto' },
 			{ name: 'id', type: 'int' },
-			{ name: 'course', type: 'int' },
+			{ name: 'courseid', type: 'int' },
 			{ name: 'name', type: 'string' },
 			{ name: 'intro', type: 'string' },
 			{ name: 'timemodified', type: 'int' },

@@ -9,6 +9,7 @@ Ext.define('MoodleMobApp.store.ForumDiscussions', {
 	config: {
 		storeId: 'forumdiscussions',
 		model: 'MoodleMobApp.model.ForumDiscussion',
+		groupBy: 'forum',
 		autoLoad: true,
 		//autoSync: true,
 		proxy : {

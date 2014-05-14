@@ -9,7 +9,6 @@ Ext.define('MoodleMobApp.model.User', {
 			{ name: 'localid', type: 'auto' },
 			{ name: 'id', type: 'int' },
 			{ name: 'username', type: 'string' },
-			{ name: 'idnumber', type: 'int' },
 			{ name: 'firstname', type: 'string' },
 			{ name: 'lastname', type: 'string' },
 			{ name: 'email', type: 'string' },

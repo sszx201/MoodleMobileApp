@@ -4,6 +4,7 @@ Ext.define('MoodleMobApp.model.Folder', {
 	config: {
 		identifier: 'uuid',
 		fields: [
+			{ name: 'courseid', type: 'int' },
 			{ name: 'rootid', type: 'int' },
 			{ name: 'parent', type: 'string' },
 			{ name: 'name', type: 'string' },
@@ -11,7 +12,7 @@ Ext.define('MoodleMobApp.model.Folder', {
 			{ name: 'size', type: 'int' },
 			{ name: 'mime', type: 'string' },
 			{ name: 'type', type: 'string' },
-			{ name: 'url', type: 'string' }
+			{ name: 'timemodified', type: 'int' }
 		]
 	}
 });

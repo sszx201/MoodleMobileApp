@@ -60,7 +60,7 @@ Ext.define("MoodleMobApp.view.CourseNavigator", {
 					},
 					{
 						xtype: 'button',
-						id: 'partecipantsAppBtn',
+						id: 'participantsAppBtn',
 						iconCls: 'team',
 						hidden: true
 					},

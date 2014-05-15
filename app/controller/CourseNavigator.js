@@ -11,8 +11,8 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			'MoodleMobApp.view.Module',
 			'MoodleMobApp.view.RecentActivityList',
 			'MoodleMobApp.view.RecentActivity',
-			'MoodleMobApp.view.Partecipants',
-			'MoodleMobApp.view.Partecipant',
+			'MoodleMobApp.view.Participants',
+			'MoodleMobApp.view.Participant',
 			'MoodleMobApp.view.Grades',
 			'MoodleMobApp.view.Grade',
 			'MoodleMobApp.view.CalendarEvents',
@@ -27,7 +27,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			homeButton: 'button#homeAppBtn',
 			settingsButton: 'button#settingsAppBtn',
 			recentActivityButton: 'button#recentActivityAppBtn',
-			partecipantsButton: 'button#partecipantsAppBtn',
+			participantsButton: 'button#participantsAppBtn',
 			gradesButton: 'button#gradesAppBtn',
 			calendarButton: 'button#calendarAppBtn',
 			// views
@@ -36,11 +36,11 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			courseList: 'courselist',
 			moduleList: 'modulelist',
 			recentActivityList: 'recentactivitylist',
-			partecipants: 'partecipants',
-			partecipantsSelectors: 'partecipants checkbox',
-			clearPartecipantsSelectionButton: 'partecipants button[action=clearselection]',
-			selectAllPartecipantsButton: 'partecipants button[action=selectall]',
-			contactPartecipantsButton: 'partecipants button[action=contactpartecipants]',
+			participants: 'participants',
+			participantsSelectors: 'participants checkbox',
+			clearParticipantsSelectionButton: 'participants button[action=clearselection]',
+			selectAllParticipantsButton: 'participants button[action=selectall]',
+			contactParticipantsButton: 'participants button[action=contactparticipants]',
 			networkPicker: 'networkpicker',
 			networkPickerButton: 'networkpicker button',
 			grades: 'grades',
@@ -52,7 +52,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			homeButton: { tap: 'goHome' },
 			settingsButton: { tap: 'showSettings' },
 			recentActivityButton: { tap: 'showRecentActivity' },
-			partecipantsButton: { tap: 'showPartecipants' },
+			participantsButton: { tap: 'showParticipants' },
 			gradesButton: { tap: 'showGrades' },
 			calendarButton: { tap: 'showCalendarEvents' },
 			navigator:  {
@@ -61,10 +61,10 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			},
 			courseList: { itemtap: 'selectCourse' },
 			//moduleList: { itemtap: 'selectModule' },
-			contactPartecipantsButton: { tap: 'contactPartecipants' },
-			clearPartecipantsSelectionButton: { tap: 'clearPartecipantsSelection' },
-			selectAllPartecipantsButton: { tap: 'selectAllPartecipants' },
-			networkPickerButton: { tap: 'contactPartecipantsWithSelectedNetwork' }
+			contactParticipantsButton: { tap: 'contactParticipants' },
+			clearParticipantsSelectionButton: { tap: 'clearParticipantsSelection' },
+			selectAllParticipantsButton: { tap: 'selectAllParticipants' },
+			networkPickerButton: { tap: 'contactParticipantsWithSelectedNetwork' }
 		}
 	},
 
@@ -111,7 +111,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		this.getHomeButton().show();
 		this.getRecentActivityButton().show();
 		this.getGradesButton().show();
-		this.getPartecipantsButton().show();
+		this.getParticipantsButton().show();
 		this.getCalendarButton().show();
 		// check the course status
 		// display if the course has already been synchronized
@@ -174,68 +174,68 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		}
 	},
 
-	showPartecipants: function(button) {
-		var partecipants = this.getCoursePartecipants();
+	showParticipants: function(button) {
+		var participants = this.getCourseParticipants();
 		// display modules
-		if(typeof this.getPartecipants() == 'object') {
-			this.getPartecipants().setStore(partecipants);
-			this.getNavigator().push(this.getPartecipants());
+		if(typeof this.getParticipants() == 'object') {
+			this.getParticipants().setStore(participants);
+			this.getNavigator().push(this.getParticipants());
 		} else {
 			this.getNavigator().push({
-				xtype: 'partecipants',	
-				store: partecipants
+				xtype: 'participants',	
+				store: participants
 			});
 		}
 	},
 
-	getCoursePartecipants: function() {
+	getCourseParticipants: function() {
 		// filter modules
-		var partecipants = Ext.create('Ext.data.Store', { model: 'MoodleMobApp.model.EnrolledUser' });
+		var participants = Ext.create('Ext.data.Store', { model: 'MoodleMobApp.model.EnrolledUser' });
 		MoodleMobApp.Session.getEnrolledUsersStore().each(
 			function(record) {
 				if( parseInt(record.get('courseid')) == parseInt(this.current_course.get('id')) ) {
 					if (record.get('userid') != null) {
 						var user = MoodleMobApp.Session.getUsersStore().findRecord('id', record.get('userid'));
-						partecipants.add(user);
+						participants.add(user);
 					}
 				}
 			}, this
 		);
-		return partecipants;
+		return participants;
 	},
 
-	contactPartecipants: function(button) {
+	contactParticipants: function(button) {
 		// extract the list of selected users
 		this.list = new Array();
 		var separator = ';';
-		var partecipants = this.getPartecipants().getInnerItems()[1].getInnerItems();
+		var participants = this.getParticipants().getInnerItems()[1].getInnerItems();
 		var skypeAvailable = true;
 		var phoneAvailable = true;
 		var smsAvailable = true;
-		var partecipantsToContact = 0;
-		Ext.each(partecipants, function(partecipant) {
-			if(partecipant.down('#selection').isChecked()) {
-				++partecipantsToContact;
+		var participantsToContact = 0;
+		Ext.each(participants, function(participant) {
+			if(participant.down('#selection').isChecked()) {
+				++participantsToContact;
 				// skype check
-				if(partecipant.getRecord().get('skype') == "") {
+				if(participant.getRecord().get('skype') == "") {
 					skypeAvailable = false;
 				}
 				// phone number check --> enable only if just one contact has been selected
-				if(partecipant.getRecord().get('phone') == "" || partecipantsToContact > 1) {
+				if(participant.getRecord().get('phone') == "" || participantsToContact > 1) {
 					phoneAvailable = false;
 				}
 				// sms check
-				if(partecipant.getRecord().get('phone') == "") {
+				if(participant.getRecord().get('phone') == "") {
 					smsAvailable = false;
 				}
 
-				this.list.push(partecipant.getRecord());
+				this.list.push(participant.getRecord());
 			}
 		}, this);
 
 		if(this.list.length == 0) {
-			// no partecipants selected
-			Ext.Msg.alert( 'Partecipants List Empty', 'No partecipants have been selected. Please select some of the partecipants and try again.');		
+			// no participants selected
+			Ext.Msg.alert( 'Participants List Empty', 'No participants have been selected. Please select some of the participants and try again.');		
 			return;
 		} else {
 			if(skypeAvailable || phoneAvailable) {
@@ -262,8 +262,8 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		}
 	},
 
-	contactPartecipantsWithSelectedNetwork: function(button) {
-		console.log('contacting the partecipants with:' + button.getItemId());
+	contactParticipantsWithSelectedNetwork: function(button) {
+		console.log('contacting the participants with:' + button.getItemId());
 		this.getNetworkPicker().hide();
 		switch(button.getItemId()) {
 			case 'skype':
@@ -310,17 +310,17 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 
 	startPhoneCall: function() { MoodleMobApp.app.phone(this.list.pop().get('phone')); },
 
-	clearPartecipantsSelection: function() {
-		var partecipants = this.getPartecipants().getInnerItems()[1].getInnerItems();
-		Ext.each(partecipants, function(partecipant) {
-			partecipant.down('#selection').uncheck();
+	clearParticipantsSelection: function() {
+		var participants = this.getParticipants().getInnerItems()[1].getInnerItems();
+		Ext.each(participants, function(participant) {
+			participant.down('#selection').uncheck();
 		});
 	},
 	
-	selectAllPartecipants: function() {
-		var partecipants = this.getPartecipants().getInnerItems()[1].getInnerItems();
-		Ext.each(partecipants, function(partecipant) {
-			partecipant.down('#selection').check();
+	selectAllParticipants: function() {
+		var participants = this.getParticipants().getInnerItems()[1].getInnerItems();
+		Ext.each(participants, function(participant) {
+			participant.down('#selection').check();
 		});
 	},
 
@@ -329,7 +329,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			case 'modulelist':
 				this.getHomeButton().hide();
 				this.getRecentActivityButton().hide();
-				this.getPartecipantsButton().hide();
+				this.getParticipantsButton().hide();
 				this.getGradesButton().hide();
 				this.getCalendarButton().hide();
 			break;

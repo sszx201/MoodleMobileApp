@@ -255,7 +255,7 @@ $border-color: #dedede;
 	font-size: small;
 }
 
-.partecipant {
+.participant {
 	border-bottom: 1px solid $border-color;
 	background-color: white;
 	padding: 5px;
@@ -263,12 +263,12 @@ $border-color: #dedede;
 	padding-bottom: 7px;
 }
 
-.x-partecipant-firstname {
+.x-participant-firstname {
 	margin-left: 5px;
 	margin-right: 5px;
 }
 
-.x-partecipant-email {
+.x-participant-email {
 	color: gray;
 	font-size: small;
 	margin-top: -10px;
@@ -276,15 +276,15 @@ $border-color: #dedede;
 	margin-bottom: 7px;
 }
 
-.x-partecipant-networks {
+.x-participant-networks {
 	height: 16px;
 }
 
-.partecipant-selected {
+.participant-selected {
 	background-color: white;
 }
 
-.x-partecipant-contact-button {
+.x-participant-contact-button {
 	margin-top: 10px;
 }
 

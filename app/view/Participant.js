@@ -1,9 +1,9 @@
-Ext.define("MoodleMobApp.view.Partecipant", {
+Ext.define("MoodleMobApp.view.Participant", {
 	extend: 'Ext.dataview.component.DataItem',
-	xtype: 'partecipant',
+	xtype: 'participant',
 
 	config: {
-		cls: 'partecipant',
+		cls: 'participant',
 
 		// map records to the DataItem
 		items: [
@@ -21,12 +21,12 @@ Ext.define("MoodleMobApp.view.Partecipant", {
 					{
 						itemId: 'firstname',
 						xtype: 'component',
-						cls: 'x-partecipant-firstname'
+						cls: 'x-participant-firstname'
 					},
 					{
 						itemId: 'lastname',
 						xtype: 'component',
-						cls: 'x-partecipant-lastname'
+						cls: 'x-participant-lastname'
 					}
 				],
 				layout: {
@@ -37,19 +37,19 @@ Ext.define("MoodleMobApp.view.Partecipant", {
 			{
 				itemId: 'email',
 				xtype: 'component',
-				cls: 'x-partecipant-email'
+				cls: 'x-participant-email'
 			},
 			{
 				itemId: 'selection',
 				xtype: 'checkboxfield',
 				docked: 'right',
-				cls: 'x-partecipant-select'
+				cls: 'x-participant-select'
 			},
 			{
 				itemId: 'networks',
 				docked: 'bottom',
 				xtype: 'component',
-				cls: 'x-partecipant-networks'
+				cls: 'x-participant-networks'
 			},
 		]
 	},

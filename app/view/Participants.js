@@ -1,12 +1,12 @@
-Ext.define("MoodleMobApp.view.Partecipants", {
+Ext.define("MoodleMobApp.view.Participants", {
 	extend: 'Ext.DataView',
-	xtype: 'partecipants',
+	xtype: 'participants',
 	requires: [ ],
 	config: {
-	   	title: 'Partecipants', 
-		emptyText: 'No partecipants in this course.',
+	   	title: 'Participants', 
+		emptyText: 'No participants in this course.',
 		useComponents: true,
-		defaultType: 'partecipant',
+		defaultType: 'participant',
 		items: [
 			{
 				xtype: 'toolbar',
@@ -28,7 +28,7 @@ Ext.define("MoodleMobApp.view.Partecipants", {
 					{
 						xtype: 'button',	
 						text: 'Contact',
-						action: 'contactpartecipants'
+						action: 'contactparticipants'
 					},
 					{
 						xtype: 'spacer'

@@ -22,7 +22,10 @@ Ext.define('MoodleMobApp.controller.Book', {
 			indexButton: { tap: 'toggleIndex' },
 			nextPageButton: { tap: 'nextPage' },
 			prevPageButton: { tap: 'prevPage' },
-			index: { itemtap: 'selectChapter' },
+			index: {
+				itemtap: 'selectChapter',
+				select: 'fixNavigationButtonVisiblity'
+			},
 			recentActivity: {
 				checkActivity: function(record) {
 					if(record.get('modname') == 'book') {
@@ -93,6 +96,24 @@ Ext.define('MoodleMobApp.controller.Book', {
 			this.getIndex().select(active_item.get('index')-1);
 			var next_item = this.getIndex().getSelection().pop();
 			this.getContent().setHtml(next_item.get('content'));
+		}
+	},
+	
+	fixNavigationButtonVisiblity: function(view, record, opts) {
+		var elements_number = view.getStore().getCount();
+		var active_item = view.getSelection().pop().get('index');
+		if(active_item == 0 && elements_number > 1) {
+			this.getPrevPageButton().hide();
+			this.getNextPageButton().show();
+		} else if(active_item == 0 && elements_number == 1) {
+			this.getPrevPageButton().hide();
+			this.getNextPageButton().hide();
+		} else if(active_item > 0 && active_item < elements_number - 1) {
+			this.getPrevPageButton().show();
+			this.getNextPageButton().show();
+		} else if(active_item > 0 && active_item == elements_number - 1) {
+			this.getPrevPageButton().show();
+			this.getNextPageButton().hide();
 		}
 	}
 });

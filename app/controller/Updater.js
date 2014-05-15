@@ -284,7 +284,7 @@ Ext.define('MoodleMobApp.controller.Updater', {
 				MoodleMobApp.Session.getForumPostsStore().add(record);
 			} else if(stored_record.get('modified') != record.modified) {
 				MoodleMobApp.Session.getForumPostsStore().remove(stored_record);
-				MoodleMobApp.Session.getForumPostsStore().add(post);
+				MoodleMobApp.Session.getForumPostsStore().add(record);
 			}
 		});
 		MoodleMobApp.Session.getForumPostsStore().sync();

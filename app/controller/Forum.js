@@ -78,6 +78,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 
 		// display discussions
 		if(typeof this.getDiscussionList() == 'object') {
+			this.getDiscussionList().setIntro(forum.get('intro'));
 			this.getDiscussionList().setStore(forum_discussions);
 			this.getNavigator().push(this.getDiscussionList());
 		} else {

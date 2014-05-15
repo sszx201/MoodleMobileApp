@@ -150,14 +150,13 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		if(typeof this.getModuleList() == 'object') {
 			this.getModuleList().setStore(modules);
 			this.getNavigator().push(this.getModuleList());
-			this.getNavigator().down('#topBar').setTitle(this.current_course.get('name'));
 		} else {
 			this.getNavigator().push({
 				xtype: 'modulelist',
-				store: modules,
-				title: this.current_course.get('name')
+				store: modules
 			});
 		}
+		this.setCourseTitle();
 	},
 
 	//selectModule: function(view, index, target, record) { target.down('#modname').setHtml(target.getRecord().get('modname')); },
@@ -333,6 +332,14 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 				this.getGradesButton().hide();
 				this.getCalendarButton().hide();
 			break;
+		}
+		this.setCourseTitle();
+	},
+
+	setCourseTitle: function() {
+		// set the title
+		if(this.getNavigator().getActiveItem().xtype == 'modulelist') {
+			this.getNavigator().down('#topBar').setTitle(this.current_course.get('name'));
 		}
 	},
 

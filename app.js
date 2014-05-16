@@ -136,6 +136,7 @@ Ext.application({
 	// file is an object such as:
 	// {"name": "filename", "id": "file id number", "mime":"mime/type"}
 	downloadFile: function(file) {
+		file.name = file.name.split(' ').join('_');
 		var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + file.fileid;
 		if(MoodleMobApp.app.isConnectionAvailable()) {
 			// success function

@@ -26,7 +26,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			saveDiscussionButton: 'button[action=savediscussion]',
 			addDiscussionButton: 'button[action=adddiscussion]',
 			post: 'forumpost',
-			postList: '#forum_post_list',
+			postList: 'forumpostlist',
 			postReplyButton: 'button[action=postreply]',
 			replyForm: 'forumpostreply',
 			saveReplyButton: 'button[action=savereply]',

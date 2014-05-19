@@ -4,6 +4,7 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 
 	config: {
 		cls: 'forum-post',
+		width: 'auto',
 
 		items: [
 			{

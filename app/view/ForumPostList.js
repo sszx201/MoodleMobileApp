@@ -3,8 +3,8 @@ Ext.define("MoodleMobApp.view.ForumPostList", {
 	xtype: 'forumpostlist',
 	requires: [ ],
 	config: {
-		id: 'forum_post_list',
 	   	title: 'List of Posts', 
+		cls: 'forum-post-list',
 		emptyText: 'No posts available in this discussion.',
 		useComponents: true,
 		defaultType: 'forumpost',

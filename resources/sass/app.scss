@@ -304,6 +304,8 @@ $border-color: #dedede;
 	padding-top: 15px;
 }
 
+.forum-post-list { }
+
 .forum-intro,
 .forum-post {
 	margin-bottom: 10px;
@@ -341,43 +343,43 @@ $border-color: #dedede;
 .x-post-indentation-0 {}
 
 .x-post-indentation-1 {
-	margin-left: 15px;
+	margin-left: 10px;
 }
 
 .x-post-indentation-2 {
-	margin-left: 30px;
+	margin-left: 20px;
 }
 
 .x-post-indentation-3 {
-	margin-left: 45px;
+	margin-left: 30px;
 }
 
 .x-post-indentation-4 {
-	margin-left: 60px;
+	margin-left: 40px;
 }
 
 .x-post-indentation-5 {
-	margin-left: 75px;
+	margin-left: 50px;
 }
 
 .x-post-indentation-6 {
-	margin-left: 90px;
+	margin-left: 60px;
 }
 
 .x-post-indentation-7 {
-	margin-left: 105px;
+	margin-left: 80px;
 }
 
 .x-post-indentation-8 {
-	margin-left: 120px;
+	margin-left: 90px;
 }
 
 .x-post-indentation-9 {
-	margin-left: 135px;
+	margin-left: 100px;
 }
 
 .x-post-indentation-10 {
-	margin-left: 150px;
+	margin-left: 110px;
 }
 
 .x-post-attachment-list {
@@ -402,7 +404,6 @@ $border-color: #dedede;
 		}
 	}
 }
-
 
 /*
  *

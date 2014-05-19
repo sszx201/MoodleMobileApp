@@ -25,7 +25,13 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 						itemId: 'lastname',
 						xtype: 'component',
 						cls: 'x-post-lastname'
+					},
+					{
+						itemId: 'date',
+						xtype: 'component',
+						cls: 'x-post-date'
 					}
+
 				],
 				layout: {
 					type: 'hbox',
@@ -67,6 +73,7 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 		this.down('#avatar').setSrc(user.get('avatar'));
 		this.down('#firstname').setHtml(user.get('firstname'));
 		this.down('#lastname').setHtml(user.get('lastname'));
+		this.down('#date').setHtml('on ' + MoodleMobApp.app.formatDate(record.get('modified')));
 		// set post info
 		this.down('#subject').setHtml(record.get('subject'));
 		// process attachments

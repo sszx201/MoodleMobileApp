@@ -304,13 +304,15 @@ $border-color: #dedede;
 	padding-top: 15px;
 }
 
-.forum-post-list { }
+.forum-post-list {	
+}
 
 .forum-intro,
 .forum-post {
 	margin-bottom: 10px;
 	border: 1px solid $border-color;
 	padding: 5px;
+	word-break: break-all;
 }
 
 .forum-post-selected {
@@ -318,16 +320,21 @@ $border-color: #dedede;
 }
 
 .x-post-firstname {
+	margin-top: -10px;
 	margin-left: 5px;
 	margin-right: 5px;
 }
 
-.x-post-lastname {}
+.x-post-lastname {
+	margin-top: -10px;
+}
 
 .x-post-date {
+	position: relative;
+	top: -12px;
+	left: 42px;
 	color: gray;
 	font-size: small;
-	padding-left: 5px;
 }
 
 .x-post-subject {
@@ -343,43 +350,53 @@ $border-color: #dedede;
 .x-post-indentation-0 {}
 
 .x-post-indentation-1 {
-	margin-left: 10px;
+	width: 98% !important;
+	margin-left: 2%;
 }
 
 .x-post-indentation-2 {
-	margin-left: 20px;
+	width: 96%;
+	margin-left: 4%;
 }
 
 .x-post-indentation-3 {
-	margin-left: 30px;
+	width: 94%;
+	margin-left: 6%;
 }
 
 .x-post-indentation-4 {
-	margin-left: 40px;
+	width: 92%;
+	margin-left: 8%;
 }
 
 .x-post-indentation-5 {
-	margin-left: 50px;
+	width: 90%;
+	margin-left: 10%;
 }
 
 .x-post-indentation-6 {
-	margin-left: 60px;
+	width: 88%;
+	margin-left: 12%;
 }
 
 .x-post-indentation-7 {
-	margin-left: 80px;
+	width: 86%;
+	margin-left: 14%;
 }
 
 .x-post-indentation-8 {
-	margin-left: 90px;
+	width: 84%;
+	margin-left: 16%;
 }
 
 .x-post-indentation-9 {
-	margin-left: 100px;
+	width: 82%;
+	margin-left: 18%;
 }
 
 .x-post-indentation-10 {
-	margin-left: 110px;
+	width: 80%;
+	margin-left: 20%;
 }
 
 .x-post-attachment-list {
@@ -415,7 +432,6 @@ $border-color: #dedede;
  * Assignment and Choices related classes
  *
  * */
-
 .assignment-intro,
 .assignment-previous-submission,
 .assignment-chosen-files-list,

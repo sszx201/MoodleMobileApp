@@ -4,8 +4,7 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 
 	config: {
 		cls: 'forum-post',
-		width: 'auto',
-
+		width: null,
 		items: [
 			{
 				xtype: 'container',
@@ -26,18 +25,17 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 						itemId: 'lastname',
 						xtype: 'component',
 						cls: 'x-post-lastname'
-					},
-					{
-						itemId: 'date',
-						xtype: 'component',
-						cls: 'x-post-date'
 					}
-
 				],
 				layout: {
 					type: 'hbox',
 					align: 'center'
 				}
+			},
+			{
+				itemId: 'date',
+				xtype: 'component',
+				cls: 'x-post-date'
 			},
 			{
 				itemId: 'subject',

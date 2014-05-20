@@ -84,9 +84,9 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 			for(var i=0; i < attachments.length; ++i) {
 				var fileobject = '{name:\''+attachments[i].filename+'\', fileid:'+attachments[i].fileid+', mime:\''+attachments[i].mime+'\'}';
 				attachment_list +=  '<li class="x-post-attachment-entry">'+
-										'<a class="x-post-attachment-file" href="javascript:MoodleMobApp.app.downloadFile('+fileobject+')">'+
+										'<span class="x-post-attachment-file" onclick="javascript:MoodleMobApp.app.downloadFile('+fileobject+')">'+
 											attachments[i].filename+
-										'</a>'+
+										'</span>'+
 										'  '+
 										'<span class="x-post-attachment-size">'+
 											attachments[i].filesize+'&nbsp;KB'+

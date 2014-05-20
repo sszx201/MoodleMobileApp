@@ -384,6 +384,11 @@ $border-color: #dedede;
 
 .x-post-attachment-list {
 	padding-top: 15px;
+	.x-post-attachment-entry {
+		.x-post-attachment-file {
+			color: $active-color;
+		}
+	}
 }
 
 .x-post-reply {

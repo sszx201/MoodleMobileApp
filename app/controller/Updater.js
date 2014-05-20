@@ -20,59 +20,64 @@ Ext.define('MoodleMobApp.controller.Updater', {
 	},
 
 	updateCourse: function(course) {
-		Ext.Ajax.request({
-			url: MoodleMobApp.Config.getWebServiceUrl(),
-			disableCaching: false,
-			method: 'GET',
-			scope: this,
-			params: {
-				wsfunction: 'uniappws_get_course',
-				wstoken: course.get('token'),
-				moodlewsrestformat: 'json',
-				courseid: course.get('id'),
-				lastaccess: course.get('lastaccess'),
-			},
-			success: function(response, opts) {
-				var data = Ext.decode(response.responseText);
-				if(data.exception == undefined) {
-					this.updateCourseModulesStore(course, data);
-					this.updateCourseSectionsStore(course, data.course_sections);
-					this.updateRecentActivityStore(course, data.recent_activity);
-					this.updateCalendarEventsStore(course, data.calendar_events);
-					this.updateUsers(course, data.users);
-					this.updateForumDiscussionsStore(course, data.forum_discussions);
-					this.updateForumPostsStore(course, data.forum_posts);
-					this.updateChoicesStore(course, data.choices);
-					this.updateFoldersStore(course, data.folders);
-					this.updateResourcesStore(course, data.resources);
-					this.updateUrlStore(course, data.url);
-					this.updatePagesStore(course, data.pages);
-					this.updateBooksStore(course, data.books);
-					this.updateGroups(course, data.groups);
-					this.updateGroupings(course, data.grupings);
-					this.updateGradeItemsStore(course, data.grade_items);
-					this.updateGradesStore(course, data.grades);
-					this.updateCourseSyncStatus(course);
+		if(MoodleMobApp.app.isConnectionAvailable()) {
+			MoodleMobApp.app.showLoadMask('Synchronizing');
+			Ext.Ajax.request({
+				url: MoodleMobApp.Config.getWebServiceUrl(),
+				disableCaching: false,
+				method: 'GET',
+				scope: this,
+				params: {
+					wsfunction: 'uniappws_get_course',
+					wstoken: course.get('token'),
+					moodlewsrestformat: 'json',
+					courseid: course.get('id'),
+					lastaccess: course.get('lastaccess'),
+				},
+				success: function(response, opts) {
+					var data = Ext.decode(response.responseText);
+					if(data.exception == undefined) {
+						this.updateCourseModulesStore(course, data);
+						this.updateCourseSectionsStore(course, data.course_sections);
+						this.updateRecentActivityStore(course, data.recent_activity);
+						this.updateCalendarEventsStore(course, data.calendar_events);
+						this.updateUsers(course, data.users);
+						this.updateForumDiscussionsStore(course, data.forum_discussions);
+						this.updateForumPostsStore(course, data.forum_posts);
+						this.updateChoicesStore(course, data.choices);
+						this.updateFoldersStore(course, data.folders);
+						this.updateResourcesStore(course, data.resources);
+						this.updateUrlStore(course, data.url);
+						this.updatePagesStore(course, data.pages);
+						this.updateBooksStore(course, data.books);
+						this.updateGroups(course, data.groups);
+						this.updateGroupings(course, data.grupings);
+						this.updateGradeItemsStore(course, data.grade_items);
+						this.updateGradesStore(course, data.grades);
+						this.updateCourseSyncStatus(course);
 
-					// update complete
-					this.getNavigator().fireEvent('courseUpdated');
-					this.getNavigator().setMasked();
-				} else {
+						// update complete
+						this.getNavigator().fireEvent('courseUpdated');
+						MoodleMobApp.app.hideLoadMask();
+					} else {
+						MoodleMobApp.app.hideLoadMask();
+						Ext.Msg.alert(
+						'Exception: ' + data.exception,
+						'Error: ' + data.message,
+						function() {
+							MoodleMobApp.app.getController('CourseNavigator').showSettings();
+						});
+					}
+				},
+				failure: function(response, opts) {
+					MoodleMobApp.app.hideLoadMask();
 					Ext.Msg.alert(
-					'Exception: ' + data.exception,
-					'Error: ' + data.message,
-					function() {
-						MoodleMobApp.app.getController('CourseNavigator').showSettings();
-					});
+						'Update request failed',
+						'Response status: ' + response.status
+					);
 				}
-			},
-			failure: function(response, opts) {
-				Ext.Msg.alert(
-					'Update request failed',
-					'Response status: ' + response.status
-				);
-			}
-		});
+			});
+		}
 	},
 
 	updateUsers: function(course, data) {

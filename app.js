@@ -138,56 +138,38 @@ Ext.application({
 	downloadFile: function(file) {
 		file.name = file.name.split(' ').join('_');
 		var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + file.fileid;
+		var filePath = dirPath + '/' + file.name;
+		var successFunc = null;
+		var failFunc = null;
 		if(MoodleMobApp.app.isConnectionAvailable()) {
 			// success function
-			var successFunc = function(fileEntry) {
+			successFunc = function(fileEntry) {
 				//MoodleMobApp.app.hideLoadMask();
 				MoodleMobApp.app.openFile(fileEntry.toNativeURL(), file.mime);
 			};
 
-			MoodleMobApp.WebService.getFile(
-				file,
-				dirPath,
-				successFunc,
-				MoodleMobApp.Session.getCourse().get('token')
-			);
+			failFunc = function() {
+				MoodleMobApp.WebService.getFile(
+					file,
+					dirPath,
+					successFunc,
+					MoodleMobApp.Session.getCourse().get('token')
+				);
+			};
 		} else {
-			MoodleMobApp.app.openCacheFile(file, dirPath);
-		}
-	},
-
-	openCacheFile: function(file, dir) {
-		var self = this;
-		window.requestFileSystem(
-			LocalFileSystem.PERSISTENT, 0,
-			function onFileSystemSuccess(fileSystem) {
-				// get the filesystem
-				fileSystem.root.getFile(
-					dir + '/' + file.name,
-					{
-						create: false,
-						exclusive: false
-					},
-					// success callback: remove the previous file
-					function gotFileEntry(fileEntry) {
-						MoodleMobApp.app.openFile(fileEntry.toNativeURL(), file.mime);
-					},
-					// error callback: notify the error
-					function(){
-						Ext.Msg.alert(
-							'File not available',
-							'The file' + file.name + ' is not available in the cache. No connection available so it is not possibile to download it at this time.'
-						);
-					}
-				);
-			},
-			// error callback: notify the error
-			function(){
+			successFunc = function(fileEntry) {
+				MoodleMobApp.app.openFile(fileEntry.toNativeURL(), file.mime);
+			};
+			failFunc = function() {
 				Ext.Msg.alert(
-					'File system error',
-					'Cannot access the local filesystem.'
+					'File not available',
+					'The file' + file.name + ' is not available in the cache. No connection available so it is not possibile to download it at this time.'
 				);
-			});
+			};
+		}
+		// if the file is in the cache then open it: successFunc
+		// else try to download it or warn the user that there is no network available
+		MoodleMobApp.FileSystem.getFile(filePath, successFunc, failFunc);
 	},
 
 	isLoadMaskVisible: function() {

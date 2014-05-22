@@ -79,14 +79,11 @@ Ext.define('MoodleMobApp.FileSystem', {
 					exclusive : false
 				},
 				function(entry) {
-					alert('got the entry');
+					console.log('got the entry: ' + uri);
 					successCallback(entry);
 				}, 
 				function(error) {
-					Ext.Msg.alert(
-						'File system error',
-						'Cannot read the file:' + uri
-					);
+					console.log('NOPE:::no entries such as: ' + uri);
 					failCallback(error);
 				});
 		}

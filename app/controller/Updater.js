@@ -319,15 +319,22 @@ Ext.define('MoodleMobApp.controller.Updater', {
 	},
 
 	updateResourcesStore: function(course, data) {
-		MoodleMobApp.Session.getResourcesStore().each(
-			function(record) {
-				if(record.get('courseid') == course.get('id')) {
-					MoodleMobApp.Session.getResourcesStore().remove(record);
-				}
+		var store_updated = false;
+		Ext.each(data, function(record) {
+			var stored_record = MoodleMobApp.Session.getResourcesStore().findRecord('id', record.id, null, false, true, true);
+			if(stored_record == null) {
+				store_updated = true;
+				MoodleMobApp.Session.getResourcesStore().add(record);
+			} else if(stored_record.get('timemodified') != record.timemodified) {
+				store_updated = true;
+				MoodleMobApp.Session.getResourcesStore().remove(stored_record);
+				MoodleMobApp.Session.getResourcesStore().add(record);
 			}
-		);
-		Ext.each(data, function(record) { MoodleMobApp.Session.getResourcesStore().add(record); });
-		MoodleMobApp.Session.getResourcesStore().sync();
+		});
+
+		if(store_updated) {
+			MoodleMobApp.Session.getResourcesStore().sync();
+		}
 	},
 
 	removeResourceEntry: function(resourceid) {
@@ -338,16 +345,22 @@ Ext.define('MoodleMobApp.controller.Updater', {
 	},
 
 	updateChoicesStore: function(course, data) {
-		MoodleMobApp.Session.getChoicesStore().each(
-			function(record) {
-				if(record.get('courseid') == course.get('id')) {
-					MoodleMobApp.Session.getChoicesStore().remove(record);
-				}
+		var store_updated = false;
+		Ext.each(data, function(record) {
+			var stored_record = MoodleMobApp.Session.getChoicesStore().findRecord('id', record.id, null, false, true, true);
+			if(stored_record == null) {
+				store_updated = true;
+				MoodleMobApp.Session.getChoicesStore().add(record);
+			} else if(stored_record.get('timemodified') != record.timemodified) {
+				store_updated = true;
+				MoodleMobApp.Session.getChoicesStore().remove(stored_record);
+				MoodleMobApp.Session.getChoicesStore().add(record);
 			}
-		);
+		});
 
-		Ext.each(data, function(record) { MoodleMobApp.Session.getChoicesStore().add(record); });
-		MoodleMobApp.Session.getChoicesStore().sync();
+		if(store_updated) {
+			MoodleMobApp.Session.getChoicesStore().sync();
+		}
 	},
 
 	removeChoiceEntry: function(choiceid) {
@@ -380,16 +393,22 @@ Ext.define('MoodleMobApp.controller.Updater', {
 	},
 
 	updateUrlStore: function(course, data) {
-		MoodleMobApp.Session.getUrlStore().each(
-			function(record) {
-				if(record.get('courseid') == course.get('id')) {
-					MoodleMobApp.Session.getUrlStore().remove(record);
-				}
+		var store_updated = false;
+		Ext.each(data, function(record) {
+			var stored_record = MoodleMobApp.Session.getUrlStore().findRecord('id', record.id, null, false, true, true);
+			if(stored_record == null) {
+				store_updated = true;
+				MoodleMobApp.Session.getUrlStore().add(record);
+			} else if(stored_record.get('timemodified') != record.timemodified) {
+				store_updated = true;
+				MoodleMobApp.Session.getUrlStore().remove(stored_record);
+				MoodleMobApp.Session.getUrlStore().add(record);
 			}
-		);
+		});
 
-		Ext.each(data, function(record) { MoodleMobApp.Session.getUrlStore().add(record); });
-		MoodleMobApp.Session.getUrlStore().sync();
+		if(store_updated) {
+			MoodleMobApp.Session.getUrlStore().sync();
+		}
 	},
 
 	removeUrlEntry: function(urlid) {
@@ -400,16 +419,22 @@ Ext.define('MoodleMobApp.controller.Updater', {
 	},
 
 	updatePagesStore: function(course, data) {
-		MoodleMobApp.Session.getPagesStore().each(
-			function(record) {
-				if(record.get('courseid') == course.get('id')) {
-					MoodleMobApp.Session.getPagesStore().remove(record);
-				}
+		var store_updated = false;
+		Ext.each(data, function(record) {
+			var stored_record = MoodleMobApp.Session.getPagesStore().findRecord('id', record.id, null, false, true, true);
+			if(stored_record == null) {
+				store_updated = true;
+				MoodleMobApp.Session.getPagesStore().add(record);
+			} else if(stored_record.get('timemodified') != record.timemodified) {
+				store_updated = true;
+				MoodleMobApp.Session.getPagesStore().remove(stored_record);
+				MoodleMobApp.Session.getPagesStore().add(record);
 			}
-		);
+		});
 
-		Ext.each(data, function(record) { MoodleMobApp.Session.getPagesStore().add(record); });
-		MoodleMobApp.Session.getPagesStore().sync();
+		if(store_updated) {
+			MoodleMobApp.Session.getPagesStore().sync();
+		}
 	},
 
 	removePageEntry: function(pageid) {
@@ -420,18 +445,22 @@ Ext.define('MoodleMobApp.controller.Updater', {
 	},
 
 	updateBooksStore: function(course, data) {
-		MoodleMobApp.Session.getBooksStore().each(
-			function(record) {
-				if(record.get('courseid') == course.get('id')) {
-					MoodleMobApp.Session.getBooksStore().remove(record);
-				}
-			}
-		);
-
+		var store_updated = false;
 		Ext.each(data, function(record) {
-			MoodleMobApp.Session.getBooksStore().add(record);
+			var stored_record = MoodleMobApp.Session.getBooksStore().findRecord('id', record.id, null, false, true, true);
+			if(stored_record == null) {
+				store_updated = true;
+				MoodleMobApp.Session.getBooksStore().add(record);
+			} else if(stored_record.get('timemodified') != record.timemodified) {
+				store_updated = true;
+				MoodleMobApp.Session.getBooksStore().remove(stored_record);
+				MoodleMobApp.Session.getBooksStore().add(record);
+			}
 		});
-		MoodleMobApp.Session.getBooksStore().sync();
+
+		if(store_updated) {
+			MoodleMobApp.Session.getBooksStore().sync();
+		}
 	},
 
 	removeBookEntry: function(bookid) {

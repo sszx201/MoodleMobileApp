@@ -224,10 +224,10 @@ Ext.define('MoodleMobApp.controller.Updater', {
 								this.removePageEntry(record.get('instanceid'));
 							break;
 							case 'resource':
-								this.removeResourceEntry(record.get('instanceid'));
+								this.removeResourceEntry(record.get('instanceid'), course);
 							break;
 							case 'folder':
-								this.removeFolderEntry(record.get('instanceid'));
+								this.removeFolderEntry(record.get('instanceid'), course);
 							break;
 							case 'book':
 								this.removeBookEntry(record.get('instanceid'));
@@ -327,6 +327,13 @@ Ext.define('MoodleMobApp.controller.Updater', {
 				MoodleMobApp.Session.getResourcesStore().add(record);
 			} else if(stored_record.get('timemodified') != record.timemodified) {
 				store_updated = true;
+				// purge the older file if there is a new one available
+				if(stored_record.get('fileid') != data.fileid) {
+					var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + course.get('id') + '/file/' + stored_record.get('fileid');
+					var successCallback = function() { console.log('newer version available, purged resource file: ' + dirPath + '/' + stored_record.get('name')); };
+					var failCallback = function(error) { MoodleMobApp.app.dump(error); };
+					MoodleMobApp.FileSystem.removeDirectory(dirPath, successCallback, failCallback);
+				}
 				MoodleMobApp.Session.getResourcesStore().remove(stored_record);
 				MoodleMobApp.Session.getResourcesStore().add(record);
 			}
@@ -337,9 +344,13 @@ Ext.define('MoodleMobApp.controller.Updater', {
 		}
 	},
 
-	removeResourceEntry: function(resourceid) {
+	removeResourceEntry: function(resourceid, course) {
 		// get the resource entry
-		var resource = MoodleMobApp.Session.getResourcesStore().findRecord('id', resourceid);
+		var resource = MoodleMobApp.Session.getResourcesStore().findRecord('id', resourceid, 0, false, true, true);
+		var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + course.get('id') + '/file/' + resource.get('fileid');
+		var successCallback = function() { console.log('purged resource file: ' + dirPath + '/' + resource.get('name')); };
+		var failCallback = function(error) { MoodleMobApp.app.dump(error); };
+		MoodleMobApp.FileSystem.removeDirectory(dirPath, successCallback, failCallback);
 		MoodleMobApp.Session.getResourcesStore().remove(resource);
 		MoodleMobApp.Session.getResourcesStore().sync();
 	},
@@ -374,6 +385,22 @@ Ext.define('MoodleMobApp.controller.Updater', {
 		MoodleMobApp.Session.getFoldersStore().each(
 			function(record) {
 				if(record.get('courseid') == course.get('id')) {
+					// purge files if changed
+					if(record.get('fileid') > 0) {
+						var fileid_found = false;
+						for(var i = 0; i < data.length; ++i) {
+							if(data[i].fileid > 0 && data[i].fileid == record.get('fileid')) {
+								fileid_found = true;
+								break;
+							}
+						}
+						if(!fileid_found) {
+							var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + course.get('id') + '/file/' + record.get('fileid');
+							var successCallback = function() { console.log('newer version available, purged old folder file: ' + dirPath + '/' + record.get('name')); };
+							var failCallback = function(error) { MoodleMobApp.app.dump(error); };
+							MoodleMobApp.FileSystem.removeDirectory(dirPath, successCallback, failCallback);
+						}
+					}
 					MoodleMobApp.Session.getFoldersStore().remove(record);
 				}
 			}
@@ -383,10 +410,19 @@ Ext.define('MoodleMobApp.controller.Updater', {
 		MoodleMobApp.Session.getFoldersStore().sync();
 	},
 
-	removeFolderEntry: function(folderid) {
+	removeFolderEntry: function(folderid, course) {
 		// get the folder content
 		var folder = MoodleMobApp.Session.getFoldersStore().getGroups(folderid.toString());
 		if(typeof folder == 'object') {
+			// purge downloaded files
+			Ext.each(folder.children, function(record) {
+				if(record.get('type') == 'file') {
+					var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + course.get('id') + '/file/' + record.get('fileid');
+					var successCallback = function() { console.log('purged folder file: ' + dirPath + '/' + record.get('name')); };
+					var failCallback = function(error) { MoodleMobApp.app.dump(error); };
+					MoodleMobApp.FileSystem.removeDirectory(dirPath, successCallback, failCallback);
+				}
+			});
 			MoodleMobApp.Session.getFoldersStore().remove(folder.children);
 		}
 		MoodleMobApp.Session.getFoldersStore().sync();

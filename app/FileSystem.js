@@ -55,7 +55,7 @@ Ext.define('MoodleMobApp.FileSystem', {
 				function() {
 					Ext.Msg.alert(
 						'File system error',
-						'Cannot delete the iCorsi directory.'
+						'Cannot delete the directory: ' + dirPath
 					);
 				});
 		}

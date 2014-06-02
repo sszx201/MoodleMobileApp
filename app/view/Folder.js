@@ -3,7 +3,6 @@ Ext.define("MoodleMobApp.view.Folder", {
 	xtype: 'folder',
 
 	config: {
-		id: 'folder',
 	   	title: 'Folder Content', 
 		emptyText: 'No content in this folder.',
 		useComponents: true,

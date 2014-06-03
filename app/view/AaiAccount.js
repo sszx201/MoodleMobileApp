@@ -16,7 +16,6 @@ Ext.define("MoodleMobApp.view.AaiAccount", {
 	],
 
 	config: {
-		id: 'aaiaccount_form',
 		items: [
 			{
 				xtype: 'fieldset',

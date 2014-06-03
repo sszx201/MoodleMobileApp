@@ -24,6 +24,8 @@ Ext.define('MoodleMobApp.controller.Settings', {
 	},
 
   	showTheActiveAccount: function() {
+		this.getSettings().down('tabpanel').setActiveItem(3);
+		this.getSettings().down('tabpanel').setActiveItem(0);
 		// set user accounttype setting
 		if(MoodleMobApp.Session.getSettingsStore().first().get('accounttype') === 'aai') {
 			this.getSettings().down('tabpanel').setActiveItem(0);

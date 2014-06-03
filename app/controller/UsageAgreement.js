@@ -3,8 +3,8 @@ Ext.define('MoodleMobApp.controller.UsageAgreement', {
 	
 	config: {
 		refs: {
-			agree: '#usageagreement_panel button[action=agree]',
-			disagree: '#usageagreement_panel button[action=disagree]'
+			agree: 'usageagreement button[action=agree]',
+			disagree: 'usageagreement button[action=disagree]'
 		},
 		control: {
 		   agree:  {
@@ -20,7 +20,9 @@ Ext.define('MoodleMobApp.controller.UsageAgreement', {
 		MoodleMobApp.Session.getSettingsStore().load();
 		MoodleMobApp.Session.getSettingsStore().first().set('usageagreement', true);
 		MoodleMobApp.Session.getSettingsStore().sync();
-		location.reload();
+		//location.reload();
+		Ext.Viewport.removeAt(0);
+		Ext.Viewport.add(Ext.create('MoodleMobApp.view.Settings'));
 	},
 
 	registerDisagreement: function() {

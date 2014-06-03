@@ -67,6 +67,10 @@ Ext.define("MoodleMobApp.view.Settings", {
 								]
 							}
 						]
+					},
+					{
+						title: 'About',
+						xtype: 'about'
 					}
 				]
 			},

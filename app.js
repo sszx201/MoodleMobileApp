@@ -28,6 +28,7 @@ Ext.application({
 	],
 
 	views: [
+		'MoodleMobApp.view.About',
 		'MoodleMobApp.view.UsageAgreement',
 		'MoodleMobApp.view.Settings',
 		'MoodleMobApp.view.CourseNavigator',
@@ -90,33 +91,34 @@ Ext.application({
 		// add the architecture related extensions
 		// this code is located under js/[arch]/extensions.js
 		addExtensions();
+
         // Destroy the #appLoadingIndicator element
 		Ext.fly('appLoadingHeader').destroy();
 		Ext.fly('appLoadingIndicator').destroy();
 
-
+		// check if the usage agreement has been accepted or the account has been set
 		if( MoodleMobApp.Session.getSettingsStore().first().getData().usageagreement == false ) {
 			Ext.Viewport.add( Ext.create('MoodleMobApp.view.UsageAgreement') );
 		} else if( MoodleMobApp.Session.getSettingsStore().first().getData().accounttype == '' ) {
-			Ext.Viewport.add(Ext.create('MoodleMobApp.view.Settings'));
-		} else {
-			Ext.Viewport.add(Ext.create('MoodleMobApp.view.CourseNavigator'));
-			// Catch anchor clicks. Force opening in new windows.
-			Ext.Viewport.element.dom.addEventListener('click', function (e) {
-				if (e.target.tagName !== 'A') {
-					return;
-				} else {
-					e.preventDefault();
-					var href = e.target.getAttribute('href');
-					window.open(href, '_blank');
-				}
-			}, false);
+			Ext.Viewport.add( Ext.create('MoodleMobApp.view.Settings') );
 		}
+
 		// ios 7 bar fix
 		if( window.device != undefined && parseInt(window.device.version) > 6 ) {
 			document.body.style.backgroundColor = "white";
 			document.getElementById('course_navigator').style.marginTop = "20px";
 		}
+
+		// Catch anchor clicks. Force opening in new windows.
+		Ext.Viewport.element.dom.addEventListener('click', function (e) {
+			if (e.target.tagName !== 'A') {
+				return;
+			} else {
+				e.preventDefault();
+				var href = e.target.getAttribute('href');
+				window.open(href, '_blank');
+			}
+		}, false);
 
 		// periodic network checker
 		setInterval(MoodleMobApp.app.isConnectionAvailable, 1000);

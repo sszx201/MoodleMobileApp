@@ -11,7 +11,6 @@ Ext.define("MoodleMobApp.view.ManualAccount", {
 	],
 	
 	config: {
-		id: 'manualaccount_form',
 		items: [
 			{
 				xtype: 'fieldset',

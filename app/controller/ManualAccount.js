@@ -7,8 +7,8 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
    	
 	config: {
 		refs: {
-			form: '#manualaccount_form',
-			save: '#manualaccount_form button[action=save]'
+			form: 'manualaccount',
+			save: 'manualaccount button[action=save]'
 		},
 
 		control: {
@@ -41,14 +41,8 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 		MoodleMobApp.Session.getSettingsStore().first().setDirty();
 		MoodleMobApp.Session.getSettingsStore().sync();
 		
-		MoodleMobApp.app.showLoadMask('Saving...');
-
-		// Put it inside a timeout so it feels like it is going to a server.
-		setTimeout(function() {
-			// Unmask the formpanel
-			MoodleMobApp.app.hideLoadMask();
-			location.reload();
-		}, 1000);
+		// authenticate
+		this.init();
 	},
 
 	// check if the Manual account is the one set

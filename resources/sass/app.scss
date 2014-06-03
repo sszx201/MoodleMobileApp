@@ -26,6 +26,24 @@ $border-color: #dedede;
 @include icon('rightarrow', '\e002', 'icoMoon');
 @include icon('marker', '\e003', 'icoMoon');
 
+/*
+ *
+ * About the app
+ *
+ * */
+.about {
+	.title {
+		font-size: 15px;
+		font-weight: bold;
+		padding-top: 10px;
+		padding-bottom: 5px;
+	}
+	.content {
+		font-size: small;
+		padding-bottom: 5px;
+	}
+}
+
 .version {
 	color: gray;
 	font-size: small;

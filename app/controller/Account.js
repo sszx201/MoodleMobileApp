@@ -19,6 +19,23 @@ Ext.define('MoodleMobApp.controller.Account', {
 	// in the localestorage. If the server responds with
 	// an exception then an alert message is displayed.
 	authenticate: function(auth_url, parameters) {
+		// show the course navigator
+		var courseNavigatorShown = false;
+		Ext.Viewport.getItems().each(function(item){
+			if(item.xtype == 'coursenavigator') {
+				Ext.Viewport.setActiveItem(item);
+				courseNavigatorShown = true;
+			}
+		});
+
+		if(!courseNavigatorShown) {
+			var courseNavigator = Ext.create('MoodleMobApp.view.CourseNavigator');
+			Ext.Viewport.add(courseNavigator);
+			Ext.Viewport.setActiveItem(courseNavigator);
+		}
+
+		MoodleMobApp.app.showLoadMask('Authenticating...');
+
 		Ext.Ajax.request({
 			url: auth_url,
 			disableCaching: false,
@@ -26,6 +43,7 @@ Ext.define('MoodleMobApp.controller.Account', {
 			scope: this,
 			params: parameters,
 			success: function(response, opts) {
+				MoodleMobApp.app.hideLoadMask();
 				var data = Ext.decode(response.responseText);
 				if(data.exception == undefined) {
 					// store the username in the Session
@@ -44,14 +62,16 @@ Ext.define('MoodleMobApp.controller.Account', {
 					MoodleMobApp.Session.getCoursesStore().sync();
 				} else {
 					Ext.Msg.alert(
-					'Exception: ' + data.exception,
-					'Error: ' + data.message,
-					function() {
-						MoodleMobApp.app.getController('CourseNavigator').showSettings();
-					});
+						'Exception: ' + data.exception,
+						'Error: ' + data.message,
+						function() {
+							MoodleMobApp.app.getController('CourseNavigator').showSettings();
+						}
+					);
 				}
 			},
 			failure: function(response, opts) {
+				MoodleMobApp.app.hideLoadMask();
 				Ext.Msg.alert(
 					'Authentication request failed',
 					'Response status: ' + response.status,

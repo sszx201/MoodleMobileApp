@@ -7,8 +7,8 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 		],
 
 		refs: {
-			form: '#aaiaccount_form',
-			save: '#aaiaccount_form button[action=save]'
+			form: 'aaiaccount',
+			save: 'aaiaccount button[action=save]'
 		},
 
 		control: {
@@ -79,14 +79,8 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 		MoodleMobApp.Session.getSettingsStore().first().set('accounttype', 'aai');
 		MoodleMobApp.Session.getSettingsStore().sync();
 
-		MoodleMobApp.app.showLoadMask('Saving...');
-
-		// Put it inside a timeout so it feels like it is going to a server.
-		setTimeout(function() {
-			// Unmask the formpanel
-			MoodleMobApp.app.hideLoadMask();
-			location.reload();
-		}, 1000);
+		// authenticate
+		this.init();
 	},
 
  	// check if the AAI account is the one set

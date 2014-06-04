@@ -324,7 +324,7 @@ Ext.define('MoodleMobApp.WebService', {
 		// build the url
 		var url = MoodleMobApp.Config.getWebServiceUrl() + url_encoded_params;
 		// success callback: got the file access; start downloading the file
-		function gotAccess(sPath, fileSystem) {
+		function gotAccess(fileSystem) {
 			var fileTransfer = new FileTransfer();
 
 			var progressBar = '<div class="progress-bar"><span></span></div>';
@@ -352,7 +352,7 @@ Ext.define('MoodleMobApp.WebService', {
 					document.querySelector('div.progress-bar span').setAttribute('style', 'width: '+percentage+'%');
 				}
 			};
-			var filePath = fileSystem.root.toURL() + sPath + dir + '/' + file.name;
+			var filePath = 'cdvfile://localhost/persistent/' + dir + '/' + file.name;
 			console.log('downloading from: ' + url);
 			console.log('to: ' + filePath);
 			fileTransfer.download(

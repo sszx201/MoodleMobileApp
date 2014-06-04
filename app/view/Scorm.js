@@ -7,6 +7,7 @@ Ext.define('MoodleMobApp.view.Scorm', {
         'Ext.List',
         'Ext.Toolbar',
         'Ext.Button',
+        'Ext.dataview.NestedList',
         'Supsi.MetaPanel',
         'Supsi.SettingsPanel',
         'Supsi.ScormPanel',

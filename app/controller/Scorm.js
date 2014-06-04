@@ -10,6 +10,7 @@
 		requires: [
 			'MoodleMobApp.model.ScormResource',
 			'MoodleMobApp.view.Scorm',
+			'Ext.Label',
 			'Ext.data.Store',
 			'Supsi.Utils',
 			'Supsi.Filesystem',
@@ -93,7 +94,7 @@
 		}
 		var scormExtractedFileFlag = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/scorm/' + record.get('id') + '/_scorm_extracted_';
 		var self = this;
-		var successCallback = function(sPath, fileSystem) {
+		var gotFS = function(fileSystem) {
 			fileSystem.root.getFile(
 				scormExtractedFileFlag,
 				{
@@ -103,7 +104,7 @@
 				function(fileEntry){
 					// archive available, open the scorm
 					//var path = fileEntry.toURL().replace(/_scorm_extracted_$/, '').replace(/cdvfile:\/\//, '');
-					var path = fileEntry.toURL().replace(/_scorm_extracted_$/, '');
+					var path = fileEntry.toInternalURL().replace(/_scorm_extracted_$/, '');
 					self.parseScorm(path);
 				},
 				// archive not available, download it first
@@ -115,7 +116,7 @@
 		var failCallback = function(error) {
 			MoodleMobApp.app.dump(error);
 		}
-		MoodleMobApp.FileSystem.access(successCallback, failCallback);
+		MoodleMobApp.FileSystem.access(gotFS, failCallback);
 	},
 
 	downloadArchive: function(module){
@@ -140,7 +141,7 @@
 			console.log('download success function start');
 			var extractionSuccessFunc = function(targetPath) {
 					MoodleMobApp.app.hideLoadMask('');
-					var successCallback = function(sPath, fileSystem) {
+					var gotFS = function(fileSystem) {
 						// get the filesystem
 						console.log('requestFileSystem callback ' + targetPath);
 						fileSystem.root.getFile(
@@ -166,7 +167,7 @@
 						MoodleMobApp.app.dump(error);
 					}
 
-					MoodleMobApp.FileSystem.access(successCallback, failCallback);
+					MoodleMobApp.FileSystem.access(gotFS, failCallback);
 			};
 			var extractionFailFunc = function(error) {
 					MoodleMobApp.app.hideLoadMask('');
@@ -177,13 +178,13 @@
 			};
 
 			// start the extraction
-			var outputDirectory = file.toURL().substring(0, file.toURL().lastIndexOf('/'));
+			var outputDirectory = file.toInternalURL().substring(0, file.toInternalURL().lastIndexOf('/'));
 			zip.unzip(
-				file.toURL(),
+				file.toInternalURL(),
 				outputDirectory,
 				function(arg){
 					console.log(' >>>>>>>>>>> callback called with arg: ' + arg);
-					console.log(' >>>>>>>>>>> extracting filepath: ' + file.fullPath);
+					console.log(' >>>>>>>>>>> extracting filepath: ' + file.toInternalURL());
 					console.log(' >>>>>>>>>>> extracting directory output: ' + outputDirectory);
 					if(arg == 0) { // success
 						extractionSuccessFunc(outputDirectory);
@@ -310,6 +311,7 @@
 				this.loadToc(this.getScormPanel().SCORMId + Supsi.Constants.get('TOC_LOCATION') + record.get('src'));
 			}
 		},
+
 		onResourceTap: function(dataview, list, index, target, record, e, eOpts ){
 			// ovviamente la firma dell'handler su una nested list è diversa, attenzione
 
@@ -342,6 +344,7 @@
 				}
 			});
 		},
+
 		manifestLoaded: function(data){
 			var root = data.responseXML.documentElement;
 			console.log('Manifest root: ');
@@ -349,6 +352,7 @@
 
 			this.parseManifest(root);
 		},
+
 		parseItems: function(itemNode, root){
 			var _itemsNodes = itemNode.childNodes || [], itemsNodes, newItem, idRef, resource, ret = [], currentChildren;
 			// todo: spostare dal main controller
@@ -382,6 +386,7 @@
 
 			return ret;
 		},
+
 		parseManifest: function(root){
 			var organizations = root.querySelectorAll('organizations>organization'), i = 0, l = organizations.length,
 				data = {}, ret = []
@@ -476,6 +481,7 @@
 		},
 
 		parseScorm: function(path){
+			console.log('parsing scorm path: ' + path);
 			this.getNavigator().push(this.getScorm());
 			this.resourceTocList = this.getResourceTocList();
 			this.resourceList = this.getResourceList();
@@ -504,9 +510,23 @@
 					that.resourceTocList.setHidden(true);
 
 					scormPanel.setSCORMId(path);
+					console.log('processing path');
+					console.log(path);
 					var manifestPath = path.replace('cdvfile://localhost/persistent/', '') + '/imsmanifest.xml';
 					console.log('Manifest path:');
 					console.log(manifestPath);
+					MoodleMobApp.FileSystem.getFile(
+						manifestPath,
+						function(fileEntry) {
+							console.log('got the file entry, calling loadManifest function');
+							console.log(that);
+							that.loadManifest(fileEntry.toInnerURL());
+						},
+						function() {
+							console.log('cannot load the manifest file');
+						}
+					);
+					/*
 					Supsi.Filesystem.fileSystem.root.getFile(
 						manifestPath,
 						{ create: false, exclusive: false },
@@ -519,6 +539,7 @@
 							console.log('cannot load the manifest file');
 						}
 					);
+					*/
 				};
 
 			/*
@@ -539,7 +560,9 @@
 			this.loadSpine(path + Supsi.Constants.get('TOC_DATA_LOCATION') + 'template/JavaScript/book.spine.js', tatacback, scormcback);
 			//nr 18-07-2013e
 		},
+
 		loadSpine: function(spineSrc, success, fallback){
+			console.log('loading spine src: ' + spineSrc);
 			var that = this;
 			// empty the previous compendio
 			window.compendio = {};
@@ -568,9 +591,11 @@
 				}
 			);
 		},
+
 		updateReadLength: function(val){
 			this.getReadPercent().setHtml(((val*100)|0) + '&#37;');
 		},
+
 		updateItemsLength: function(root){
 			// avanzassero tempo e denaro, refactor di questa funzione e della successiva, che sono formalmente identiche
 			var slen = localStorage[this.path + Supsi.Constants.get('SPINE_LENGTH_SUFFIX')], rpages = localStorage[this.path + Supsi.Constants.get('READ_PAGES_SUFFIX')], len;
@@ -586,6 +611,7 @@
 			var len = root.querySelectorAll('resources>resource').length;
 			localStorage[this.path + Supsi.Constants.get('SPINE_LENGTH_SUFFIX')] = len;
 		},
+
 		updateSpineLength: function(){
 			var slen = localStorage[this.path + Supsi.Constants.get('SPINE_LENGTH_SUFFIX')], rpages = localStorage[this.path + Supsi.Constants.get('READ_PAGES_SUFFIX')];
 			if(!rpages){
@@ -599,6 +625,7 @@
 			}
 			localStorage[this.path + Supsi.Constants.get('SPINE_LENGTH_SUFFIX')] = compendio.spineIndex().length - 3; // fidiamoci
 		},
+
 		onDocLoaded: function(){
 			Supsi.Utils.log('subscription: docloaded');
 			var
@@ -614,6 +641,7 @@
 			}
 
 		},
+
 		//called when the Application is launched, remove if not needed
 		launch: function(app) {
 			Ext.sm = this;

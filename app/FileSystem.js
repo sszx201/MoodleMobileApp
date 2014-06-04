@@ -31,10 +31,11 @@ Ext.define('MoodleMobApp.FileSystem', {
 						exclusive: false
 					},
 					function(fileEntry) {
-						var sPath = fileEntry.toURL().replace("dummy.html","");
-						sPath = sPath.replace("cdvfile://localhost/persistent/","");
+						//var sPath = fileEntry.toInternalURL().replace("dummy.html","");
+						//sPath = sPath.replace("cdvfile://localhost/persistent/","");
+						//console.log('FileSystem access function (sPath): ' + sPath);
 						fileEntry.remove();
-						successCallback(sPath, fileSystem);
+						successCallback(fileSystem);
 					},
 					function(error) {
 						failCallback(error);
@@ -53,9 +54,9 @@ Ext.define('MoodleMobApp.FileSystem', {
 	readDirectory: function(dirPath, successCallback, failCallback) {
 		if(this.isSupportedPlatform()) {
 			var self = this;
-			var gotPath = function(path, fileSystem) {
+			var gotFS = function(fileSystem) {
 				fileSystem.root.getDirectory(
-					path + dirPath,
+					dirPath,
 					{
 						create : false,
 						exclusive : false
@@ -85,7 +86,7 @@ Ext.define('MoodleMobApp.FileSystem', {
 				);
 				failCallback(error);
 			}
-			this.access(gotPath, errorCallback);
+			this.access(gotFS, errorCallback);
 		} else {
 			console.log('FILESYSTEM: reading directory:' + dirPath);
 		}
@@ -94,9 +95,9 @@ Ext.define('MoodleMobApp.FileSystem', {
 	removeDirectory: function(dirPath, successCallback, failCallback) {
 		if(this.isSupportedPlatform()) {
 			var self = this;
-			var gotPath = function(path, fileSystem) {
+			var gotFS = function(fileSystem) {
 				fileSystem.root.getDirectory(
-					path + dirPath,
+					dirPath,
 					{
 						create : true,
 						exclusive : false
@@ -119,7 +120,7 @@ Ext.define('MoodleMobApp.FileSystem', {
 				);
 				failCallback(error);
 			}
-			this.access(gotPath, errorCallback);
+			this.access(gotFS, errorCallback);
 		} else {
 			console.log('FILESYSTEM: removing directory:' + dirPath);
 		}
@@ -127,7 +128,7 @@ Ext.define('MoodleMobApp.FileSystem', {
 
 	getFile: function(uri, successCallback, failCallback) {
 		if(this.isSupportedPlatform()) {
-			var gotPath = function(path, fileSystem) {
+			var gotFS = function(fileSystem) {
 				fileSystem.root.getFile(
 					uri,
 					{
@@ -151,7 +152,7 @@ Ext.define('MoodleMobApp.FileSystem', {
 				);
 				failCallback(error);
 			}
-			this.access(gotPath, errorCallback);
+			this.access(gotFS, errorCallback);
 		} else {
 			console.log('FILESYSTEM: getting file:' + uri);
 		}
@@ -159,7 +160,7 @@ Ext.define('MoodleMobApp.FileSystem', {
 
 	createFile: function(uri, successCallback, failCallback) {
 		if(this.isSupportedPlatform()) {
-			var gotPath = function(path, fileSystem) {
+			var gotFS = function(fileSystem) {
 				fileSystem.root.getFile(
 					uri,
 					{
@@ -183,7 +184,7 @@ Ext.define('MoodleMobApp.FileSystem', {
 				);
 				failCallback(error);
 			}
-			this.access(gotPath, errorCallback);
+			this.access(gotFS, errorCallback);
 		} else {
 			console.log('FILESYSTEM: getting file:' + uri);
 		}
@@ -191,7 +192,7 @@ Ext.define('MoodleMobApp.FileSystem', {
 
 	removeFile: function(uri, successCallback, failCallback) {
 		if(this.isSupportedPlatform()) {
-			var gotPath = function(path, fileSystem) {
+			var gotFS = function(fileSystem) {
 				fileSystem.root.getFile(
 					uri,
 					{
@@ -215,7 +216,7 @@ Ext.define('MoodleMobApp.FileSystem', {
 				);
 				failCallback(error);
 			}
-			this.access(gotPath, errorCallback);
+			this.access(gotFS, errorCallback);
 		} else {
 			console.log('FILESYSTEM: removing file:' + uri);
 		}

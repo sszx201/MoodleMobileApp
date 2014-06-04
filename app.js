@@ -173,6 +173,7 @@ Ext.application({
 				function(error) {
 					// download the archive, extract it and open it
 					fetchFunction(function(fileEntry) {
+						Ext.fe = fileEntry;
 						var outputDirectory = fileEntry.toURL().substring(0, fileEntry.toURL().lastIndexOf('.zip'));
 						zip.unzip(
 							fileEntry.toURL(),
@@ -189,7 +190,7 @@ Ext.application({
 								} else {
 									Ext.Msg.alert(
 										'File extraction failed',
-										'The file' + file.name + ' could not be extracted. Please check your storage space.'
+										'The file ' + file.name + ' could not be extracted. Please check your storage space.'
 									);
 								}
 							}

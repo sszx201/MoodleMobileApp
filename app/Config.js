@@ -34,7 +34,7 @@ Ext.define('MoodleMobApp.Config', {
 		feedbackViewUrl : '/mod/feedback/view.php',
 		defaultIDP: 'https://login2.usi.ch/idp/shibboleth',
 		//paths
-		fileCacheDir: 'iCorsi',
+		fileCacheDir: 'iCorsi2',
 		//Flags
 		noGroupsFlag: 0,
 		separatedGroupsFlag: 1,

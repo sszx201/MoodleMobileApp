@@ -47,7 +47,7 @@ Ext.define("MoodleMobApp.view.Settings", {
 							{
 								xtype: 'fieldset',
 								title: 'Local cache',
-								instructions: 'Purge the downloaded data and the downloaded files from the smartphone memory. This does not affect the data and the files on the iCorsi platform. <span style="color: red">NOTE: Purging the downloaded files will also clear all the scorm notes.</span>',
+								instructions: 'Purge the downloaded data and the downloaded files from the smartphone memory. This does not affect the data and the files on the iCorsi2 platform. <span style="color: red">NOTE: Purging the downloaded files will also clear all the scorm notes.</span>',
 								defaults: {
 									margin: 10
 								},

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.elearninglab.iCorsi" version="0.1 alpha 18" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>iCorsi</name>
+<widget id="org.elearninglab.iCorsi2" version="0.1 alpha 18" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>iCorsi2</name>
     <description>
 		Moodle mobile app for icorsi.ch installation
     </description>

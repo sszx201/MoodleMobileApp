@@ -10,7 +10,7 @@ Ext.define("MoodleMobApp.view.Choice", {
 	],
 	
 	config: {
-		id: 'choice',
+		cls: 'choice',
 		title: 'Choice',
 		items: [
 			{
@@ -27,6 +27,7 @@ Ext.define("MoodleMobApp.view.Choice", {
 				xtype: 'fieldset',
 				title: 'Options',
 				defaults: {
+					labelWrap: true
 				}
 			},
 			{

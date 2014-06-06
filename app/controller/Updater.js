@@ -192,7 +192,6 @@ Ext.define('MoodleMobApp.controller.Updater', {
 	updateCourseModulesStore: function(course, update) {
 		// remove from the cache the modules that have been
 		// deleted from the course
-		Ext.uu = update;
 		var courseid = course.get('id');
 		MoodleMobApp.Session.getModulesStore().queryBy(
 			function(record, id) {
@@ -242,7 +241,7 @@ Ext.define('MoodleMobApp.controller.Updater', {
 			var stored_record = MoodleMobApp.Session.getModulesStore().findRecord('id', record.id, null, false, true, true);
 			if(stored_record == null) {
 				MoodleMobApp.Session.getModulesStore().add(record);
-			} else if(stored_record.get('timemodified') != record.timemodified) {
+			} else if(stored_record.get('timemodified') != record.timemodified || stored_record.get('visible') != record.visible) {
 				MoodleMobApp.Session.getModulesStore().remove(stored_record);
 				MoodleMobApp.Session.getModulesStore().add(record);
 			}

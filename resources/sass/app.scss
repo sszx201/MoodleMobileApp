@@ -99,6 +99,16 @@ $border-color: #dedede;
 	}
 }
 
+.x-course-section-invisible {
+	color: gray !important;
+	background-color: white !important;
+}
+
+.x-course-section-invisible-badge {
+	text-align: right;
+	padding-right: 5px;
+}
+
 .x-recent-activity-label {
 	background-color: $base-color;
 	color: white;
@@ -140,6 +150,13 @@ $border-color: #dedede;
 	background-position-y: 5px;
 }
 
+.x-module-icon-assign-gray {
+	background:url('../images/assignment_gray.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
 .x-module-icon-assignment {
 	background:url('../images/assignment.png');
 	background-repeat: no-repeat;
@@ -147,8 +164,22 @@ $border-color: #dedede;
 	background-position-y: 5px;
 }
 
+.x-module-icon-assignment-gray {
+	background:url('../images/assignment_gray.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
 .x-module-icon-choice {
 	background:url('../images/choice.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
+.x-module-icon-choice-gray {
+	background:url('../images/choice_gray.png');
 	background-repeat: no-repeat;
 	background-position-x: 0px;
 	background-position-y: 5px;
@@ -163,8 +194,22 @@ $border-color: #dedede;
 	background-position-y: 5px;
 }
 
+.x-module-icon-folder-gray {
+	background:url('../images/folder_gray.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
 .x-file-icon {
 	background:url('../images/file.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
+.x-file-icon-gray {
+	background:url('../images/file_gray.png');
 	background-repeat: no-repeat;
 	background-position-x: 0px;
 	background-position-y: 5px;
@@ -177,8 +222,22 @@ $border-color: #dedede;
 	background-position-y: 5px;
 }
 
+.x-module-icon-forum-gray {
+	background:url('../images/forum_gray.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
 .x-module-icon-page {
 	background:url('../images/page.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
+.x-module-icon-page-gray {
+	background:url('../images/page_gray.png');
 	background-repeat: no-repeat;
 	background-position-x: 0px;
 	background-position-y: 5px;
@@ -191,8 +250,22 @@ $border-color: #dedede;
 	background-position-y: 5px;
 }
 
+.x-module-icon-book-gray {
+	background:url('../images/book_gray.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
 .x-module-icon-quiz {
 	background:url('../images/quiz.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
+.x-module-icon-quiz-gray {
+	background:url('../images/quiz_gray.png');
 	background-repeat: no-repeat;
 	background-position-x: 0px;
 	background-position-y: 5px;
@@ -205,8 +278,22 @@ $border-color: #dedede;
 	background-position-y: 5px;
 }
 
+.x-module-icon-scorm-gray {
+	background:url('../images/scorm_gray.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
 .x-module-icon-resource {
 	background:url('../images/resource.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
+.x-module-icon-resource-gray {
+	background:url('../images/resource_gray.png');
 	background-repeat: no-repeat;
 	background-position-x: 0px;
 	background-position-y: 5px;
@@ -219,8 +306,22 @@ $border-color: #dedede;
 	background-position-y: 5px;
 }
 
+.x-module-icon-workshop-gray {
+	background:url('../images/workshop_gray.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
 .x-module-icon-data {
 	background:url('../images/database.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
+.x-module-icon-data-gray {
+	background:url('../images/database_gray.png');
 	background-repeat: no-repeat;
 	background-position-x: 0px;
 	background-position-y: 5px;
@@ -233,8 +334,22 @@ $border-color: #dedede;
 	background-position-y: 5px;
 }
 
+.x-module-icon-glossary-gray {
+	background:url('../images/glossary_gray.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
 .x-module-icon-wiki {
 	background:url('../images/wiki.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
+.x-module-icon-wiki-gray {
+	background:url('../images/wiki_gray.png');
 	background-repeat: no-repeat;
 	background-position-x: 0px;
 	background-position-y: 5px;
@@ -247,8 +362,22 @@ $border-color: #dedede;
 	background-position-y: 5px;
 }
 
+.x-module-icon-feedback-gray {
+	background:url('../images/feedback_gray.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
 .x-module-icon-url {
 	background:url('../images/url.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
+.x-module-icon-url-gray {
+	background:url('../images/url_gray.png');
 	background-repeat: no-repeat;
 	background-position-x: 0px;
 	background-position-y: 5px;

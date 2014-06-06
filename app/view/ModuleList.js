@@ -68,11 +68,15 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 					title = 'Section ' + i;
 				}
 			}
+
+			var section_visible = course_sections.getAt(i).get('visible') == 0;
+			var visibility_cls = section_visible ? ' x-course-section-invisible' : '';
+			var badge = section_visible ? '<div class="x-course-section-invisible-badge"><img src="resources/images/invisible.png"/></div>' : '';
 			var section_label = '';
 			if(summary == null) {
-				section_label = '<div class="x-course-section">'+title+'</div>';
+				section_label = '<div class="x-course-section' + visibility_cls+ '">'+title+badge+'</div>';
 			} else {
-				section_label = '<div class="x-course-section">'+title+'<div class="summary">'+summary+'</div></div>';
+				section_label = '<div class="x-course-section' + visibility_cls+ '">'+title+'<div class="summary">'+summary+badge+'</div></div>';
 			}
 
 			var element = Ext.select('.x-module-section-' + section_number).first();

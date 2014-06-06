@@ -10,7 +10,8 @@ Ext.define('MoodleMobApp.model.CourseSection', {
 			{ name: 'courseid', type: 'int' },
 			{ name: 'number', type: 'int' },
 			{ name: 'title', type: 'string' },
-			{ name: 'summary', type: 'string' }
+			{ name: 'summary', type: 'string' },
+			{ name: 'visible', type: 'int' }
 		]
 	}
 });

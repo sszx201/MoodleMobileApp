@@ -101,23 +101,29 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			MoodleMobApp.Session.getForumDiscussionsStore().each(
 				function(record) {
 					if( parseInt(record.get('forum')) === parseInt(this.selected_forum.get('instanceid')) ) {
-						var visibleByGroup = false;
-						for(var i=0; i < groups.getCount(); ++i) {
-							if(	parseInt(groups.getAt(i).get('id')) == parseInt(record.get('groupid')) ) {
-								forum_discussions.add(record);
-								visibleByGroup = true;
-								break;
-							}
-						}
-
-						// if the discusison is not visible by any group the check the grouping
-						if(!visibleByGroup && parseInt(record.get('groupid')) == -1) {
-							for(var i=0; i < groupings.getCount(); ++i) {
-								if(	parseInt(groupings.getAt(i).get('id')) == parseInt(this.selected_forum.get('groupingid')) ) {
+						if(MoodleMobApp.Session.getCourse().get('accessallgroups') == 0) {
+							// if the user cannot access al groups check which groups he/she can access
+							var visibleByGroup = false;
+							for(var i=0; i < groups.getCount(); ++i) {
+								if(	parseInt(groups.getAt(i).get('id')) == parseInt(record.get('groupid')) ) {
 									forum_discussions.add(record);
+									visibleByGroup = true;
 									break;
 								}
 							}
+
+							// if the discusison is not visible by any group the check the grouping
+							if(!visibleByGroup && parseInt(record.get('groupid')) == -1) {
+								for(var i=0; i < groupings.getCount(); ++i) {
+									if(	parseInt(groupings.getAt(i).get('id')) == parseInt(this.selected_forum.get('groupingid')) ) {
+										forum_discussions.add(record);
+										break;
+									}
+								}
+							}
+						} else {
+							// the user can access all groups; just add the discussion
+							forum_discussions.add(record);
 						}
 					}
 				}, this

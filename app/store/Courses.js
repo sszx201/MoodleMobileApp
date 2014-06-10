@@ -8,6 +8,7 @@ Ext.define('MoodleMobApp.store.Courses', {
 
 	config: {
 		storeId: 'courses',
+		sorters: 'name',
 		model: 'MoodleMobApp.model.Course',
 		autoLoad: true,
 		//autoSync: true,

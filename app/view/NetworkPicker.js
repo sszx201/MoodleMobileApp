@@ -64,7 +64,7 @@ Ext.define("MoodleMobApp.view.NetworkPicker", {
 						baseCls: 'network_selector'
 					}
 				]
-			},
+			}
 		]
 	},
 

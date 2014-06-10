@@ -32,7 +32,7 @@ Ext.define('MoodleMobApp.controller.Updater', {
 					wstoken: course.get('token'),
 					moodlewsrestformat: 'json',
 					courseid: course.get('id'),
-					lastaccess: course.get('lastaccess'),
+					lastaccess: course.get('lastaccess')
 				},
 				success: function(response, opts) {
 					var data = Ext.decode(response.responseText);

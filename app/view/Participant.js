@@ -50,7 +50,7 @@ Ext.define("MoodleMobApp.view.Participant", {
 				docked: 'bottom',
 				xtype: 'component',
 				cls: 'x-participant-networks'
-			},
+			}
 		]
 	},
 

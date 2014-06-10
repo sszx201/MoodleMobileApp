@@ -28,8 +28,8 @@ Ext.define('MoodleMobApp.controller.Glossary', {
     
 	// processes the page and extracts the content the best way possible
 	openGlossary: function(record) {
-		console.log('===> PROCESSING Glossary: ');
-		console.log(record.getData());
+		// console.log('===> PROCESSING Glossary: ');
+		// console.log(record.getData());
 		if(MoodleMobApp.app.isConnectionAvailable()) {
 			MoodleMobApp.app.showLoadMask('Loading Glossary');
 			var winref = window.open(MoodleMobApp.Config.getGlossaryViewUrl()+'?id='+record.get('id'), '_blank', 'location=yes,hidden=yes,enableViewportScale=yes');
@@ -42,7 +42,7 @@ Ext.define('MoodleMobApp.controller.Glossary', {
 			});
 
 			winref.addEventListener('loaderror', function(error) {
-				console.log(error);
+				// console.log(error);
 				Ext.Msg.alert(
 					'ERROR: opening platform page',
 					'Message: ' + error.message

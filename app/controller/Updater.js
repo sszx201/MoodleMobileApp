@@ -207,8 +207,8 @@ Ext.define('MoodleMobApp.controller.Updater', {
 					}
 					// purge record if removed
 					if(record_removed) {
-						console.log('record removed');
-						console.log(record.getData());
+						// console.log('record removed');
+						// console.log(record.getData());
 						switch(record.get('modname')) {
 							case 'forum':
 								this.removeForumEntry(record.get('instanceid'));
@@ -329,8 +329,16 @@ Ext.define('MoodleMobApp.controller.Updater', {
 				// purge the older file if there is a new one available
 				if(stored_record.get('fileid') != data.fileid) {
 					var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + course.get('id') + '/file/' + stored_record.get('fileid');
-					var successCallback = function() { console.log('newer version available, purged resource file: ' + dirPath + '/' + stored_record.get('name')); };
-					var failCallback = function(error) { MoodleMobApp.app.dump(error); };
+					var successCallback = function() {
+						//console.log('newer version available, purged resource file: ' + dirPath + '/' + stored_record.get('name'));
+					};
+					var failCallback = function(error) {
+						// MoodleMobApp.app.dump(error);
+						Ext.Msg.alert(
+							'Removing directory',
+							'Updater: removing the directory: '+ dirPath +' failed! Code: ' + error.code
+						);
+					};
 					MoodleMobApp.FileSystem.removeDirectory(dirPath, successCallback, failCallback);
 				}
 				MoodleMobApp.Session.getResourcesStore().remove(stored_record);
@@ -347,8 +355,16 @@ Ext.define('MoodleMobApp.controller.Updater', {
 		// get the resource entry
 		var resource = MoodleMobApp.Session.getResourcesStore().findRecord('id', resourceid, 0, false, true, true);
 		var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + course.get('id') + '/file/' + resource.get('fileid');
-		var successCallback = function() { console.log('purged resource file: ' + dirPath + '/' + resource.get('name')); };
-		var failCallback = function(error) { MoodleMobApp.app.dump(error); };
+		var successCallback = function() {
+			//console.log('purged resource file: ' + dirPath + '/' + resource.get('name'));
+		};
+		var failCallback = function(error) {
+			// MoodleMobApp.app.dump(error);
+			Ext.Msg.alert(
+				'Removing directory',
+				'Updater: removing the directory: '+ dirPath +' failed! Code: ' + error.code
+			);
+		};
 		MoodleMobApp.FileSystem.removeDirectory(dirPath, successCallback, failCallback);
 		MoodleMobApp.Session.getResourcesStore().remove(resource);
 		MoodleMobApp.Session.getResourcesStore().sync();
@@ -395,8 +411,16 @@ Ext.define('MoodleMobApp.controller.Updater', {
 						}
 						if(!fileid_found) {
 							var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + course.get('id') + '/file/' + record.get('fileid');
-							var successCallback = function() { console.log('newer version available, purged old folder file: ' + dirPath + '/' + record.get('name')); };
-							var failCallback = function(error) { MoodleMobApp.app.dump(error); };
+							var successCallback = function() {
+								//console.log('newer version available, purged old folder file: ' + dirPath + '/' + record.get('name'));
+							};
+							var failCallback = function(error) {
+								// MoodleMobApp.app.dump(error);
+								Ext.Msg.alert(
+									'Removing directory',
+									'Updater: removing the directory: '+ dirPath +' failed! Code: ' + error.code
+								);
+							};
 							MoodleMobApp.FileSystem.removeDirectory(dirPath, successCallback, failCallback);
 						}
 					}
@@ -417,8 +441,16 @@ Ext.define('MoodleMobApp.controller.Updater', {
 			Ext.each(folder.children, function(record) {
 				if(record.get('type') == 'file') {
 					var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + course.get('id') + '/file/' + record.get('fileid');
-					var successCallback = function() { console.log('purged folder file: ' + dirPath + '/' + record.get('name')); };
-					var failCallback = function(error) { MoodleMobApp.app.dump(error); };
+					var successCallback = function() {
+						//console.log('purged folder file: ' + dirPath + '/' + record.get('name'));
+					};
+					var failCallback = function(error) {
+						// MoodleMobApp.app.dump(error);
+						Ext.Msg.alert(
+							'Removing directory',
+							'Updater: removing the directory: '+ dirPath +' failed! Code: ' + error.code
+						);
+					};
 					MoodleMobApp.FileSystem.removeDirectory(dirPath, successCallback, failCallback);
 				}
 			});

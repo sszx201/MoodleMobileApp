@@ -74,7 +74,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 	selectForum: function(forum) {
 		this.selected_forum = forum;
 		var forum_discussions = this.getForumDiscussions();
-		console.log(forum.getData());
+		// console.log(forum.getData());
 
 		// display discussions
 		if(typeof this.getDiscussionList() == 'object') {

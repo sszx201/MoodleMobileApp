@@ -28,8 +28,8 @@ Ext.define('MoodleMobApp.controller.Workshop', {
     
 	// processes the page and extracts the content the best way possible
 	openWorkshop: function(record) {
-		console.log('===> PROCESSING Workshop: ');
-		console.log(record.getData());
+		// console.log('===> PROCESSING Workshop: ');
+		// console.log(record.getData());
 		if(MoodleMobApp.app.isConnectionAvailable()) {
 			MoodleMobApp.app.showLoadMask('Loading Workshop');
 			var winref = window.open(MoodleMobApp.Config.getWorkshopViewUrl()+'?id='+record.get('id'), '_blank', 'location=yes,hidden=yes,enableViewportScale=yes');
@@ -42,7 +42,7 @@ Ext.define('MoodleMobApp.controller.Workshop', {
 			});
 
 			winref.addEventListener('loaderror', function(error) {
-				console.log(error);
+				// console.log(error);
 				Ext.Msg.alert(
 					'ERROR: opening platform page',
 					'Message: ' + error.message

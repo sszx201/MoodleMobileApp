@@ -353,13 +353,13 @@ Ext.define('MoodleMobApp.WebService', {
 				}
 			};
 			var filePath = 'cdvfile://localhost/persistent/' + dir + '/' + file.name;
-			console.log('downloading from: ' + url);
-			console.log('to: ' + filePath);
+			//console.log('downloading from: ' + url);
+			//console.log('to: ' + filePath);
 			fileTransfer.download(
 				url,
 				filePath,
 				function(theFile) {
-					console.log('SUCCESS !! from webservice');
+					//console.log('SUCCESS !! from webservice');
 					document.querySelector('div.progress-bar span').setAttribute('style', 'width: 0%');
 					Ext.Msg.hide();
 					successFunc(theFile);
@@ -385,7 +385,7 @@ Ext.define('MoodleMobApp.WebService', {
 				'File system error',
 				'Directory does not exist yet: ' + dir
 			);
-			MoodleMobApp.app.dump(error);
+			// MoodleMobApp.app.dump(error);
 		}
 
 		MoodleMobApp.FileSystem.access(gotAccess, noAccess);

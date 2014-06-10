@@ -80,7 +80,8 @@
 					that['setBookmark' + (bookmarks ? '' : 'Not') + 'Present']();
 				},
 				errback: function(error){
-					console.error('error preparing a tx ', error)
+					// console.error('error preparing a tx ', error)
+					Ext.Msg.alert('Error', 'Selecting the resource by scorm id failed, code = ' + error.code);
 				}
 			});
 		},
@@ -124,7 +125,7 @@
 					type: 1, // highlight
 					index: index,
 					cback: function(){
-						console.log('doc and metadata removed');
+						// console.log('doc and metadata removed');
 						Supsi.Utils.unwrap(that._currentHighlightNode);
 						scormPanel.flushDomToFile();
 						that._overlay.hide();
@@ -132,7 +133,8 @@
 					},
 					errback: function(tx, err){
 						that._overlay.hide();
-						console.error('db error: ', err);
+						//console.error('db error: ', err);
+						Ext.Msg.alert('Error', 'Metadata database error, code = ' + err.code);
 					}
 
 				});
@@ -167,10 +169,11 @@
 						data: '',
 						cback: function(){
 							scormPanel.flushDomToFile();
-							console.log('doc and metadata saved');
+							// console.log('doc and metadata saved');
 						},
 						errback: function(tx, err){
-							console.error('db error: ', err);
+							// console.error('db error: ', err);
+							Ext.Msg.alert('Error', 'Metadata database error, code = ' + err.code);
 						}
 
 					});
@@ -221,7 +224,8 @@
 
 				},
 				errback: function(tx, err){
-					console.error('db error: ', err);
+					//console.error('db error: ', err);
+					Ext.Msg.alert('Error', 'Metadata database error, code = ' + err.code);
 				}
 
 			});
@@ -253,7 +257,8 @@
 					scormPanel.noteView.hide();
 				},
 				errback: function(tx, err){
-					console.error('db error: ', err);
+					// console.error('db error: ', err);
+					Ext.Msg.alert('Error', 'Metadata database error, code = ' + err.code);
 				}
 
 			});
@@ -285,10 +290,11 @@
 						fragment: range.toString(),
 						cback: function(){
 							scormPanel.flushDomToFile();
-							console.log('doc and metadata saved');
+							// console.log('doc and metadata saved');
 						},
 						errback: function(tx, err){
-							console.error('db error: ', err);
+							// console.error('db error: ', err);
+							Ext.Msg.alert('Error', 'Metadata database error, code = ' + err.code);
 						}
 
 					});
@@ -305,7 +311,7 @@
 			var n = document.createElement('span');
 			n.setAttribute(Supsi.Constants.get('SCORM_HIGHLIGHT_ATTRIBUTE'), '');
 			n.className = 'scorm_highlight';
-			Supsi.Utils.log('highlight node created');
+			// Supsi.Utils.log('highlight node created');
 			return n;
 		},
 

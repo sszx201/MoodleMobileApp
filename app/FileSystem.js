@@ -136,11 +136,11 @@ Ext.define('MoodleMobApp.FileSystem', {
 						exclusive : false
 					},
 					function(entry) {
-						console.log('got the entry: ' + uri);
+						// console.log('got the entry: ' + uri);
 						successCallback(entry);
 					}, 
 					function(error) {
-						console.log('NOPE:::no entries such as: ' + uri);
+						// console.log('NOPE:::no entries such as: ' + uri);
 						failCallback(error);
 					});
 			}
@@ -168,11 +168,11 @@ Ext.define('MoodleMobApp.FileSystem', {
 						exclusive : false
 					},
 					function(entry) {
-						console.log('got the entry: ' + uri);
+						// console.log('got the entry: ' + uri);
 						successCallback(entry);
 					},
 					function(error) {
-						console.log('NOPE:::no entries such as: ' + uri);
+						// console.log('NOPE:::no entries such as: ' + uri);
 						failCallback(error);
 					});
 			}
@@ -200,11 +200,11 @@ Ext.define('MoodleMobApp.FileSystem', {
 						exclusive : false
 					},
 					function(entry) {
-						console.log('removing the entry: ' + uri);
+						// console.log('removing the entry: ' + uri);
 						entry.remove(successCallback, failCallback);
 					},
 					function(error) {
-						console.log('NOPE:::no entries such as: ' + uri);
+						// console.log('NOPE:::no entries such as: ' + uri);
 						failCallback(error);
 					});
 			}
@@ -242,9 +242,9 @@ Ext.define('MoodleMobApp.FileSystem', {
 			// file type. This is a fix to make it work on Android 4.4.x platforms
 			//if(window.device != undefined && window.platform == 'Android' && parseFloat(window.device.version) > 4.3 ) {
 			if(window.device != undefined && window.device.platform == 'Android') {
-				console.log('NOTE: selecting files with the fileChooser plugin');
+				// console.log('NOTE: selecting files with the fileChooser plugin');
 				var _success = function(uri) {
-					console.log('file chosen');
+					// console.log('file chosen');
 					MoodleMobApp.FileSystem.resolveFilePath(uri,
 						function(file) {
 							// set a better name instead of only 'content'.
@@ -267,7 +267,7 @@ Ext.define('MoodleMobApp.FileSystem', {
 				}
 				fileChooser.open(_success, _error);
 			} else {
-				console.log('NOTE: selecting files with the input tag');
+				// console.log('NOTE: selecting files with the input tag');
 				var input = document.createElement('input');
 				input.type = 'file';
 				input.onchange = function() {

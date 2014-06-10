@@ -177,7 +177,7 @@
 			this.scrollToTop();
 		},
 		flushDomToFile: function(){
-			Supsi.Utils.log('[ScormPanel:flushDomToFile] currentFile = ', this._currentFileEntry);
+			// Supsi.Utils.log('[ScormPanel:flushDomToFile] currentFile = ', this._currentFileEntry);
 			if(!this._currentFileEntry){
 				return;
 			}
@@ -189,7 +189,8 @@
 					writer.write(that.docContainer.dom.contentDocument.body.querySelector('.contenttopic').innerHTML);
 				}
 			}, function(){
-				console.error('error creating a file writer');
+				//console.error('error creating a file writer');
+				Ext.Msg.alert('Error', 'Error creating the file writer, code = ' + err.code);
 			});
 		},
 		setFontSize: function(fontSize){
@@ -207,9 +208,9 @@
 //						this.docContainer.dom.onload = function(){
 //							that._firstSCORMLoad(fileEntry)
 //						}
-						Supsi.Utils.log('iframe ***************** changing location');
+						// Supsi.Utils.log('iframe ***************** changing location');
 						that.docContainer.dom.onload = function(){
-							Supsi.Utils.log('***************** iframe loaded');
+							// Supsi.Utils.log('***************** iframe loaded');
 							that._docContainerLoadHandler();
 							that._scormLoadEnd.call(that, evt);
 
@@ -284,10 +285,10 @@
 			var that = this,
 			contentDocument = this.docContainer.dom.contentDocument, base;
 			this.setResourceId(uri);
-			Supsi.Utils.log('setURI, uri = ', uri);
+			// Supsi.Utils.log('setURI, uri = ', uri);
 			// inserisco elemento <base .../> solo al primo caricamento del doc
 			if(!contentDocument.querySelector('base') && !this.standard){
-				Supsi.Utils.log('INSERISCO L\'ELEMENTO BASE***************** ', this.SCORMId + Supsi.Constants.get(this.standard ? 'DOCS_LOCATION' : 'TOC_DOCS_LOCATION'));
+				// Supsi.Utils.log('INSERISCO L\'ELEMENTO BASE***************** ', this.SCORMId + Supsi.Constants.get(this.standard ? 'DOCS_LOCATION' : 'TOC_DOCS_LOCATION'));
 				base = contentDocument.createElement('base');
 
 
@@ -295,18 +296,19 @@
 				contentDocument.body.appendChild(base);
 			}
 
-			Supsi.Utils.log('SCORMId = ', this.SCORMId);
-			Supsi.Utils.log('the real path should be ', this.SCORMId + (this.standard ? '' : 'compendio/whxdata/') + Supsi.Constants.get('CLONED_BASE') + uri);
+			// Supsi.Utils.log('SCORMId = ', this.SCORMId);
+			// Supsi.Utils.log('the real path should be ', this.SCORMId + (this.standard ? '' : 'compendio/whxdata/') + Supsi.Constants.get('CLONED_BASE') + uri);
 			
 			// la CLONED_BASE sarebbe meglio lasciarla fuori dalla cartella ID. Poi, per ora cerchiamo di fare in modo che funzioni tutto.
 			// Supsi.Filesystem.getFile(uri.substr(uri.lastIndexOf('/')+1), true,
 			Supsi.Filesystem.getFile(this.SCORMId + (this.standard ? '' : 'compendio/whxdata/') + Supsi.Constants.get('CLONED_BASE') + uri, true,
 				function(fileEntry){
-					Supsi.Utils.log('file found: ', that.SCORMId + (that.standard ? '' : 'compendio/whxdata/') + Supsi.Constants.get('CLONED_BASE') + uri);
+					// Supsi.Utils.log('file found: ', that.SCORMId + (that.standard ? '' : 'compendio/whxdata/') + Supsi.Constants.get('CLONED_BASE') + uri);
 					that._getFileCback.call(that, uri, fileEntry);
 				},
 				function(err){
-					console.error('file errback');
+					// console.error('file errback');
+					Ext.Msg.alert('Error', 'Error opening the file, code = ' + err.code);
 					that._getFileErr.apply(that, arguments);
 				}
 			);
@@ -348,7 +350,8 @@
 		 * file writer error callback
 		 * */
 		_fileWriterErr: function(){
-			Supsi.Utils.log('[ScormPanel] fileWriterErr ', arguments);
+			// Supsi.Utils.log('[ScormPanel] fileWriterErr ', arguments);
+			Ext.Msg.alert('Error', 'Error writing the file, code = ' + err.code);
 		},
 		/**
 		 * scroll the content node to the top of the page
@@ -674,11 +677,11 @@
 		},
 		setSCORMId: function(SCORMId){
 			this.SCORMId = SCORMId;
-			Supsi.Utils.log('SCORMid set to %s', SCORMId);
+			// Supsi.Utils.log('SCORMid set to %s', SCORMId);
 		},
 		setResourceId: function(resourceId){
 			this.resourceId = resourceId;
-			Supsi.Utils.log('resourceId set to %s', resourceId);
+			// Supsi.Utils.log('resourceId set to %s', resourceId);
 		},
 		initialize: function(){
 			var that = this;

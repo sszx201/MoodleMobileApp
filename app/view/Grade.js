@@ -36,8 +36,8 @@ Ext.define("MoodleMobApp.view.Grade", {
 		var userscore = '-';
 		var user_grade = MoodleMobApp.Session.getGradesStore().findRecord('itemid', record.get('id'), null, false, true, true);
 		if(user_grade != null) {
-			console.log(record.getData());
-			console.log(user_grade.getData());
+			// console.log(record.getData());
+			// console.log(user_grade.getData());
 			if(record.get('scaleid') > 0) {
 				var scale = record.get('scale').split(',');
 				userscore = scale[user_grade.get('finalgrade') - 1];

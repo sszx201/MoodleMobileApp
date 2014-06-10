@@ -43,7 +43,7 @@ Ext.define("MoodleMobApp.view.RecentActivity", {
 				break;
 				case 'post':
 					_status = 'updated discussion';
-					console.log(record.getData());
+					// console.log(record.getData());
 				break;
 			}
 			this.down('#status').setHtml(_status);

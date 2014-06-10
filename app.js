@@ -179,14 +179,39 @@ Ext.application({
 							fileEntry.toURL(),
 							outputDirectory,
 							function(arg){
+								/*
 								console.log(' >>>>>>>>>>> callback called with arg: ' + arg);
 								console.log(' >>>>>>>>>>> extracting filepath: ' + filePath);
 								console.log(' >>>>>>>>>>> extracting directory output: ' + outputDirectory);
+								*/
 								if(arg == 0) { // success
-									console.log('archive extracted yaaay');
+									// console.log('archive extracted yaaay');
 									MoodleMobApp.app.getController('FileBrowser').openDirectory(filePath.substring(0, filePath.lastIndexOf('.zip')));
-									MoodleMobApp.FileSystem.removeFile(filePath, function(arg) { console.log('archive removed'); console.log(arg);}, function(error){ console.log('removing the archive failed'); console.log(error);});
-									MoodleMobApp.FileSystem.createFile(dirPath+'/_archive_extracted_', function(arg) { console.log('flag created'); console.log(arg);}, function(error){ console.log('creating the flag failed'); console.log(error);});
+									MoodleMobApp.FileSystem.removeFile(
+										filePath,
+											function(arg) {
+												// console.log('archive removed'); console.log(arg);
+											},
+											function(error){
+												Ext.Msg.alert(
+													'Removing File',
+													'Removing the file: '+ filePath +' failed! Code: ' + error.code
+												);
+												//console.log('removing the archive failed'); console.log(error);
+											}
+									);
+									MoodleMobApp.FileSystem.createFile(
+										dirPath+'/_archive_extracted_',
+										function(arg) {
+											// console.log('flag created'); console.log(arg);
+										},
+										function(error){
+											Ext.Msg.alert(
+												'Extracting Zip File',
+												'Registering the extraction of the zip file: '+ filePath +' failed! Code: ' + error.code
+											);
+											// console.log('creating the flag failed'); console.log(error);
+										});
 								} else {
 									Ext.Msg.alert(
 										'File extraction failed',
@@ -330,7 +355,7 @@ Ext.application({
 	startSkype: function(list) { },
 
 	openURL: function(urladdr) {
-		console.log('===> Opening URL: '+urladdr);
+		// console.log('===> Opening URL: '+urladdr);
 		return window.open(urladdr, '_blank', 'location=yes,enableViewportScale=yes');
 	},
 

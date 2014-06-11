@@ -115,10 +115,12 @@ Ext.define('MoodleMobApp.controller.Assignment', {
 				aconf.settings = store.first().getData(); 
 				// check for submissions
 				if(aconf.xtype != 'offlineassignment') {
+					MoodleMobApp.app.showLoadMask('Checking submissions');
 					var submissions_store = MoodleMobApp.WebService.getAssignmentSubmission(assignment.get('instanceid'), MoodleMobApp.Session.getCourse().get('token'));
 					submissions_store.on(
 						'load', 
 						function(store){
+							MoodleMobApp.app.hideLoadMask();
 							if(store.first().get('id') != 0) {
 								aconf.lastSubmission = store.first().getData(); 
 							}

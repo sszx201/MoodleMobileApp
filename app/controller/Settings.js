@@ -87,11 +87,10 @@ Ext.define('MoodleMobApp.controller.Settings', {
 		MoodleMobApp.FileSystem.removeDirectory(
 			MoodleMobApp.Config.getFileCacheDir(),
 			function() {
-				//console.log("File cache directory purged");
+				console.log("File cache directory purged");
 			},
 			function(error) {
-				//console.log("ERROR: File cache directory was not purged");
-				//MoodleMobApp.dump(error);
+				console.error("File cache directory was not purged", error);
 				Ext.Msg.alert(
 					'Purging File Cache',
 					'Purging the file cache failed! Code: ' + error.code

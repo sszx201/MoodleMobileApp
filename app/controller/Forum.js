@@ -74,7 +74,8 @@ Ext.define('MoodleMobApp.controller.Forum', {
 	selectForum: function(forum) {
 		this.selected_forum = forum;
 		var forum_discussions = this.getForumDiscussions();
-		// console.log(forum.getData());
+		console.log('Selecting the forum');
+		console.log(forum.getData());
 
 		// display discussions
 		if(typeof this.getDiscussionList() == 'object') {
@@ -232,7 +233,8 @@ Ext.define('MoodleMobApp.controller.Forum', {
 
 	selectDiscussion: function(record) {
 		this.selected_discussion = record;
-		//console.log('discussion selected'); console.log(record.getData());
+		console.log('Discussion selected');
+		console.log(record.getData());
 
 		var raw_forum_posts = this.getForumPosts(record.get('id'));	
 	

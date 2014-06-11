@@ -43,7 +43,6 @@ function addExtensions() {
 	//////////////////////////////////////////////////////////////////////////
 	MoodleMobApp.app.openURL = function(urladdr) {
 			console.log('===> Opening URL: '+urladdr);
-			console.log('opening url '+urladdr);
 			window.open(urladdr, '_blank', 'enableViewportScale=yes');
 	};
 	//////////////////////////////////////////////////////////////////////////

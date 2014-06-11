@@ -28,8 +28,8 @@ Ext.define('MoodleMobApp.controller.Feedback', {
     
 	// processes the page and extracts the content the best way possible
 	openFeedback: function(record) {
-		// console.log('===> PROCESSING Feedback: ');
-		// console.log(record.getData());
+		console.log('===> PROCESSING Feedback: ');
+		console.log(record.getData());
 		if(MoodleMobApp.app.isConnectionAvailable()) {
 			MoodleMobApp.app.showLoadMask('Loading Feedback');
 			var winref = window.open(MoodleMobApp.Config.getFeedbackViewUrl()+'?id='+record.get('id'), '_blank', 'location=yes,hidden=yes,enableViewportScale=yes');
@@ -42,7 +42,7 @@ Ext.define('MoodleMobApp.controller.Feedback', {
 			});
 
 			winref.addEventListener('loaderror', function(error) {
-				// console.log(error);
+				console.error('Loading error: opening the platform page', error);
 				Ext.Msg.alert(
 					'ERROR: opening platform page',
 					'Message: ' + error.message

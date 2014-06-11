@@ -27,11 +27,11 @@ Ext.define("MoodleMobApp.view.RecentActivityList", {
 	},
 
 	addActivityLabels: function(){
-		// console.log('adding activity labels');
+		console.log('RecentActivityList: adding activity labels');
 		// course updates
 		var element = Ext.select('.x-recent-activity-course-update').first();
 		var label = '';
-		// console.log(element);
+		//console.log(element);
 		if(element != null) {
 			label = '<div class="x-recent-activity-label">Course updates:</div>';
 			// add the section title
@@ -39,7 +39,7 @@ Ext.define("MoodleMobApp.view.RecentActivityList", {
 		}
 		// forum posts
 		element = Ext.select('.x-recent-activity-forum-post').first();
-		// console.log(element);
+		//console.log(element);
 		if(element != null) {
 			label = '<div class="x-recent-activity-label">New forum posts:</div>';
 			// add the section title

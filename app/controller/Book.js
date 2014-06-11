@@ -29,8 +29,9 @@ Ext.define('MoodleMobApp.controller.Book', {
 			recentActivity: {
 				checkActivity: function(record) {
 					if(record.get('modname') == 'book') {
-						// console.log('getting the book record');
+						console.log('Getting the book record');
 						var book_record = MoodleMobApp.Session.getBooksStore().findRecord('id', record.get('instanceid'));
+						console.log(book_record);
 						if(book_record != undefined) {
 							this.showBook(book_record);
 						}

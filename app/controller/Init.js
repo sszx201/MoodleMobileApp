@@ -39,8 +39,6 @@ Ext.define('MoodleMobApp.controller.Init', {
 	},
 	
 	init: function() {
-		MoodleMobApp.log = function(message) { console.log('>>>>> MOODBILE LOG MESSAGE :: ' + message); }
-
 		// create settings store
 		var settings_store = Ext.create('MoodleMobApp.store.Settings');
 		settings_store.load({
@@ -172,93 +170,93 @@ Ext.define('MoodleMobApp.controller.Init', {
 		users_store.on(
 			'write',
 			function(store, operation) {
-				MoodleMobApp.log('=> users_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
+				console.log('=> users_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
 				Ext.iterate(operation.getRecords(), function(record){
-					MoodleMobApp.log(' --> User: '+record.get('username')+'; id: '+record.get('id'));
+					console.log(' --> User: '+record.get('username')+'; id: '+record.get('id'));
 				});
 			});
 
 		enrolled_users_store.on(
 			'write',
 			function(store, operation) {
-				MoodleMobApp.log('=> enrolled_users_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
+				console.log('=> enrolled_users_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
 				Ext.iterate(operation.getRecords(), function(record){
-					MoodleMobApp.log(' --> Enrolled user: '+record.get('userid')+' in course '+record.get('courseid'));
+					console.log(' --> Enrolled user: '+record.get('userid')+' in course '+record.get('courseid'));
 				});
 			});
 
 		courses_store.on(
 			'write',
 			function(store, operation) {
-				MoodleMobApp.log('=> courses_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
+				console.log('=> courses_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
 				Ext.iterate(operation.getRecords(), function(record){
-					MoodleMobApp.log(' --> Course: '+record.get('name')+'; id: '+record.get('id'));
+					console.log(' --> Course: '+record.get('name')+'; id: '+record.get('id'));
 				});
 			});
 
 		modules_store.on(
 			'write',
 			function(store, operation) {
-				MoodleMobApp.log('=> modules_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
+				console.log('=> modules_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
 				Ext.iterate(operation.getRecords(), function(record){
-					MoodleMobApp.log(' --> Module: '+record.get('name')+'; id: '+record.get('id'));
+					console.log(' --> Module: '+record.get('name')+'; id: '+record.get('id'));
 				});
 			});
 
 		resources_store.on(
 			'write',
 			function(store, operation) {
-				MoodleMobApp.log('=> resources_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
+				console.log('=> resources_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
 				Ext.iterate(operation.getRecords(), function(record){
-					MoodleMobApp.log(' --> Resource: '+record.get('name')+'; id: '+record.get('id'));
+					console.log(' --> Resource: '+record.get('name')+'; id: '+record.get('id'));
 				});
 			});
 
 		choices_store.on(
 			'write',
 			function(store, operation) {
-				MoodleMobApp.log('=> choices_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
+				console.log('=> choices_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
 				Ext.iterate(operation.getRecords(), function(record){
-					MoodleMobApp.log(' --> Choice: '+record.get('name')+'; id: '+record.get('id'));
+					console.log(' --> Choice: '+record.get('name')+'; id: '+record.get('id'));
 				});
 			});
 
 		url_store.on(
 			'write',
 			function(store, operation) {
-				MoodleMobApp.log('=> url_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
+				console.log('=> url_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
 				Ext.iterate(operation.getRecords(), function(record){
-					MoodleMobApp.log(' --> Url: '+record.get('name')+'; id: '+record.get('id'));
+					console.log(' --> Url: '+record.get('name')+'; id: '+record.get('id'));
 				});
 			});
 
 		forum_discussions_store.on(
 			'write',
 			function(store, operation) {
-				MoodleMobApp.log('=> forum_discussions_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
+				console.log('=> forum_discussions_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
 				Ext.iterate(operation.getRecords(), function(record){
-					MoodleMobApp.log(' --> Discussion: '+record.get('name')+'; id: '+record.get('id'));
+					console.log(' --> Discussion: '+record.get('name')+'; id: '+record.get('id'));
 				});
 			});
 
 		forum_posts_store.on(
 			'write',
 			function(store, operation) {
-				MoodleMobApp.log('=> forum_post_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
+				console.log('=> forum_post_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
 				Ext.iterate(operation.getRecords(), function(record){
-					MoodleMobApp.log(' --> Post: '+record.get('id')+'; discussion: '+record.get('discussion'));
+					console.log(' --> Post: '+record.get('id')+'; discussion: '+record.get('discussion'));
 				});
 			});
 
 		folders_store.on(
 			'write',
 			function(store, operation) {
-				MoodleMobApp.log('=> folder_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
+				console.log('=> folder_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
 				Ext.iterate(operation.getRecords(), function(record){
 					if(record.get('mime') == 'inode/directory'){
-						MoodleMobApp.log(' --> Folder subfolder: '+record.get('name')+'; rootid: '+record.get('rootid'));
+						console.log(' --> Folder subfolder: '+record.get('name')+'; rootid: '+record.get('rootid'));
 					} else {
-						MoodleMobApp.log(' --> Folder file: '+record.get('name')+'; rootid: '+record.get('rootid'));
+						console.log(' --> Folder file: '+record.get('name')+'; rootid: '+record.get('rootid'));
 					}
 				});
 			});
@@ -266,18 +264,18 @@ Ext.define('MoodleMobApp.controller.Init', {
 		gradeitems_store.on(
 			'write',
 			function(store, operation) {
-				MoodleMobApp.log('=> gradeitems_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
+				console.log('=> gradeitems_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
 				Ext.iterate(operation.getRecords(), function(record){
-					MoodleMobApp.log(' --> Grade Item: '+record.get('itemmodule')+'; instance: '+record.get('iteminstance'));
+					console.log(' --> Grade Item: '+record.get('itemmodule')+'; instance: '+record.get('iteminstance'));
 				});
 			});
 
 		grades_store.on(
 			'write',
 			function(store, operation) {
-				MoodleMobApp.log('=> grades_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
+				console.log('=> grades_store write operation: action='+operation.getAction()+'; success: '+operation.wasSuccessful());
 				Ext.iterate(operation.getRecords(), function(record){
-					MoodleMobApp.log(' --> Grade for: '+record.get('itemid')+'; value: '+record.get('rawgrade'));
+					console.log(' --> Grade for: '+record.get('itemid')+'; value: '+record.get('rawgrade'));
 				});
 			});
 		*/

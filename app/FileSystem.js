@@ -31,9 +31,6 @@ Ext.define('MoodleMobApp.FileSystem', {
 						exclusive: false
 					},
 					function(fileEntry) {
-						//var sPath = fileEntry.toInternalURL().replace("dummy.html","");
-						//sPath = sPath.replace("cdvfile://localhost/persistent/","");
-						//console.log('FileSystem access function (sPath): ' + sPath);
 						fileEntry.remove();
 						successCallback(fileSystem);
 					},
@@ -136,11 +133,11 @@ Ext.define('MoodleMobApp.FileSystem', {
 						exclusive : false
 					},
 					function(entry) {
-						// console.log('got the entry: ' + uri);
+						console.log('got the entry: ' + uri);
 						successCallback(entry);
 					}, 
 					function(error) {
-						// console.log('NOPE:::no entries such as: ' + uri);
+						console.error('NOPE:::no entries such as: ' + uri, error);
 						failCallback(error);
 					});
 			}
@@ -168,11 +165,11 @@ Ext.define('MoodleMobApp.FileSystem', {
 						exclusive : false
 					},
 					function(entry) {
-						// console.log('got the entry: ' + uri);
+						console.log('got the entry: ' + uri);
 						successCallback(entry);
 					},
 					function(error) {
-						// console.log('NOPE:::no entries such as: ' + uri);
+						console.error('NOPE:::no entries such as: ' + uri, error);
 						failCallback(error);
 					});
 			}
@@ -200,11 +197,11 @@ Ext.define('MoodleMobApp.FileSystem', {
 						exclusive : false
 					},
 					function(entry) {
-						// console.log('removing the entry: ' + uri);
+						console.log('removing the entry: ' + uri);
 						entry.remove(successCallback, failCallback);
 					},
 					function(error) {
-						// console.log('NOPE:::no entries such as: ' + uri);
+						console.error('NOPE:::no entries such as: ' + uri, error);
 						failCallback(error);
 					});
 			}
@@ -242,9 +239,9 @@ Ext.define('MoodleMobApp.FileSystem', {
 			// file type. This is a fix to make it work on Android 4.4.x platforms
 			//if(window.device != undefined && window.platform == 'Android' && parseFloat(window.device.version) > 4.3 ) {
 			if(window.device != undefined && window.device.platform == 'Android') {
-				// console.log('NOTE: selecting files with the fileChooser plugin');
+				console.log('NOTE: selecting files with the fileChooser plugin');
 				var _success = function(uri) {
-					// console.log('file chosen');
+					console.log('file chosen: ' + uri);
 					MoodleMobApp.FileSystem.resolveFilePath(uri,
 						function(file) {
 							// set a better name instead of only 'content'.
@@ -263,11 +260,11 @@ Ext.define('MoodleMobApp.FileSystem', {
 						'File selecting error: code 1',
 						'File cannot be selected: ' + uri
 					);
-					MoodleMobApp.app.dump(error);
+					console.error('File cannot be selected, code 1: ' + uri, error);
 				}
 				fileChooser.open(_success, _error);
 			} else {
-				// console.log('NOTE: selecting files with the input tag');
+				console.log('NOTE: selecting files with the input tag');
 				var input = document.createElement('input');
 				input.type = 'file';
 				input.onchange = function() {
@@ -278,7 +275,7 @@ Ext.define('MoodleMobApp.FileSystem', {
 						'File selecting error: code 2',
 						'Cannot select the file. The app cannot read this file.'
 					);
-					MoodleMobApp.app.dump(error);
+					console.error('Cannot select the file. The app cannot read this file., code 2: ', error);
 					failCallback(error);
 				}
 				input.click();

@@ -34,6 +34,8 @@ Ext.define("MoodleMobApp.view.RecentActivity", {
 			this.down('#itemName').setHtml(record.get('name'));
 
 			var _status = '';
+			console.log('Updating RecentActivity dataitem record');
+			console.log(record.getData());
 			switch(record.get('operation')) {
 				case 'add':
 					_status = 'new ' + record.get('modname');
@@ -43,7 +45,6 @@ Ext.define("MoodleMobApp.view.RecentActivity", {
 				break;
 				case 'post':
 					_status = 'updated discussion';
-					// console.log(record.getData());
 				break;
 			}
 			this.down('#status').setHtml(_status);

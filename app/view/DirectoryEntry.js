@@ -15,7 +15,8 @@ Ext.define("MoodleMobApp.view.DirectoryEntry", {
 	},
 
 	updateRecord: function(record) {
-		// console.log(record);
+		console.log('Updating DirectoryEntry dataitem record');
+		console.log(record);
 		// this function is called also when a DataItem is destroyed or the record is removed from the store
 		// the check bellow avoids the running of the function when it is null
 		if(record == null) { return; } 

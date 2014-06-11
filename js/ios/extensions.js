@@ -47,6 +47,7 @@ function addExtensions() {
 	// this function opens a file by using the web intent mechanism
 	//////////////////////////////////////////////////////////////////////////
 	MoodleMobApp.app.openFile = function(path, mimetype) {
+		console.log('opening file:::::' + path);
 		window.open(path, '_blank', 'location=yes,hidden=no,enableViewportScale=yes');
 	};
 

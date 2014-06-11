@@ -78,7 +78,7 @@ Ext.define("MoodleMobApp.view.FileSlot", {
 		var self = this;
 		MoodleMobApp.FileSystem.selectFile(
 			function(file) {
-				// MoodleMobApp.app.dump(file);
+				// console.log(file);
 				self.setFile(file);
 			},
 			function(error) { });

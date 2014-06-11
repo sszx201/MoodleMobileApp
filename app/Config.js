@@ -36,6 +36,7 @@ Ext.define('MoodleMobApp.Config', {
 		//paths
 		fileCacheDir: 'iCorsi2',
 		//Flags
+		verbose: true,
 		noGroupsFlag: 0,
 		separatedGroupsFlag: 1,
 		visibleGroupsFlag: 2,

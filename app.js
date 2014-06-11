@@ -88,6 +88,22 @@ Ext.application({
     },
 
     launch: function() {
+		// app log
+		console._log = console.log;
+		console.log = function(msg){
+			if(MoodleMobApp.Config.getVerbose()) {
+				console._log(msg);
+			}
+		};
+
+		console._error = console.error;
+		console.error = function(msg, obj){
+			if(MoodleMobApp.Config.getVerbose()) {
+				//console._error(msg, JSON.stringify(obj));
+				console._error(msg, obj);
+			}
+		};
+
 		// add the architecture related extensions
 		// this code is located under js/[arch]/extensions.js
 		addExtensions();
@@ -387,9 +403,5 @@ Ext.application({
 		} else { // assume the app runs on the pc browser
 			return true;
 		}
-	},
-
-	dump: function(obj) {
-		console.log(JSON.stringify(obj));
 	}
 });

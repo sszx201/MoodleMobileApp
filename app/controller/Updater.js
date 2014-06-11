@@ -99,12 +99,10 @@ Ext.define('MoodleMobApp.controller.Updater', {
 				if(current_user == null) {
 					MoodleMobApp.Session.getUsersStore().add(record);
 					users_store_to_sync = true;
-					// MoodleMobApp.log('|I| New user; username: '+record.get('username')+'; id: '+record.get('id'));
 				} else if(typeof current_user == 'object' && current_user.get('timemodified') != record.timemodified) {
 					MoodleMobApp.Session.getUsersStore().remove(current_user);
 					MoodleMobApp.Session.getUsersStore().add(record);
 					users_store_to_sync = true;
-					//MoodleMobApp.log('|I| Updating user: '+record.get('username'));
 				}
 			}, this);
 
@@ -207,8 +205,8 @@ Ext.define('MoodleMobApp.controller.Updater', {
 					}
 					// purge record if removed
 					if(record_removed) {
-						// console.log('record removed');
-						// console.log(record.getData());
+						console.log('CourseModule record removed');
+						console.log(record.getData());
 						switch(record.get('modname')) {
 							case 'forum':
 								this.removeForumEntry(record.get('instanceid'));
@@ -330,10 +328,10 @@ Ext.define('MoodleMobApp.controller.Updater', {
 				if(stored_record.get('fileid') != data.fileid) {
 					var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + course.get('id') + '/file/' + stored_record.get('fileid');
 					var successCallback = function() {
-						//console.log('newer version available, purged resource file: ' + dirPath + '/' + stored_record.get('name'));
+						console.log('newer version available, purged resource file: ' + dirPath + '/' + stored_record.get('name'));
 					};
 					var failCallback = function(error) {
-						// MoodleMobApp.app.dump(error);
+						console.error('Resource; Cannot remove the directory: '+ dirPath, error);
 						Ext.Msg.alert(
 							'Removing directory',
 							'Updater: removing the directory: '+ dirPath +' failed! Code: ' + error.code
@@ -356,10 +354,10 @@ Ext.define('MoodleMobApp.controller.Updater', {
 		var resource = MoodleMobApp.Session.getResourcesStore().findRecord('id', resourceid, 0, false, true, true);
 		var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + course.get('id') + '/file/' + resource.get('fileid');
 		var successCallback = function() {
-			//console.log('purged resource file: ' + dirPath + '/' + resource.get('name'));
+			console.log('purged resource file: ' + dirPath + '/' + resource.get('name'));
 		};
 		var failCallback = function(error) {
-			// MoodleMobApp.app.dump(error);
+			console.error('Resource Entry; Cannot remove the directory: '+ dirPath, error);
 			Ext.Msg.alert(
 				'Removing directory',
 				'Updater: removing the directory: '+ dirPath +' failed! Code: ' + error.code
@@ -412,10 +410,10 @@ Ext.define('MoodleMobApp.controller.Updater', {
 						if(!fileid_found) {
 							var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + course.get('id') + '/file/' + record.get('fileid');
 							var successCallback = function() {
-								//console.log('newer version available, purged old folder file: ' + dirPath + '/' + record.get('name'));
+								console.log('newer version available, purged old folder file: ' + dirPath + '/' + record.get('name'));
 							};
 							var failCallback = function(error) {
-								// MoodleMobApp.app.dump(error);
+								console.error('Folder: Cannot remove the directory: '+ dirPath, error);
 								Ext.Msg.alert(
 									'Removing directory',
 									'Updater: removing the directory: '+ dirPath +' failed! Code: ' + error.code
@@ -442,10 +440,10 @@ Ext.define('MoodleMobApp.controller.Updater', {
 				if(record.get('type') == 'file') {
 					var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + course.get('id') + '/file/' + record.get('fileid');
 					var successCallback = function() {
-						//console.log('purged folder file: ' + dirPath + '/' + record.get('name'));
+						console.log('purged folder file: ' + dirPath + '/' + record.get('name'));
 					};
 					var failCallback = function(error) {
-						// MoodleMobApp.app.dump(error);
+						console.error('Folder Entry: Cannot remove the directory: '+ dirPath, error);
 						Ext.Msg.alert(
 							'Removing directory',
 							'Updater: removing the directory: '+ dirPath +' failed! Code: ' + error.code

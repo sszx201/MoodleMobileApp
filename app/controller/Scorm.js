@@ -114,7 +114,7 @@
 			);
 		}
 		var failCallback = function(error) {
-			// MoodleMobApp.app.dump(error);
+			// console.log(error);
 			Ext.Msg.alert(
 				'Processing the scorm',
 				'Processing the scorm: '+ path +' failed! Code: ' + error.code
@@ -142,12 +142,12 @@
 		// success function
 		var downloadSuccessFunc = function(file) {
 			MoodleMobApp.app.showLoadMask('Extracting');
-			// console.log('download success function start');
+			console.log('download success function start');
 			var extractionSuccessFunc = function(targetPath) {
 					MoodleMobApp.app.hideLoadMask('');
 					var gotFS = function(fileSystem) {
 						// get the filesystem
-						// console.log('requestFileSystem callback ' + targetPath);
+						console.log('requestFileSystem callback ' + targetPath);
 						fileSystem.root.getFile(
 							scormExtractedFileFlag,
 							{
@@ -168,7 +168,7 @@
 					}
 
 					var failCallback = function(error) {
-						// MoodleMobApp.app.dump(error);
+						// console.log(error);
 						Ext.Msg.alert(
 							'Extracting the scorm',
 							'Extrating the scorm failed! Code: ' + error.code
@@ -191,11 +191,9 @@
 				file.toInternalURL(),
 				outputDirectory,
 				function(arg){
-					/*
 					console.log(' >>>>>>>>>>> callback called with arg: ' + arg);
 					console.log(' >>>>>>>>>>> extracting filepath: ' + file.toInternalURL());
 					console.log(' >>>>>>>>>>> extracting directory output: ' + outputDirectory);
-					*/
 					if(arg == 0) { // success
 						extractionSuccessFunc(outputDirectory);
 					} else {
@@ -343,7 +341,7 @@
 		loadManifest: function(manifest) {
 			//this.getScormPanel().setSCORMId(manifest);
 			// bloccata per ora, visto che di fatto è inutile leggere il manifest
-			// console.log('LOADING MANIFEST: %s', manifest);
+			console.log('LOADING MANIFEST: ' + manifest);
 			Ext.Ajax.request({
 				url: manifest,
 				method: 'GET',
@@ -357,8 +355,8 @@
 
 		manifestLoaded: function(data){
 			var root = data.responseXML.documentElement;
-			// console.log('Manifest root: ');
-			// console.log(root);
+			console.log('Manifest root: ');
+			console.log(root);
 
 			this.parseManifest(root);
 		},
@@ -412,8 +410,8 @@
 			data.title = 'manifest';
 			data.leaf = false;
 			//this.fireEvent('itemsUpdated', itemsNodes);
-			// console.log('Manifest parsed; data is here');
-			// console.log(data);
+			console.log('Manifest parsed; data is here');
+			console.log(data);
 			this.setListData(data);
 		},
 
@@ -448,37 +446,37 @@
 		 * load a table of contents - non standard SCORM
 		 * */
 		loadToc: function(toc){
-			// console.log('loadToc with parameter: ' + toc);
+			console.log('loadToc with parameter: ' + toc);
 			if(_transport){
 				_transport.onload = null;
 				_transport = null;
 			}
-			// console.log('creating _transport');
+			console.log('creating _transport');
 			_transport = document.createElement('script');
 			_transport.type = 'text/javascript';
 			var that = this;
-			// console.log('adding a callback');
+			console.log('adding a callback');
 			_transport.onload = function(){
-				// console.log('table of contents loaded');
+				console.log('table of contents loaded');
 				that.parseToc();
 			};
 
 			_transport.onerror = function(error){
-				// console.log('transport error: ', error);
+				console.error('transport error: ', error);
 			};
 			_transport.src = toc; // toc toc! chi è?
-			// console.log('before appendChild');
+			console.log('before appendChild');
 			document.body.appendChild(_transport);
 
 		},
 
 		parseToc: function(){
-			// console.log('parse toc executed, contents = ', window.gXMLBuffer);
+			console.log('parse toc executed, contents = ' + window.gXMLBuffer);
 			var parsedDoc = domParser.parseFromString(window.gXMLBuffer, "text/xml"),
 				data = [],
 				itemsAndBooks = parsedDoc.querySelector('data').childNodes
 			;
-			// console.log('parsedDocs = ', parsedDoc);
+			console.log('parsedDocs = ' + parsedDoc);
 			for(var i = 0, l = itemsAndBooks.length; i < l; i++){
 				data[i] = {
 					href: itemsAndBooks[i].getAttribute('url'),
@@ -486,14 +484,14 @@
 					title: itemsAndBooks[i].getAttribute('name')
 				};
 			}
-			// console.log('parse toc data');
-			// console.log(data);
+			console.log('parse toc data');
+			console.log(data);
 			this.setTocListData(data);
 
 		},
 
 		parseScorm: function(path){
-			// console.log('parsing scorm path: ' + path);
+			console.log('parsing scorm path: ' + path);
 			this.getNavigator().push(this.getScorm());
 			this.resourceTocList = this.getResourceTocList();
 			this.resourceList = this.getResourceList();
@@ -522,45 +520,22 @@
 					that.resourceTocList.setHidden(true);
 
 					scormPanel.setSCORMId(path);
-					// console.log('processing path');
-					// console.log(path);
-					var manifestPath = path.replace('cdvfile://localhost/persistent/', '') + '/imsmanifest.xml';
-					// console.log('Manifest path:');
-					// console.log(manifestPath);
+					console.log('processing path: ' + path);
+					var manifestPath = path.replace('cdvfile://localhost/persistent/', '') + 'imsmanifest.xml';
+					console.log('Manifest path: ' + manifestPath);
 					MoodleMobApp.FileSystem.getFile(
 						manifestPath,
 						function(fileEntry) {
-							// console.log('got the file entry, calling loadManifest function');
-							// console.log(that);
-							that.loadManifest(fileEntry.toInnerURL());
-						},
-						function() {
-							// console.log('cannot load the manifest file');
-						}
-					);
-					/*
-					Supsi.Filesystem.fileSystem.root.getFile(
-						manifestPath,
-						{ create: false, exclusive: false },
-						function(fileEntry) {
 							console.log('got the file entry, calling loadManifest function');
 							console.log(that);
-							that.loadManifest(fileEntry.nativeURL);
+							console.log(fileEntry);
+							that.loadManifest(fileEntry.toInternalURL());
 						},
-						function() {
-							console.log('cannot load the manifest file');
+						function(error) {
+							console.error('cannot load the manifest file', error);
 						}
 					);
-					*/
 				};
-
-			/*
-			var scorm = Ext.create('MoodleMobApp.view.Scorm');
-			console.log('output of the scorm');
-			console.log(scorm);
-			this.getMain().push(scorm);
-			*/
-			//this.getMain().push({ xtype: 'scorm' });
 
 			this.getBookmarkBtn().setStyle('color:white');
 
@@ -574,18 +549,18 @@
 		},
 
 		loadSpine: function(spineSrc, success, fallback){
-			// console.log('loading spine src: ' + spineSrc);
+			console.log('loading spine src: ' + spineSrc);
 			var that = this;
 			// empty the previous compendio
 			window.compendio = {};
 			// load the next compendio
 			var spinePath = spineSrc.replace('cdvfile://localhost/persistent/', '');
-			// console.log('trying to load spine: ' + spinePath);
+			console.log('trying to load spine: ' + spinePath);
 			Supsi.Filesystem.fileSystem.root.getFile(
 				spinePath,
 				{ create: false, exclusive: false },
 				function(fileEntry) {
-					// console.log('adding script element: ' + fileEntry.nativeURL);
+					console.log('adding script element: ' + fileEntry.nativeURL);
 					var _spineTransport = document.createElement('script');
 					_spineTransport.name = 'compendio';
 					_spineTransport.type = 'text/javascript';
@@ -597,8 +572,8 @@
 					_spineTransport.onerror = fallback;
 					document.body.appendChild(_spineTransport);
 				},
-				function() {
-					// console.log('cannot load the book.spine.js file; falling back');
+				function(error) {
+					console.error('cannot load the book.spine.js file; falling back', error);
 					fallback();
 				}
 			);

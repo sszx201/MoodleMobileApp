@@ -39,7 +39,7 @@ Ext.define("MoodleMobApp.view.UploadAssignment", {
 				} if(this.config.settings.resubmit == 0 && this.config.lastSubmission.id > 0) {
 					this.child('panel[name=noresubmit]').show();
 					this.child('fieldset').hide();
-				} if(this.config.lastSubmission != null && this.config.lastSubmission.isfinal) {
+				} if(this.config.lastSubmission != undefined && this.config.lastSubmission != null && this.config.lastSubmission.isfinal) {
 					this.child('panel[name=lastsubmissionwasfinal]').show();
 					this.child('fieldset').hide();
 				}
@@ -57,7 +57,7 @@ Ext.define("MoodleMobApp.view.UploadAssignment", {
 					intro_html+= '</div>';
 
 				// display the intro
-				if(this.config.lastSubmission != null && this.config.lastSubmission.id > 0) {
+				if(this.config.lastSubmission != undefined && this.config.lastSubmission != null && this.config.lastSubmission.id > 0) {
 					intro_html += '<div class="last-submission">Previously submitted files: ';
 					intro_html += '<ul>';
 					for(var i=0; i < this.config.lastSubmission.userfiles.length; ++i) {

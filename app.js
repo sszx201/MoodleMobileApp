@@ -114,9 +114,19 @@ Ext.application({
 
 		// check if the usage agreement has been accepted or the account has been set
 		if( MoodleMobApp.Session.getSettingsStore().first().getData().usageagreement == false ) {
-			Ext.Viewport.add( Ext.create('MoodleMobApp.view.UsageAgreement') );
+			var usageAgreement = Ext.create('MoodleMobApp.view.UsageAgreement');
+			// ios 7 bar fix
+			if( window.device != undefined && parseInt(window.device.version) > 6 ) {
+				usageAgreement.setStyle('margin-top: 20px;');
+			}
+			Ext.Viewport.add(usageAgreement);
 		} else if( MoodleMobApp.Session.getSettingsStore().first().getData().accounttype == '' ) {
-			Ext.Viewport.add( Ext.create('MoodleMobApp.view.Settings') );
+			// ios 7 bar fix
+			var settings = Ext.create('MoodleMobApp.view.Settings') 
+			if( window.device != undefined && parseInt(window.device.version) > 6 ) {
+				settings.setStyle('margin-top: 20px;');
+			}
+			Ext.Viewport.add(settings);
 		}
 
 		// ios 7 bar fix

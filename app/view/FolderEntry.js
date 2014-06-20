@@ -39,6 +39,41 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 		} else {
 			this.addCls('x-file-icon');
 		}
-	}
+
+		if(record.get('mime') != 'inode/directory'){
+			var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + record.get('fileid');
+			var filePath = '';
+			if(record.get('mime') == 'application/zip') {
+				filePath = dirPath + '/_archive_extracted_';
+			} else {
+				filePath = dirPath + '/' + record.get('name').split(' ').join('_');
+			}
+			var self = this;
+			MoodleMobApp.FileSystem.getFile(
+				filePath,
+				function() {
+					self.setCached(true);
+				},
+				function() {
+					self.setCached(false);
+				}
+			);
+		}
+	},
+
+	setCached: function(isCached) {
+		this.config.cached = isCached;
+		var cachedFlag = ' <img src="resources/images/download.png"/>';
+		if(isCached) {
+			console.log(this.getRecord().get('name') + ' is cached');
+			this.down('#mime').setHtml(this.down('#mime').getHtml() + cachedFlag);
+		} else {
+			this.down('#mime').setHtml(this.down('#mime').getHtml().replace(cachedFlag, ''));
+		}
+	},
+
+	getCached: function() {
+		return this.config.cached;
+	},
 });
 

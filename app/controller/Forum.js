@@ -208,7 +208,7 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		var create_discussion_result_store = MoodleMobApp.WebService.createDiscussion(formData, token);
 		MoodleMobApp.app.showLoadMask('Creating...');
 		create_discussion_result_store.on(
-			'load', 
+			'load',
 			function(store, records){
 				if( store.first().raw.exception == undefined) {
 					var scope = this;
@@ -323,35 +323,43 @@ Ext.define('MoodleMobApp.controller.Forum', {
 
 		var token = MoodleMobApp.Session.getCourse().get('token');
 		var create_post_result_store = MoodleMobApp.WebService.createForumPost(formData, token);
-		MoodleMobApp.app.showLoadMask('Saving...');
-		// refresh the discussion content
-		create_post_result_store.on(
-			'load', 
-			function(store, records){
-				if( store.first().raw.exception == undefined) {
-					MoodleMobApp.Session.getForumPostsStore().on(
-						'write',
-						function(){
-							MoodleMobApp.app.hideLoadMask();
-							// show posts
-							this.getNavigator().pop();
-							// refresh posts
-							this.selectDiscussion(this.selected_discussion);
-						},
-						this,
-						{single:true}
-					);
-					this.getApplication().getController('Updater').updateForumPostsStore(this.selected_discussion, token);
-				} else {
-					Ext.Msg.alert(
-						store.first().raw.exception,
-						store.first().raw.message
-					);
-				}
-			},
-			this,
-			{single: true}
- 		);
+
+		if(MoodleMobApp.app.isConnectionAvailable()) {
+			MoodleMobApp.app.showLoadMask('Saving...');
+			// refresh the discussion content
+			create_post_result_store.on(
+				'load',
+				function(store, records){
+					if( store.first().raw.exception == undefined) {
+						MoodleMobApp.Session.getForumPostsStore().on(
+							'write',
+							function(){
+								MoodleMobApp.app.hideLoadMask();
+								// show posts
+								this.getNavigator().pop();
+								// refresh posts
+								this.selectDiscussion(this.selected_discussion);
+							},
+							this,
+							{single:true}
+						);
+						this.getApplication().getController('Updater').updateForumPostsStore(this.selected_discussion, token);
+					} else {
+						Ext.Msg.alert(
+							store.first().raw.exception,
+							store.first().raw.message
+						);
+					}
+				},
+				this,
+				{single: true}
+			);
+		} else {
+			Ext.Msg.alert(
+				'Connection',
+				'No connection available. Sorry, cannot post the reply.'
+			);
+		}
 	},
 
 	replyToPostCancelled: function() {

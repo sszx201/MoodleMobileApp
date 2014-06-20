@@ -99,7 +99,6 @@ Ext.application({
 		console._error = console.error;
 		console.error = function(msg, obj){
 			if(MoodleMobApp.Config.getVerbose()) {
-				//console._error(msg, JSON.stringify(obj));
 				console._error(msg, obj);
 			}
 		};
@@ -205,38 +204,36 @@ Ext.application({
 							fileEntry.toURL(),
 							outputDirectory,
 							function(arg){
-								/*
 								console.log(' >>>>>>>>>>> callback called with arg: ' + arg);
 								console.log(' >>>>>>>>>>> extracting filepath: ' + filePath);
 								console.log(' >>>>>>>>>>> extracting directory output: ' + outputDirectory);
-								*/
 								if(arg == 0) { // success
-									// console.log('archive extracted yaaay');
+									console.log('archive extracted yaaay');
 									MoodleMobApp.app.getController('FileBrowser').openDirectory(filePath.substring(0, filePath.lastIndexOf('.zip')));
 									MoodleMobApp.FileSystem.removeFile(
 										filePath,
 											function(arg) {
-												// console.log('archive removed'); console.log(arg);
+												console.log('archive removed'); console.log(arg);
 											},
 											function(error){
 												Ext.Msg.alert(
 													'Removing File',
 													'Removing the file: '+ filePath +' failed! Code: ' + error.code
 												);
-												//console.log('removing the archive failed'); console.log(error);
+												console.log('removing the archive failed'); console.log(error);
 											}
 									);
 									MoodleMobApp.FileSystem.createFile(
 										dirPath+'/_archive_extracted_',
 										function(arg) {
-											// console.log('flag created'); console.log(arg);
+											console.log('flag created'); console.log(arg);
 										},
 										function(error){
 											Ext.Msg.alert(
 												'Extracting Zip File',
 												'Registering the extraction of the zip file: '+ filePath +' failed! Code: ' + error.code
 											);
-											// console.log('creating the flag failed'); console.log(error);
+											console.log('creating the flag failed'); console.log(error);
 										});
 								} else {
 									Ext.Msg.alert(
@@ -381,7 +378,7 @@ Ext.application({
 	startSkype: function(list) { },
 
 	openURL: function(urladdr) {
-		// console.log('===> Opening URL: '+urladdr);
+		console.log('===> Opening URL: '+urladdr);
 		return window.open(urladdr, '_blank', 'location=yes,enableViewportScale=yes');
 	},
 
@@ -394,6 +391,7 @@ Ext.application({
 			navigator.userAgent.match(/(iPhone|iPod|iPad)/) ||
 			navigator.userAgent.match(/Android/)
 		) { // check connection
+			//console.log(':::::::: CONNECTION CHECK :: Connection type: ' + navigator.connection.type);
 			if(navigator.connection.type == Connection.NONE || navigator.connection.type == Connection.UNKNOWN ) {
 				if(!MoodleMobApp.Session.getConnectionAvailabilityWarningIssued()) {
 					Ext.Msg.alert(
@@ -402,9 +400,9 @@ Ext.application({
 					);
 					// hide the loading screen if available
 					// in order to avoid the loading screen blocking the app
-					MoodleMobApp.app.hideLoadMask();
 					MoodleMobApp.Session.setConnectionAvailabilityWarningIssued(true);
 				}
+				MoodleMobApp.app.hideLoadMask();
 				return false;
 			} else {
 				MoodleMobApp.Session.setConnectionAvailabilityWarningIssued(false);

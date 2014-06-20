@@ -27,7 +27,6 @@ Ext.define('MoodleMobApp.controller.Resource', {
 		if(record.get('modname') === 'resource'){
 			var resource = MoodleMobApp.Session.getResourcesStore().findRecord('id', record.get('instanceid'), 0, false, true, true);
 			if(resource.get('filemime').indexOf('html') !== -1) {
-				//winref = MoodleMobApp.app.openMoodlePage(MoodleMobApp.Config.getResourceViewUrl()+'?id='+record.get('id'), record.get('display'));
 				winref = this.openHtmlResource(MoodleMobApp.Config.getResourceViewUrl()+'?id='+record.get('id'), record.get('display'));
 			} else {
 				this.getFile(resource);

@@ -89,11 +89,34 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 										'<span class="x-post-attachment-size">'+
 											attachments[i].filesize+'&nbsp;KB'+
 										'</span>'+
+										'<span id="attachment_'+attachments[i].fileid+'" style="display: none"> <img src="resources/images/download.png"/></span>'+
 									'</li>';
 			}
 			attachment_list += '</ul>';
-
 			this.down('#message').setHtml(record.get('message')+attachment_list);
+
+			// mark the attachments that are in cache
+			Ext.each(attachments, function(attachment) {
+				var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + attachment.fileid;
+				var filePath = '';
+				if(attachment.mime == 'application/zip') {
+					filePath = dirPath + '/_archive_extracted_';
+				} else {
+					filePath = dirPath + '/' + attachment.filename.split(' ').join('_');
+				}
+				var self = this;
+				MoodleMobApp.FileSystem.getFile(
+					filePath,
+					function() {
+						setTimeout(function(){
+							document.getElementById('attachment_'+attachment.fileid).style.display = 'inline';
+						}, 1000);
+					},
+					function() {
+					}
+				);
+			});
+
 		} else {
 			this.down('#message').setHtml(record.get('message'));
 		}

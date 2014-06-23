@@ -74,6 +74,6 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 
 	getCached: function() {
 		return this.config.cached;
-	},
+	}
 });
 

@@ -92,7 +92,7 @@ Ext.define("MoodleMobApp.view.Module", {
 
 	getCached: function() {
 		return this.config.cached;
-	},
+	}
 
 });
 

@@ -31,6 +31,10 @@ Ext.define('MoodleMobApp.controller.Account', {
 
 		if(!courseNavigatorShown) {
 			var courseNavigator = Ext.create('MoodleMobApp.view.CourseNavigator');
+			// ios 7 bar fix
+			if( window.device != undefined && parseInt(window.device.version) > 6 ) {
+				courseNavigator.setStyle('margin-top: 20px;');
+			}
 			Ext.Viewport.add(courseNavigator);
 			Ext.Viewport.setActiveItem(courseNavigator);
 		}

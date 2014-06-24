@@ -89,7 +89,8 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 										'<span class="x-post-attachment-size">'+
 											attachments[i].filesize+'&nbsp;KB'+
 										'</span>'+
-										'<span id="attachment_'+attachments[i].fileid+'" style="display: none"> <img src="resources/images/download.png"/></span>'+
+										'<span id="online_attachment_'+attachments[i].fileid+'"> <img src="resources/images/online.png"/></span>'+
+										'<span id="cached_attachment_'+attachments[i].fileid+'" style="display: none"> <img src="resources/images/download.png"/></span>'+
 									'</li>';
 			}
 			attachment_list += '</ul>';
@@ -109,7 +110,8 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 					filePath,
 					function() {
 						setTimeout(function(){
-							document.getElementById('attachment_'+attachment.fileid).style.display = 'inline';
+							document.getElementById('online_attachment_'+attachment.fileid).style.display = 'none';
+							document.getElementById('cached_attachment_'+attachment.fileid).style.display = 'inline';
 						}, 1000);
 					},
 					function() {

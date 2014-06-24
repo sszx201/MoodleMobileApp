@@ -63,12 +63,19 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 
 	setCached: function(isCached) {
 		this.config.cached = isCached;
+		var onlineFlag = ' <img src="resources/images/online.png"/>';
 		var cachedFlag = ' <img src="resources/images/download.png"/>';
 		if(isCached) {
-			console.log(this.getRecord().get('name') + ' is cached');
-			this.down('#mime').setHtml(this.down('#mime').getHtml() + cachedFlag);
+			var html = this.down('#mime').getHtml();
+			html.replace(onlineFlag, '');
+			html += cachedFlag;
+			this.down('#mime').setHtml(html);
 		} else {
-			this.down('#mime').setHtml(this.down('#mime').getHtml().replace(cachedFlag, ''));
+			var html = this.down('#mime').getHtml();
+			html.replace(cachedFlag, '');
+			html.replace(onlineFlag, '');
+			html += onlineFlag;
+			this.down('#mime').setHtml(html);
 		}
 	},
 

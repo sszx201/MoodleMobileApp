@@ -163,17 +163,20 @@ Ext.application({
 
 	// file is an object such as:
 	// {"name": "filename", "id": "file id number", "mime":"mime/type"}
-	downloadFile: function(file) {
+	downloadFile: function(file, fileDownloadedCallback) {
 		file.name = file.name.split(' ').join('_');
 		var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + file.fileid;
 		var filePath = dirPath + '/' + file.name;
 
-		fetchFunction = function(successCallback) {
+		var fetchFunction = function(successCallback) {
 			if(MoodleMobApp.app.isConnectionAvailable()) {
 				MoodleMobApp.WebService.getFile(
 						file,
 						dirPath,
-						successCallback,
+						function(fileEntry) {
+							successCallback(fileEntry);
+							fileDownloadedCallback();
+						},
 						MoodleMobApp.Session.getCourse().get('token')
 					);
 			} else {

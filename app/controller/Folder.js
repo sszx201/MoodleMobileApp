@@ -131,7 +131,7 @@ Ext.define('MoodleMobApp.controller.Folder', {
 			this.getNavigator().push(this.getFolder());
 		} else if(entry.get('type') == 'file'){
 			var file = entry.getData();
-			MoodleMobApp.app.downloadFile(file);
+			MoodleMobApp.app.downloadFile(file, function() { target.setCached(true); });
 		}
 	},
 

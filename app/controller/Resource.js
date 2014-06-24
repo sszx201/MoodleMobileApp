@@ -29,18 +29,18 @@ Ext.define('MoodleMobApp.controller.Resource', {
 			if(resource.get('filemime').indexOf('html') !== -1) {
 				winref = this.openHtmlResource(MoodleMobApp.Config.getResourceViewUrl()+'?id='+record.get('id'), record.get('display'));
 			} else {
-				this.getFile(resource);
+				this.getFile(resource, target);
 			}
 		}
 	},
 
-	getFile: function(resource){
+	getFile: function(resource, target){
 		var file = {
 			name: resource.get('filename'),
 			fileid: resource.get('fileid'),
 			mime: resource.get('filemime')
 		};
-		MoodleMobApp.app.downloadFile(file);
+		MoodleMobApp.app.downloadFile(file, function() { target.setCached(true); });
 	},
 	// processes the page and extracts the content the best way possible
 	openHtmlResource: function(urladdr, displayMode) {

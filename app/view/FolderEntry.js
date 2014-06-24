@@ -66,16 +66,9 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 		var onlineFlag = ' <img src="resources/images/online.png"/>';
 		var cachedFlag = ' <img src="resources/images/download.png"/>';
 		if(isCached) {
-			var html = this.down('#mime').getHtml();
-			html.replace(onlineFlag, '');
-			html += cachedFlag;
-			this.down('#mime').setHtml(html);
+			this.down('#mime').setHtml(this.getRecord().get('mime') + cachedFlag);
 		} else {
-			var html = this.down('#mime').getHtml();
-			html.replace(cachedFlag, '');
-			html.replace(onlineFlag, '');
-			html += onlineFlag;
-			this.down('#mime').setHtml(html);
+			this.down('#mime').setHtml(this.getRecord().get('mime') + onlineFlag);
 		}
 	},
 

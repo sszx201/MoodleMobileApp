@@ -92,16 +92,9 @@ Ext.define("MoodleMobApp.view.Module", {
 		var onlineFlag = ' <img src="resources/images/online.png"/>';
 		var cachedFlag = ' <img src="resources/images/download.png"/>';
 		if(isCached) {
-			var html = this.down('#modname').getHtml();
-			html.replace(onlineFlag, '');
-			html += cachedFlag;
-			this.down('#modname').setHtml(html);
+			this.down('#modname').setHtml(this.getRecord().get('modname') + cachedFlag);
 		} else {
-			var html = this.down('#modname').getHtml();
-			html.replace(cachedFlag, '');
-			html.replace(onlineFlag, '');
-			html += onlineFlag;
-			this.down('#modname').setHtml(html);
+			this.down('#modname').setHtml(this.getRecord().get('modname') + onlineFlag);
 		}
 	},
 

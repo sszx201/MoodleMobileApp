@@ -82,7 +82,11 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 			for(var i=0; i < attachments.length; ++i) {
 				var fileobject = '{name:\''+attachments[i].filename+'\', fileid:'+attachments[i].fileid+', mime:\''+attachments[i].mime+'\'}';
 				attachment_list +=  '<li class="x-post-attachment-entry">'+
-										'<span class="x-post-attachment-file" onclick="javascript:MoodleMobApp.app.downloadFile('+fileobject+')">'+
+										'<span class="x-post-attachment-file" onclick="javascript:MoodleMobApp.app.downloadFile('+fileobject+
+										', function() {'+
+											"document.getElementById('online_attachment_"+attachments[i].fileid+"').style.display = 'none';"+
+											"document.getElementById('cached_attachment_"+attachments[i].fileid+"').style.display = 'inline';"+
+										'})">'+
 											attachments[i].filename+
 										'</span>'+
 										'  '+

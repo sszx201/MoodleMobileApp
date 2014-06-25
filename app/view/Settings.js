@@ -65,6 +65,19 @@ Ext.define("MoodleMobApp.view.Settings", {
 										action: 'purgefiles'
 									}
 								]
+							},
+							{
+								xtype: 'fieldset',
+								title: 'Downloads',
+								items: [
+									{
+										xtype: 'checkboxfield',
+										itemId: 'justdownload',
+										name: 'justdownload',
+										labelWidth: '80%',
+										label: "Download files without confirming."
+									}
+								]
 							}
 						]
 					},

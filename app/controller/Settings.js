@@ -5,12 +5,13 @@ Ext.define('MoodleMobApp.controller.Settings', {
 		refs: {
 			settings: 'settings',
 			purgeData: 'settings button[action=purgedata]',
-			purgeFiles: 'settings button[action=purgefiles]'
+			purgeFiles: 'settings button[action=purgefiles]',
+			justDownload: 'settings checkboxfield[name=justdownload]'
 		},
 
 		control: {
 			settings: {
-				show: 'showTheActiveAccount'	
+				show: 'initUserSettings'
 			},
 
 			purgeData: {
@@ -19,11 +20,26 @@ Ext.define('MoodleMobApp.controller.Settings', {
 
 			purgeFiles: {
 				tap: 'confirmPurgeFiles'
+			},
+
+			justDownload: {
+				check: function() {
+					MoodleMobApp.Session.getSettingsStore().first().set('justdownload', true);
+					MoodleMobApp.Session.getSettingsStore().sync();
+				},
+				uncheck: function() {
+					MoodleMobApp.Session.getSettingsStore().first().set('justdownload', false);
+					MoodleMobApp.Session.getSettingsStore().sync();
+				}
 			}
 		}
 	},
 
-  	showTheActiveAccount: function() {
+	initUserSettings: function() {
+		if( MoodleMobApp.Session.getSettingsStore().first().get('justdownload') == true ) {
+			this.getJustDownload().check();
+		}
+		// show the active account
 		this.getSettings().down('tabpanel').setActiveItem(3);
 		this.getSettings().down('tabpanel').setActiveItem(0);
 		// set user accounttype setting

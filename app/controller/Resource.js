@@ -38,7 +38,8 @@ Ext.define('MoodleMobApp.controller.Resource', {
 		var file = {
 			name: resource.get('filename'),
 			fileid: resource.get('fileid'),
-			mime: resource.get('filemime')
+			mime: resource.get('filemime'),
+			size: resource.get('filesize')
 		};
 		MoodleMobApp.app.downloadFile(file, function() { target.setCached(true); });
 	},

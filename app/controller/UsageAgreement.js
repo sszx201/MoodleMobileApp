@@ -3,10 +3,14 @@ Ext.define('MoodleMobApp.controller.UsageAgreement', {
 	
 	config: {
 		refs: {
+			usageAgreement: 'usageagreement',
 			agree: 'usageagreement button[action=agree]',
 			disagree: 'usageagreement button[action=disagree]'
 		},
 		control: {
+		   usageAgreement:  {
+				show: 'initUsageAgreement'
+		   },
 		   agree:  {
 				tap: 'registerAgreement'
 		   },
@@ -16,17 +20,19 @@ Ext.define('MoodleMobApp.controller.UsageAgreement', {
 		}
 	},
 
+	initUsageAgreement: function() {
+		if( window.device != undefined && parseInt(window.device.version) > 6 ) {
+			this.getUsageAgreement().setStyle('margin-top: 20px;');
+		}
+	},
+
 	registerAgreement: function() {
 		MoodleMobApp.Session.getSettingsStore().load();
 		MoodleMobApp.Session.getSettingsStore().first().set('usageagreement', true);
 		MoodleMobApp.Session.getSettingsStore().sync();
 		//location.reload();
 		Ext.Viewport.removeAt(0);
-		var settings = Ext.create('MoodleMobApp.view.Settings') 
-		if( window.device != undefined && parseInt(window.device.version) > 6 ) {
-			settings.setStyle('margin-top: 20px;');
-		}
-		Ext.Viewport.add(settings);
+		Ext.Viewport.add(Ext.create('MoodleMobApp.view.Settings'));
 	},
 
 	registerDisagreement: function() {

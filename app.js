@@ -113,25 +113,9 @@ Ext.application({
 
 		// check if the usage agreement has been accepted or the account has been set
 		if( MoodleMobApp.Session.getSettingsStore().first().getData().usageagreement == false ) {
-			var usageAgreement = Ext.create('MoodleMobApp.view.UsageAgreement');
-			// ios 7 bar fix
-			if( window.device != undefined && parseInt(window.device.version) > 6 ) {
-				usageAgreement.setStyle('margin-top: 20px;');
-			}
-			Ext.Viewport.add(usageAgreement);
+			Ext.Viewport.add(Ext.create('MoodleMobApp.view.UsageAgreement'));
 		} else if( MoodleMobApp.Session.getSettingsStore().first().getData().accounttype == '' ) {
-			// ios 7 bar fix
-			var settings = Ext.create('MoodleMobApp.view.Settings') 
-			if( window.device != undefined && parseInt(window.device.version) > 6 ) {
-				settings.setStyle('margin-top: 20px;');
-			}
-			Ext.Viewport.add(settings);
-		}
-
-		// ios 7 bar fix
-		if( window.device != undefined && parseInt(window.device.version) > 6 ) {
-			document.body.style.backgroundColor = "white";
-			document.getElementById('course_navigator').style.marginTop = "20px";
+			Ext.Viewport.add(Ext.create('MoodleMobApp.view.Settings'));
 		}
 
 		// Catch anchor clicks. Force opening in new windows.

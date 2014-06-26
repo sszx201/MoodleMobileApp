@@ -56,6 +56,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			gradesButton: { tap: 'showGrades' },
 			calendarButton: { tap: 'showCalendarEvents' },
 			navigator:  {
+				show: 'initCourseNavigator',
 				pop: 'updateSideMenuStatus',
 				courseUpdated: 'showCourse'
 			},
@@ -71,6 +72,12 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 	init: function() {
 		Ext.c = this;
 		this.current_course = null;
+	},
+
+	initCourseNavigator: function() {
+		if( window.device != undefined && parseInt(window.device.version) > 6 ) {
+			this.getNavigator().setStyle('margin-top: 20px;');
+		}
 	},
 
 	toggleSideMenu: function() {

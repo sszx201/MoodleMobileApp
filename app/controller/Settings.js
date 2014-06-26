@@ -36,9 +36,19 @@ Ext.define('MoodleMobApp.controller.Settings', {
 	},
 
 	initUserSettings: function() {
+		// ios 7 top bar check
+		if( window.device != undefined && parseInt(window.device.version) > 6 ) {
+			if(this.getSettings().getParent().xtype == 'viewport') {
+				this.getSettings().setStyle('margin-top: 20px;'); // Settings view is not embedded
+			} else {
+				this.getSettings().setStyle('margin-top: 0px;'); // Settings view is embedded
+			}
+		}
+
 		if( MoodleMobApp.Session.getSettingsStore().first().get('justdownload') == true ) {
 			this.getJustDownload().check();
 		}
+
 		// show the active account
 		this.getSettings().down('tabpanel').setActiveItem(3);
 		this.getSettings().down('tabpanel').setActiveItem(0);

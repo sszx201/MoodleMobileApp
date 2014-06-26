@@ -75,6 +75,7 @@ Ext.define("MoodleMobApp.view.Settings", {
 										itemId: 'justdownload',
 										name: 'justdownload',
 										labelWidth: '80%',
+										labelWrap: true,
 										label: "Download files without confirming."
 									}
 								]

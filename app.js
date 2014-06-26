@@ -273,15 +273,16 @@ Ext.application({
 			// justdownload preference.
 			if(MoodleMobApp.Session.getSettingsStore().first().get('justdownload') != true) {
 				var msgBox = Ext.create('Ext.MessageBox', {
-					width: 400,
+					maxWidth: '95%',
 					items: [
 						{
 							xtype: 'checkboxfield',
 							style: 'background-color: black',
 							labelCls: 'messagebox-checkbox',
-							docked: 'bottom',
 							labelWidth: '80%',
+							labelWrap: true,
 							label: "Download without asking again.",
+							docked: 'bottom',
 							listeners: {
 								check: function() {
 									MoodleMobApp.Session.getSettingsStore().first().set('justdownload', true);

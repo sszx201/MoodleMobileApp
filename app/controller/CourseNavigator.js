@@ -93,6 +93,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		//this.toggleSideMenu();
 		// display modules
 		if(typeof this.getSettings() == 'object') {
+			this.getSettings().setStyle(''); // remove the top bar; ios7 fix
 			this.getNavigator().push(this.getSettings());
 		} else {
 			this.getNavigator().push({

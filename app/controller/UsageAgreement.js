@@ -22,7 +22,11 @@ Ext.define('MoodleMobApp.controller.UsageAgreement', {
 		MoodleMobApp.Session.getSettingsStore().sync();
 		//location.reload();
 		Ext.Viewport.removeAt(0);
-		Ext.Viewport.add(Ext.create('MoodleMobApp.view.Settings'));
+		var settings = Ext.create('MoodleMobApp.view.Settings') 
+		if( window.device != undefined && parseInt(window.device.version) > 6 ) {
+			settings.setStyle('margin-top: 20px;');
+		}
+		Ext.Viewport.add(settings);
 	},
 
 	registerDisagreement: function() {

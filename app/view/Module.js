@@ -15,6 +15,30 @@ Ext.define("MoodleMobApp.view.Module", {
 				itemId: 'modname',
 				xtype: 'component',
 				cls: 'x-course-module-status'
+			},
+			{
+				itemId: 'intro',
+				xtype: 'component',
+				cls: 'x-course-module-intro',
+				docked: 'bottom',
+				styleHtml: true,
+				hidden: true
+			},
+			{
+				itemId: 'introButton',
+				xtype: 'button',
+				baseCls: 'x-course-module-info',
+				docked: 'right',
+				listeners: {
+					tap: function(btn, e, opts) {
+						e.stopPropagation();
+						if(btn.getParent().down('#intro').isHidden()) {
+							btn.getParent().down('#intro').show();
+						} else {
+							btn.getParent().down('#intro').hide();
+						}
+					}
+				}
 			}
 		]
 	},
@@ -83,6 +107,12 @@ Ext.define("MoodleMobApp.view.Module", {
 						self.setCached(false);
 					}
 				);
+			}
+
+			// intro section
+			this.down('#intro').setHtml(record.get('intro'));
+			if(record.get('intro') == "" || record.get('intro') == null) {
+				this.down('#introButton').hide();
 			}
 		} 
 	},

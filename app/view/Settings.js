@@ -10,6 +10,7 @@ Ext.define("MoodleMobApp.view.Settings", {
 	],
 
 	config: {
+		title: '',
 		layout: {
 			type: "vbox"
 		},
@@ -17,11 +18,6 @@ Ext.define("MoodleMobApp.view.Settings", {
 			flex: 1
 		},
 		items: [
-			{
-				docked: 'top',
-				xtype: 'titlebar',
-				title: 'Settings'
-			},
 			{
 				xtype: 'tabpanel',
 				tabBar: {
@@ -95,5 +91,13 @@ Ext.define("MoodleMobApp.view.Settings", {
 				html: MoodleMobApp.Config.getVersion()
 			}
 		]
+	},
+
+	getTitle: function() {
+		return this.title;
+	},
+
+	setTitle: function(title) {
+		this.title = title;
 	}
 });

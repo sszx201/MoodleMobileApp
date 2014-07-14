@@ -101,11 +101,12 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		// display modules
 		if(typeof this.getSettings() == 'object') {
 			this.getSettings().setStyle(''); // remove the top bar; ios7 fix
+			this.getSettings().setTitle('Settings');
 			this.getNavigator().push(this.getSettings());
 		} else {
-			this.getNavigator().push({
-				xtype: 'settings'
-			});
+			var settings = Ext.create('MoodleMobApp.view.Settings');
+			settings.setTitle('Settings');
+			this.getNavigator().push(settings);
 		}
 	},
 

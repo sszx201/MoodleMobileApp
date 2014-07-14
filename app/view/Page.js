@@ -40,5 +40,15 @@ Ext.define("MoodleMobApp.view.Page", {
 				this.child('panel[name=content]').setHtml(this.getRecord().get('content'));
 			}
 		}
-	}
+	},
+
+	getTitle: function() {
+		return this.title;
+	},
+
+	setTitle: function(title) {
+		this.title = title;
+	},
+
+
 });

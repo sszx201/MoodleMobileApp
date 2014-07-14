@@ -40,6 +40,7 @@ Ext.define('MoodleMobApp.controller.Page', {
 		}
 		this.getNavigator().push({
 			xtype: 'page',
+			title: page.get('name'),
 			record: page
 		});
 	}

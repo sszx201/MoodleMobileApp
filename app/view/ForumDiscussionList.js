@@ -28,6 +28,14 @@ Ext.define("MoodleMobApp.view.ForumDiscussionList", {
 		]
 	},
 
+	getTitle: function() {
+		return this.title;
+	},
+
+	setTitle: function(title) {
+		this.title = title;
+	},
+
 	getIntro: function() {
 		return this.down('container[cls=forum-intro]').getHtml();
 	},

@@ -79,12 +79,14 @@ Ext.define('MoodleMobApp.controller.Forum', {
 
 		// display discussions
 		if(typeof this.getDiscussionList() == 'object') {
+			this.getDiscussionList().setTitle(forum.get('name'));
 			this.getDiscussionList().setIntro(forum.get('intro'));
 			this.getDiscussionList().setStore(forum_discussions);
 			this.getNavigator().push(this.getDiscussionList());
 		} else {
 			this.getNavigator().push({
 				xtype: 'forumdiscussionlist',
+				title: forum.get('name'),
 				store: forum_discussions,
 				intro: this.selected_forum.get('intro')
 			});

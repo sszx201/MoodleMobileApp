@@ -7,6 +7,7 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
    	
 	config: {
 		refs: {
+			navigator: 'coursenavigator',
 			form: 'manualaccount',
 			save: 'manualaccount button[action=save]'
 		},
@@ -40,7 +41,10 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 		MoodleMobApp.Session.getSettingsStore().data.first().set('accounttype', 'manual');
 		MoodleMobApp.Session.getSettingsStore().first().setDirty();
 		MoodleMobApp.Session.getSettingsStore().sync();
-		
+
+		if(typeof this.getNavigator() == 'object') {
+			this.getNavigator().pop();
+		}
 		// authenticate
 		this.init();
 	},

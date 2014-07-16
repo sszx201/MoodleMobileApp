@@ -7,6 +7,7 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 		],
 
 		refs: {
+			navigator: 'coursenavigator',
 			form: 'aaiaccount',
 			save: 'aaiaccount button[action=save]'
 		},
@@ -78,6 +79,10 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 		// set user accounttype setting
 		MoodleMobApp.Session.getSettingsStore().first().set('accounttype', 'aai');
 		MoodleMobApp.Session.getSettingsStore().sync();
+
+		if(typeof this.getNavigator() == 'object') {
+			this.getNavigator().pop();
+		}
 
 		// authenticate
 		this.init();

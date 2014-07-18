@@ -7,9 +7,9 @@ Ext.define("MoodleMobApp.view.CalendarEvent", {
 		// map records to the DataItem
 		items: [
 			{
-				itemId: 'description',
+				itemId: 'name',
 				xtype: 'component',
-				cls: 'x-calendar-event-description'
+				cls: 'x-calendar-event-name'
 			},
 			{
 				itemId: 'timestart',
@@ -20,6 +20,12 @@ Ext.define("MoodleMobApp.view.CalendarEvent", {
 				itemId: 'timeduration',
 				xtype: 'component',
 				cls: 'x-calendar-event-timeduration'
+			},
+			{
+				itemId: 'description',
+				xtype: 'component',
+				cls: 'x-calendar-event-description',
+				hidden: true
 			}
 		]
 	},
@@ -27,6 +33,7 @@ Ext.define("MoodleMobApp.view.CalendarEvent", {
 	updateRecord: function(record) {
 		// this function is called also when a DataItem is destroyed or the record is removed from the store
 		// the check bellow avoids the running of the function when it is null
+		this.down('#name').setHtml(record.get('name'));
 		this.down('#description').setHtml(record.get('description'));
 		// set the dates and duration
 		if(record == null) { return; } 

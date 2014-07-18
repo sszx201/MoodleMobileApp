@@ -256,6 +256,25 @@ Ext.define('MoodleMobApp.controller.Updater', {
 	},
 
 	updateForumDiscussionsStore: function(course, data) {
+		// purge the removed discussions
+		MoodleMobApp.Session.getForumDiscussionsStore().each(
+				function(record) {
+					var record_removed = true;
+					for(var i=0; i < data.length; ++i) {
+						if(data[i].id == record.get('id')) {
+							record_removed = false;
+							break;
+						}
+					}
+					// purge record if removed
+					if(record_removed) {
+						console.log('Discussion removed');
+						console.log(record.getData());
+						this.removeForumDiscussion(record);
+					}
+				}, this
+			);
+
 		Ext.each(data, function(record) {
 			var stored_record = MoodleMobApp.Session.getForumDiscussionsStore().findRecord('id', record.id, null, false, true, true);
 			if(stored_record == null) {
@@ -269,6 +288,23 @@ Ext.define('MoodleMobApp.controller.Updater', {
 	},
 
 	updateForumPostsStore: function(course, data) {
+		// purge the removed discussions
+		MoodleMobApp.Session.getForumPostsStore().each(
+				function(record) {
+					var record_removed = true;
+					for(var i=0; i < data.length; ++i) {
+						if(data[i].id == record.get('id')) {
+							record_removed = false;
+							break;
+						}
+					}
+					// purge record if removed
+					if(record_removed) {
+						MoodleMobApp.Session.getForumPostsStore().remove(record);
+					}
+				}, this
+			);
+
 		Ext.each(data, function(record) {
 			// fix indentation
 			var parentid = record.parent;
@@ -298,22 +334,30 @@ Ext.define('MoodleMobApp.controller.Updater', {
 				if(entry.get('forum') == forumid) { return true; }
 			}).each(
 				function(discussion) {
-					MoodleMobApp.Session.getForumPostsStore().queryBy(
-						function(entry, id) {
-							if(entry.get('discussion') == discussion.get('id')) { return true; }
-						}).each(
-							function(post) {
-								// remove post
-								MoodleMobApp.Session.getForumPostsStore().remove(post);
-							}
-						);
-						// remove discussion
-						MoodleMobApp.Session.getForumDiscussionsStore().remove(discussion);
+					this.removeForumDiscussion(discussion);
 				}, this
 			);
 		MoodleMobApp.Session.getForumDiscussionsStore().sync();
 		MoodleMobApp.Session.getForumPostsStore().sync();
 	},
+
+	removeForumDiscussion: function(discussion) {
+		MoodleMobApp.Session.getForumPostsStore().queryBy(
+			function(entry, id) {
+				if(entry.get('discussion') == discussion.get('id')) { return true; }
+			}).each(
+				function(post) {
+					// remove post
+					MoodleMobApp.Session.getForumPostsStore().remove(post);
+				}
+			);
+			// remove discussion
+			MoodleMobApp.Session.getForumDiscussionsStore().remove(discussion);
+			MoodleMobApp.Session.getForumDiscussionsStore().sync();
+			MoodleMobApp.Session.getForumPostsStore().sync();
+	},
+
+
 
 	updateResourcesStore: function(course, data) {
 		var store_updated = false;

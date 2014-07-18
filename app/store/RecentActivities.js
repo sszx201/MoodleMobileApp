@@ -10,7 +10,15 @@ Ext.define('MoodleMobApp.store.RecentActivities', {
 		storeId: 'recentactivities',
 		model: 'MoodleMobApp.model.RecentActivity',
 		groupField: 'courseid',
-		sorters: 'courseid',
+		sorters: [
+			{
+				property: 'courseid'
+			},
+			{
+				property: 'timecreated',
+				direction: 'DESC'
+			}
+		],
 		autoLoad: true,
 		//autoSync: true,
 		proxy : {

@@ -51,12 +51,16 @@ Ext.define('MoodleMobApp.controller.Forum', {
 				checkActivity: function(record) {
 					if(record.get('modname') == 'forum') {
 						var discussion_record = MoodleMobApp.Session.getForumDiscussionsStore().findRecord('id', record.get('instanceid'));
-						if(discussion_record != undefined) {
+						if(discussion_record != undefined && discussion_record != null) {
 							this.selectDiscussion(discussion_record);
+						} else {
+							Ext.Msg.alert(
+								'Forum content',
+								'This forum content is not available anymore. It was moved or deleted.'
+							);
 						}
 					}
 				}
-
 			}
 		}
 	},
@@ -117,10 +121,14 @@ Ext.define('MoodleMobApp.controller.Forum', {
 
 							// if the discusison is not visible by any group the check the grouping
 							if(!visibleByGroup && parseInt(record.get('groupid')) == -1) {
-								for(var i=0; i < groupings.getCount(); ++i) {
-									if(	parseInt(groupings.getAt(i).get('id')) == parseInt(this.selected_forum.get('groupingid')) ) {
-										forum_discussions.add(record);
-										break;
+								if(parseInt(this.selected_forum.get('groupingid')) == 0 || groupings.getCount() == 0) {
+									forum_discussions.add(record);
+								} else {
+									for(var i=0; i < groupings.getCount(); ++i) {
+										if(parseInt(groupings.getAt(i).get('id')) == parseInt(this.selected_forum.get('groupingid'))) {
+											forum_discussions.add(record);
+											break;
+										}
 									}
 								}
 							}

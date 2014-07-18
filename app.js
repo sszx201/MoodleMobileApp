@@ -89,6 +89,7 @@ Ext.application({
 
     launch: function() {
 		// app log
+		/*
 		console._log = console.log;
 		console.log = function(msg){
 			if(MoodleMobApp.Config.getVerbose()) {
@@ -102,6 +103,7 @@ Ext.application({
 				console._error(msg, obj);
 			}
 		};
+		*/
 
 		// add the architecture related extensions
 		// this code is located under js/[arch]/extensions.js

@@ -11,6 +11,16 @@ Ext.define("MoodleMobApp.view.CalendarEvents", {
 		store: 'calendar_events',
 		emptyText: 'No events available.',
 		useComponents: true,
-		defaultType: 'calendarevent'
+		defaultType: 'calendarevent',
+		listeners: {
+			itemtap: function(view, index, target, record, e, opts) {
+				console.log('click');
+				if(target.down('#description').isHidden()) {
+					target.down('#description').show();
+				} else {
+					target.down('#description').hide();
+				}
+			}
+		}
 	}
 });

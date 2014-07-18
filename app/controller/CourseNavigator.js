@@ -65,7 +65,22 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			contactParticipantsButton: { tap: 'contactParticipants' },
 			clearParticipantsSelectionButton: { tap: 'clearParticipantsSelection' },
 			selectAllParticipantsButton: { tap: 'selectAllParticipants' },
-			networkPickerButton: { tap: 'contactParticipantsWithSelectedNetwork' }
+			networkPickerButton: { tap: 'contactParticipantsWithSelectedNetwork' },
+			recentActivityList: {
+				checkActivity: function(record) {
+					if(record.get('modname') == 'calendar_event') {
+						var calendar_event = MoodleMobApp.Session.getCalendarEventsStore().findRecord('id', record.get('reference'));
+						if(calendar_event != undefined && calendar_event != null) {
+							this.showCalendarEvents();
+						} else {
+							Ext.Msg.alert(
+								'Forum content',
+								'This forum content is not available anymore. It was moved or deleted.'
+							);
+						}
+					}
+				}
+			}
 		}
 	},
 

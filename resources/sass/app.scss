@@ -376,6 +376,13 @@ $border-color: #dedede;
 	background-position-y: 5px;
 }
 
+.x-module-icon-calendar_event {
+	background:url('../images/calendar.png');
+	background-repeat: no-repeat;
+	background-position-x: 0px;
+	background-position-y: 5px;
+}
+
 .x-module-icon-url-gray {
 	background:url('../images/url_gray.png');
 	background-repeat: no-repeat;
@@ -400,13 +407,17 @@ $border-color: #dedede;
 	background-position: right bottom;
 }
 
-.x-course-module-intro {
+.x-course-module-intro,
+.x-calendar-event-description {
 	padding: 10px;
 	margin-top: 3px;
 	margin-left: -30px;
 	border: 2px solid gray;
 	border-radius: 7px;
 	background-color: white;
+}
+.x-calendar-event-description {
+	margin-left: 0px;
 }
 
 .x-grade-data {

@@ -251,6 +251,7 @@ Ext.define('MoodleMobApp.controller.Updater', {
 		// create the stat
 		var modstat = '<img src="resources/images/check.png" /> ';
 		course.set('synchronized', true);
+		course.set('showrecentactivity', true);
 		MoodleMobApp.Session.getCoursesStore().getById(course.get('id')).set('modulestatus', modstat)
 		MoodleMobApp.Session.getCoursesStore().sync();
 	},

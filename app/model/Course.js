@@ -12,6 +12,7 @@ Ext.define('MoodleMobApp.model.Course', {
 			{ name: 'accessallgroups', type: 'int' },
 			{ name: 'token', type: 'string' },
 			{ name: 'synchronized', type: 'boolean', defaultValue: false },
+			{ name: 'showrecentactivity', type: 'boolean', defaultValue: false },
 			{ name: 'modulestatus', type: 'string', defaultValue: '<img src="resources/images/sync.png" />' }
 		]
 	}

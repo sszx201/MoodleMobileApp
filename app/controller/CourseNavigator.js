@@ -181,10 +181,21 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			});
 		}
 		this.setCourseTitle();
+
+		if(
+			MoodleMobApp.Session.getSettingsStore().first().get('showrecentactivity') == true &&
+			this.current_course.get('showrecentactivity') == true &&
+			this.course_recent_activity.getCount() > 0
+		) {
+			var self = this;
+			setTimeout(function() {
+				self.showRecentActivity();
+			}, 500);
+		}
 	},
 
 	//selectModule: function(view, index, target, record) { target.down('#modname').setHtml(target.getRecord().get('modname')); },
-	showRecentActivity: function(button) {
+	showRecentActivity: function() {
 		// display recent activity
 		if(typeof this.getRecentActivityList() == 'object') {
 			this.getRecentActivityList().setStore(this.course_recent_activity);
@@ -197,7 +208,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		}
 	},
 
-	showParticipants: function(button) {
+	showParticipants: function() {
 		var participants = this.getCourseParticipants();
 		// display modules
 		if(typeof this.getParticipants() == 'object') {
@@ -367,7 +378,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		}
 	},
 
-	showGrades: function(button) {
+	showGrades: function() {
 		var grade_items = this.getGradeItems();	
 		// display modules
 		if(typeof this.getGrades() == 'object') {
@@ -394,7 +405,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		return grade_items;
 	},
 
-	showCalendarEvents: function(button) {
+	showCalendarEvents: function() {
 		var calendar_events = this.getCalendarEvents();
 		// display modules
 		if(typeof this.getCalendar() == 'object') {

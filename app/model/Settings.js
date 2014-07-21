@@ -7,7 +7,8 @@ Ext.define('MoodleMobApp.model.Settings', {
 			{ name: 'usageagreement', type: 'boolean' },
 			{ name: 'accounttype', type: 'string' },
 			{ name: 'storeaccount', type: 'boolean' },
-			{ name: 'justdownload', type: 'boolean'}
+			{ name: 'justdownload', type: 'boolean'},
+			{ name: 'showrecentactivity', type: 'boolean'}
 		]
 	}
 });

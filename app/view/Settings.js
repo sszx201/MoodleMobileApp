@@ -37,7 +37,7 @@ Ext.define("MoodleMobApp.view.Settings", {
 						xtype: 'manualaccount'
 					},
 					{
-						title: 'Cache',
+						title: 'App',
 						xtype: 'formpanel',
 						items: [
 							{
@@ -75,7 +75,22 @@ Ext.define("MoodleMobApp.view.Settings", {
 										label: "Download files without confirming."
 									}
 								]
+							},
+							{
+								xtype: 'fieldset',
+								title: 'Show Recent Activities',
+								items: [
+									{
+										xtype: 'checkboxfield',
+										itemId: 'showrecentactivity',
+										name: 'showrecentactivity',
+										labelWidth: '80%',
+										labelWrap: true,
+										label: "Show recent activities after the course syncronisation."
+									}
+								]
 							}
+
 						]
 					},
 					{

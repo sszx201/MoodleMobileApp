@@ -6,7 +6,8 @@ Ext.define('MoodleMobApp.controller.Settings', {
 			settings: 'settings',
 			purgeData: 'settings button[action=purgedata]',
 			purgeFiles: 'settings button[action=purgefiles]',
-			justDownload: 'settings checkboxfield[name=justdownload]'
+			justDownload: 'settings checkboxfield[name=justdownload]',
+			showRecentActivity: 'settings checkboxfield[name=showrecentactivity]'
 		},
 
 		control: {
@@ -31,7 +32,19 @@ Ext.define('MoodleMobApp.controller.Settings', {
 					MoodleMobApp.Session.getSettingsStore().first().set('justdownload', false);
 					MoodleMobApp.Session.getSettingsStore().sync();
 				}
+			},
+
+			showRecentActivity: {
+				check: function() {
+					MoodleMobApp.Session.getSettingsStore().first().set('showrecentactivity', true);
+					MoodleMobApp.Session.getSettingsStore().sync();
+				},
+				uncheck: function() {
+					MoodleMobApp.Session.getSettingsStore().first().set('showrecentactivity', false);
+					MoodleMobApp.Session.getSettingsStore().sync();
+				}
 			}
+
 		}
 	},
 

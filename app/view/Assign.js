@@ -79,7 +79,7 @@ Ext.define("MoodleMobApp.view.Assign", {
 					intro_html+= '</div>';
 				}
 
-				if(this.config.lastSubmission != undefined && this.config.lastSubmission != null && this.config.lastSubmission.id > 0) {
+				if(this.config.lastSubmission != undefined && this.config.lastSubmission != null && this.config.lastSubmission.id > 0 && this.config.lastSubmission.userfiles.length > 0) {
 					intro_html += '<div class="last-submission">Previously submitted files: ';
 					intro_html += '<ul>';
 					for(var i=0; i < this.config.lastSubmission.userfiles.length; ++i) {

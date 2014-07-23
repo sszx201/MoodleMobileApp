@@ -35,6 +35,9 @@
     },
     "sencha.cfg.tpl.merge": {
       "d2e6e42720f88befc892f12df5fd7bab587f7879": "eJxtUDEOwjAM3PsKSzAi6MaUhQfwAhaTujTQNpHtClWof8cpamFgSU53F/sumNK+x47cK59TUaARNRt+Rn641wrPX9m3KJJQG7e9DGV5PGWyCjwdMrjL7g9dFBvQJggkjolYR5BEPtSBBBB87DoEoYSMShW0QRRiDXmJmNorhj70NxvCJHFgb880mpLGfGtDcB1CW4HtI6+RxznpYt7Pg9wn/mzMwZb4uZ71MdsqTYefDp+feQN/i2pK"
+    },
+    "development.properties.merge": {
+      "c45c602c9b6f6f73cace183e9f0bf09c00a3ccf6": "eJytkUuOAjEMBfec4one9w24wyy4QFDc0xbBjhyTEbcfp0F89mRny6l6liccvvl2E44rNyxcCNW0c6aGJNBOZlGgKotjUUOmJV2LoyfjdCoxFx0WymBBgJyas/zOj7k2B6+SOVObw0JtMzw6SEZQKTfwpap5UP5WEpyuXHJQgjecvhL2mToVrRcS34Oks6mMYt5NMfbzYr7l8edWns5DzGrst22vu+QtXjR8BAraFqloyoEZAT7l28cW3i9f4R+b7pUs"
     }
   },
   "targets": {
@@ -261,6 +264,26 @@
     ".sencha/app/sencha.cfg": {
       "source": "sencha.cfg.tpl.merge",
       "version": "d2e6e42720f88befc892f12df5fd7bab587f7879",
+      "parameters": {
+        "viewNamespace": "MoodleMobApp.view",
+        "frameworkName": "touch",
+        "frameworkPath": "touch",
+        "senchadir": ".sencha",
+        "appModels": "",
+        "appControllers": "",
+        "appViews": "",
+        "uniqueId": "2294d896-db25-4dd0-a057-d7c98e35471a",
+        "appName": "MoodleMobApp",
+        "modelNamespace": "MoodleMobApp.model",
+        "name": "MoodleMobApp",
+        "library": "core",
+        "controllerNamespace": "MoodleMobApp.controller",
+        "appStores": ""
+      }
+    },
+    ".sencha/app/development.properties": {
+      "source": "development.properties.merge",
+      "version": "c45c602c9b6f6f73cace183e9f0bf09c00a3ccf6",
       "parameters": {
         "viewNamespace": "MoodleMobApp.view",
         "frameworkName": "touch",

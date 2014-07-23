@@ -153,6 +153,7 @@ Ext.application({
 	downloadFile: function(file, fileDownloadedCallback) {
 		// prepare the filePath
 		file.name = file.name.split(' ').join('_');
+		file.name = file.name.latinise();
 		var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + file.fileid;
 		var filePath = dirPath + '/' + file.name;
 

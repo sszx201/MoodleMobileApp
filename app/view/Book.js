@@ -54,7 +54,7 @@ Ext.define("MoodleMobApp.view.Book", {
 				top: 0,
 				left: 0,
 				height: '100%',
-				width: window.innerWidth,
+				width: '100%',
 				styleHtmlContent: true,
 				html: ''
 			}

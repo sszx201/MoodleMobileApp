@@ -64,12 +64,12 @@ Ext.define('MoodleMobApp.controller.Book', {
 		if(this.getIndex().getLeft() < 0) {
 			this.getIndex().setLeft(0);
 			//this.getContent().element.setWidth(this.getContent().element.width - 250);
-			this.getContent().setWidth(this.getContent().getWidth() - 250);
+			//this.getContent().setWidth(this.getContent().getWidth() - 250);
 			this.getContent().setLeft(250);
 		} else {
 			this.getIndex().setLeft(-250);
 			//this.getContent().element.setWidth(this.getContent().element.width + 250);
-			this.getContent().setWidth(this.getContent().getWidth() + 250);
+			//this.getContent().setWidth(this.getContent().getWidth() + 250);
 			this.getContent().setLeft(0);
 		}
 	},

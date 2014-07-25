@@ -47,8 +47,8 @@ Ext.application({
 		'MoodleMobApp.controller.AaiAccount',
 		'MoodleMobApp.controller.ManualAccount',
 		'MoodleMobApp.controller.CourseNavigator',
-		'MoodleMobApp.controller.Assignment',
-		'MoodleMobApp.controller.Assign', // moodle 2.4 assignment
+		'MoodleMobApp.controller.Assignment', // legacy assignment
+		'MoodleMobApp.controller.Assign',
 		'MoodleMobApp.controller.Forum',
 		'MoodleMobApp.controller.Folder',
 		'MoodleMobApp.controller.Resource',
@@ -130,6 +130,23 @@ Ext.application({
 				window.open(href, '_blank');
 			}
 		}, false);
+
+		// The previous click listener is not enough to cover all the cases
+		// where the app content is replaced do to the window.location.href navigation.
+		// So this piece of code warns the user when the navigation breaks the app.
+		// This happens with the youtube videos where the window.location.href is used
+		// to navigate to the youtube page.
+		window.onbeforeunload = function (e) {
+			var message = "This content is going to be loaded in place of the app content. After the page has been loaded navigating back to the app is not going to be possible anymore.",
+			e = e || window.event;
+			// For IE and Firefox
+			if (e) {
+			  e.returnValue = message;
+			}
+
+			// For Safari
+			return message;
+		};
 
 		// periodic network checker
 		setInterval(MoodleMobApp.app.isConnectionAvailable, 1000);

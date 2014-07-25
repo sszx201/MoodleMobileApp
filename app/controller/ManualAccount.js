@@ -46,7 +46,7 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 			this.getNavigator().pop();
 		}
 		// authenticate
-		this.init();
+		this.attemptAuthentication();
 	},
 
 	// check if the Manual account is the one set
@@ -58,20 +58,17 @@ Ext.define('MoodleMobApp.controller.ManualAccount', {
 		}
 	},
 
-	init: function(app) {
+	attemptAuthentication: function() {
 		// if the account is the active one
 		// authenticate and get the course data
 		if(this.isActiveAccount()) {
-			// proceed if the connection is available
-			if(MoodleMobApp.app.isConnectionAvailable()) {
-				var parameters = {
-					username: MoodleMobApp.Session.getManualAccountStore().first().get('username'),
-					password: MoodleMobApp.Session.getManualAccountStore().first().get('password')
-				};
-				var auth_url = MoodleMobApp.Config.getManualAuthUrl();
+			var parameters = {
+				username: MoodleMobApp.Session.getManualAccountStore().first().get('username'),
+				password: MoodleMobApp.Session.getManualAccountStore().first().get('password')
+			};
+			var auth_url = MoodleMobApp.Config.getManualAuthUrl();
 
-				this.authenticate(auth_url, parameters);
-			}
+			this.authenticate(auth_url, parameters);
 		}
 	}
 });

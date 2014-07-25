@@ -39,52 +39,55 @@ Ext.define('MoodleMobApp.controller.Account', {
 			Ext.Viewport.setActiveItem(courseNavigator);
 		}
 
-		MoodleMobApp.app.showLoadMask('Authenticating...');
+		// proceed if the connection is available
+		if(MoodleMobApp.app.isConnectionAvailable()) {
+			MoodleMobApp.app.showLoadMask('Authenticating...');
 
-		Ext.Ajax.request({
-			url: auth_url,
-			disableCaching: false,
-			method: 'POST',
-			scope: this,
-			params: parameters,
-			success: function(response, opts) {
-				MoodleMobApp.app.hideLoadMask();
-				var data = Ext.decode(response.responseText);
-				if(data.exception == undefined) {
-					// store the username in the Session
-					MoodleMobApp.Session.setUser(Ext.create('MoodleMobApp.model.User', data.user));
+			Ext.Ajax.request({
+				url: auth_url,
+				disableCaching: false,
+				method: 'POST',
+				scope: this,
+				params: parameters,
+				success: function(response, opts) {
+					MoodleMobApp.app.hideLoadMask();
+					var data = Ext.decode(response.responseText);
+					if(data.exception == undefined) {
+						// store the username in the Session
+						MoodleMobApp.Session.setUser(Ext.create('MoodleMobApp.model.User', data.user));
 
-					// remove old entries
-					MoodleMobApp.Session.getCoursesStore().removeAll();
-					MoodleMobApp.Session.getCoursesStore().getProxy().clear();
+						// remove old entries
+						MoodleMobApp.Session.getCoursesStore().removeAll();
+						MoodleMobApp.Session.getCoursesStore().getProxy().clear();
 
-					// add the new entries
-					for(var id in data.courses) {
-						data.courses[id].modulestatus = '<img src="resources/images/sync.png" />';
-						MoodleMobApp.Session.getCoursesStore().add(data.courses[id]);
+						// add the new entries
+						for(var id in data.courses) {
+							data.courses[id].modulestatus = '<img src="resources/images/sync.png" />';
+							MoodleMobApp.Session.getCoursesStore().add(data.courses[id]);
+						}
+						// store data
+						MoodleMobApp.Session.getCoursesStore().sync();
+					} else {
+						Ext.Msg.alert(
+							'Exception: ' + data.exception,
+							'Error: ' + data.message,
+							function() {
+								MoodleMobApp.app.getController('CourseNavigator').showSettings();
+							}
+						);
 					}
-					// store data
-					MoodleMobApp.Session.getCoursesStore().sync();
-				} else {
+				},
+				failure: function(response, opts) {
+					MoodleMobApp.app.hideLoadMask();
 					Ext.Msg.alert(
-						'Exception: ' + data.exception,
-						'Error: ' + data.message,
+						'Authentication request failed',
+						'Response status: ' + response.status,
 						function() {
 							MoodleMobApp.app.getController('CourseNavigator').showSettings();
 						}
 					);
 				}
-			},
-			failure: function(response, opts) {
-				MoodleMobApp.app.hideLoadMask();
-				Ext.Msg.alert(
-					'Authentication request failed',
-					'Response status: ' + response.status,
-					function() {
-						MoodleMobApp.app.getController('CourseNavigator').showSettings();
-					}
-				);
-			}
-		});
+			});
+		}
 	}
 });

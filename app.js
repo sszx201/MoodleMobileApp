@@ -118,6 +118,8 @@ Ext.application({
 			Ext.Viewport.add(Ext.create('MoodleMobApp.view.UsageAgreement'));
 		} else if( MoodleMobApp.Session.getSettingsStore().first().getData().accounttype == '' ) {
 			Ext.Viewport.add(Ext.create('MoodleMobApp.view.Settings'));
+		} else {
+			Ext.Viewport.add(Ext.create('MoodleMobApp.view.CourseNavigator'));
 		}
 
 		// Catch anchor clicks. Force opening in new windows.
@@ -150,6 +152,7 @@ Ext.application({
 
 		// periodic network checker
 		setInterval(MoodleMobApp.app.isConnectionAvailable, 1000);
+		MoodleMobApp.app.isContentUpdatedInterval = setInterval(MoodleMobApp.app.isContentUpdated, 1000);
     },
 
     onUpdated: function() {
@@ -474,6 +477,16 @@ Ext.application({
 			}
 		} else { // assume the app runs on the pc browser
 			return true;
+		}
+	},
+
+	isContentUpdated: function() {
+		if(MoodleMobApp.Session.getContentUpdateStatus() == false && MoodleMobApp.app.isConnectionAvailable()) {
+			// register that the content has been updated in the session
+			MoodleMobApp.Session.setContentUpdateStatus(true);
+			clearInterval(MoodleMobApp.app.isContentUpdatedInterval);
+			MoodleMobApp.app.getController('ManualAccount').attemptAuthentication();
+			MoodleMobApp.app.getController('AaiAccount').attemptAuthentication();
 		}
 	}
 });

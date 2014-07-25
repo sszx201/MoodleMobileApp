@@ -85,7 +85,7 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 		}
 
 		// authenticate
-		this.init();
+		this.attemptAuthentication();
 	},
 
  	// check if the AAI account is the one set
@@ -97,21 +97,18 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 		}
 	},
 
-	init: function(app) {
+	attemptAuthentication: function() {
 		// if the account is the active one
 		// authenticate and get the course data
 		if( this.isActiveAccount() ) {
-			// proceed if the connection is available
-			if(MoodleMobApp.app.isConnectionAvailable()) {
-				var parameters = {
-					username: MoodleMobApp.Session.getAaiAccountStore().first().get('username'),
-					password: MoodleMobApp.Session.getAaiAccountStore().first().get('password'),
-					idp: MoodleMobApp.Session.getAaiAccountStore().first().get('homeorganisation')
-				};
-				var auth_url = MoodleMobApp.Config.getAaiAuthUrl();
+			var parameters = {
+				username: MoodleMobApp.Session.getAaiAccountStore().first().get('username'),
+				password: MoodleMobApp.Session.getAaiAccountStore().first().get('password'),
+				idp: MoodleMobApp.Session.getAaiAccountStore().first().get('homeorganisation')
+			};
+			var auth_url = MoodleMobApp.Config.getAaiAuthUrl();
 
-				this.authenticate(auth_url, parameters);
-			}
+			this.authenticate(auth_url, parameters);
 		}
 	}
   

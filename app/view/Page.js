@@ -48,7 +48,5 @@ Ext.define("MoodleMobApp.view.Page", {
 
 	setTitle: function(title) {
 		this.title = title;
-	},
-
-
+	}
 });

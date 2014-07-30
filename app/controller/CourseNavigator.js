@@ -230,7 +230,9 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 				if( parseInt(record.get('courseid')) == parseInt(this.current_course.get('id')) ) {
 					if (record.get('userid') != null) {
 						var user = MoodleMobApp.Session.getUsersStore().findRecord('id', record.get('userid'));
-						participants.add(user);
+						if(user.get('deleted') == 0) {
+							participants.add(user);
+						}
 					}
 				}
 			}, this

@@ -3,6 +3,51 @@ Ext.define('MoodleMobApp.FileSystem', {
 
 	constructor: function(config) {
   		this.initConfig(config);
+		// prevent the fileCacheDir to be backuped on iCloud
+		if(navigator.userAgent.match(/(iPhone|iPod|iPad)/)) {
+			this.access(
+				function(fs) {
+					fs.root.getDirectory(
+						MoodleMobApp.Config.getFileCacheDir(),
+						{
+							create : true,
+							exclusive : false
+						},
+						function(entry) {
+							if(entry.isDirectory === true) {
+								entry.setMetadata(
+									function() { },
+									function() {
+										Ext.Msg.alert(
+											'File system error',
+											'Cannot disable the iCloud backup for the fileCache directory.'
+										);
+									},
+									{ "com.apple.MobileBackup": 1}
+								);
+							} else {
+								Ext.Msg.alert(
+									'File system error',
+									'Cannot create the fileCache directory and disable the iCloud backup.'
+								);
+							}
+						},
+						function() {
+							Ext.Msg.alert(
+								'File system error',
+								'Cannot read the directory: ' + MoodleMobApp.Cache.getFileCacheDir()
+							);
+						}
+					);
+				},
+				function() {
+					Ext.Msg.alert(
+						'File system error',
+						'Cannot disable the iCloud backup on fileCache directory.'
+					);
+				}
+			);
+		}
   		return this;
 	},
 

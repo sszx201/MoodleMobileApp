@@ -7,7 +7,7 @@ Ext.define("MoodleMobApp.view.About", {
 		cls: 'about',
 		html:    '<div class="title">About the app</div>'
 				+'<div class="content">'
-				+'This is mobile app for the platform iCorsi2. <a href="http://www2.icorsi.ch">eLearning Lab USI</a>'
+				+'This is the mobile app for the platform iCorsi2. '
 				+'It was developed by <a href="http://www.elearninglab.org">eLearning Lab USI</a>. '
 				+'<br /><br />'
 				+'Please help us improve the app.<br />Send us bug reports at <a href="mailto:helpdesk@elearninglab.org">helpdesk@elearninglab.org</a>'

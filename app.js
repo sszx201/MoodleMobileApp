@@ -43,7 +43,6 @@ Ext.application({
 		'MoodleMobApp.controller.Updater',
 		'MoodleMobApp.controller.UsageAgreement',
 		'MoodleMobApp.controller.Settings',
-		'MoodleMobApp.controller.Account',
 		'MoodleMobApp.controller.AaiAccount',
 		'MoodleMobApp.controller.ManualAccount',
 		'MoodleMobApp.controller.CourseNavigator',

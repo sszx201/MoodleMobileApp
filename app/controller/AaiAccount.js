@@ -1,8 +1,9 @@
 Ext.define('MoodleMobApp.controller.AaiAccount', {
-	extend: 'MoodleMobApp.controller.Account',
+	extend: 'Ext.app.Controller',
 
 	config: {
 		models: [
+			'MoodleMobApp.model.User',
 			'MoodleMobApp.model.AaiAccount'
 		],
 
@@ -20,6 +21,10 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 				tap: 'saveAccountData'
 			}	
 		}
+	},
+
+	init: function() {
+		MoodleMobApp.Session.setAaiController(this);
 	},
 
 	loadHomeOrganisationValues: function() {
@@ -80,6 +85,10 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 		MoodleMobApp.Session.getSettingsStore().first().set('accounttype', 'aai');
 		MoodleMobApp.Session.getSettingsStore().sync();
 
+		window.cookies.clear(function() {
+			console.log('Cookies cleared!');
+		});
+
 		if(typeof this.getNavigator() == 'object') {
 			this.getNavigator().pop();
 		}
@@ -101,15 +110,180 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 		// if the account is the active one
 		// authenticate and get the course data
 		if( this.isActiveAccount() ) {
-			var parameters = {
-				username: MoodleMobApp.Session.getAaiAccountStore().first().get('username'),
-				password: MoodleMobApp.Session.getAaiAccountStore().first().get('password'),
-				idp: MoodleMobApp.Session.getAaiAccountStore().first().get('homeorganisation')
-			};
-			var auth_url = MoodleMobApp.Config.getAaiAuthUrl();
-
-			this.authenticate(auth_url, parameters);
+			if(MoodleMobApp.app.isConnectionAvailable()) {
+				MoodleMobApp.app.showLoadMask('Authenticating...');
+				//this.subwindow = window.open(MoodleMobApp.Config.getMoodleUrl(), '_blank', 'hidden=no');
+				//this.subwindow.addEventListener('loadstop', this.getMoodleCookie);
+				this.subwindow = window.open(MoodleMobApp.Config.getAaiAuthUrl(), '_blank', 'hidden=yes');
+				//this.subwindow.addEventListener('loadstop', this.getToWAYFform);
+				this.subwindow.addEventListener('loadstop', this.getToAuthenticationForm);
+				this.subwindow.addEventListener('loadstop', this.checkAuthentication);
+			}
 		}
+	},
+
+	getMoodleCookie: function() {
+		console.log(':: getting moodle cookie ::');
+		MoodleMobApp.Session.getAaiController().subwindow.removeEventListener('loadstop', MoodleMobApp.Session.getAaiController().getMoodleCookie);
+		MoodleMobApp.Session.getAaiController().subwindow.executeScript({
+            code: "document.cookie;"
+        }, function(val) {
+			if(val != undefined && typeof val == "object" && val.length > 0) {
+				document.cookie = val[0];
+				if(MoodleMobApp.Session.getAaiAccountStore().first().get('moodlecookie') == val[0]) {
+					console.log('user is authenticated, no need to store the cookie');
+				} else {
+					console.log('user is not authenticated, store the cookie and authenticate');
+					MoodleMobApp.Session.getAaiAccountStore().first().set('moodlecookie', val[0]);
+					MoodleMobApp.Session.getAaiAccountStore().sync();
+					MoodleMobApp.Session.getAaiController().getToWAYFform();
+				}
+				console.log('output value');
+				console.log(val);
+				console.log('user data');
+				console.log(MoodleMobApp.Session.getAaiAccountStore().first().getData());
+			} else {
+				Ext.Msg.alert(
+					'AAI Error',
+					'The moodle cookie has not been set.'
+				);
+				console.log('The moodle cookie has not been set.');
+			}
+        });
+	},
+
+	checkAuthentication: function() {
+		MoodleMobApp.Session.getAaiController().subwindow.executeScript({
+            code: "var cobject = {cookie: document.cookie, location: document.location.href}; cobject;"
+        }, function(val) {
+			if(val != undefined && typeof val == "object" && val.length > 0) {
+				console.log('===> Authentication check');
+				console.log(val);
+				if(val[0].cookie.indexOf('MoodleSession') == 0 && val[0].location.indexOf(MoodleMobApp.Config.getMoodleUrl()) == 0) {
+					MoodleMobApp.app.hideLoadMask();
+					MoodleMobApp.Session.getAaiAccountStore().first().set('moodlecookie', val[0].cookie);
+					MoodleMobApp.Session.getAaiAccountStore().sync();
+					console.log('User has been authenticated!!! yaaay');
+					// clear all listeners
+					MoodleMobApp.Session.getAaiController().subwindow.removeEventListener('loadstop', MoodleMobApp.Session.getAaiController().checkAuthentication);
+					MoodleMobApp.Session.getAaiController().subwindow.removeEventListener('loadstop', MoodleMobApp.Session.getAaiController().getToAuthenticationForm);
+					MoodleMobApp.Session.getAaiController().subwindow.removeEventListener('loadstop', MoodleMobApp.Session.getAaiController().submitAuthenticationForm);
+					MoodleMobApp.Session.getAaiController().getUpdates();
+				}
+			} else {
+				Ext.Msg.alert(
+					'AAI Error',
+					'Authentication check mechanism failed. No output value.'
+				);
+			}
+        });
+	},
+
+	getToWAYFform: function() {
+		console.log(':: getting to the WAYF form ::');
+		//MoodleMobApp.Session.getAaiController().subwindow.removeEventListener('loadstop', MoodleMobApp.Session.getAaiController().getMoodleCookie);
+		MoodleMobApp.Session.getAaiController().subwindow.removeEventListener('loadstop', MoodleMobApp.Session.getAaiController().getToWAYFform);
+		MoodleMobApp.Session.getAaiController().subwindow.addEventListener('loadstop', MoodleMobApp.Session.getAaiController().getToAuthenticationForm);
+		MoodleMobApp.Session.getAaiController().subwindow.executeScript({
+            code: "window.location.href = '" + MoodleMobApp.Config.getAaiAuthUrl() + "'"
+        }, function(val) {
+			if(val != undefined && typeof val == "object" && val.length > 0) {
+				console.log('output value');
+				console.log(val);
+			} else {
+				Ext.Msg.alert(
+					'AAI Error',
+					'Getting to the WAYF page failed.'
+				);
+			}
+        });
+	},
+
+	getToAuthenticationForm: function() {
+		console.log(':: getting to the authentication form ::');
+		MoodleMobApp.Session.getAaiController().subwindow.removeEventListener('loadstop', MoodleMobApp.Session.getAaiController().getToAuthenticationForm);
+		MoodleMobApp.Session.getAaiController().subwindow.addEventListener('loadstop', MoodleMobApp.Session.getAaiController().submitAuthenticationForm);
+		var idp = MoodleMobApp.Session.getAaiAccountStore().first().get('homeorganisation');
+		MoodleMobApp.Session.getAaiController().subwindow.executeScript({
+            code: "document.querySelectorAll('[value=\""+idp+"\"]')[0].setAttribute('selected', 'selected'); document.getElementsByTagName('select')[0].setAttribute('value', '" + idp + "'); document.getElementsByTagName('form')[0].submit(); document.cookie;"
+        }, function(val) {
+			if(val != undefined && typeof val == "object" && val.length > 0) {
+				console.log('output value');
+				console.log(val);
+			} else {
+				Ext.Msg.alert(
+					'AAI Error',
+					'Getting to the authentication page failed.'
+				);
+			}
+        });
+	},
+
+	submitAuthenticationForm: function() {
+		console.log(':: authenticating ::');
+		MoodleMobApp.Session.getAaiController().subwindow.removeEventListener('loadstop', MoodleMobApp.Session.getAaiController().submitAuthenticationForm);
+		var username = MoodleMobApp.Session.getAaiAccountStore().first().get('username');
+		var password = MoodleMobApp.Session.getAaiAccountStore().first().get('password');
+		MoodleMobApp.Session.getAaiController().subwindow.executeScript({
+            code: "document.getElementsByTagName('input')[0].setAttribute('value', '" + username + "'); document.getElementsByTagName('input')[1].setAttribute('value', '" + password + "'); document.querySelectorAll('[type=\"submit\"]')[0].click(); document.cookie;"
+        }, function(val) {
+			if(val != undefined && typeof val == "object" && val.length > 0) {
+				console.log('output value');
+				console.log(val);
+			} else {
+				Ext.Msg.alert(
+					'AAI Error',
+					'Submitting the user authentication data failed.'
+				);
+			}
+        });
+	},
+
+	getUpdates: function() {
+		//MoodleMobApp.app.showLoadMask('Getting course tokens...');
+		Ext.Ajax.request({
+				url: MoodleMobApp.Config.getUpdatesUrl(),
+				disableCaching: false,
+				method: 'GET',
+				scope: MoodleMobApp.Session.getAaiController(),
+				success: function(response, opts) {
+					//MoodleMobApp.app.hideLoadMask();
+					var data = Ext.decode(response.responseText);
+					if(data.exception == undefined) {
+						// store the username in the Session
+						MoodleMobApp.Session.setUser(Ext.create('MoodleMobApp.model.User', data.user));
+
+						// remove old entries
+						MoodleMobApp.Session.getCoursesStore().removeAll();
+						MoodleMobApp.Session.getCoursesStore().getProxy().clear();
+
+						// add the new entries
+						for(var id in data.courses) {
+							data.courses[id].modulestatus = '<img src="resources/images/sync.png" />';
+							MoodleMobApp.Session.getCoursesStore().add(data.courses[id]);
+						}
+						// store data
+						MoodleMobApp.Session.getCoursesStore().sync();
+					} else {
+						Ext.Msg.alert(
+							'Exception: ' + data.exception,
+							'Error: ' + data.message,
+							function() {
+								MoodleMobApp.app.getController('CourseNavigator').showSettings();
+							}
+						);
+					}
+				},
+				failure: function(response, opts) {
+					MoodleMobApp.app.hideLoadMask();
+					Ext.Msg.alert(
+						'Authentication request failed',
+						'Response status: ' + response.status,
+						function() {
+							MoodleMobApp.app.getController('CourseNavigator').showSettings();
+						}
+					);
+				}
+			});
 	}
-  
 });

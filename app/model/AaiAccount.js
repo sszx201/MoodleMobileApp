@@ -6,7 +6,8 @@ Ext.define('MoodleMobApp.model.AaiAccount', {
 		fields: [ 
 			{ name: 'username', type: 'string' },
 			{ name: 'password', type: 'string' },
-			{ name: 'homeorganisation', type: 'string' }
+			{ name: 'homeorganisation', type: 'string' },
+			{ name: 'moodlecookie', type: 'string' }
 		]
 	}
 

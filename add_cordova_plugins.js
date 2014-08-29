@@ -12,3 +12,4 @@ cordova plugin add org.apache.cordova.console
 cordova plugin add https://github.com/Initsogar/cordova-webintent.git
 cordova plugin add https://github.com/MobileChromeApps/zip.git
 cordova plugin add http://github.com/don/cordova-filechooser.git
+cordova plugin add https://github.com/bez4pieci/Phonegap-Cookies-Plugin.git

@@ -5,6 +5,7 @@ Ext.define('MoodleMobApp.Config', {
 		// DRY config approach
 		this.config.aaiAuthUrl = this.config.moodleUrl + this.config.aaiAuthUrl;
 		this.config.homeOrgsUrl = this.config.moodleUrl + this.config.homeOrgsUrl;
+		this.config.updatesUrl = this.config.moodleUrl + this.config.updatesUrl;
 		this.config.manualAuthUrl = this.config.moodleUrl + this.config.manualAuthUrl;
 		this.config.webServiceUrl = this.config.moodleUrl + this.config.webServiceUrl;
 		this.config.resourceViewUrl = this.config.moodleUrl + this.config.resourceViewUrl;
@@ -21,8 +22,9 @@ Ext.define('MoodleMobApp.Config', {
 
 	config : {
 		moodleUrl : 'https://yourmoodleinstallation.org',
-		aaiAuthUrl : '/auth/mobileaai/authenticate.php',
+		aaiAuthUrl : '/auth/shibboleth',
 		homeOrgsUrl : '/auth/mobileaai/get_idps.php',
+		updatesUrl : '/auth/mobileaai/get_updates.php',
 		manualAuthUrl : '/auth/mobilemanual/authenticate.php',
 		webServiceUrl : '/webservice/rest/server.php',
 		resourceViewUrl : '/mod/resource/view.php',

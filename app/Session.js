@@ -10,6 +10,7 @@ Ext.define('MoodleMobApp.Session', {
 		username: '',
 		user: null,
 		course: null,
+		aaiController: null,
 		settingsStore: null,
 		usersStore: null,
 		enrolledUsersStore: null,

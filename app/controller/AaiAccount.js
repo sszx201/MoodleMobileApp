@@ -107,9 +107,28 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 	},
 
 	attemptAuthentication: function() {
-		// if the account is the active one
-		// authenticate and get the course data
 		if( this.isActiveAccount() ) {
+			// show the course navigator
+			var courseNavigatorShown = false;
+			Ext.Viewport.getItems().each(function(item){
+				if(item.xtype == 'coursenavigator') {
+					Ext.Viewport.setActiveItem(item);
+					courseNavigatorShown = true;
+				}
+			});
+
+			if(!courseNavigatorShown) {
+				var courseNavigator = Ext.create('MoodleMobApp.view.CourseNavigator');
+				// ios 7 bar fix
+				if( window.device != undefined && parseInt(window.device.version) > 6 ) {
+					courseNavigator.setStyle('margin-top: 20px;');
+				}
+				Ext.Viewport.add(courseNavigator);
+				Ext.Viewport.setActiveItem(courseNavigator);
+			}
+
+			// if the account is the active one
+			// authenticate and get the course data
 			if(MoodleMobApp.app.isConnectionAvailable()) {
 				MoodleMobApp.app.showLoadMask('Authenticating...');
 				//this.subwindow = window.open(MoodleMobApp.Config.getMoodleUrl(), '_blank', 'hidden=no');

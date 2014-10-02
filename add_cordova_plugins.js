@@ -4,7 +4,6 @@ cordova plugin add org.apache.cordova.device
 cordova plugin add org.apache.cordova.network-information
 cordova plugin add org.apache.cordova.file
 cordova plugin add org.apache.cordova.file-transfer
-cordova plugin add org.apache.cordova.file-system-roots
 cordova plugin add org.apache.cordova.splashscreen
 cordova plugin add org.apache.cordova.inappbrowser
 cordova plugin add org.apache.cordova.console

@@ -178,7 +178,7 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 			if(val != undefined && typeof val == "object" && val.length > 0) {
 				console.log('===> Authentication check');
 				console.log(val);
-				if(val[0].cookie.indexOf('MoodleSession') == 0 && val[0].location.indexOf(MoodleMobApp.Config.getMoodleUrl()) == 0) {
+				if(val[0].cookie.indexOf('MoodleSession') != -1 && val[0].location.indexOf(MoodleMobApp.Config.getMoodleUrl()) == 0) {
 					MoodleMobApp.app.hideLoadMask();
 					MoodleMobApp.Session.getAaiAccountStore().first().set('moodlecookie', val[0].cookie);
 					MoodleMobApp.Session.getAaiAccountStore().sync();

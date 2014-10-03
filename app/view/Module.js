@@ -9,7 +9,7 @@ Ext.define("MoodleMobApp.view.Module", {
 			{
 				itemId: 'name',
 				xtype: 'component',
-				cls: 'x-course-name'
+				cls: 'x-module-name'
 			},
 			{
 				itemId: 'modname',
@@ -19,7 +19,7 @@ Ext.define("MoodleMobApp.view.Module", {
 			{
 				itemId: 'intro',
 				xtype: 'component',
-				cls: 'x-course-module-intro',
+				cls: 'x-module-intro',
 				docked: 'bottom',
 				styleHtml: true,
 				hidden: true
@@ -27,7 +27,7 @@ Ext.define("MoodleMobApp.view.Module", {
 			{
 				itemId: 'introButton',
 				xtype: 'button',
-				baseCls: 'x-course-module-info',
+				baseCls: 'x-module-info',
 				docked: 'right',
 				listeners: {
 					tap: function(btn, e, opts) {

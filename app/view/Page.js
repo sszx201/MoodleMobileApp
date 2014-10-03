@@ -8,10 +8,9 @@ Ext.define("MoodleMobApp.view.Page", {
 	],
 	
 	config: {
-		id: 'page',
 		cls: 'page',
 		title: 'Page',
-		scrollable: 'vertical',
+		scrollable: 'both',
 		items: [
 			{
 				xtype: 'panel',	

@@ -50,7 +50,7 @@ Ext.define("MoodleMobApp.view.Book", {
 				xtype: 'panel',	
 				name: 'content',
 				cls: 'content',
-				scrollable: 'vertical',
+				scrollable: 'both',
 				top: 0,
 				left: 0,
 				height: '100%',

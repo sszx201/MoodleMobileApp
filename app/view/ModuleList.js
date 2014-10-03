@@ -5,6 +5,7 @@ Ext.define("MoodleMobApp.view.ModuleList", {
 	config: {
 		//title: 'List of modules',
 		emptyText: 'No posts available in this discussion.',
+		cls: 'x-modules-list',
 		useComponents: true,
 		defaultType: 'module',
 		grouped: true,

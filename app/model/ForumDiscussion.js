@@ -8,6 +8,7 @@ Ext.define('MoodleMobApp.model.ForumDiscussion', {
 		fields: [
 			{ name: 'localid', type: 'auto' },
 			{ name: 'id', type: 'int' },
+			{ name: 'course', type: 'int' },
 			{ name: 'forum', type: 'int' },
 			{ name: 'name', type: 'string' },
 			{ name: 'firstpost', type: 'int' },

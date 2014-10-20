@@ -145,7 +145,7 @@ Ext.define('MoodleMobApp.WebService', {
 		params['discussion[name]'] = post.name;
 		params['discussion[intro]'] = post.intro;
 		// request
-		var result_store = this.request(params, 'MoodleMobApp.model.ForumCreatePostResponse', 'POST');
+		var result_store = this.request(params, 'MoodleMobApp.model.ForumCreateDiscussionResponse', 'POST');
 		return result_store;
 	},
 

@@ -10,6 +10,8 @@ Ext.define('MoodleMobApp.model.ForumPost', {
 			{ name: 'id', type: 'int' },
 			{ name: 'parent', type: 'int' },
 			{ name: 'userid', type: 'int' },
+			{ name: 'course', type: 'int' },
+			{ name: 'forum', type: 'int' },
 			{ name: 'discussion', type: 'int' },
 			{ name: 'created', type: 'int' },
 			{ name: 'modified', type: 'int' },

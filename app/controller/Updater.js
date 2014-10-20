@@ -260,18 +260,20 @@ Ext.define('MoodleMobApp.controller.Updater', {
 		// purge the removed discussions
 		MoodleMobApp.Session.getForumDiscussionsStore().each(
 				function(record) {
-					var record_removed = true;
-					for(var i=0; i < data.length; ++i) {
-						if(data[i].id == record.get('id')) {
-							record_removed = false;
-							break;
+					if(record.get('course') == course.get('id')) {
+						var record_removed = true;
+						for(var i=0; i < data.length; ++i) {
+							if(data[i].id == record.get('id')) {
+								record_removed = false;
+								break;
+							}
 						}
-					}
-					// purge record if removed
-					if(record_removed) {
-						console.log('Discussion removed');
-						console.log(record.getData());
-						this.removeForumDiscussion(record);
+						// purge record if removed
+						if(record_removed) {
+							console.log('Discussion removed');
+							console.log(record.getData());
+							this.removeForumDiscussion(record);
+						}
 					}
 				}, this
 			);
@@ -279,6 +281,8 @@ Ext.define('MoodleMobApp.controller.Updater', {
 		Ext.each(data, function(record) {
 			var stored_record = MoodleMobApp.Session.getForumDiscussionsStore().findRecord('id', record.id, null, false, true, true);
 			if(stored_record == null) {
+				console.log('adding new disc');
+				console.log(record);
 				MoodleMobApp.Session.getForumDiscussionsStore().add(record);
 			} else if(stored_record.get('timemodified') != record.timemodified) {
 				MoodleMobApp.Session.getForumDiscussionsStore().remove(stored_record);
@@ -292,16 +296,18 @@ Ext.define('MoodleMobApp.controller.Updater', {
 		// purge the removed discussions
 		MoodleMobApp.Session.getForumPostsStore().each(
 				function(record) {
-					var record_removed = true;
-					for(var i=0; i < data.length; ++i) {
-						if(data[i].id == record.get('id')) {
-							record_removed = false;
-							break;
+					if(record.get('course') == course.get('id')) {
+						var record_removed = true;
+						for(var i=0; i < data.length; ++i) {
+							if(data[i].id == record.get('id')) {
+								record_removed = false;
+								break;
+							}
 						}
-					}
-					// purge record if removed
-					if(record_removed) {
-						MoodleMobApp.Session.getForumPostsStore().remove(record);
+						// purge record if removed
+						if(record_removed) {
+							MoodleMobApp.Session.getForumPostsStore().remove(record);
+						}
 					}
 				}, this
 			);

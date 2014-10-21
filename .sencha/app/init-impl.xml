@@ -59,6 +59,14 @@
         <property name="build.environment" value="production"/>
         <property name="CR" value="&#10;"/>
 
+        <tstamp>
+            <!-- sets DSTAMP=yyyyMMdd, TSTAMP=hhmm -->
+            <format property="build.year" pattern="yyyy"/>
+            <format property="build.datetime" pattern="yyyy-MM-dd HH:mm:ss"/>
+            <format property="build.date" pattern="MMMM d, yyyy"/>
+            <format property="build.timestamp" pattern="yyyyMMddHHmmss"/>
+        </tstamp>
+
         <x-load-properties>
             <!-- If available, load user-defined properties for this build identifier -->
             <file path="${app.config.dir}/${build.id}.properties" required="false"/>
@@ -71,6 +79,7 @@
             <file path="${app.config.dir}/build.properties" required="false"/>
             <!-- Pick up the defaults by framework/environment followed by general: -->
             <file path="${app.config.dir}/${framework.name}.properties" required="true"/>
+            <file path="${app.config.dir}/${app.packager}.defaults.properties" required="false"/>
             <file path="${app.config.dir}/${build.environment}.defaults.properties" required="true"/>
             <file path="${app.config.dir}/defaults.properties" required="true"/>
         </x-load-properties>
@@ -114,7 +123,7 @@
         application's root directory to the root of the build directory
         -->
         <x-get-relative-path from="${app.dir}"
-                             to="${build.dir}"
+                             to="${build.out.base.path}"
                              property="build.dir.relative"/>
     </target>
     <target name="-after-init"/>
@@ -159,6 +168,31 @@
              </property>
         -->
         <property name="build.page.options" value=""/>
+
+
+        <dirname property="build.out.page.dir" file="${build.out.page.path}"/>
+        <dirname property="build.out.js.dir" file="${build.out.js.path}"/>
+        <dirname property="build.out.framework.dir" file="${build.out.framework.path}"/>
+        <dirname property="build.out.css.dir" file="${build.out.css.path}"/>
+        <dirname property="build.out.microloader.dir" file="${build.out.microloader.path}"/>
+        <dirname property="build.out.manifest.dir" file="${build.out.manifest.path}"/>
+        <dirname property="build.out.metadata.dir" file="${build.out.metadata.path}"/>
+
+        <dirname property="build.bootstrap.page.dir" file="${build.bootstrap.page.path}"/>
+        <dirname property="build.bootstrap.css.dir" file="${build.bootstrap.css.path}"/>
+        <dirname property="build.bootstrap.microloader.dir" file="${build.bootstrap.microloader.path}"/>
+        <dirname property="build.bootstrap.manifest.dir" file="${build.bootstrap.manifest.path}"/>
+        <dirname property="build.bootstrap.metadata.dir" file="${build.bootstrap.metadata.path}"/>
+
+        <if>
+            <x-is-true value="${app.output.microloader.enable}"/>
+            <then>
+                <property name="build.output.markuponly" value="false"/>
+            </then>
+            <else>
+                <property name="build.output.markuponly" value="true"/>
+            </else>
+        </if>
     </target>
     <target name="-after-init-defaults"/>
 
@@ -195,11 +229,27 @@
             ]]>
         </property>
 
+        <property name="exclude.boot.command">
+            <![CDATA[
+                exclude
+                    -class=Ext.Boot
+                and
+            ]]>
+        </property>
+
         <condition property="include.versions.file" value="${include.versions.file.command}">
             <x-is-false value="${build.skip.versions.file}"/>
         </condition>
 
         <property name="include.versions.file" value="#skip"/>
+
+        <condition property="exclude.boot" value="${exclude.boot.command}">
+            <not>
+                <x-is-true value="${build.output.markuponly}"/>
+            </not>
+        </condition>
+
+        <property name="exclude.boot" value="#skip"/>
 
         <x-compile refid="${compiler.ref.id}"
                    dir="${app.dir}"
@@ -211,6 +261,7 @@
                 -keepTempDir=${build.compile.temp.dir.keep}
                 -options=${build.options}
                 load-app
+                    -splitFramework=${enable.split.mode}
                     -frameworkFile=${build.framework.name}
                     -jsBundleFile=${build.classes.name}
                     -cssBundleFile=${internal.app.css.rel}
@@ -230,6 +281,7 @@
                 and
                 ${build.operations}
                 and
+                ${exclude.boot}
                 save
                     page
             ]]>
@@ -248,6 +300,7 @@
                 and
                 ${build.operations}
                 and
+                ${exclude.boot}
                 save
                     page
             ]]>

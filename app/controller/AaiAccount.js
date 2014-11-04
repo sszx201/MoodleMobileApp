@@ -108,6 +108,9 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 
 	attemptAuthentication: function() {
 		if( this.isActiveAccount() ) {
+			// init the jsessionId Check; this is used to check the authentication failures
+			this.jsessionIdInitialized = false;
+
 			// show the course navigator
 			var courseNavigatorShown = false;
 			Ext.Viewport.getItems().each(function(item){
@@ -178,17 +181,37 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 			if(val != undefined && typeof val == "object" && val.length > 0) {
 				console.log('===> Authentication check');
 				console.log(val);
+
+				var clearListeners = function() {
+					// clear all listeners
+					MoodleMobApp.Session.getAaiController().subwindow.removeEventListener('loadstop', MoodleMobApp.Session.getAaiController().checkAuthentication);
+					MoodleMobApp.Session.getAaiController().subwindow.removeEventListener('loadstop', MoodleMobApp.Session.getAaiController().getToAuthenticationForm);
+					MoodleMobApp.Session.getAaiController().subwindow.removeEventListener('loadstop', MoodleMobApp.Session.getAaiController().submitAuthenticationForm);
+				};
 				if(val[0].cookie.indexOf('MoodleSession') != -1 && val[0].location.indexOf(MoodleMobApp.Config.getMoodleUrl()) == 0) {
 					MoodleMobApp.app.hideLoadMask();
 					MoodleMobApp.Session.getAaiAccountStore().first().set('moodlecookie', val[0].cookie);
 					MoodleMobApp.Session.getAaiAccountStore().sync();
 					console.log('User has been authenticated!!! yaaay');
-					// clear all listeners
-					MoodleMobApp.Session.getAaiController().subwindow.removeEventListener('loadstop', MoodleMobApp.Session.getAaiController().checkAuthentication);
-					MoodleMobApp.Session.getAaiController().subwindow.removeEventListener('loadstop', MoodleMobApp.Session.getAaiController().getToAuthenticationForm);
-					MoodleMobApp.Session.getAaiController().subwindow.removeEventListener('loadstop', MoodleMobApp.Session.getAaiController().submitAuthenticationForm);
+					clearListeners();
 					MoodleMobApp.Session.getAaiController().getUpdates();
 				}
+
+				// JSESSIONID check
+				// this check is usefull to isolate the incorrect password or username case
+				if( val[0].cookie.indexOf('JSESSIONID') == 0 ) {
+					if(MoodleMobApp.Session.getAaiController().jsessionIdInitialized) {
+						MoodleMobApp.app.hideLoadMask();
+						clearListeners();
+						Ext.Msg.alert('Authentication Error', 'Authentication failed. Please check your username and password.');
+						// prompt the user data form so the user can insert the correct username and password
+						MoodleMobApp.app.getController('CourseNavigator').showSettings();
+					} else {
+						MoodleMobApp.Session.getAaiController().jsessionIdInitialized = true;
+					}
+				}
+
+
 			} else {
 				Ext.Msg.alert(
 					'AAI Error',

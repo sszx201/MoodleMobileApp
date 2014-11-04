@@ -133,7 +133,7 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 			// if the account is the active one
 			// authenticate and get the course data
 			if(MoodleMobApp.app.isConnectionAvailable()) {
-				MoodleMobApp.app.showLoadMask('Authenticating...');
+				//MoodleMobApp.app.showLoadMask('Authenticating...');
 				//this.subwindow = window.open(MoodleMobApp.Config.getMoodleUrl(), '_blank', 'hidden=no');
 				//this.subwindow.addEventListener('loadstop', this.getMoodleCookie);
 				this.subwindow = window.open(MoodleMobApp.Config.getAaiAuthUrl(), '_blank', 'hidden=yes');
@@ -282,14 +282,14 @@ Ext.define('MoodleMobApp.controller.AaiAccount', {
 	},
 
 	getUpdates: function() {
-		//MoodleMobApp.app.showLoadMask('Getting course tokens...');
+		MoodleMobApp.app.showLoadMask('Getting course tokens...');
 		Ext.Ajax.request({
 				url: MoodleMobApp.Config.getUpdatesUrl(),
 				disableCaching: false,
 				method: 'GET',
 				scope: MoodleMobApp.Session.getAaiController(),
 				success: function(response, opts) {
-					//MoodleMobApp.app.hideLoadMask();
+					MoodleMobApp.app.hideLoadMask();
 					var data = Ext.decode(response.responseText);
 					if(data.exception == undefined) {
 						// store the username in the Session

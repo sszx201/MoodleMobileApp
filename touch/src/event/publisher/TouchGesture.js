@@ -65,8 +65,11 @@ Ext.define('Ext.event.publisher.TouchGesture', {
 
         if (Ext.feature.has.Touch) {
             // bind handlers that are only invoked when the browser has touchevents
-            me.onTargetTouchMove = me.onTargetTouchMove.bind(me);
-            me.onTargetTouchEnd = me.onTargetTouchEnd.bind(me);
+            //me.onTargetTouchMove = me.onTargetTouchMove.bind(me);
+            //me.onTargetTouchEnd = me.onTargetTouchEnd.bind(me);
+			// temporary fix for android 2.3
+			me.onTargetTouchMove = Ext.Function.bind(me.onTargetTouchMove, me);
+			me.onTargetTouchEnd = Ext.Function.bind(me.onTargetTouchEnd, me);
         }
 
         return this.callSuper();

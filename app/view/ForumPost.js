@@ -83,10 +83,17 @@ Ext.define("MoodleMobApp.view.ForumPost", {
 			for(var i=0; i < attachments.length; ++i) {
 				var fileobject = '{name:\''+attachments[i].filename+'\', fileid:'+attachments[i].fileid+', mime:\''+attachments[i].mime+'\', size: '+attachments[i].filesize*1000+'}';
 				attachment_list +=  '<li class="x-post-attachment-entry">'+
-										'<span class="x-post-attachment-file" onclick="javascript:MoodleMobApp.app.downloadFile('+fileobject+
-										', function() {'+
+										'<span class="x-post-attachment-file" onclick="javascript:MoodleMobApp.Session.getDownloader().downloadFile('+fileobject+
+										', function(fileEntry) {'+
 											"document.getElementById('online_attachment_"+attachments[i].fileid+"').style.display = 'none';"+
 											"document.getElementById('cached_attachment_"+attachments[i].fileid+"').style.display = 'inline';"+
+											"if('"+attachments[i].mime+"' == 'application/zip') {"+
+												"var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + '"+attachments[i].fileid+"' + '/' + '"+attachments[i].filename+"';"+
+													"dirPath = dirPath.split(' ').join('_').latinise().replace(/\.zip$/, '');"+
+												"MoodleMobApp.app.getController('FileBrowser').openDirectory(dirPath);"+
+											"} else {"+
+												"MoodleMobApp.app.openFile(fileEntry.toURL(), '"+attachments[i].mime+"');"+
+											"}"+
 										'})">'+
 											attachments[i].filename+
 										'</span>'+

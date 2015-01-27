@@ -86,7 +86,6 @@ $border-color: #dedede;
 	border-bottom: 1px solid $border-color;
 }
 
-
 .x-course-section {
 	background-color: white;
 	padding-top: 10px;
@@ -114,16 +113,17 @@ $border-color: #dedede;
 .x-module-name,
 .x-recent-activity,
 .x-folder-entry,
+.x-folder-entry-name,
 .x-directory-entry {
-	padding-top: 10px;
+	padding-top: 15px;
 	text-indent: 35px;
+	height: 100%;
 }
 
 .x-directory-entry {
 	padding-top: 15px;
 	padding-bottom: 15px;
 }
-
 
 .x-module-icon-choice,
 .x-module-icon-assign,
@@ -389,9 +389,11 @@ $border-color: #dedede;
 }
 
 .x-course-module-status,
+.x-course-status,
+.x-module-status,
 .x-module-modname,
-.x-forum-discussion-stat,
-.x-folder-entry-mime {
+.x-forum-discussion-status,
+.x-folder-entry-status {
 	text-align: right;
 	color: gray;
 	font-size: small;
@@ -798,4 +800,18 @@ $border-color: #dedede;
 .messagebox-checkbox {
 	background-color: black;
 	color: white;
+}
+
+.download-file-selection {
+	margin: 5px;
+	.x-form-label {
+		display: none;
+	}
+	.x-field-input {
+		min-width: 2.5em;
+		.x-field-mask {
+			position: absolute;
+			top: 5px;
+		}
+	}
 }

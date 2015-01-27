@@ -29,7 +29,16 @@ Ext.define('MoodleMobApp.controller.Resource', {
 			if(resource.get('filemime').indexOf('html') !== -1) {
 				winref = this.openHtmlResource(MoodleMobApp.Config.getResourceViewUrl()+'?id='+record.get('id'), record.get('display'));
 			} else {
-				this.getFile(resource, target);
+				// download mode functionality
+				if(MoodleMobApp.Session.getMultiDownloadMode() && !target.getCached()) {
+					if(target.down('#queuefordownload').getChecked()) {
+						target.down('#queuefordownload').uncheck();
+					} else {
+						target.down('#queuefordownload').check();
+					}
+				} else {
+					this.getFile(resource, target);
+				}
 			}
 		}
 	},
@@ -41,8 +50,19 @@ Ext.define('MoodleMobApp.controller.Resource', {
 			mime: resource.get('filemime'),
 			size: resource.get('filesize')
 		};
-		MoodleMobApp.app.downloadFile(file, function() { target.setCached(true); });
+		var callback = function(fileEntry) {
+			target.setCached(true);
+			if(file.mime == 'application/zip') {
+				var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + file.fileid + '/' + file.name;
+					dirPath = dirPath.split(' ').join('_').latinise().replace(/\.zip$/, '');
+				MoodleMobApp.app.getController('FileBrowser').openDirectory(dirPath);
+			} else {
+				MoodleMobApp.app.openFile(fileEntry.toNativeURL(), file.mime);
+			}
+		};
+		this.getNavigator().fireEvent('downloadfile', file, callback);
 	},
+
 	// processes the page and extracts the content the best way possible
 	openHtmlResource: function(urladdr, displayMode) {
 		console.log('===> PROCESSING URL: '+urladdr);

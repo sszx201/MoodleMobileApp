@@ -78,8 +78,43 @@ Ext.define("MoodleMobApp.view.CourseNavigator", {
 					},
 					{
 						xtype: 'button',
+						id: 'multiDownloadsAppBtn',
+						iconCls: 'download',
+						hidden: true
+					},
+					{
+						xtype: 'button',
 						id: 'settingsAppBtn',
 						iconCls: 'settings'
+					}
+				]
+			},
+			{
+				xtype: 'toolbar',
+				docked: 'bottom',
+				itemId: 'downloadsToolbar',
+				hidden: true,
+				items: [
+					{
+						xtype: 'spacer'
+					},
+					{
+						xtype: 'button',
+						text: 'Clear Selection',
+						action: 'clearselection'
+					},
+					{
+						xtype: 'button',
+						text: 'Select All',
+						action: 'selectall'
+					},
+					{
+						xtype: 'button',
+						text: 'Download',
+						action: 'downloadfiles'
+					},
+					{
+						xtype: 'spacer'
 					}
 				]
 			}

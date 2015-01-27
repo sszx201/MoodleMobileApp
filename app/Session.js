@@ -34,6 +34,8 @@ Ext.define('MoodleMobApp.Session', {
 		gradeItemsStore: null,
 		gradesStore: null,
 		connectionAvailabilityWarningIssued: false,
-		contentUpdateStatus: false
+		contentUpdateStatus: false,
+		downloader:null,
+		multiDownloadMode: false
 	}
 });

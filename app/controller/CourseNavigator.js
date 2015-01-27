@@ -30,6 +30,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			participantsButton: 'button#participantsAppBtn',
 			gradesButton: 'button#gradesAppBtn',
 			calendarButton: 'button#calendarAppBtn',
+			multiDownloadsButton: 'button#multiDownloadsAppBtn',
 			// views
 			navigator: 'coursenavigator',
 			settings: 'settings',
@@ -57,7 +58,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			calendarButton: { tap: 'showCalendarEvents' },
 			navigator:  {
 				show: 'initCourseNavigator',
-				pop: 'updateSideMenuStatus',
+				pop: 'managePop',
 				courseUpdated: 'showCourse'
 			},
 			courseList: { itemtap: 'selectCourse' },
@@ -137,6 +138,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		this.getGradesButton().show();
 		this.getParticipantsButton().show();
 		this.getCalendarButton().show();
+		this.getMultiDownloadsButton().show();
 		// check the course status
 		// display if the course has already been synchronized
 		if(record.get('synchronized') != true && MoodleMobApp.app.isConnectionAvailable()) {
@@ -360,7 +362,12 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		});
 	},
 
-	updateSideMenuStatus: function(controller, view, opts) {
+	// this function manages the pop event.
+	// the gui elements are updated depending on the context and the
+	// page that is being displayed.
+	managePop: function(controller, view, opts) {
+		console.log(view.xtype);
+		// updated the side menu status
 		switch(view.xtype) {
 			case 'modulelist':
 				this.getHomeButton().hide();
@@ -368,8 +375,10 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 				this.getParticipantsButton().hide();
 				this.getGradesButton().hide();
 				this.getCalendarButton().hide();
+				this.getMultiDownloadsButton().hide();
 			break;
 		}
+		// change the ocurse title
 		this.setCourseTitle();
 	},
 

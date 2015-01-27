@@ -11,9 +11,9 @@ Ext.define("MoodleMobApp.view.ForumDiscussion", {
 				cls: 'x-forum-discussion-name'
 			},
 			{
-				itemId: 'stat',
+				itemId: 'status',
 				xtype: 'component',
-				cls: 'x-forum-discussion-stat'
+				cls: 'x-forum-discussion-status'
 			}
 		]
 	},

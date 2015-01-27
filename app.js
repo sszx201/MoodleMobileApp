@@ -65,7 +65,8 @@ Ext.application({
 		'MoodleMobApp.controller.Glossary',
 		'MoodleMobApp.controller.Wiki',
 		'MoodleMobApp.controller.Feedback',
-		'MoodleMobApp.controller.FileBrowser'
+		'MoodleMobApp.controller.FileBrowser',
+		'MoodleMobApp.controller.Downloader'
 	],
 
     icon: {
@@ -135,6 +136,7 @@ Ext.application({
 		// So this piece of code warns the user when the navigation breaks the app.
 		// This happens with the youtube videos where the window.location.href is used
 		// to navigate to the youtube page.
+		/*
 		window.onbeforeunload = function (e) {
 			var message = "This content is going to be loaded in place of the app content. After the page has been loaded navigating back to the app is not going to be possible anymore.",
 			e = e || window.event;
@@ -146,6 +148,7 @@ Ext.application({
 			// For Safari
 			return message;
 		};
+		*/
 
 		// periodic network checker
 		setInterval(MoodleMobApp.app.isConnectionAvailable, 1000);
@@ -163,167 +166,6 @@ Ext.application({
             }
         );
     },
-
-	// file is an object such as:
-	// {"name": "filename", "fileid": "file id number", "mime":"mime/type", size: 32122}
-	// the fileDownloadedCallback is called after the file has been fetched
-	downloadFile: function(file, fileDownloadedCallback) {
-		// prepare the filePath
-		file.name = file.name.split(' ').join('_');
-		file.name = file.name.latinise();
-		var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + file.fileid;
-		var filePath = dirPath + '/' + file.name;
-
-		// this function is called after the user has confirmed the download
-		var startDownload = function() {
-			var fetchFunction = function(successCallback) {
-				if(MoodleMobApp.app.isConnectionAvailable()) {
-					MoodleMobApp.WebService.getFile(
-							file,
-							dirPath,
-							function(fileEntry) {
-								successCallback(fileEntry);
-								fileDownloadedCallback();
-							},
-							MoodleMobApp.Session.getCourse().get('token')
-						);
-				} else {
-					Ext.Msg.alert(
-						'File not available',
-						'The file' + file.name + ' is not available in the cache. No connection available so it is not possibile to download it at this time.'
-					);
-				}
-			};
-
-			if(file.mime == 'application/zip') {
-				var archiveExtractedFlag = dirPath + '/_archive_extracted_'
-				// check if the archive as already been extracted.
-				// if the archive has been extracted open the filebrowser
-				// else download the archive, extract it and open it.
-				MoodleMobApp.FileSystem.getFile(
-					archiveExtractedFlag,
-					function(fileEntry) {
-						// open the archive
-						MoodleMobApp.app.getController('FileBrowser').openDirectory(filePath.substring(0, filePath.lastIndexOf('.zip')));
-					},
-					function(error) {
-						// download the archive, extract it and open it
-						fetchFunction(function(fileEntry) {
-							Ext.fe = fileEntry;
-							var outputDirectory = fileEntry.toURL().substring(0, fileEntry.toURL().lastIndexOf('.zip'));
-							zip.unzip(
-								fileEntry.toURL(),
-								outputDirectory,
-								function(arg){
-									console.log(' >>>>>>>>>>> callback called with arg: ' + arg);
-									console.log(' >>>>>>>>>>> extracting filepath: ' + filePath);
-									console.log(' >>>>>>>>>>> extracting directory output: ' + outputDirectory);
-									if(arg == 0) { // success
-										console.log('archive extracted yaaay');
-										MoodleMobApp.app.getController('FileBrowser').openDirectory(filePath.substring(0, filePath.lastIndexOf('.zip')));
-										MoodleMobApp.FileSystem.removeFile(
-											filePath,
-												function(arg) {
-													console.log('archive removed'); console.log(arg);
-												},
-												function(error){
-													Ext.Msg.alert(
-														'Removing File',
-														'Removing the file: '+ filePath +' failed! Code: ' + error.code
-													);
-													console.log('removing the archive failed'); console.log(error);
-												}
-										);
-										MoodleMobApp.FileSystem.createFile(
-											dirPath+'/_archive_extracted_',
-											function(arg) {
-												console.log('flag created'); console.log(arg);
-											},
-											function(error){
-												Ext.Msg.alert(
-													'Extracting Zip File',
-													'Registering the extraction of the zip file: '+ filePath +' failed! Code: ' + error.code
-												);
-												console.log('creating the flag failed'); console.log(error);
-											});
-									} else {
-										Ext.Msg.alert(
-											'File extraction failed',
-											'The file ' + file.name + ' could not be extracted. Please check your storage space.'
-										);
-									}
-								}
-							);
-						});
-					});
-			} else {
-				// try to open the file
-				// if the file cannot be opened try to download it and then open it
-				MoodleMobApp.FileSystem.getFile(
-					filePath,
-					function(fileEntry) {
-						MoodleMobApp.app.openFile(fileEntry.toNativeURL(), file.mime);
-					},
-					function(error) {
-						fetchFunction(function(fileEntry) {
-							MoodleMobApp.app.openFile(fileEntry.toNativeURL(), file.mime);
-						});
-					});
-			}
-		}; // download() end
-
-		var confirmDowload = function() {
-			// Ask the user to confirm the download if the user has not set yet the 
-			// justdownload preference.
-			if(MoodleMobApp.Session.getSettingsStore().first().get('justdownload') != true) {
-				var msgBox = Ext.create('Ext.MessageBox', {
-					maxWidth: '95%',
-					items: [
-						{
-							xtype: 'checkboxfield',
-							style: 'background-color: black',
-							labelCls: 'messagebox-checkbox',
-							labelWidth: '80%',
-							labelWrap: true,
-							label: "Download without asking again.",
-							docked: 'bottom',
-							listeners: {
-								check: function() {
-									MoodleMobApp.Session.getSettingsStore().first().set('justdownload', true);
-									MoodleMobApp.Session.getSettingsStore().sync();
-								},
-								uncheck: function() {
-									MoodleMobApp.Session.getSettingsStore().first().set('justdownload', false);
-									MoodleMobApp.Session.getSettingsStore().sync();
-								}
-							}
-						}
-					]
-				});
-
-				var message = 'Do you want to download this file. <br /> ';
-					message+= file.name + ' ' + Math.ceil(file.size/1000) + 'KB';
-				msgBox.confirm('Please confirm', message, function(answer) {
-					if(answer == 'yes') {
-						startDownload();
-					}
-				});
-			} else { // the user has set the preference to just downlad files without being asked: justdownload is set to true
-				startDownload();
-			}
-		}; // confirmDowload() end
-
-		// try to open the file
-		// if the file is not in the cache ask the user to confirm the download
-		MoodleMobApp.FileSystem.getFile(
-			filePath,
-			function(fileEntry) {
-				MoodleMobApp.app.openFile(fileEntry.toNativeURL(), file.mime);
-			},
-			function(error) {
-				confirmDowload();
-			});
-	},
 
 	isLoadMaskVisible: function() {
 		return Ext.Viewport.getActiveItem().getMasked() == null || Ext.Viewport.getActiveItem().getMasked().isHidden();
@@ -344,66 +186,6 @@ Ext.application({
 		if(Ext.Viewport.getActiveItem().setMasked != undefined) {
 			Ext.Viewport.getActiveItem().setMasked(false);
 		}
-	},
-
-	readFile: function(path, successFunc, params) {
-		var gotFile = function(file) {
-			var reader = new FileReader();
-			// success
-			reader.onload = function(evt) {
-				successFunc(evt.target.result+'', params);
-			};
-
-			// failure
-			reader.onerror = function(error) {
-				Ext.Msg.alert(
-					'Read File',
-					'Reading the file failed! Code: ' + error.code
-				);
-			};
-
-			// read file data base64 encoded
-			reader.readAsDataURL(file);
-		};
-
-		// check the file entry
-		var gotFileEntry = function(fileEntry) {
-			fileEntry.file(
-				gotFile,
-				function(){
-					Ext.Msg.alert(
-						'Read File',
-						'Getting the File Entry failed'
-					);
-				}
-			);
-		};
-
-		var gotFS = function(fileSystem) {
-			// get the file entry
-			return fileSystem.root.getFile(
-				path,
-				null,
-				gotFileEntry,
-				function(){
-					Ext.Msg.alert(
-						'Read File',
-						'Getting the file failed! Path: ' + path
-					);
-				});
-		}
-
-		return window.requestFileSystem(
-			LocalFileSystem.PERSISTENT,
-			0,
-			gotFS,
-			function(evt){
-				Ext.Msg.alert(
-					'Read File',
-					'File System request failed! Code: ' + evt.target.error.code
-				);
-			}
-		);
 	},
 
 	formatDate: function(timestamp) {
@@ -446,8 +228,10 @@ Ext.application({
 		return window.open(urladdr, '_blank', 'location=yes,enableViewportScale=yes');
 	},
 
+	// this functionality dependes on the platform
 	openFile: function(path, mimetype) { },
 
+	// this functionality dependes on the platform
 	calculateDownloadPercentage: function(progressEvent) { },
 
 	isConnectionAvailable: function() {

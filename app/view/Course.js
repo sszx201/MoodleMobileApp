@@ -14,7 +14,7 @@ Ext.define("MoodleMobApp.view.Course", {
 			{
 				itemId: 'modulestatus',
 				xtype: 'component',
-				cls: 'x-course-module-status'
+				cls: 'x-course-status'
 			}
 		]
 	},

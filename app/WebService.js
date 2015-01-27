@@ -327,7 +327,7 @@ Ext.define('MoodleMobApp.WebService', {
 		function gotAccess(fileSystem) {
 			var fileTransfer = new FileTransfer();
 
-			var progressBar = '<div class="progress-bar"><span></span></div>';
+			var progressBar = '<div><br />File: '+file.name+'</div><div class="progress-bar"><span></span></div>';
 
 			Ext.Msg.alert('Downloading', progressBar);
 

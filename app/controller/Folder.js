@@ -131,7 +131,17 @@ Ext.define('MoodleMobApp.controller.Folder', {
 			this.getNavigator().push(this.getFolder());
 		} else if(entry.get('type') == 'file'){
 			var file = entry.getData();
-			MoodleMobApp.app.downloadFile(file, function() { target.setCached(true); });
+			var callback = function(fileEntry) {
+				target.setCached(true);
+				if(file.mime == 'application/zip') {
+					var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + file.fileid + '/' + file.name;
+						dirPath = dirPath.split(' ').join('_').latinise().replace(/\.zip$/, '');
+					MoodleMobApp.app.getController('FileBrowser').openDirectory(dirPath);
+				} else {
+					MoodleMobApp.app.openFile(fileEntry.toURL(), file.mime);
+				}
+			};
+			this.getNavigator().fireEvent('downloadfile', file, callback);
 		}
 	},
 

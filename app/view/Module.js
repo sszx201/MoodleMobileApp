@@ -5,6 +5,8 @@ Ext.define("MoodleMobApp.view.Module", {
 	config: {
 		cls: 'x-module',
 		autoDestroy: true,
+		cached: false, // states if the file has been cached
+		cachable: false, // stats if there is a file to be cached
 		items: [
 			{
 				itemId: 'name',
@@ -14,7 +16,7 @@ Ext.define("MoodleMobApp.view.Module", {
 			{
 				itemId: 'modname',
 				xtype: 'component',
-				cls: 'x-course-module-status'
+				cls: 'x-module-status'
 			},
 			{
 				itemId: 'intro',
@@ -22,6 +24,14 @@ Ext.define("MoodleMobApp.view.Module", {
 				cls: 'x-module-intro',
 				docked: 'bottom',
 				styleHtml: true,
+				hidden: true
+			},
+			{
+				itemId: 'queuefordownload',
+				xtype: 'checkboxfield',
+				cls: 'download-file-selection',
+				labelWidth: '0%',
+				docked: 'left',
 				hidden: true
 			},
 			{
@@ -47,15 +57,18 @@ Ext.define("MoodleMobApp.view.Module", {
 		// this function is called also when a DataItem is destroyed or the record is removed from the store
 		// the check bellow avoids the running of the function when it is null
 		if(record != null) {
+			this.down('#queuefordownload').hide();
 			this.down('#name').setHtml(record.get('name'));
 
 			var classes = 'x-module';
 			var modname = '';
 			if(record.get('visible') == 0) {
-				classes+= ' x-module-icon-'+record.get('modname')+'-gray';
+				this.down('#name').addCls('x-module-icon-'+record.get('modname')+'-gray');
+				//classes+= ' x-module-icon-'+record.get('modname')+'-gray';
 				modname = record.get('modname') + ' <img src="resources/images/invisible.png"/>';
 			} else {
-				classes+= ' x-module-icon-'+record.get('modname');
+				this.down('#name').addCls('x-module-icon-'+record.get('modname'));
+				//classes+= ' x-module-icon-'+record.get('modname');
 				modname = record.get('modname');
 			}
 			var module = record.get('modname');
@@ -68,45 +81,66 @@ Ext.define("MoodleMobApp.view.Module", {
 				module == 'wiki'
 			) {
 				modname += ' <img src="resources/images/online.png"/>';
+				this.setCachable(false);
 			}
 
-			var filePath = null;
+			var file = null;
 			switch(module) {
 				case 'resource':
-					var resource = MoodleMobApp.Session.getResourcesStore().findRecord('id', record.get('instanceid'), 0, false, true, true);
+					var resource = MoodleMobApp.Session.getResourcesStore().findRecord('id', record.get('instanceid'), 0, false, true, true);	
 
 					if(resource.get('filemime').indexOf('html') == -1) {
-						var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + resource.get('fileid');
-						if(resource.get('filemime') == 'application/zip') {
-							filePath = dirPath + '/_archive_extracted_';
-						} else {
-							filePath = dirPath + '/' + resource.get('filename').split(' ').join('_');
-						}
+						file = {
+							name: resource.get('filename'),
+							fileid: resource.get('fileid'),
+							mime: resource.get('filemime'),
+							size: resource.get('filesize')
+						};
 					} else {
 						modname += ' <img src="resources/images/online.png"/>';
 					}
 				break;
 
 				case 'scorm':
-					filePath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/scorm/' + record.get('id') + '/_scorm_extracted_';
+					file = {
+						'moduleid': record.get('id'),
+						'scormid': record.get('instanceid'),
+						'name': record.get('id') + '.zip',
+						'mime': 'application/zip'
+					};
 				break;
+
+				case 'folder':
+					file = {
+						'moduleid': record.get('id'),
+						'rootid': record.get('instanceid'),
+						'fileid': null,
+						'name': record.get('name'),
+						'mime': 'inode/directory'
+					};
+				break;
+
 			}
 
 			this.down('#modname').setHtml(modname);
 			classes+= ' x-module-section-'+record.get('section');
 			this.setCls(classes);
 
-			if( filePath != null ) { // check the cache
+			if( file != null ) { // check the cache
+				this.setCachable(true); // this content can be stored in the cache
 				var self = this;
-				MoodleMobApp.FileSystem.getFile(
-					filePath,
+				MoodleMobApp.Session.getDownloader().findCachedFile(
+					file,
 					function() {
 						self.setCached(true);
 					},
 					function() {
 						self.setCached(false);
+						self.toggleDownloadSelection();
 					}
 				);
+			} else {
+				this.setCachable(false); // this content cannot be stored in the cache
 			}
 
 			// intro section
@@ -117,12 +151,22 @@ Ext.define("MoodleMobApp.view.Module", {
 		} 
 	},
 
+	setCachable: function(value) {
+		this.config.cachable = value;
+	},
+
+	getCachable: function() {
+		return this.config.cachable;
+	},
+
 	setCached: function(isCached) {
 		this.config.cached = isCached;
 		var onlineFlag = ' <img src="resources/images/online.png"/>';
 		var cachedFlag = ' <img src="resources/images/download.png"/>';
 		if(isCached) {
 			this.down('#modname').setHtml(this.getRecord().get('modname') + cachedFlag);
+			// this file has already been downloaded
+			this.down('#queuefordownload').hide();
 		} else {
 			this.down('#modname').setHtml(this.getRecord().get('modname') + onlineFlag);
 		}
@@ -130,7 +174,13 @@ Ext.define("MoodleMobApp.view.Module", {
 
 	getCached: function() {
 		return this.config.cached;
-	}
+	},
 
+	toggleDownloadSelection: function() {
+		// show the download block
+		if(MoodleMobApp.Session.getMultiDownloadMode() && !this.getCached()) {
+			this.down('#queuefordownload').show();
+		}
+	}
 });
 

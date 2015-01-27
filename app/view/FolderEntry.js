@@ -4,6 +4,7 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 
 	config: {
 		cls: 'x-folder-entry',
+		cached: false, // states if the file or directory has been cached
 
 		items: [
 			{
@@ -12,10 +13,18 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 				cls: 'x-folder-entry-name'
 			},
 			{
-				itemId: 'mime',
+				itemId: 'status',
 				xtype: 'component',
-				cls: 'x-folder-entry-mime'
-			}
+				cls: 'x-folder-entry-status'
+			},
+			{
+				itemId: 'queuefordownload',
+				xtype: 'checkboxfield',
+				cls: 'download-file-selection',
+				labelWidth: '0%',
+				docked: 'left',
+				//hidden: true
+			},
 		]
 	},
 
@@ -25,7 +34,6 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 		if(record == null) { return; } 
 
 		this.down('#name').setHtml(record.get('name'));
-		this.down('#mime').setHtml(record.get('mime'));
 
 		// remove previous css classes if any
 		// this is the folder navigation icons glitch fix
@@ -35,9 +43,9 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 		this.removeCls('x-file-icon');
 		// add the correct css class
 		if(record.get('mime') == 'inode/directory'){
-			this.addCls('x-subfolder-icon');
+			this.down('#name').addCls('x-subfolder-icon');
 		} else {
-			this.addCls('x-file-icon');
+			this.down('#name').addCls('x-file-icon');
 		}
 
 		if(record.get('mime') != 'inode/directory'){
@@ -66,9 +74,9 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 		var onlineFlag = ' <img src="resources/images/online.png"/>';
 		var cachedFlag = ' <img src="resources/images/download.png"/>';
 		if(isCached) {
-			this.down('#mime').setHtml(this.getRecord().get('mime') + cachedFlag);
+			this.down('#status').setHtml(cachedFlag);
 		} else {
-			this.down('#mime').setHtml(this.getRecord().get('mime') + onlineFlag);
+			this.down('#status').setHtml(onlineFlag);
 		}
 	},
 

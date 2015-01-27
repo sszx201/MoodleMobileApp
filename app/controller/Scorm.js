@@ -84,7 +84,16 @@
 
 	selectModule: function(view, index, target, record) {
 		if(record.get('modname') === 'scorm'){
-			this.processScorm(record);
+			// download mode functionality
+			if(MoodleMobApp.Session.getMultiDownloadMode() && !target.getCached()) {
+				if(target.down('#queuefordownload').getChecked()) {
+					target.down('#queuefordownload').uncheck();
+				} else {
+					target.down('#queuefordownload').check();
+				}
+			} else {
+				this.processScorm(record);
+			}
 		}
 	},
 
@@ -92,123 +101,22 @@
 		if(typeof this.getScorm() != 'object') {
 			var scorm = Ext.create('MoodleMobApp.view.Scorm');
 		}
-		var scormExtractedFileFlag = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/scorm/' + record.get('id') + '/_scorm_extracted_';
 		var self = this;
-		var gotFS = function(fileSystem) {
-			fileSystem.root.getFile(
-				scormExtractedFileFlag,
-				{
-					create: false,
-					exclusive: false
-				},
-				function(fileEntry){
-					// archive available, open the scorm
-					//var path = fileEntry.toURL().replace(/_scorm_extracted_$/, '').replace(/cdvfile:\/\//, '');
-					var path = fileEntry.toInternalURL().replace(/_scorm_extracted_$/, '');
-					self.parseScorm(path);
-				},
-				// archive not available, download it first
-				function() {
-					self.downloadArchive(record);
-				}
-			);
-		}
-		var failCallback = function(error) {
-			// console.log(error);
-			Ext.Msg.alert(
-				'Processing the scorm',
-				'Processing the scorm: '+ path +' failed! Code: ' + error.code
-			);
-		}
-		MoodleMobApp.FileSystem.access(gotFS, failCallback);
-	},
-
-	downloadArchive: function(module){
-		var that = this,
-		file = {
-			'scormid': module.get('instanceid'),
-			'name': module.get('id') + '.zip',
+		var file = {
+			'moduleid': record.get('id'),
+			'scormid': record.get('instanceid'),
+			'name': record.get('id') + '.zip',
 			'mime': 'application/zip'
 		};
-
-		// The archive is going to be named id.zip and is going to be stored in a directory named id
-		// Example: 508/508.zip
-		// Once extracted all the content is going to be contained in one directory.
-		var dir = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/scorm/' + module.get('id');
-		// Supsi.Utils.log('files unzipped in ',  dir);
-		// this file notifies the sucessful extraction
-		// if not present the archive is going to be downloaded again
-		var scormExtractedFileFlag = dir + '/_scorm_extracted_';
-		// success function
-		var downloadSuccessFunc = function(file) {
-			MoodleMobApp.app.showLoadMask('Extracting');
-			console.log('download success function start');
-			var extractionSuccessFunc = function(targetPath) {
-					MoodleMobApp.app.hideLoadMask('');
-					var gotFS = function(fileSystem) {
-						// get the filesystem
-						console.log('requestFileSystem callback ' + targetPath);
-						fileSystem.root.getFile(
-							scormExtractedFileFlag,
-							{
-								create: true,
-								exclusive: false
-							},
-							function() {
-								that.parseScorm(targetPath+'/');
-								//that.processScorm(module);
-							},
-							function() {
-								Ext.Msg.alert(
-									'Scorm registering',
-									'Failed to register the downloaded score. Please check the storage available space.'
-								);
-							}
-						);
-					}
-
-					var failCallback = function(error) {
-						// console.log(error);
-						Ext.Msg.alert(
-							'Extracting the scorm',
-							'Extrating the scorm failed! Code: ' + error.code
-						);
-					}
-
-					MoodleMobApp.FileSystem.access(gotFS, failCallback);
-			};
-			var extractionFailFunc = function(error) {
-					MoodleMobApp.app.hideLoadMask('');
-					Ext.Msg.alert(
-						'Archive extracting',
-						'Extracting the archive has failed. Please check the storage available space.'
-					);
-			};
-
-			// start the extraction
-			var outputDirectory = file.toInternalURL().substring(0, file.toInternalURL().lastIndexOf('/'));
-			zip.unzip(
-				file.toInternalURL(),
-				outputDirectory,
-				function(arg){
-					console.log(' >>>>>>>>>>> callback called with arg: ' + arg);
-					console.log(' >>>>>>>>>>> extracting filepath: ' + file.toInternalURL());
-					console.log(' >>>>>>>>>>> extracting directory output: ' + outputDirectory);
-					if(arg == 0) { // success
-						extractionSuccessFunc(outputDirectory);
-					} else {
-						extractionFailFunc();
-					}
-				}
-			);
-		};
-
-		MoodleMobApp.WebService.getScorm(
-			file,
-			dir,
-			downloadSuccessFunc,
-			MoodleMobApp.Session.getCourse().get('token')
-		);
+		var callback = function(fileEntry) {
+			// case 1: the file has not been extracted yet and the return value is a path to a zip file
+			var path = fileEntry.toURL().replace(/.zip$/, '/');
+			// case 2: the file has been already extracted and the returning value is the _archive_extracted_ flag
+				path = path.replace(/_archive_extracted_$/, file.moduleid + '/'); // the file has already been extracted
+			console.log('parsing scorm: ' + path);
+			self.parseScorm(path);
+		}
+		self.getNavigator().fireEvent('downloadfile', file, callback);
 	},
 
 		/**
@@ -529,7 +437,7 @@
 							console.log('got the file entry, calling loadManifest function');
 							console.log(that);
 							console.log(fileEntry);
-							that.loadManifest(fileEntry.toInternalURL());
+							that.loadManifest(fileEntry.toURL());
 						},
 						function(error) {
 							console.error('cannot load the manifest file', error);

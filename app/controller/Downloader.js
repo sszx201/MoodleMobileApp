@@ -187,8 +187,7 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 			};
 
 			// prepare the filePath
-			file.name = file.name.split(' ').join('_');
-			file.name = file.name.latinise();
+			file.name = this.standardizeFileName(file.name);
 			var dirPath = self.buildDirPath(file);
 			var filePath = dirPath + '/' + file.name;
 
@@ -294,8 +293,7 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 	// the fileDownloadedCallback is called after the file has been fetched
 	downloadFile: function(file, fileDownloadedCallback) {
 		// prepare the filePath
-		file.name = file.name.split(' ').join('_');
-		file.name = file.name.latinise();
+		file.name = this.standardizeFileName(file.name);
 		var dirPath = this.buildDirPath(file);
 		var filePath = dirPath + '/' + file.name;
 
@@ -457,8 +455,7 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 	},
 
 	findCachedFile: function(file, successCallback, failureCallback) {
-		file.name = file.name.split(' ').join('_');
-		file.name = file.name.latinise();
+		file.name = this.standardizeFileName(file.name);
 		var dirPath = this.buildDirPath(file);
 		var filePath = '';
 
@@ -515,6 +512,11 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 			successCallback,
 			failureCallback
 		);
+	},
+
+	standardizeFileName: function(name) {
+		//return name.split(' ').join('_').latinise().replace(/[^a-zA-Z0-9\.]/g, '_');
+		return name.latinise().replace(/[^a-zA-Z0-9\.]/g, '_');
 	},
 
 	buildDirPath: function(file) {

@@ -222,7 +222,8 @@
 							that.fireEvent('docloaded');
 
 						}
-						that.loadSCORMPage(that.SCORMId + uri);
+						//that.loadSCORMPage(that.SCORMId + uri);
+						that.loadSCORMPage(fileEntry.toURL().replace(Supsi.Constants.get('CLONED_BASE'), ''));
 					}else{
 						that._loadEnd.apply(that, arguments);
 					}
@@ -239,7 +240,8 @@
 						that._docContainerLoadHandler();
 						that._firstSCORMLoad(fileEntry)
 					}
-					this.loadSCORMPage(this.SCORMId + uri);
+					//this.loadSCORMPage(this.SCORMId + uri);
+					this.loadSCORMPage(fileEntry.toURL().replace(Supsi.Constants.get('CLONED_BASE'), ''));
 				}else{
 					jQuery.ajax({
 						url: this.SCORMId + dataLocation + uri,

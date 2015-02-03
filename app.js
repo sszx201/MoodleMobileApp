@@ -136,7 +136,6 @@ Ext.application({
 		// So this piece of code warns the user when the navigation breaks the app.
 		// This happens with the youtube videos where the window.location.href is used
 		// to navigate to the youtube page.
-		/*
 		window.onbeforeunload = function (e) {
 			var message = "This content is going to be loaded in place of the app content. After the page has been loaded navigating back to the app is not going to be possible anymore.",
 			e = e || window.event;
@@ -148,7 +147,6 @@ Ext.application({
 			// For Safari
 			return message;
 		};
-		*/
 
 		// periodic network checker
 		setInterval(MoodleMobApp.app.isConnectionAvailable, 1000);

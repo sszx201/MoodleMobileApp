@@ -110,7 +110,7 @@
 		};
 		var callback = function(fileEntry) {
 			// case 1: the file has not been extracted yet and the return value is a path to a zip file
-			var path = fileEntry.toURL().replace(/.zip$/, '/');
+			var path = fileEntry.toInternalURL().replace(/.zip$/, '/');
 			// case 2: the file has been already extracted and the returning value is the _archive_extracted_ flag
 				path = path.replace(/_archive_extracted_$/, file.moduleid + '/'); // the file has already been extracted
 			console.log('parsing scorm: ' + path);

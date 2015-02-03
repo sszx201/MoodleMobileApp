@@ -316,7 +316,6 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 							dirPath,
 							function(fileEntry) {
 								successCallback(fileEntry);
-								fileDownloadedCallback();
 							},
 							MoodleMobApp.Session.getCourse().get('token')
 						);
@@ -340,7 +339,6 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 							console.log(' >>>>>>>>>>> callback called with arg: ' + arg);
 							console.log(' >>>>>>>>>>> extracting filepath: ' + filePath);
 							console.log(' >>>>>>>>>>> extracting directory output: ' + outputDirectory);
-							fileDownloadedCallback(fileEntry);
 							if(arg == 0) { // success
 								console.log('archive extracted yaaay');
 								fileDownloadedCallback(fileEntry);

@@ -5,6 +5,7 @@ Ext.define('MoodleMobApp.controller.Downloader', {
         refs: {
 			navigator: 'coursenavigator',
 			moduleList: 'modulelist',
+			folder: 'folder',
 			multiDownloadsButton: 'button#multiDownloadsAppBtn',
 			queueForDownloadCheckBox: 'checkboxfield#queuefordownload',
 			clearSelectionButton: 'coursenavigator toolbar#downloadsToolbar button[action=clearselection]',
@@ -51,6 +52,7 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 			this.getNavigator().down('toolbar#downloadsToolbar').show();
 		}
 		this.getModuleList().refresh();
+		this.getFolder().refresh();
 	},
 
 	toggleDownloadModeBar: function(navigator, view, oldView, opts) {
@@ -70,6 +72,7 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 		var index = null;
 		var file = null;
 
+		// check if this resource is a folder
 		if(record.get('modname') == 'folder') {
 			return this.queueFolder(record, target);
 		} else if(record.get('modname') == 'scorm') {
@@ -82,13 +85,17 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 			};
 		// check if this resource is a folder entry
 		} else if(record.get('rootid') != undefined) {
-			index = record.internalId;
-			file = {
-				name: record.get('name'),
-				fileid: record.get('fileid'),
-				mime: record.get('mime'),
-				size: record.get('size')
-			};
+			if(record.get('mime') == 'inode/directory') {
+				return this.queueFolder(record, target);
+			} else {
+				index = record.internalId;
+				file = {
+					name: record.get('name'),
+					fileid: record.get('fileid'),
+					mime: record.get('mime'),
+					size: record.get('size')
+				};
+			}
 		} else { // process a standard resource
 			// find the resource in the store
 			var instanceId = record.get('instanceid');
@@ -108,22 +115,26 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 			};
 		}
 		// build the callback function
-		callBackFunction = function() { target.setCached(true); };
+		var callBackFunction = function() { target.setCached(true); };
 		// add to queue
 		this.downloadQueue[index] = { entry: file, callback: callBackFunction };
 	},
 
 	queueFolder: function(record, target) {
-		var rootid = record.get('instanceid');
+		var rootid = 0;
+		if(record.get('rootid') != undefined) {
+			rootid = record.get('rootid');
+		} else {
+			rootid = record.get('instanceid');
+		}
 		// filter modules
 		MoodleMobApp.Session.getFoldersStore().each(
 			function(file_entry) {
 				if( 
-					file_entry.get('rootid') === record.get('instanceid') &&
+					file_entry.get('rootid') === rootid &&
 					file_entry.get('courseid') == MoodleMobApp.Session.getCourse().get('id') &&
 					file_entry.get('mime') != 'inode/directory'
 				) {
-					var self = this;
 					var file = {
 						name: file_entry.get('name'),
 						fileid: file_entry.get('fileid'),
@@ -136,7 +147,7 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 						function() {}, // if the file exists than do nothing
 						function() { // if the file does not exist than add it to the queue
 							// add to queue
-							self.downloadQueue[file_entry.internalId] = { entry: file, callback: callBackFunction };
+							MoodleMobApp.Session.getDownloader().downloadQueue[file_entry.internalId] = { entry: file, callback: callBackFunction };
 						}
 					);
 				}
@@ -145,14 +156,29 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 	},
 
 	unqueueResource: function(cbox, e, opts) {
-		var index = null;
-		if(module.get('modname') == 'scorm') {
-			index = cbox.getParent().getRecord().internalId;
+		var record = cbox.getParent().getRecord();
+		
+		if(record.get('rootid') != undefined) { // check if subfolder
+			var rootid = record.get('rootid');
+			MoodleMobApp.Session.getFoldersStore().each(
+				function(file_entry) {
+					if( 
+						file_entry.get('rootid') === rootid &&
+						file_entry.get('courseid') == MoodleMobApp.Session.getCourse().get('id') &&
+						file_entry.get('mime') != 'inode/directory'
+					) {
+						delete this.downloadQueue[file_entry.internalId];
+					}
+				}, this
+			);
+		} else if(record.get('modname') == 'scorm') { // check if scorm
+			var index = cbox.getParent().getRecord().internalId;
+			delete this.downloadQueue[index];
 		} else {
 			var resource = MoodleMobApp.Session.getResourcesStore().findRecord('id', cbox.getParent().getRecord().get('instanceid'), 0, false, true, true);
-			index = resource.internalId;
+			var index = resource.internalId;
+			delete this.downloadQueue[index];
 		}
-		delete this.downloadQueue[index];
 	},
 
 	clearSelection: function() {
@@ -173,22 +199,23 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 	},
 
 	processQueue: function() {
-		if(Object.keys(this.downloadQueue).length == 0) {
+		if(Object.keys(MoodleMobApp.Session.getDownloader().downloadQueue).length == 0) {
 			console.log('Queue processed :: all selected files have been downloaded!!');
 		} else {
-			var self = this;
-			var key = Object.keys(this.downloadQueue)[0];
-			var file = this.downloadQueue[key].entry;
+			var key = Object.keys(MoodleMobApp.Session.getDownloader().downloadQueue)[0];
+			var file = MoodleMobApp.Session.getDownloader().downloadQueue[key].entry;
 			var processNextEntry = function() {
-				self.downloadQueue[key].callback();
-				// remove the current entry and start the next one
-				delete self.downloadQueue[key];
-				self.processQueue();
+				if(Object.keys(MoodleMobApp.Session.getDownloader().downloadQueue).length > 0) {
+					MoodleMobApp.Session.getDownloader().downloadQueue[key].callback();
+					// remove the current entry and start the next one
+					delete MoodleMobApp.Session.getDownloader().downloadQueue[key];
+					MoodleMobApp.Session.getDownloader().processQueue();
+				}
 			};
 
 			// prepare the filePath
 			file.name = this.standardizeFileName(file.name);
-			var dirPath = self.buildDirPath(file);
+			var dirPath = this.buildDirPath(file);
 			var filePath = dirPath + '/' + file.name;
 
 			var fetchFunction = function(successCallback) {
@@ -199,7 +226,7 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 							dirPath,
 							function(fileEntry) {
 								successCallback(fileEntry);
-								processNextEntry();
+								//processNextEntry();
 							},
 							MoodleMobApp.Session.getCourse().get('token')
 						);
@@ -209,7 +236,7 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 							dirPath,
 							function(fileEntry) {
 								successCallback(fileEntry);
-								processNextEntry();
+								//processNextEntry();
 							},
 							MoodleMobApp.Session.getCourse().get('token')
 						);
@@ -235,6 +262,9 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 							console.log(' >>>>>>>>>>> extracting filepath: ' + filePath);
 							console.log(' >>>>>>>>>>> extracting directory output: ' + outputDirectory);
 							if(arg == 0) { // success
+								// deal with the next entry
+								processNextEntry();
+
 								console.log('archive extracted yaaay');
 								MoodleMobApp.FileSystem.removeFile(
 									filePath,
@@ -437,14 +467,6 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 			file,
 			function(fileEntry) {
 				fileDownloadedCallback(fileEntry);
-				return; // qui
-				if(file.mime == 'application/zip' && file.scormid == undefined) { // normal zip file
-					MoodleMobApp.app.getController('FileBrowser').openDirectory(filePath.substring(0, filePath.lastIndexOf('.zip')));
-				} else if(file.mime == 'application/zip' && file.scormid != undefined) { // scorm zip file
-					fileDownloadedCallback(filePath.substring(0, filePath.lastIndexOf('.zip')));
-				} else {
-					MoodleMobApp.app.openFile(fileEntry.toNativeURL(), file.mime);
-				}
 			},
 			function(error) {
 				confirmDowload();
@@ -477,11 +499,10 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 				}, this
 			);
 			if(files.length > 0) { // there are files in the folder; check them
-				var self = this;
 				var nextFileCheckFunction = function() {
 					if(files.length > 0) { // check the next file
 						var subfile = files.pop();
-						self.findCachedFile(subfile, nextFileCheckFunction, failureCallback);
+						MoodleMobApp.Session.getDownloader().findCachedFile(subfile, nextFileCheckFunction, failureCallback);
 					} else { // there are no more files to check; all the files are already cached
 						successCallback();
 					}

@@ -4,7 +4,7 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 
 	config: {
 		cls: 'x-folder-entry',
-		cached: false, // states if the file or directory has been cached
+		//cached: false, // states if the file or directory has been cached
 
 		items: [
 			{
@@ -23,7 +23,7 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 				cls: 'download-file-selection',
 				labelWidth: '0%',
 				docked: 'left',
-				//hidden: true
+				hidden: true
 			},
 		]
 	},
@@ -31,7 +31,7 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 	updateRecord: function(record) {
 		// this function is called also when a DataItem is destroyed or the record is removed from the store
 		// the check bellow avoids the running of the function when it is null
-		if(record == null) { return; } 
+		if(record == null) { return; } 	
 
 		this.down('#name').setHtml(record.get('name'));
 
@@ -39,8 +39,8 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 		// this is the folder navigation icons glitch fix
 		// without this sometimes the folder entries get
 		// the file icon and viceversa
-		this.removeCls('x-subfolder-icon');
-		this.removeCls('x-file-icon');
+		this.down('#name').removeCls('x-subfolder-icon');
+		this.down('#name').removeCls('x-file-icon');
 		// add the correct css class
 		if(record.get('mime') == 'inode/directory'){
 			this.down('#name').addCls('x-subfolder-icon');
@@ -48,40 +48,60 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 			this.down('#name').addCls('x-file-icon');
 		}
 
-		if(record.get('mime') != 'inode/directory'){
-			var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + record.get('fileid');
-			var filePath = '';
-			if(record.get('mime') == 'application/zip') {
-				filePath = dirPath + '/_archive_extracted_';
-			} else {
-				filePath = dirPath + '/' + record.get('name').split(' ').join('_');
-			}
+		console.log(record.get('name'));
+
+		if(record.get('name') != '..') {
 			var self = this;
-			MoodleMobApp.FileSystem.getFile(
-				filePath,
+			var file = {
+					rootid: record.get('rootid'),
+					name: record.get('name'),
+					fileid: record.get('fileid'),
+					mime: record.get('mime'),
+					size: record.get('size')
+				};
+
+			MoodleMobApp.Session.getDownloader().findCachedFile(
+				file,
 				function() {
 					self.setCached(true);
 				},
 				function() {
 					self.setCached(false);
+					self.down('#queuefordownload').uncheck();
+					self.toggleDownloadSelection();
 				}
 			);
+		} else {
+			this.down('#queuefordownload').hide();
 		}
 	},
 
 	setCached: function(isCached) {
-		this.config.cached = isCached;
+		//this.config.cached = isCached;
+		this.getRecord().cached = isCached;
 		var onlineFlag = ' <img src="resources/images/online.png"/>';
 		var cachedFlag = ' <img src="resources/images/download.png"/>';
 		if(isCached) {
 			this.down('#status').setHtml(cachedFlag);
+			// this file has already been downloaded
+			this.down('#queuefordownload').hide();
 		} else {
 			this.down('#status').setHtml(onlineFlag);
 		}
 	},
 
 	getCached: function() {
-		return this.config.cached;
+		//return this.config.cached;
+		return this.getRecord().cached;
+	},
+
+	toggleDownloadSelection: function() {
+		// show the download block
+		if(MoodleMobApp.Session.getMultiDownloadMode() && !this.getCached()) {
+			this.down('#queuefordownload').show();
+		} else {
+			this.down('#queuefordownload').hide();
+		}
 	}
 });
 

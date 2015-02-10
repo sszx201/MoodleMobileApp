@@ -112,7 +112,6 @@ Ext.define("MoodleMobApp.view.Module", {
 
 				case 'folder':
 					file = {
-						'moduleid': record.get('id'),
 						'rootid': record.get('instanceid'),
 						'fileid': null,
 						'name': record.get('name'),
@@ -180,6 +179,8 @@ Ext.define("MoodleMobApp.view.Module", {
 		// show the download block
 		if(MoodleMobApp.Session.getMultiDownloadMode() && !this.getCached()) {
 			this.down('#queuefordownload').show();
+		} else {
+			this.down('#queuefordownload').hide();
 		}
 	}
 });

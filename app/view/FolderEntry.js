@@ -23,7 +23,15 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 				cls: 'download-file-selection',
 				labelWidth: '0%',
 				docked: 'left',
-				hidden: true
+				hidden: true,
+				listeners: {
+					check: function() {
+						this.getParent().getRecord().selected = true;
+					},
+					uncheck: function() {
+						this.getParent().getRecord().selected = false;
+					},
+				}
 			},
 		]
 	},
@@ -48,9 +56,7 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 			this.down('#name').addCls('x-file-icon');
 		}
 
-		console.log(record.get('name'));
-
-		if(record.get('name') != '..') {
+		if(record.get('mime') != 'inode/directory') {
 			var self = this;
 			var file = {
 					rootid: record.get('rootid'),
@@ -67,11 +73,22 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 				},
 				function() {
 					self.setCached(false);
-					self.down('#queuefordownload').uncheck();
+					// this is the navigation check; restore previous selections.
+					// That is why the "selected" value is on the record value.
+					// It makes it indipendend of the FolderEntry object.
+					if(self.getRecord().selected == true) {
+						console.log('selected: ' + self.getRecord().internalId);
+						self.down('#queuefordownload').check();
+					}else{
+						console.log('unselected: ' + self.getRecord().internalId);
+						self.down('#queuefordownload').uncheck();
+					}
 					self.toggleDownloadSelection();
 				}
 			);
 		} else {
+			this.down('#status').setHtml('');
+			this.down('#queuefordownload').uncheck();
 			this.down('#queuefordownload').hide();
 		}
 	},

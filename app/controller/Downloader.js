@@ -51,8 +51,14 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 			MoodleMobApp.Session.setMultiDownloadMode(true);
 			this.getNavigator().down('toolbar#downloadsToolbar').show();
 		}
-		this.getModuleList().refresh();
-		this.getFolder().refresh();
+		switch(this.getNavigator().getActiveItem().xtype) {
+			case 'modulelist':
+				this.getModuleList().refresh();
+			break;
+			case 'folder':
+				this.getFolder().refresh();
+			break;
+		}
 	},
 
 	toggleDownloadModeBar: function(navigator, view, oldView, opts) {
@@ -69,6 +75,8 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 		}
 		var target = cbox.getParent();
 		var record = cbox.getParent().getRecord();
+		console.log('ADDING RESOURCE: ');
+		console.log(record.getData());
 		var index = null;
 		var file = null;
 
@@ -157,9 +165,8 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 
 	unqueueResource: function(cbox, e, opts) {
 		var record = cbox.getParent().getRecord();
-		
-		if(record.get('rootid') != undefined) { // check if subfolder
-			var rootid = record.get('rootid');
+		if(record.get('modname') == 'folder') {
+			var rootid = record.get('instanceid');
 			MoodleMobApp.Session.getFoldersStore().each(
 				function(file_entry) {
 					if( 
@@ -171,6 +178,9 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 					}
 				}, this
 			);
+		} else if(record.get('rootid') != undefined) { // check if folder entry
+			var index = record.internalId;
+			delete this.downloadQueue[index];
 		} else if(record.get('modname') == 'scorm') { // check if scorm
 			var index = cbox.getParent().getRecord().internalId;
 			delete this.downloadQueue[index];
@@ -508,7 +518,7 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 					}
 				}
 				// start che check
-				this.findCachedFile(
+				return this.findCachedFile(
 					files.pop(), // first subfile
 					nextFileCheckFunction,
 					failureCallback // there is at least one file that is not cached yet; stop searching further

@@ -131,39 +131,39 @@ Ext.define('MoodleMobApp.controller.Folder', {
 	selectFolderEntry: function(view, index, target, entry) {
 		// download mode functionality
 		if(MoodleMobApp.Session.getMultiDownloadMode() && !target.getCached()) {
-			if(entry.get('name') != '..') { // consider only if the entry is not the up dir
+			//if(entry.get('name') != '..') { // consider only if the entry is not the up dir
+			if(entry.get('mime') != 'inode/directory') { // consider only if is a file
 				if(target.down('#queuefordownload').getChecked()) {
 					target.down('#queuefordownload').uncheck();
 				} else {
 					target.down('#queuefordownload').check();
 				}
 			}
-		} else {
-			if(entry.get('name') == '..') { // up dir
-				var parent_folder_store = this.getParentFolder(entry);
-				this.getFolder().setStore(parent_folder_store);
-				// display folder
-				this.getNavigator().push(this.getFolder());
-			} else if(entry.get('type') == 'dir') { // subdir
-				var subfolder_store = this.getSubFolder(entry);	
-				this.getFolder().setStore(subfolder_store);;
-				this.getNavigator().push(this.getFolder());
-			} else if(entry.get('type') == 'file'){
-				var file = entry.getData();
-				var callback = function(fileEntry) {
-					target.setCached(true);
-					if(file.mime == 'application/zip') {
-						var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + file.fileid + '/' + file.name;
-							dirPath = dirPath.split(' ').join('_').latinise().replace(/\.zip$/, '');
-						MoodleMobApp.app.getController('FileBrowser').openDirectory(dirPath);
-					} else {
-						MoodleMobApp.app.openFile(fileEntry.toURL(), file.mime);
-					}
-				};
-				this.getNavigator().fireEvent('downloadfile', file, callback);
-			}
 		}
-		
+
+		if(entry.get('name') == '..') { // up dir
+			var parent_folder_store = this.getParentFolder(entry);
+			this.getFolder().setStore(parent_folder_store);
+			// display folder
+			this.getNavigator().push(this.getFolder());
+		} else if(entry.get('type') == 'dir') { // subdir
+			var subfolder_store = this.getSubFolder(entry);
+			this.getFolder().setStore(subfolder_store);;
+			this.getNavigator().push(this.getFolder());
+		} else if(entry.get('type') == 'file' && !MoodleMobApp.Session.getMultiDownloadMode()){
+			var file = entry.getData();
+			var callback = function(fileEntry) {
+				target.setCached(true);
+				if(file.mime == 'application/zip') {
+					var dirPath = MoodleMobApp.Config.getFileCacheDir() + '/' + MoodleMobApp.Session.getCourse().get('id') + '/file/' + file.fileid + '/' + file.name;
+						dirPath = dirPath.split(' ').join('_').latinise().replace(/\.zip$/, '');
+					MoodleMobApp.app.getController('FileBrowser').openDirectory(dirPath);
+				} else {
+					MoodleMobApp.app.openFile(fileEntry.toURL(), file.mime);
+				}
+			};
+			this.getNavigator().fireEvent('downloadfile', file, callback);
+		}
 	},
 
 	addUpperFolderEntry: function(currentFolder){

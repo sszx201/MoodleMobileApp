@@ -416,10 +416,9 @@ Ext.define('MoodleMobApp.controller.Forum', {
 			return;
 		}
 
-		var token = MoodleMobApp.Session.getCourse().get('token');
-		var create_post_result_store = MoodleMobApp.WebService.createForumPost(formData, token);
-
 		if(MoodleMobApp.app.isConnectionAvailable()) {
+			var token = MoodleMobApp.Session.getCourse().get('token');
+			var create_post_result_store = MoodleMobApp.WebService.createForumPost(formData, token);
 			MoodleMobApp.app.showLoadMask('Saving...');
 			// refresh the discussion content
 			create_post_result_store.on(

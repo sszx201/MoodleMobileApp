@@ -23,6 +23,8 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 				cls: 'download-file-selection',
 				labelWidth: '0%',
 				docked: 'left',
+				disabled: true,
+				disabledCls: '',
 				hidden: true,
 				listeners: {
 					check: function() {
@@ -77,10 +79,8 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 					// That is why the "selected" value is on the record value.
 					// It makes it indipendend of the FolderEntry object.
 					if(self.getRecord().selected == true) {
-						console.log('selected: ' + self.getRecord().internalId);
 						self.down('#queuefordownload').check();
 					}else{
-						console.log('unselected: ' + self.getRecord().internalId);
 						self.down('#queuefordownload').uncheck();
 					}
 					self.toggleDownloadSelection();

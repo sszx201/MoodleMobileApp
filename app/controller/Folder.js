@@ -39,13 +39,7 @@ Ext.define('MoodleMobApp.controller.Folder', {
 	selectModule: function(view, index, target, record) {
 		if(record.raw.modname === 'folder'){
 			// download mode functionality
-			if(MoodleMobApp.Session.getMultiDownloadMode() && !target.getCached()) {
-				if(target.down('#queuefordownload').getChecked()) {
-					target.down('#queuefordownload').uncheck();
-				} else {
-					target.down('#queuefordownload').check();
-				}
-			} else {
+			if( (MoodleMobApp.Session.getMultiDownloadMode() && target.getCached()) || !MoodleMobApp.Session.getMultiDownloadMode()) {
 				this.selectFolder(record);
 			}
 		}
@@ -129,18 +123,6 @@ Ext.define('MoodleMobApp.controller.Folder', {
 	},
 
 	selectFolderEntry: function(view, index, target, entry) {
-		// download mode functionality
-		if(MoodleMobApp.Session.getMultiDownloadMode() && !target.getCached()) {
-			//if(entry.get('name') != '..') { // consider only if the entry is not the up dir
-			if(entry.get('mime') != 'inode/directory') { // consider only if is a file
-				if(target.down('#queuefordownload').getChecked()) {
-					target.down('#queuefordownload').uncheck();
-				} else {
-					target.down('#queuefordownload').check();
-				}
-			}
-		}
-
 		if(entry.get('name') == '..') { // up dir
 			var parent_folder_store = this.getParentFolder(entry);
 			this.getFolder().setStore(parent_folder_store);

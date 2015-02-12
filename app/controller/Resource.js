@@ -30,13 +30,7 @@ Ext.define('MoodleMobApp.controller.Resource', {
 				winref = this.openHtmlResource(MoodleMobApp.Config.getResourceViewUrl()+'?id='+record.get('id'), record.get('display'));
 			} else {
 				// download mode functionality
-				if(MoodleMobApp.Session.getMultiDownloadMode() && !target.getCached()) {
-					if(target.down('#queuefordownload').getChecked()) {
-						target.down('#queuefordownload').uncheck();
-					} else {
-						target.down('#queuefordownload').check();
-					}
-				} else {
+				if( (MoodleMobApp.Session.getMultiDownloadMode() && target.getCached()) || !MoodleMobApp.Session.getMultiDownloadMode()) {
 					this.getFile(resource, target);
 				}
 			}

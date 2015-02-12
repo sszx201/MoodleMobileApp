@@ -21,10 +21,6 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 			multiDownloadsButton: {
 				tap: 'activateMultiDownloadMode'
 			},
-			queueForDownloadCheckBox: {
-				check: 'queueResource',
-				uncheck: 'unqueueResource'
-			},
 			clearSelectionButton: {
 				tap: 'clearSelection'
 			},
@@ -33,7 +29,11 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 			},
 			downloadFilesButton: {
 				tap: 'processQueue'
-			}
+			},
+			moduleList: {
+				itemtap: 'toggleQueueResource'
+			},
+			folder: { itemtap: 'toggleQueueResource' },
         }
     },
 
@@ -68,23 +68,27 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 			this.getNavigator().down('toolbar#downloadsToolbar').show();
 		}
 	},
-    
-	queueResource: function(cbox, e, opts) {
-		if(e != undefined) {
-			e.stopPropagation(); // avoid starting the download right away
+
+	toggleQueueResource: function(view, index, target, record) {
+		if(MoodleMobApp.Session.getMultiDownloadMode()) {
+			if(target.down('#queuefordownload').getChecked() == false) {
+				target.down('#queuefordownload').check();
+				this.queueResource(target, record);
+			} else {
+				target.down('#queuefordownload').uncheck();
+				this.unqueueResource(target, record);
+			}
 		}
-		var target = cbox.getParent();
-		var record = cbox.getParent().getRecord();
-		console.log('ADDING RESOURCE: ');
-		console.log(record.getData());
-		var index = null;
+	},
+
+	queueResource: function(target, record) {
+		var index = record.internalId;
 		var file = null;
 
 		// check if this resource is a folder
 		if(record.get('modname') == 'folder') {
-			return this.queueFolder(record, target);
+			return this.queueFolder(target, record);
 		} else if(record.get('modname') == 'scorm') {
-			index = record.internalId;
 			file = {
 				'moduleid': record.get('id'),
 				'scormid': record.get('instanceid'),
@@ -94,9 +98,8 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 		// check if this resource is a folder entry
 		} else if(record.get('rootid') != undefined) {
 			if(record.get('mime') == 'inode/directory') {
-				return this.queueFolder(record, target);
+				return this.queueFolder(target, record);
 			} else {
-				index = record.internalId;
 				file = {
 					name: record.get('name'),
 					fileid: record.get('fileid'),
@@ -114,7 +117,6 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 				}
 			);
 			var resource = MoodleMobApp.Session.getResourcesStore().getAt(resource_position);
-			index = resource.internalId;
 			file = {
 				name: resource.get('filename'),
 				fileid: resource.get('fileid'),
@@ -128,13 +130,8 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 		this.downloadQueue[index] = { entry: file, callback: callBackFunction };
 	},
 
-	queueFolder: function(record, target) {
-		var rootid = 0;
-		if(record.get('rootid') != undefined) {
-			rootid = record.get('rootid');
-		} else {
-			rootid = record.get('instanceid');
-		}
+	queueFolder: function(target, record) {
+		var rootid = record.get('instanceid');
 		// filter modules
 		MoodleMobApp.Session.getFoldersStore().each(
 			function(file_entry) {
@@ -163,8 +160,7 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 		);
 	},
 
-	unqueueResource: function(cbox, e, opts) {
-		var record = cbox.getParent().getRecord();
+	unqueueResource: function(target, record) {
 		if(record.get('modname') == 'folder') {
 			var rootid = record.get('instanceid');
 			MoodleMobApp.Session.getFoldersStore().each(
@@ -178,15 +174,18 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 					}
 				}, this
 			);
-		} else if(record.get('rootid') != undefined) { // check if folder entry
+		} else {
 			var index = record.internalId;
 			delete this.downloadQueue[index];
+		}
+
+		return;
+		if(record.get('rootid') != undefined) { // check if folder entry
+			delete this.downloadQueue[index];
 		} else if(record.get('modname') == 'scorm') { // check if scorm
-			var index = cbox.getParent().getRecord().internalId;
 			delete this.downloadQueue[index];
 		} else {
-			var resource = MoodleMobApp.Session.getResourcesStore().findRecord('id', cbox.getParent().getRecord().get('instanceid'), 0, false, true, true);
-			var index = resource.internalId;
+			//var resource = MoodleMobApp.Session.getResourcesStore().findRecord('id', record.get('instanceid'), 0, false, true, true);
 			delete this.downloadQueue[index];
 		}
 	},

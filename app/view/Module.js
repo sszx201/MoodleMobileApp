@@ -32,6 +32,8 @@ Ext.define("MoodleMobApp.view.Module", {
 				cls: 'download-file-selection',
 				labelWidth: '0%',
 				docked: 'left',
+				disabled: true,
+				disabledCls: '',
 				hidden: true
 			},
 			{

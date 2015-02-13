@@ -192,33 +192,44 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 			var index = record.internalId;
 			delete this.downloadQueue[index];
 		}
-
-		return;
-		if(record.get('rootid') != undefined) { // check if folder entry
-			delete this.downloadQueue[index];
-		} else if(record.get('modname') == 'scorm') { // check if scorm
-			delete this.downloadQueue[index];
-		} else {
-			//var resource = MoodleMobApp.Session.getResourcesStore().findRecord('id', record.get('instanceid'), 0, false, true, true);
-			delete this.downloadQueue[index];
-		}
 	},
 
 	clearSelection: function() {
 		this.downloadQueue = {};
-		this.getModuleList().getAt(1).getItems().each(function(entry){
-			entry.down('#queuefordownload').uncheck();
-		}, this);
+		switch(this.getNavigator().getActiveItem().xtype) {
+			case 'modulelist':
+				this.getModuleList().getAt(1).getItems().each(function(entry){
+					entry.down('#queuefordownload').uncheck();
+				}, this);
+			break;
+			case 'folder':
+				this.getFolder().getAt(1).getItems().each(function(entry){
+					entry.down('#queuefordownload').uncheck();
+				}, this);
+			break;
+		}
 	},
 
 	selectAll: function() {
 		this.downloadQueue = {};
-		this.getModuleList().getAt(1).getItems().each(function(entry){
-			if(entry.getCachable() && !entry.getCached()) {
-				entry.down('#queuefordownload').check();
-			}
-		}, this);
-
+		switch(this.getNavigator().getActiveItem().xtype) {
+			case 'modulelist':
+				this.getModuleList().getAt(1).getItems().each(function(entry){
+					if(entry.getCachable() && !entry.getCached()) {
+						entry.down('#queuefordownload').check();
+						this.queueResource(entry, entry.getRecord());
+					}
+				}, this);
+			break;
+			case 'folder':
+				this.getFolder().getAt(1).getItems().each(function(entry){
+					if(entry.getRecord().get('mime') != 'inode/directory' && !entry.getCached()) {
+						entry.down('#queuefordownload').check();
+						this.queueResource(entry, entry.getRecord());
+					}
+				}, this);
+			break;
+		}
 	},
 
 	processQueue: function() {

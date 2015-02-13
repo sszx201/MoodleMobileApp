@@ -132,7 +132,10 @@ Ext.define('MoodleMobApp.controller.Folder', {
 			var subfolder_store = this.getSubFolder(entry);
 			this.getFolder().setStore(subfolder_store);;
 			this.getNavigator().push(this.getFolder());
-		} else if(entry.get('type') == 'file' && !MoodleMobApp.Session.getMultiDownloadMode()){
+		} else if(
+			(entry.get('type') == 'file' && !MoodleMobApp.Session.getMultiDownloadMode()) ||
+			(entry.get('type') == 'file' && MoodleMobApp.Session.getMultiDownloadMode() && target.getCached())
+		){
 			var file = entry.getData();
 			var callback = function(fileEntry) {
 				target.setCached(true);

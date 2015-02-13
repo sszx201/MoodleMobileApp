@@ -31,9 +31,13 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 				tap: 'processQueue'
 			},
 			moduleList: {
+				activate: 'conditionalRenderMultiDownloadMode',
 				itemtap: 'toggleQueueResource'
 			},
-			folder: { itemtap: 'toggleQueueResource' },
+			folder: {
+				activate: 'conditionalRenderMultiDownloadMode',
+				itemtap: 'toggleQueueResource'
+			},
         }
     },
 
@@ -51,6 +55,10 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 			MoodleMobApp.Session.setMultiDownloadMode(true);
 			this.getNavigator().down('toolbar#downloadsToolbar').show();
 		}
+		this.renderMultiDownloadMode();
+	},
+
+	renderMultiDownloadMode: function() {
 		switch(this.getNavigator().getActiveItem().xtype) {
 			case 'modulelist':
 				this.getModuleList().refresh();
@@ -58,6 +66,12 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 			case 'folder':
 				this.getFolder().refresh();
 			break;
+		}
+	},
+
+	conditionalRenderMultiDownloadMode: function() {
+		if(MoodleMobApp.Session.getMultiDownloadMode()) {
+			this.renderMultiDownloadMode();
 		}
 	},
 

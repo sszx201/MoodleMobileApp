@@ -26,7 +26,8 @@ Ext.define("MoodleMobApp.view.Choice", {
 			{
 				xtype: 'panel',
 				itemId: 'statistics',
-				html: '<div id="choice_stats"></div>',
+				styleHtmlContent: true,
+				html: '<div id="choice_stats" width="100%"></div>',
 				hidden: true
 			},
 			{

@@ -426,7 +426,8 @@ Ext.define('MoodleMobApp.controller.Updater', {
 			if(stored_record == null) {
 				store_updated = true;
 				MoodleMobApp.Session.getChoicesStore().add(record);
-			} else if(stored_record.get('timemodified') != record.timemodified) {
+			//} else if(stored_record.get('timemodified') != record.timemodified) {
+			} else { // update the store without checking for the timemodified value; get the latest stats on the user answers
 				store_updated = true;
 				MoodleMobApp.Session.getChoicesStore().remove(stored_record);
 				MoodleMobApp.Session.getChoicesStore().add(record);

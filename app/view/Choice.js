@@ -14,7 +14,7 @@ Ext.define("MoodleMobApp.view.Choice", {
 		title: 'Choice',
 		items: [
 			{
-				xtype: 'panel',	
+				xtype: 'panel',
 				name: 'intro',
 				html: ''
 			},
@@ -24,8 +24,15 @@ Ext.define("MoodleMobApp.view.Choice", {
 				html: ''
 			},
 			{
+				xtype: 'panel',
+				itemId: 'statistics',
+				html: '<div id="choice_stats"></div>',
+				hidden: true
+			},
+			{
 				xtype: 'fieldset',
 				title: 'Options',
+				hidden: true,
 				defaults: {
 					labelWrap: true
 				}
@@ -33,6 +40,7 @@ Ext.define("MoodleMobApp.view.Choice", {
 			{
 				xtype: 'button',
 				text: 'Submit',
+				hidden: true,
 				ui: 'confirm',
 				action: 'submit'
 			}

@@ -24,7 +24,8 @@ Ext.define("MoodleMobApp.view.Settings", {
 					layout: {
 						type: 'hbox',
 						align: 'center',
-						pack: 'center'
+						pack: 'center',
+						scrollable: 'horizontal'
 					}
     			},
 				items: [

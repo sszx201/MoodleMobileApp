@@ -37,7 +37,7 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 			folder: {
 				activate: 'conditionalRenderMultiDownloadMode',
 				itemtap: 'toggleQueueResource'
-			},
+			}
         }
     },
 

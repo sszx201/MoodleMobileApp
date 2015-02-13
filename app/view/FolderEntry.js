@@ -32,9 +32,9 @@ Ext.define("MoodleMobApp.view.FolderEntry", {
 					},
 					uncheck: function() {
 						this.getParent().getRecord().selected = false;
-					},
+					}
 				}
-			},
+			}
 		]
 	},
 

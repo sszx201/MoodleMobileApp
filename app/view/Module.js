@@ -61,6 +61,7 @@ Ext.define("MoodleMobApp.view.Module", {
 		if(record != null) {
 			this.down('#queuefordownload').hide();
 			this.down('#name').setHtml(record.get('name'));
+			this.down('#name').setCls('x-module-name');
 
 			var classes = 'x-module';
 			var modname = '';

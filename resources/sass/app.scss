@@ -95,6 +95,10 @@ $border-color: #dedede;
 		margin-top: 10px;
 		margin-bottom: 5px;
 		font-size: small;
+		img {
+			max-width: 100% !important;
+			height: auto !important;
+		}
 	}
 }
 

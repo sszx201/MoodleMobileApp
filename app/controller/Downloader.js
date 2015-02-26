@@ -15,7 +15,7 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 
         control: {
 			navigator: {
-				activeitemchange: 'toggleDownloadModeBar',
+				activeitemchange: 'toggleDownloadMode',
 				downloadfile: 'downloadFile'
 			},
 			multiDownloadsButton: {
@@ -58,28 +58,37 @@ Ext.define('MoodleMobApp.controller.Downloader', {
 		this.renderMultiDownloadMode();
 	},
 
-	renderMultiDownloadMode: function() {
-		switch(this.getNavigator().getActiveItem().xtype) {
-			case 'modulelist':
-				this.getModuleList().refresh();
-			break;
-			case 'folder':
-				this.getFolder().refresh();
-			break;
-		}
-	},
-
 	conditionalRenderMultiDownloadMode: function() {
 		if(MoodleMobApp.Session.getMultiDownloadMode()) {
 			this.renderMultiDownloadMode();
 		}
 	},
 
-	toggleDownloadModeBar: function(navigator, view, oldView, opts) {
+	renderMultiDownloadMode: function() {
+		switch(this.getNavigator().getActiveItem().xtype) {
+			case 'modulelist':
+				this.getMultiDownloadsButton().show();
+				this.getModuleList().refresh();
+			break;
+			case 'folder':
+				this.getMultiDownloadsButton().show();
+				this.getFolder().refresh();
+			break;
+			default:
+				this.getMultiDownloadsButton().hide();
+			break;
+		}
+	},
+
+	toggleDownloadMode: function(navigator, view, oldView, opts) {
 		if(view.xtype != 'modulelist' && view.xtype != 'folder') {
 			this.getNavigator().down('toolbar#downloadsToolbar').hide();
-		} else if(MoodleMobApp.Session.getMultiDownloadMode()) {
-			this.getNavigator().down('toolbar#downloadsToolbar').show();
+			this.getMultiDownloadsButton().hide();
+		} else {
+			if(MoodleMobApp.Session.getMultiDownloadMode()) {
+				this.getNavigator().down('toolbar#downloadsToolbar').show();
+			}
+			this.getMultiDownloadsButton().show();
 		}
 	},
 

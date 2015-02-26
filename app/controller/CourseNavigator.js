@@ -30,7 +30,6 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			participantsButton: 'button#participantsAppBtn',
 			gradesButton: 'button#gradesAppBtn',
 			calendarButton: 'button#calendarAppBtn',
-			multiDownloadsButton: 'button#multiDownloadsAppBtn',
 			// views
 			navigator: 'coursenavigator',
 			settings: 'settings',
@@ -138,7 +137,6 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		this.getGradesButton().show();
 		this.getParticipantsButton().show();
 		this.getCalendarButton().show();
-		this.getMultiDownloadsButton().show();
 		// check the course status
 		// display if the course has already been synchronized
 		if(record.get('synchronized') != true && MoodleMobApp.app.isConnectionAvailable()) {
@@ -375,7 +373,6 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 				this.getParticipantsButton().hide();
 				this.getGradesButton().hide();
 				this.getCalendarButton().hide();
-				this.getMultiDownloadsButton().hide();
 			break;
 		}
 		// change the ocurse title

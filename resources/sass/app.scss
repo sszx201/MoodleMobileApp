@@ -658,11 +658,18 @@ $border-color: #dedede;
  *
  * */
 .assignment{
-	.intro {
-		background-color: white;
+	.intro{
 		padding: 5px;
-		padding-top: 10px;
-		padding-bottom: 10px;
+	}
+
+	.intro,
+	.text-submission,
+	.file-submission{
+		background-color: white;
+		.label { }
+		ul {
+			margin-bottom: 0;
+		}
 	}
 	
 	.dates,

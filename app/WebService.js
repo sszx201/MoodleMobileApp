@@ -277,7 +277,8 @@ Ext.define('MoodleMobApp.WebService', {
 		params.assigid = assign.instanceid;
 		params.onlinetext = assign.onlinetext;
 		params.teamsubmission = assign.teamsubmission;
-		if(assign.files != undefined) {
+		//params.finalsubmission = assign.finalsubmission;
+		if(assign.files != undefined && assign.files.length > 0) {
 			params.draftid = assign.draftid;
 			for(i=0; i < assign.files.length; ++i) {
 				params['files[' +i+ ']'] = assign.files[i];

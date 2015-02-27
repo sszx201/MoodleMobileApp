@@ -17,6 +17,7 @@ Ext.define('MoodleMobApp.controller.Assign', {
 			navigator: 'coursenavigator',
 			moduleList: 'modulelist',
 			assign: 'assign',
+			fileList: 'assign container#filelist',
 			addFileSlotButton: 'assign button[action=addfile]',
 			submitButton: 'assign button[action=submit]',
 			recentActivity: 'recentactivitylist'
@@ -25,6 +26,10 @@ Ext.define('MoodleMobApp.controller.Assign', {
 		control: {
 			// generic controls
 			moduleList: { itemtap: 'selectModule' },
+			fileList: {
+				add: 'checkFileSlotsNumber',
+				remove: 'checkFileSlotsNumber'
+			},
 			addFileSlotButton: { tap: 'addFileSlot' },
 			submitButton: { tap: 'submitAssign' },
 			recentActivity: {
@@ -94,6 +99,15 @@ Ext.define('MoodleMobApp.controller.Assign', {
 		);
 	},
 
+	checkFileSlotsNumber: function() {
+		var filelist = this.getAssign().child('fieldset').child('container[cls=filelist]');
+		if(filelist.getItems().getCount() == this.getAssign().config.settings.plugconf.files.assignsubmission.maxfilesubmissions) {
+			this.getAssign().child('fieldset').down('#buttons').down('button[action=addfile]').hide();
+		} else {
+			this.getAssign().child('fieldset').down('#buttons').down('button[action=addfile]').show();
+		}
+	},
+
 	addFileSlot: function() {
 		var filelist = this.getAssign().child('fieldset').child('container[cls=filelist]');
 		if(filelist.getItems().getCount() < this.getAssign().config.settings.plugconf.files.assignsubmission.maxfilesubmissions) {
@@ -103,9 +117,7 @@ Ext.define('MoodleMobApp.controller.Assign', {
 				clickToSelect: false,
 				droppable: true
 			});
-		} else {
-			Ext.Msg.alert("Submission max file number", "The max number of file allowed in this assignment has been reached. No more files can be attached.");
-		}
+		} // else { Ext.Msg.alert("Submission max file number", "The max number of file allowed in this assignment has been reached. No more files can be attached."); }
 	},
 
 	submitAssign: function(button) {
@@ -116,9 +128,17 @@ Ext.define('MoodleMobApp.controller.Assign', {
 		self.submission_data.courseid = MoodleMobApp.Session.getCourse().get('id');
 		// function to execute if the file is read successfully
 		this.submit = function() {
+			// normalize teamsubmission value
 			if(self.submission_data.teamsubmission == null) {
 				self.submission_data.teamsubmission = 0;
 			}
+			/*
+			// normalize finalsubmission value
+			if(self.submission_data.finalsubmission == null) {
+				self.submission_data.finalsubmission = 0;
+			}
+			*/
+
 			var assign_submission_store = MoodleMobApp.WebService.submitAssign(self.submission_data,  MoodleMobApp.Session.getCourse().get('token'));
 			assign_submission_store.on(
 				'load',

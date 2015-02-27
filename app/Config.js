@@ -38,10 +38,10 @@ Ext.define('MoodleMobApp.Config', {
 		//paths
 		fileCacheDir: 'iCorsi2',
 		//Flags
-		verbose: true,
+		verbose: false,
 		noGroupsFlag: 0,
 		separatedGroupsFlag: 1,
 		visibleGroupsFlag: 2,
-		version: '0.3.0'
+		version: '0.3.1'
 	}
 });

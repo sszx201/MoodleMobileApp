@@ -413,6 +413,10 @@ $border-color: #dedede;
 
 .x-module-intro,
 .x-calendar-event-description {
+	img {
+		max-width: 100% !important;
+		height: auto !important;
+	}
 	padding: 10px;
 	margin-top: 3px;
 	border: 2px solid gray;
@@ -496,6 +500,10 @@ $border-color: #dedede;
 
 .forum-intro,
 .forum-post {
+	img {
+		max-width: 100% !important;
+		height: auto !important;
+	}
 	margin-bottom: 10px;
 	border: 1px solid $border-color;
 	padding: 5px;
@@ -530,6 +538,10 @@ $border-color: #dedede;
 }
 
 .x-post-message {
+	img {
+		max-width: 100% !important;
+		height: auto !important;
+	}
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
@@ -625,6 +637,10 @@ $border-color: #dedede;
 .choice-intro,
 .choice-status,
 .activity-dates {
+	img {
+		max-width: 100% !important;
+		height: auto !important;
+	}
 	background-color: white;
 	padding: 5px;
 	padding-top: 10px;
@@ -660,6 +676,10 @@ $border-color: #dedede;
 .assignment{
 	.intro{
 		padding: 5px;
+		img {
+			max-width: 100% !important;
+			height: auto !important;
+		}
 	}
 
 	.intro,
@@ -709,6 +729,10 @@ $border-color: #dedede;
 	.content {
 		width: 100%;
 		max-width: 100%;
+		img {
+			max-width: 100% !important;
+			height: auto !important;
+		}
 		margin-top: 10px;
 		background-color: white;
 		padding: 5px;
@@ -766,6 +790,11 @@ $border-color: #dedede;
 	}
 
 	.content {
+		max-width: 100%;
+		img {
+			max-width: 100% !important;
+			height: auto !important;
+		}
 		-webkit-transition: width 0.5s, left 0.5s;
 		-moz-transition: width 0.5s, left 0.5s;
 		-o-transition: width 0.5s, left 0.5s;

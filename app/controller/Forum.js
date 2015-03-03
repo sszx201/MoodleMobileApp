@@ -79,10 +79,12 @@ Ext.define('MoodleMobApp.controller.Forum', {
 		this.selected_forum = forum;
 		// sync forum discussions everytime the forum is opened
 		var scope = this;
-		this.downloadNewDiscussions(forum, function(){
-			var forum_discussions = this.getForumDiscussions();
-			scope.getDiscussionList().setStore(forum_discussions);
-		});
+		if(MoodleMobApp.app.isConnectionAvailable()) {
+			this.downloadNewDiscussions(forum, function(){
+				var forum_discussions = this.getForumDiscussions();
+				scope.getDiscussionList().setStore(forum_discussions);
+			});
+		}
 		var forum_discussions = this.getForumDiscussions();
 
 		// display discussions

@@ -115,6 +115,8 @@ Ext.define('MoodleMobApp.controller.Settings', {
 		MoodleMobApp.Session.getGradeItemsStore().getProxy().clear();
 		MoodleMobApp.Session.getGradesStore().removeAll();
 		MoodleMobApp.Session.getGradesStore().getProxy().clear();
+		MoodleMobApp.Session.getAssignReportsStore().removeAll();
+		MoodleMobApp.Session.getAssignReportsStore().getProxy().clear();
 	},
 
 

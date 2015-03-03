@@ -20,10 +20,11 @@ Ext.define('MoodleMobApp.controller.Init', {
 			'MoodleMobApp.store.CourseSections',
 			'MoodleMobApp.store.Modules',
 			'MoodleMobApp.store.Resources',
-			'MoodleMobApp.store.Choices',
 			'MoodleMobApp.store.Url',
 			'MoodleMobApp.store.Pages',
 			'MoodleMobApp.store.Books',
+			'MoodleMobApp.store.Choices',
+			'MoodleMobApp.store.AssignReports',
 			'MoodleMobApp.store.ForumDiscussions',
 			'MoodleMobApp.store.ForumPosts',
 			'MoodleMobApp.store.Folders',
@@ -117,11 +118,6 @@ Ext.define('MoodleMobApp.controller.Init', {
 		resources_store.load();
 		MoodleMobApp.Session.setResourcesStore(resources_store);
 
-		// create choices store
-		var choices_store = Ext.create('MoodleMobApp.store.Choices');
-		choices_store.load();
-		MoodleMobApp.Session.setChoicesStore(choices_store);
-
 		// create url store
 		var url_store = Ext.create('MoodleMobApp.store.Url');
 		url_store.load();
@@ -137,6 +133,15 @@ Ext.define('MoodleMobApp.controller.Init', {
 		books_store.load();
 		MoodleMobApp.Session.setBooksStore(books_store);
 
+		// create choices store
+		var choices_store = Ext.create('MoodleMobApp.store.Choices');
+		choices_store.load();
+		MoodleMobApp.Session.setChoicesStore(choices_store);
+
+		// create assignreports store
+		var assign_reports_store = Ext.create('MoodleMobApp.store.AssignReports');
+		assign_reports_store.load();
+		MoodleMobApp.Session.setAssignReportsStore(assign_reports_store);
 
 		// create forumdiscussions store
 		var forum_discussions_store = Ext.create('MoodleMobApp.store.ForumDiscussions');

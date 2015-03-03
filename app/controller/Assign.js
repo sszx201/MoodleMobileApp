@@ -72,31 +72,44 @@ Ext.define('MoodleMobApp.controller.Assign', {
 			settings: null,
 			lastSubmission: null
 		};
-		var assign_store = MoodleMobApp.WebService.getAssignById(assign.get('instanceid'), MoodleMobApp.Session.getCourse().get('token'));
-		assign_store.on(
-			'load', 
-			function(store){
-				aconf.settings = store.first().getData(); 
-				// check for submissions
-				MoodleMobApp.app.showLoadMask('Checking submissions');
-				var submissions_store = MoodleMobApp.WebService.getAssignSubmission(assign.get('instanceid'), MoodleMobApp.Session.getCourse().get('token'));
-				submissions_store.on(
-					'load', 
-					function(store){
-						MoodleMobApp.app.hideLoadMask();
-						if(store.first().get('id') != 0) {
-							aconf.lastSubmission = store.first().getData(); 
-						}
-						// show the object
-						this.getNavigator().push(aconf);
-					},
-					this,
-					{single: true}
-				);
-			},
-			this,
-			{single: true}
-		);
+		if(MoodleMobApp.app.isConnectionAvailable()) {
+			var assign_store = MoodleMobApp.WebService.getAssignById(assign.get('instanceid'), MoodleMobApp.Session.getCourse().get('token'));
+			assign_store.on(
+				'load',
+				function(store){
+					aconf.settings = store.first().getData();
+					this.storeAssignReportField(assign.get('instanceid'), 'settings', aconf.settings);
+					// check for submissions
+					MoodleMobApp.app.showLoadMask('Checking submissions');
+					var submissions_store = MoodleMobApp.WebService.getAssignSubmission(assign.get('instanceid'), MoodleMobApp.Session.getCourse().get('token'));
+					submissions_store.on(
+						'load',
+						function(store){
+							MoodleMobApp.app.hideLoadMask();
+							if(store.first().get('id') != 0) {
+								aconf.lastSubmission = store.first().getData();
+								this.storeAssignReportField(assign.get('instanceid'), 'submission', aconf.lastSubmission);
+							}
+							// show the object
+							this.getNavigator().push(aconf);
+						},
+						this,
+						{single: true}
+					);
+				},
+				this,
+				{single: true}
+			);
+		} else { // use the cache to show the assignment
+			var report = this.getAssignReport(assign.get('instanceid'));
+			if(report != false) {
+				aconf['settings'] = report.get('settings');
+				aconf['lastSubmission'] = report.get('submission');
+				this.getNavigator().push(aconf);
+			} else {
+				Ext.Msg.alert('Assign settings missing', 'Please connect to the network to download the assign settings.');
+			}
+		}
 	},
 
 	checkFileSlotsNumber: function() {
@@ -145,8 +158,21 @@ Ext.define('MoodleMobApp.controller.Assign', {
 				function(status_store){
 					MoodleMobApp.app.hideLoadMask();
 					self.backToTheCourseModulesList();
+					// get the submission for the cache
+					var submissions_store = MoodleMobApp.WebService.getAssignSubmission(this.getAssign().getRecord().get('instanceid'), MoodleMobApp.Session.getCourse().get('token'));
+					submissions_store.on(
+						'load',
+						function(store){
+							if(store.first().get('id') != 0) {
+								this.storeAssignReportField(this.getAssign().getRecord().get('instanceid'), 'submission', store.first().getData());
+								alert('Got the submission, storing it');
+							}
+						},
+						this,
+						{single: true}
+					);
 				},
-				null,
+				this,
 				{single: true}
 			);
 		};
@@ -224,6 +250,33 @@ Ext.define('MoodleMobApp.controller.Assign', {
 			} else {
 				this.submit();
 			}
+		}
+	},
+
+	storeAssignReportField: function(instanceid, field, content) {
+		var record = this.getAssignReport(instanceid);
+		if(record == false) {
+			var entry = {};
+			entry['courseid'] = MoodleMobApp.Session.getCourse().get('id');
+			entry['instanceid'] = instanceid;
+			entry[field] = content;
+			MoodleMobApp.Session.getAssignReportsStore().add(entry);
+		} else {
+			record.set(field, content)
+		}
+		MoodleMobApp.Session.getAssignReportsStore().sync();
+	},
+
+	getAssignReport: function(instanceid) {
+		var courseid = MoodleMobApp.Session.getCourse().get('id');
+		var index = MoodleMobApp.Session.getAssignReportsStore().findBy(function(record){
+			return record.get('instanceid') == instanceid && record.get('courseid') == courseid;
+		}, this);
+
+		if(index == -1) {
+			return false;
+		} else {
+			return MoodleMobApp.Session.getAssignReportsStore().getAt(index);
 		}
 	}
 });

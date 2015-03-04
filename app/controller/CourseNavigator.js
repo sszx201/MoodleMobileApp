@@ -60,6 +60,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			navigator:  {
 				show: 'initCourseNavigator',
 				activeitemchange: 'manageActiveItemChange',
+				pop: 'setCourseTitle',
 				courseUpdated: 'showCourse'
 			},
 			courseList: { itemtap: 'selectCourse' },
@@ -396,8 +397,6 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 				this.getRefreshButton().hide();
 			break;
 		}
-		// change the ocurse title
-		this.setCourseTitle();
 	},
 
 	setCourseTitle: function() {

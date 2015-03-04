@@ -84,6 +84,12 @@ Ext.define("MoodleMobApp.view.CourseNavigator", {
 					},
 					{
 						xtype: 'button',
+						id: 'refreshBtn',
+						iconCls: 'refresh',
+						hidden: true
+					},
+					{
+						xtype: 'button',
 						id: 'settingsAppBtn',
 						iconCls: 'settings'
 					}

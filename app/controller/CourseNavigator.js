@@ -30,6 +30,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			participantsButton: 'button#participantsAppBtn',
 			gradesButton: 'button#gradesAppBtn',
 			calendarButton: 'button#calendarAppBtn',
+			refreshButton: 'button#refreshBtn',
 			// views
 			navigator: 'coursenavigator',
 			settings: 'settings',
@@ -55,9 +56,10 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			participantsButton: { tap: 'showParticipants' },
 			gradesButton: { tap: 'showGrades' },
 			calendarButton: { tap: 'showCalendarEvents' },
+			refreshButton: { tap: 'refreshCourse' },
 			navigator:  {
 				show: 'initCourseNavigator',
-				pop: 'managePop',
+				activeitemchange: 'manageActiveItemChange',
 				courseUpdated: 'showCourse'
 			},
 			courseList: { itemtap: 'selectCourse' },
@@ -137,6 +139,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		this.getGradesButton().show();
 		this.getParticipantsButton().show();
 		this.getCalendarButton().show();
+		this.getRefreshButton().show();
 		// check the course status
 		// display if the course has already been synchronized
 		if(record.get('synchronized') != true && MoodleMobApp.app.isConnectionAvailable()) {
@@ -173,7 +176,13 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		// display modules
 		if(typeof this.getModuleList() == 'object') {
 			this.getModuleList().setStore(modules);
-			this.getNavigator().push(this.getModuleList());
+			if(this.getNavigator().getActiveItem().xtype == 'modulelist') {
+				// the active item is already modulelist so just refresh the labels
+				this.getModuleList().dropSectionLabels();
+				this.getModuleList().addSectionLabels();
+			} else {
+				this.getNavigator().push(this.getModuleList());
+			}
 		} else {
 			this.getNavigator().push({
 				xtype: 'modulelist',
@@ -363,16 +372,28 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 	// this function manages the pop event.
 	// the gui elements are updated depending on the context and the
 	// page that is being displayed.
-	managePop: function(controller, view, opts) {
+	manageActiveItemChange: function(controller, view, opts) {
 		console.log(view.xtype);
-		// updated the side menu status
+		// update the side menu status
 		switch(view.xtype) {
-			case 'modulelist':
+			case 'courselist':
 				this.getHomeButton().hide();
 				this.getRecentActivityButton().hide();
 				this.getParticipantsButton().hide();
 				this.getGradesButton().hide();
 				this.getCalendarButton().hide();
+				this.getRefreshButton().hide();
+			break;
+			case 'modulelist':
+				this.getHomeButton().show();
+				this.getRecentActivityButton().show();
+				this.getParticipantsButton().show();
+				this.getGradesButton().show();
+				this.getCalendarButton().show();
+				this.getRefreshButton().show();
+			break;
+			default:
+				this.getRefreshButton().hide();
 			break;
 		}
 		// change the ocurse title
@@ -438,6 +459,11 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			}, this
 		);
 		return calendar_events;
-	}
+	},
 
+	refreshCourse: function() {
+		if(this.getNavigator().getActiveItem().xtype == 'modulelist') {
+			this.getNavigator().fireEvent('updateCourse', this.current_course);
+		}
+	}
 });

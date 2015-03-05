@@ -95,9 +95,18 @@ $border-color: #dedede;
 		margin-top: 10px;
 		margin-bottom: 5px;
 		font-size: small;
+		max-width: 100% !important;
+		*[style] {
+			width: auto !important;
+			max-width: 100% !important;
+		}
 		img {
 			max-width: 100% !important;
 			height: auto !important;
+		}
+		* a {
+			text-overflow: ellipsis;
+			word-break: break-all !important;
 		}
 	}
 }
@@ -413,9 +422,17 @@ $border-color: #dedede;
 
 .x-module-intro,
 .x-calendar-event-description {
+	max-width: 100% !important;
+	*[style] {
+		width: auto !important;
+		max-width: 100% !important;
+	}
 	img {
 		max-width: 100% !important;
 		height: auto !important;
+	}
+	* a {
+		word-break: break-all !important;
 	}
 	padding: 10px;
 	margin-top: 3px;
@@ -500,14 +517,21 @@ $border-color: #dedede;
 
 .forum-intro,
 .forum-post {
+	max-width: 100% !important;
+	*[style] {
+		width: auto !important;
+		max-width: 100% !important;
+	}
 	img {
 		max-width: 100% !important;
 		height: auto !important;
 	}
+	* a {
+		word-break: break-all !important;
+	}
 	margin-bottom: 10px;
 	border: 1px solid $border-color;
 	padding: 5px;
-	word-break: break-all;
 }
 
 .forum-post-selected {
@@ -538,9 +562,17 @@ $border-color: #dedede;
 }
 
 .x-post-message {
+	max-width: 100% !important;
+	*[style] {
+		width: auto !important;
+		max-width: 100% !important;
+	}
 	img {
 		max-width: 100% !important;
 		height: auto !important;
+	}
+	* a {
+		word-break: break-all !important;
 	}
 	padding-top: 10px;
 	padding-bottom: 10px;
@@ -609,6 +641,24 @@ $border-color: #dedede;
 
 .x-post-reply {
 	.parent-post {
+		.message {
+			.text {
+				max-width: 100% !important;
+				*[style] {
+					float: none !important;
+					position: inherit !important;
+					width: auto !important;
+					max-width: 100% !important;
+				}
+				img {
+					width: auto !important;
+					max-width: 100% !important;
+				}
+				* a {
+					word-break: break-all !important;
+				}
+			}
+		}
 		background-color: white;
 		padding: 5px;
 		padding-top: 10px;
@@ -637,9 +687,17 @@ $border-color: #dedede;
 .choice-intro,
 .choice-status,
 .activity-dates {
+	max-width: 100% !important;
+	*[style] {
+		width: auto !important;
+		max-width: 100% !important;
+	}
 	img {
 		max-width: 100% !important;
 		height: auto !important;
+	}
+	* a {
+		word-break: break-all !important;
 	}
 	background-color: white;
 	padding: 5px;
@@ -676,9 +734,17 @@ $border-color: #dedede;
 .assignment{
 	.intro{
 		padding: 5px;
+		max-width: 100% !important;
+		*[style] {
+			width: auto !important;
+			max-width: 100% !important;
+		}
 		img {
 			max-width: 100% !important;
 			height: auto !important;
+		}
+		* a {
+			word-break: break-all !important;
 		}
 	}
 
@@ -728,10 +794,17 @@ $border-color: #dedede;
 	.intro,
 	.content {
 		width: 100%;
-		max-width: 100%;
+		max-width: 100% !important;
+		*[style] {
+			width: auto !important;
+			max-width: 100% !important;
+		}
 		img {
 			max-width: 100% !important;
 			height: auto !important;
+		}
+		* a {
+			word-break: break-all !important;
 		}
 		margin-top: 10px;
 		background-color: white;
@@ -790,10 +863,17 @@ $border-color: #dedede;
 	}
 
 	.content {
-		max-width: 100%;
+		max-width: 100% !important;
+		*[style] {
+			width: auto !important;
+			max-width: 100% !important;
+		}
 		img {
 			max-width: 100% !important;
 			height: auto !important;
+		}
+		* a {
+			word-break: break-all !important;
 		}
 		-webkit-transition: width 0.5s, left 0.5s;
 		-moz-transition: width 0.5s, left 0.5s;

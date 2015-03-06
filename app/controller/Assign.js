@@ -165,7 +165,6 @@ Ext.define('MoodleMobApp.controller.Assign', {
 						function(store){
 							if(store.first().get('id') != 0) {
 								this.storeAssignReportField(this.getAssign().getRecord().get('instanceid'), 'submission', store.first().getData());
-								alert('Got the submission, storing it');
 							}
 						},
 						this,

@@ -24,6 +24,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 			// app bar
 			appBarButton: 'button#appBarBtn',
 			appBar: 'container#appbar',
+			appBarEntry: 'container#appbar button',
 			homeButton: 'button#homeAppBtn',
 			settingsButton: 'button#settingsAppBtn',
 			recentActivityButton: 'button#recentActivityAppBtn',
@@ -50,6 +51,7 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 
 		control: {
 			appBarButton: { tap: 'toggleSideMenu' },
+			appBarEntry: { tap: 'autoToggleSideMenu' },
 			homeButton: { tap: 'goHome' },
 			settingsButton: { tap: 'showSettings' },
 			recentActivityButton: { tap: 'showRecentActivity' },
@@ -106,6 +108,12 @@ Ext.define('MoodleMobApp.controller.CourseNavigator', {
 		} else {
 			document.getElementsByClassName('x-navigationview-inner')[0].setAttribute('style', 'margin-right: 0px');
 			this.getAppBar().setRight('-200px');
+		}
+	},
+
+	autoToggleSideMenu: function() {
+		if(MoodleMobApp.Session.getSettingsStore().first().get('autohideappbar') == true) {
+			this.toggleSideMenu();
 		}
 	},
 

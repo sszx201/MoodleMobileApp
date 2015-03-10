@@ -65,7 +65,7 @@ Ext.define("MoodleMobApp.view.Settings", {
 							},
 							{
 								xtype: 'fieldset',
-								title: 'Downloads',
+								title: 'User Interface',
 								items: [
 									{
 										xtype: 'checkboxfield',
@@ -73,25 +73,26 @@ Ext.define("MoodleMobApp.view.Settings", {
 										name: 'justdownload',
 										labelWidth: '80%',
 										labelWrap: true,
-										label: "Download files without confirming."
-									}
-								]
-							},
-							{
-								xtype: 'fieldset',
-								title: 'Show Recent Activities',
-								items: [
+										label: 'Download files without confirming.'
+									},
 									{
 										xtype: 'checkboxfield',
 										itemId: 'showrecentactivity',
 										name: 'showrecentactivity',
 										labelWidth: '80%',
 										labelWrap: true,
-										label: "Show recent activities after the course syncronisation."
+										label: 'Show recent activities after the course syncronisation.'
+									},
+									{
+										xtype: 'checkboxfield',
+										itemId: 'autohideappbar',
+										name: 'autohideappbar',
+										labelWidth: '80%',
+										labelWrap: true,
+										label: 'Hide the app bar after the selection.'
 									}
 								]
 							}
-
 						]
 					},
 					{

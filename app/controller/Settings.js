@@ -7,7 +7,8 @@ Ext.define('MoodleMobApp.controller.Settings', {
 			purgeData: 'settings button[action=purgedata]',
 			purgeFiles: 'settings button[action=purgefiles]',
 			justDownload: 'settings checkboxfield[name=justdownload]',
-			showRecentActivity: 'settings checkboxfield[name=showrecentactivity]'
+			showRecentActivity: 'settings checkboxfield[name=showrecentactivity]',
+			autoHideAppBar: 'settings checkboxfield[name=autohideappbar]'
 		},
 
 		control: {
@@ -43,6 +44,17 @@ Ext.define('MoodleMobApp.controller.Settings', {
 					MoodleMobApp.Session.getSettingsStore().first().set('showrecentactivity', false);
 					MoodleMobApp.Session.getSettingsStore().sync();
 				}
+			},
+
+			autoHideAppBar: {
+				check: function() {
+					MoodleMobApp.Session.getSettingsStore().first().set('autohideappbar', true);
+					MoodleMobApp.Session.getSettingsStore().sync();
+				},
+				uncheck: function() {
+					MoodleMobApp.Session.getSettingsStore().first().set('autohideappbar', false);
+					MoodleMobApp.Session.getSettingsStore().sync();
+				}
 			}
 
 		}
@@ -60,6 +72,11 @@ Ext.define('MoodleMobApp.controller.Settings', {
 
 		if( MoodleMobApp.Session.getSettingsStore().first().get('justdownload') == true ) {
 			this.getJustDownload().check();
+		}
+
+		// check for the existing installations
+		if( MoodleMobApp.Session.getSettingsStore().first().get('autohideappbar') == true ) {
+			this.getAutoHideAppBar().check();
 		}
 
 		// show the active account

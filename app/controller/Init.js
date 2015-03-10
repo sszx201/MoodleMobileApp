@@ -52,6 +52,12 @@ Ext.define('MoodleMobApp.controller.Init', {
 					});	
 					this.setData(settings_init_data);
 					this.sync();
+				} else if(records[0].get('autohideappbar') == null) {
+					// activate the auto hide on existing installations.
+					// this check is going to be removed in once of the next versions.
+					// it is here just as a transitional fix.
+					records[0].set('autohideappbar', true);
+					this.sync();
 				}
 			}
 		});

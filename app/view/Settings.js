@@ -89,7 +89,7 @@ Ext.define("MoodleMobApp.view.Settings", {
 										name: 'autohideappbar',
 										labelWidth: '80%',
 										labelWrap: true,
-										label: 'Hide the app bar after the selection.'
+										label: 'Hide the app bar automatically'
 									}
 								]
 							}

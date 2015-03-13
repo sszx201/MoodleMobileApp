@@ -34,7 +34,7 @@ Ext.define("MoodleMobApp.view.Settings", {
 						xtype: 'aaiaccount'
 					},
 					{
-						title: 'External User',
+						title: 'Ext.User',
 						xtype: 'manualaccount'
 					},
 					{

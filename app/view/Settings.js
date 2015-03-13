@@ -30,7 +30,7 @@ Ext.define("MoodleMobApp.view.Settings", {
     			},
 				items: [
 					{
-						title: 'AAI/NetID',
+						title: 'AAI',
 						xtype: 'aaiaccount'
 					},
 					{
